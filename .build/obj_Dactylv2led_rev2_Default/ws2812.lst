@@ -1,0 +1,811 @@
+   1               		.file	"ws2812.c"
+   2               	__SP_H__ = 0x3e
+   3               	__SP_L__ = 0x3d
+   4               	__SREG__ = 0x3f
+   5               	__tmp_reg__ = 0
+   6               	__zero_reg__ = 1
+   7               		.text
+   8               	.Ltext0:
+   9               		.cfi_sections	.debug_frame
+  10               		.section	.text.ws2812_sendarray_mask,"ax",@progbits
+  11               	.global	ws2812_sendarray_mask
+  13               	ws2812_sendarray_mask:
+  14               	.LFB10:
+  15               		.file 1 "./drivers/avr/ws2812.c"
+   1:./drivers/avr/ws2812.c **** /*
+   2:./drivers/avr/ws2812.c **** * light weight WS2812 lib V2.0b
+   3:./drivers/avr/ws2812.c **** *
+   4:./drivers/avr/ws2812.c **** * Controls WS2811/WS2812/WS2812B RGB-LEDs
+   5:./drivers/avr/ws2812.c **** * Author: Tim (cpldcpu@gmail.com)
+   6:./drivers/avr/ws2812.c **** *
+   7:./drivers/avr/ws2812.c **** * Jan 18th, 2014  v2.0b Initial Version
+   8:./drivers/avr/ws2812.c **** * Nov 29th, 2015  v2.3  Added SK6812RGBW support
+   9:./drivers/avr/ws2812.c **** *
+  10:./drivers/avr/ws2812.c **** * This program is free software: you can redistribute it and/or modify
+  11:./drivers/avr/ws2812.c **** * it under the terms of the GNU General Public License as published by
+  12:./drivers/avr/ws2812.c **** * the Free Software Foundation, either version 2 of the License, or
+  13:./drivers/avr/ws2812.c **** * (at your option) any later version.
+  14:./drivers/avr/ws2812.c **** *
+  15:./drivers/avr/ws2812.c **** * This program is distributed in the hope that it will be useful,
+  16:./drivers/avr/ws2812.c **** * but WITHOUT ANY WARRANTY; without even the implied warranty of
+  17:./drivers/avr/ws2812.c **** * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  18:./drivers/avr/ws2812.c **** * GNU General Public License for more details.
+  19:./drivers/avr/ws2812.c **** *
+  20:./drivers/avr/ws2812.c **** * You should have received a copy of the GNU General Public License
+  21:./drivers/avr/ws2812.c **** * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  22:./drivers/avr/ws2812.c **** */
+  23:./drivers/avr/ws2812.c **** 
+  24:./drivers/avr/ws2812.c **** #include "ws2812.h"
+  25:./drivers/avr/ws2812.c **** #include <avr/interrupt.h>
+  26:./drivers/avr/ws2812.c **** #include <avr/io.h>
+  27:./drivers/avr/ws2812.c **** #include <util/delay.h>
+  28:./drivers/avr/ws2812.c **** #include "debug.h"
+  29:./drivers/avr/ws2812.c **** 
+  30:./drivers/avr/ws2812.c **** #ifdef RGBW_BB_TWI
+  31:./drivers/avr/ws2812.c **** 
+  32:./drivers/avr/ws2812.c **** // Port for the I2C
+  33:./drivers/avr/ws2812.c **** #define I2C_DDR DDRD
+  34:./drivers/avr/ws2812.c **** #define I2C_PIN PIND
+  35:./drivers/avr/ws2812.c **** #define I2C_PORT PORTD
+  36:./drivers/avr/ws2812.c **** 
+  37:./drivers/avr/ws2812.c **** // Pins to be used in the bit banging
+  38:./drivers/avr/ws2812.c **** #define I2C_CLK 0
+  39:./drivers/avr/ws2812.c **** #define I2C_DAT 1
+  40:./drivers/avr/ws2812.c **** 
+  41:./drivers/avr/ws2812.c **** #define I2C_DATA_HI()\
+  42:./drivers/avr/ws2812.c **** I2C_DDR &= ~ (1 << I2C_DAT);\
+  43:./drivers/avr/ws2812.c **** I2C_PORT |= (1 << I2C_DAT);
+  44:./drivers/avr/ws2812.c **** #define I2C_DATA_LO()\
+  45:./drivers/avr/ws2812.c **** I2C_DDR |= (1 << I2C_DAT);\
+  46:./drivers/avr/ws2812.c **** I2C_PORT &= ~ (1 << I2C_DAT);
+  47:./drivers/avr/ws2812.c **** 
+  48:./drivers/avr/ws2812.c **** #define I2C_CLOCK_HI()\
+  49:./drivers/avr/ws2812.c **** I2C_DDR &= ~ (1 << I2C_CLK);\
+  50:./drivers/avr/ws2812.c **** I2C_PORT |= (1 << I2C_CLK);
+  51:./drivers/avr/ws2812.c **** #define I2C_CLOCK_LO()\
+  52:./drivers/avr/ws2812.c **** I2C_DDR |= (1 << I2C_CLK);\
+  53:./drivers/avr/ws2812.c **** I2C_PORT &= ~ (1 << I2C_CLK);
+  54:./drivers/avr/ws2812.c **** 
+  55:./drivers/avr/ws2812.c **** #define I2C_DELAY 1
+  56:./drivers/avr/ws2812.c **** 
+  57:./drivers/avr/ws2812.c **** void I2C_WriteBit(unsigned char c)
+  58:./drivers/avr/ws2812.c **** {
+  59:./drivers/avr/ws2812.c ****     if (c > 0)
+  60:./drivers/avr/ws2812.c ****     {
+  61:./drivers/avr/ws2812.c ****         I2C_DATA_HI();
+  62:./drivers/avr/ws2812.c ****     }
+  63:./drivers/avr/ws2812.c ****     else
+  64:./drivers/avr/ws2812.c ****     {
+  65:./drivers/avr/ws2812.c ****         I2C_DATA_LO();
+  66:./drivers/avr/ws2812.c ****     }
+  67:./drivers/avr/ws2812.c **** 
+  68:./drivers/avr/ws2812.c ****     I2C_CLOCK_HI();
+  69:./drivers/avr/ws2812.c ****     _delay_us(I2C_DELAY);
+  70:./drivers/avr/ws2812.c **** 
+  71:./drivers/avr/ws2812.c ****     I2C_CLOCK_LO();
+  72:./drivers/avr/ws2812.c ****     _delay_us(I2C_DELAY);
+  73:./drivers/avr/ws2812.c **** 
+  74:./drivers/avr/ws2812.c ****     if (c > 0)
+  75:./drivers/avr/ws2812.c ****     {
+  76:./drivers/avr/ws2812.c ****         I2C_DATA_LO();
+  77:./drivers/avr/ws2812.c ****     }
+  78:./drivers/avr/ws2812.c **** 
+  79:./drivers/avr/ws2812.c ****     _delay_us(I2C_DELAY);
+  80:./drivers/avr/ws2812.c **** }
+  81:./drivers/avr/ws2812.c **** 
+  82:./drivers/avr/ws2812.c **** // Inits bitbanging port, must be called before using the functions below
+  83:./drivers/avr/ws2812.c **** //
+  84:./drivers/avr/ws2812.c **** void I2C_Init(void)
+  85:./drivers/avr/ws2812.c **** {
+  86:./drivers/avr/ws2812.c ****     I2C_PORT &= ~ ((1 << I2C_DAT) | (1 << I2C_CLK));
+  87:./drivers/avr/ws2812.c **** 
+  88:./drivers/avr/ws2812.c ****     I2C_CLOCK_HI();
+  89:./drivers/avr/ws2812.c ****     I2C_DATA_HI();
+  90:./drivers/avr/ws2812.c **** 
+  91:./drivers/avr/ws2812.c ****     _delay_us(I2C_DELAY);
+  92:./drivers/avr/ws2812.c **** }
+  93:./drivers/avr/ws2812.c **** 
+  94:./drivers/avr/ws2812.c **** // Send a START Condition
+  95:./drivers/avr/ws2812.c **** //
+  96:./drivers/avr/ws2812.c **** void I2C_Start(void)
+  97:./drivers/avr/ws2812.c **** {
+  98:./drivers/avr/ws2812.c ****     // set both to high at the same time
+  99:./drivers/avr/ws2812.c ****     I2C_DDR &= ~ ((1 << I2C_DAT) | (1 << I2C_CLK));
+ 100:./drivers/avr/ws2812.c ****     _delay_us(I2C_DELAY);
+ 101:./drivers/avr/ws2812.c **** 
+ 102:./drivers/avr/ws2812.c ****     I2C_DATA_LO();
+ 103:./drivers/avr/ws2812.c ****     _delay_us(I2C_DELAY);
+ 104:./drivers/avr/ws2812.c **** 
+ 105:./drivers/avr/ws2812.c ****     I2C_CLOCK_LO();
+ 106:./drivers/avr/ws2812.c ****     _delay_us(I2C_DELAY);
+ 107:./drivers/avr/ws2812.c **** }
+ 108:./drivers/avr/ws2812.c **** 
+ 109:./drivers/avr/ws2812.c **** // Send a STOP Condition
+ 110:./drivers/avr/ws2812.c **** //
+ 111:./drivers/avr/ws2812.c **** void I2C_Stop(void)
+ 112:./drivers/avr/ws2812.c **** {
+ 113:./drivers/avr/ws2812.c ****     I2C_CLOCK_HI();
+ 114:./drivers/avr/ws2812.c ****     _delay_us(I2C_DELAY);
+ 115:./drivers/avr/ws2812.c **** 
+ 116:./drivers/avr/ws2812.c ****     I2C_DATA_HI();
+ 117:./drivers/avr/ws2812.c ****     _delay_us(I2C_DELAY);
+ 118:./drivers/avr/ws2812.c **** }
+ 119:./drivers/avr/ws2812.c **** 
+ 120:./drivers/avr/ws2812.c **** // write a byte to the I2C slave device
+ 121:./drivers/avr/ws2812.c **** //
+ 122:./drivers/avr/ws2812.c **** unsigned char I2C_Write(unsigned char c)
+ 123:./drivers/avr/ws2812.c **** {
+ 124:./drivers/avr/ws2812.c ****     for (char i = 0; i < 8; i++)
+ 125:./drivers/avr/ws2812.c ****     {
+ 126:./drivers/avr/ws2812.c ****         I2C_WriteBit(c & 128);
+ 127:./drivers/avr/ws2812.c **** 
+ 128:./drivers/avr/ws2812.c ****         c <<= 1;
+ 129:./drivers/avr/ws2812.c ****     }
+ 130:./drivers/avr/ws2812.c **** 
+ 131:./drivers/avr/ws2812.c ****     
+ 132:./drivers/avr/ws2812.c ****     I2C_WriteBit(0);
+ 133:./drivers/avr/ws2812.c ****     _delay_us(I2C_DELAY);
+ 134:./drivers/avr/ws2812.c ****     _delay_us(I2C_DELAY);
+ 135:./drivers/avr/ws2812.c ****   
+ 136:./drivers/avr/ws2812.c ****     // _delay_us(I2C_DELAY);
+ 137:./drivers/avr/ws2812.c ****     //return I2C_ReadBit();
+ 138:./drivers/avr/ws2812.c ****     return 0;
+ 139:./drivers/avr/ws2812.c **** }
+ 140:./drivers/avr/ws2812.c **** 
+ 141:./drivers/avr/ws2812.c **** 
+ 142:./drivers/avr/ws2812.c **** #endif
+ 143:./drivers/avr/ws2812.c **** 
+ 144:./drivers/avr/ws2812.c **** // Setleds for standard RGB
+ 145:./drivers/avr/ws2812.c **** void inline ws2812_setleds(LED_TYPE *ledarray, uint16_t leds)
+ 146:./drivers/avr/ws2812.c **** {
+ 147:./drivers/avr/ws2812.c ****    // ws2812_setleds_pin(ledarray,leds, _BV(ws2812_pin));
+ 148:./drivers/avr/ws2812.c ****    ws2812_setleds_pin(ledarray,leds, _BV(RGB_DI_PIN & 0xF));
+ 149:./drivers/avr/ws2812.c **** }
+ 150:./drivers/avr/ws2812.c **** 
+ 151:./drivers/avr/ws2812.c **** void inline ws2812_setleds_pin(LED_TYPE *ledarray, uint16_t leds, uint8_t pinmask)
+ 152:./drivers/avr/ws2812.c **** {
+ 153:./drivers/avr/ws2812.c ****   // ws2812_DDRREG |= pinmask; // Enable DDR
+ 154:./drivers/avr/ws2812.c ****   // new universal format (DDR)
+ 155:./drivers/avr/ws2812.c ****   _SFR_IO8((RGB_DI_PIN >> 4) + 1) |= pinmask;
+ 156:./drivers/avr/ws2812.c **** 
+ 157:./drivers/avr/ws2812.c ****   ws2812_sendarray_mask((uint8_t*)ledarray,leds+leds+leds,pinmask);
+ 158:./drivers/avr/ws2812.c ****   _delay_us(50);
+ 159:./drivers/avr/ws2812.c **** }
+ 160:./drivers/avr/ws2812.c **** 
+ 161:./drivers/avr/ws2812.c **** // Setleds for SK6812RGBW
+ 162:./drivers/avr/ws2812.c **** void inline ws2812_setleds_rgbw(LED_TYPE *ledarray, uint16_t leds)
+ 163:./drivers/avr/ws2812.c **** {
+ 164:./drivers/avr/ws2812.c **** 
+ 165:./drivers/avr/ws2812.c ****   #ifdef RGBW_BB_TWI
+ 166:./drivers/avr/ws2812.c ****     uint8_t sreg_prev, twcr_prev;
+ 167:./drivers/avr/ws2812.c ****     sreg_prev=SREG;
+ 168:./drivers/avr/ws2812.c ****     twcr_prev=TWCR;
+ 169:./drivers/avr/ws2812.c ****     cli();
+ 170:./drivers/avr/ws2812.c ****     TWCR &= ~(1<<TWEN);
+ 171:./drivers/avr/ws2812.c ****     I2C_Init();
+ 172:./drivers/avr/ws2812.c ****     I2C_Start();
+ 173:./drivers/avr/ws2812.c ****     I2C_Write(0x84);
+ 174:./drivers/avr/ws2812.c ****     uint16_t datlen = leds<<2;
+ 175:./drivers/avr/ws2812.c ****     uint8_t curbyte;
+ 176:./drivers/avr/ws2812.c ****     uint8_t * data = (uint8_t*)ledarray;
+ 177:./drivers/avr/ws2812.c ****     while (datlen--) {
+ 178:./drivers/avr/ws2812.c ****       curbyte=*data++;
+ 179:./drivers/avr/ws2812.c ****       I2C_Write(curbyte);
+ 180:./drivers/avr/ws2812.c ****     }
+ 181:./drivers/avr/ws2812.c ****     I2C_Stop();
+ 182:./drivers/avr/ws2812.c ****     SREG=sreg_prev;
+ 183:./drivers/avr/ws2812.c ****     TWCR=twcr_prev;
+ 184:./drivers/avr/ws2812.c ****   #endif
+ 185:./drivers/avr/ws2812.c **** 
+ 186:./drivers/avr/ws2812.c **** 
+ 187:./drivers/avr/ws2812.c ****   // ws2812_DDRREG |= _BV(ws2812_pin); // Enable DDR
+ 188:./drivers/avr/ws2812.c ****   // new universal format (DDR)
+ 189:./drivers/avr/ws2812.c ****   _SFR_IO8((RGB_DI_PIN >> 4) + 1) |= _BV(RGB_DI_PIN & 0xF);
+ 190:./drivers/avr/ws2812.c **** 
+ 191:./drivers/avr/ws2812.c ****   ws2812_sendarray_mask((uint8_t*)ledarray,leds<<2,_BV(RGB_DI_PIN & 0xF));
+ 192:./drivers/avr/ws2812.c **** 
+ 193:./drivers/avr/ws2812.c **** 
+ 194:./drivers/avr/ws2812.c ****   #ifndef RGBW_BB_TWI
+ 195:./drivers/avr/ws2812.c ****     _delay_us(80);
+ 196:./drivers/avr/ws2812.c ****   #endif
+ 197:./drivers/avr/ws2812.c **** }
+ 198:./drivers/avr/ws2812.c **** 
+ 199:./drivers/avr/ws2812.c **** void ws2812_sendarray(uint8_t *data,uint16_t datlen)
+ 200:./drivers/avr/ws2812.c **** {
+ 201:./drivers/avr/ws2812.c ****   ws2812_sendarray_mask(data,datlen,_BV(RGB_DI_PIN & 0xF));
+ 202:./drivers/avr/ws2812.c **** }
+ 203:./drivers/avr/ws2812.c **** 
+ 204:./drivers/avr/ws2812.c **** /*
+ 205:./drivers/avr/ws2812.c ****   This routine writes an array of bytes with RGB values to the Dataout pin
+ 206:./drivers/avr/ws2812.c ****   using the fast 800kHz clockless WS2811/2812 protocol.
+ 207:./drivers/avr/ws2812.c **** */
+ 208:./drivers/avr/ws2812.c **** 
+ 209:./drivers/avr/ws2812.c **** // Timing in ns
+ 210:./drivers/avr/ws2812.c **** #define w_zeropulse   350
+ 211:./drivers/avr/ws2812.c **** #define w_onepulse    900
+ 212:./drivers/avr/ws2812.c **** #define w_totalperiod 1250
+ 213:./drivers/avr/ws2812.c **** 
+ 214:./drivers/avr/ws2812.c **** // Fixed cycles used by the inner loop
+ 215:./drivers/avr/ws2812.c **** #define w_fixedlow    2
+ 216:./drivers/avr/ws2812.c **** #define w_fixedhigh   4
+ 217:./drivers/avr/ws2812.c **** #define w_fixedtotal  8
+ 218:./drivers/avr/ws2812.c **** 
+ 219:./drivers/avr/ws2812.c **** // Insert NOPs to match the timing, if possible
+ 220:./drivers/avr/ws2812.c **** #define w_zerocycles    (((F_CPU/1000)*w_zeropulse          )/1000000)
+ 221:./drivers/avr/ws2812.c **** #define w_onecycles     (((F_CPU/1000)*w_onepulse    +500000)/1000000)
+ 222:./drivers/avr/ws2812.c **** #define w_totalcycles   (((F_CPU/1000)*w_totalperiod +500000)/1000000)
+ 223:./drivers/avr/ws2812.c **** 
+ 224:./drivers/avr/ws2812.c **** // w1 - nops between rising edge and falling edge - low
+ 225:./drivers/avr/ws2812.c **** #define w1 (w_zerocycles-w_fixedlow)
+ 226:./drivers/avr/ws2812.c **** // w2   nops between fe low and fe high
+ 227:./drivers/avr/ws2812.c **** #define w2 (w_onecycles-w_fixedhigh-w1)
+ 228:./drivers/avr/ws2812.c **** // w3   nops to complete loop
+ 229:./drivers/avr/ws2812.c **** #define w3 (w_totalcycles-w_fixedtotal-w1-w2)
+ 230:./drivers/avr/ws2812.c **** 
+ 231:./drivers/avr/ws2812.c **** #if w1>0
+ 232:./drivers/avr/ws2812.c ****   #define w1_nops w1
+ 233:./drivers/avr/ws2812.c **** #else
+ 234:./drivers/avr/ws2812.c ****   #define w1_nops  0
+ 235:./drivers/avr/ws2812.c **** #endif
+ 236:./drivers/avr/ws2812.c **** 
+ 237:./drivers/avr/ws2812.c **** // The only critical timing parameter is the minimum pulse length of the "0"
+ 238:./drivers/avr/ws2812.c **** // Warn or throw error if this timing can not be met with current F_CPU settings.
+ 239:./drivers/avr/ws2812.c **** #define w_lowtime ((w1_nops+w_fixedlow)*1000000)/(F_CPU/1000)
+ 240:./drivers/avr/ws2812.c **** #if w_lowtime>550
+ 241:./drivers/avr/ws2812.c ****    #error "Light_ws2812: Sorry, the clock speed is too low. Did you set F_CPU correctly?"
+ 242:./drivers/avr/ws2812.c **** #elif w_lowtime>450
+ 243:./drivers/avr/ws2812.c ****    #warning "Light_ws2812: The timing is critical and may only work on WS2812B, not on WS2812(S)."
+ 244:./drivers/avr/ws2812.c ****    #warning "Please consider a higher clockspeed, if possible"
+ 245:./drivers/avr/ws2812.c **** #endif
+ 246:./drivers/avr/ws2812.c **** 
+ 247:./drivers/avr/ws2812.c **** #if w2>0
+ 248:./drivers/avr/ws2812.c **** #define w2_nops w2
+ 249:./drivers/avr/ws2812.c **** #else
+ 250:./drivers/avr/ws2812.c **** #define w2_nops  0
+ 251:./drivers/avr/ws2812.c **** #endif
+ 252:./drivers/avr/ws2812.c **** 
+ 253:./drivers/avr/ws2812.c **** #if w3>0
+ 254:./drivers/avr/ws2812.c **** #define w3_nops w3
+ 255:./drivers/avr/ws2812.c **** #else
+ 256:./drivers/avr/ws2812.c **** #define w3_nops  0
+ 257:./drivers/avr/ws2812.c **** #endif
+ 258:./drivers/avr/ws2812.c **** 
+ 259:./drivers/avr/ws2812.c **** #define w_nop1  "nop      \n\t"
+ 260:./drivers/avr/ws2812.c **** #define w_nop2  "rjmp .+0 \n\t"
+ 261:./drivers/avr/ws2812.c **** #define w_nop4  w_nop2 w_nop2
+ 262:./drivers/avr/ws2812.c **** #define w_nop8  w_nop4 w_nop4
+ 263:./drivers/avr/ws2812.c **** #define w_nop16 w_nop8 w_nop8
+ 264:./drivers/avr/ws2812.c **** 
+ 265:./drivers/avr/ws2812.c **** void inline ws2812_sendarray_mask(uint8_t *data,uint16_t datlen,uint8_t maskhi)
+ 266:./drivers/avr/ws2812.c **** {
+  16               		.loc 1 266 0
+  17               		.cfi_startproc
+  18               	.LVL0:
+  19               	/* prologue: function */
+  20               	/* frame size = 0 */
+  21               	/* stack size = 0 */
+  22               	.L__stack_usage = 0
+ 267:./drivers/avr/ws2812.c ****   uint8_t curbyte,ctr,masklo;
+ 268:./drivers/avr/ws2812.c ****   uint8_t sreg_prev;
+ 269:./drivers/avr/ws2812.c **** 
+ 270:./drivers/avr/ws2812.c ****   // masklo  =~maskhi&ws2812_PORTREG;
+ 271:./drivers/avr/ws2812.c ****   // maskhi |=        ws2812_PORTREG;
+ 272:./drivers/avr/ws2812.c ****   masklo  =~maskhi&_SFR_IO8((RGB_DI_PIN >> 4) + 2);
+  23               		.loc 1 272 0
+  24 0000 31B3      		in r19,0x11
+  25 0002 242F      		mov r18,r20
+  26 0004 2095      		com r18
+  27 0006 2323      		and r18,r19
+  28               	.LVL1:
+ 273:./drivers/avr/ws2812.c ****   maskhi |=        _SFR_IO8((RGB_DI_PIN >> 4) + 2);
+  29               		.loc 1 273 0
+  30 0008 31B3      		in r19,0x11
+  31               	.LVL2:
+  32 000a 342B      		or r19,r20
+  33               	.LVL3:
+ 274:./drivers/avr/ws2812.c ****   sreg_prev=SREG;
+  34               		.loc 1 274 0
+  35 000c 4FB7      		in r20,__SREG__
+  36               	.LVL4:
+ 275:./drivers/avr/ws2812.c ****   cli();
+  37               		.loc 1 275 0
+  38               	/* #APP */
+  39               	 ;  275 "./drivers/avr/ws2812.c" 1
+  40 000e F894      		cli
+  41               	 ;  0 "" 2
+  42               	/* #NOAPP */
+  43 0010 FC01      		movw r30,r24
+  44 0012 680F      		add r22,r24
+  45 0014 791F      		adc r23,r25
+  46               	.LVL5:
+  47               	.L2:
+ 276:./drivers/avr/ws2812.c **** 
+ 277:./drivers/avr/ws2812.c ****   while (datlen--) {
+  48               		.loc 1 277 0 discriminator 1
+  49 0016 E617      		cp r30,r22
+  50 0018 F707      		cpc r31,r23
+  51 001a 01F0      		breq .L5
+  52               	.LVL6:
+ 278:./drivers/avr/ws2812.c ****     curbyte=(*data++);
+  53               		.loc 1 278 0
+  54 001c 8191      		ld r24,Z+
+  55               	.LVL7:
+ 279:./drivers/avr/ws2812.c **** 
+ 280:./drivers/avr/ws2812.c ****     asm volatile(
+  56               		.loc 1 280 0
+  57               	/* #APP */
+  58               	 ;  280 "./drivers/avr/ws2812.c" 1
+  59 001e 98E0      		       ldi   r25,8  
+  60               		loop39:            
+  61 0020 31BB      		       out   17,r19 
+  62 0022 0000      		nop      
+  63 0024 00C0      		rjmp .+0 
+  64 0026 87FF      		       sbrs  r24,7  
+  65 0028 21BB      		       out   17,r18 
+  66 002a 880F      		       lsl   r24    
+  67 002c 0000      		nop      
+  68 002e 00C0      		rjmp .+0 
+  69 0030 00C0      		rjmp .+0 
+  70 0032 00C0      		rjmp .+0 
+  71 0034 21BB      		       out   17,r18 
+  72 0036 00C0      		rjmp .+0 
+  73 0038 9A95      		       dec   r25    
+  74 003a 01F4      		       brne  loop39
+  75               		
+  76               	 ;  0 "" 2
+  77               	.LVL8:
+  78               	/* #NOAPP */
+  79 003c 00C0      		rjmp .L2
+  80               	.LVL9:
+  81               	.L5:
+ 281:./drivers/avr/ws2812.c ****     "       ldi   %0,8  \n\t"
+ 282:./drivers/avr/ws2812.c ****     "loop%=:            \n\t"
+ 283:./drivers/avr/ws2812.c ****     "       out   %2,%3 \n\t"    //  '1' [01] '0' [01] - re
+ 284:./drivers/avr/ws2812.c **** #if (w1_nops&1)
+ 285:./drivers/avr/ws2812.c **** w_nop1
+ 286:./drivers/avr/ws2812.c **** #endif
+ 287:./drivers/avr/ws2812.c **** #if (w1_nops&2)
+ 288:./drivers/avr/ws2812.c **** w_nop2
+ 289:./drivers/avr/ws2812.c **** #endif
+ 290:./drivers/avr/ws2812.c **** #if (w1_nops&4)
+ 291:./drivers/avr/ws2812.c **** w_nop4
+ 292:./drivers/avr/ws2812.c **** #endif
+ 293:./drivers/avr/ws2812.c **** #if (w1_nops&8)
+ 294:./drivers/avr/ws2812.c **** w_nop8
+ 295:./drivers/avr/ws2812.c **** #endif
+ 296:./drivers/avr/ws2812.c **** #if (w1_nops&16)
+ 297:./drivers/avr/ws2812.c **** w_nop16
+ 298:./drivers/avr/ws2812.c **** #endif
+ 299:./drivers/avr/ws2812.c ****     "       sbrs  %1,7  \n\t"    //  '1' [03] '0' [02]
+ 300:./drivers/avr/ws2812.c ****     "       out   %2,%4 \n\t"    //  '1' [--] '0' [03] - fe-low
+ 301:./drivers/avr/ws2812.c ****     "       lsl   %1    \n\t"    //  '1' [04] '0' [04]
+ 302:./drivers/avr/ws2812.c **** #if (w2_nops&1)
+ 303:./drivers/avr/ws2812.c ****   w_nop1
+ 304:./drivers/avr/ws2812.c **** #endif
+ 305:./drivers/avr/ws2812.c **** #if (w2_nops&2)
+ 306:./drivers/avr/ws2812.c ****   w_nop2
+ 307:./drivers/avr/ws2812.c **** #endif
+ 308:./drivers/avr/ws2812.c **** #if (w2_nops&4)
+ 309:./drivers/avr/ws2812.c ****   w_nop4
+ 310:./drivers/avr/ws2812.c **** #endif
+ 311:./drivers/avr/ws2812.c **** #if (w2_nops&8)
+ 312:./drivers/avr/ws2812.c ****   w_nop8
+ 313:./drivers/avr/ws2812.c **** #endif
+ 314:./drivers/avr/ws2812.c **** #if (w2_nops&16)
+ 315:./drivers/avr/ws2812.c ****   w_nop16
+ 316:./drivers/avr/ws2812.c **** #endif
+ 317:./drivers/avr/ws2812.c ****     "       out   %2,%4 \n\t"    //  '1' [+1] '0' [+1] - fe-high
+ 318:./drivers/avr/ws2812.c **** #if (w3_nops&1)
+ 319:./drivers/avr/ws2812.c **** w_nop1
+ 320:./drivers/avr/ws2812.c **** #endif
+ 321:./drivers/avr/ws2812.c **** #if (w3_nops&2)
+ 322:./drivers/avr/ws2812.c **** w_nop2
+ 323:./drivers/avr/ws2812.c **** #endif
+ 324:./drivers/avr/ws2812.c **** #if (w3_nops&4)
+ 325:./drivers/avr/ws2812.c **** w_nop4
+ 326:./drivers/avr/ws2812.c **** #endif
+ 327:./drivers/avr/ws2812.c **** #if (w3_nops&8)
+ 328:./drivers/avr/ws2812.c **** w_nop8
+ 329:./drivers/avr/ws2812.c **** #endif
+ 330:./drivers/avr/ws2812.c **** #if (w3_nops&16)
+ 331:./drivers/avr/ws2812.c **** w_nop16
+ 332:./drivers/avr/ws2812.c **** #endif
+ 333:./drivers/avr/ws2812.c **** 
+ 334:./drivers/avr/ws2812.c ****     "       dec   %0    \n\t"    //  '1' [+2] '0' [+2]
+ 335:./drivers/avr/ws2812.c ****     "       brne  loop%=\n\t"    //  '1' [+3] '0' [+4]
+ 336:./drivers/avr/ws2812.c ****     :	"=&d" (ctr)
+ 337:./drivers/avr/ws2812.c ****     :	"r" (curbyte), "I" (_SFR_IO_ADDR(_SFR_IO8((RGB_DI_PIN >> 4) + 2))), "r" (maskhi), "r" (masklo
+ 338:./drivers/avr/ws2812.c ****     );
+ 339:./drivers/avr/ws2812.c ****   }
+ 340:./drivers/avr/ws2812.c **** 
+ 341:./drivers/avr/ws2812.c ****   SREG=sreg_prev;
+  82               		.loc 1 341 0
+  83 003e 4FBF      		out __SREG__,r20
+  84 0040 0895      		ret
+  85               		.cfi_endproc
+  86               	.LFE10:
+  88               		.section	.text.ws2812_setleds_pin,"ax",@progbits
+  89               	.global	ws2812_setleds_pin
+  91               	ws2812_setleds_pin:
+  92               	.LFB7:
+ 152:./drivers/avr/ws2812.c **** {
+  93               		.loc 1 152 0
+  94               		.cfi_startproc
+  95               	.LVL10:
+  96               	/* prologue: function */
+  97               	/* frame size = 0 */
+  98               	/* stack size = 0 */
+  99               	.L__stack_usage = 0
+ 155:./drivers/avr/ws2812.c ****   _SFR_IO8((RGB_DI_PIN >> 4) + 1) |= pinmask;
+ 100               		.loc 1 155 0
+ 101 0000 20B3      		in r18,0x10
+ 102 0002 242B      		or r18,r20
+ 103 0004 20BB      		out 0x10,r18
+ 157:./drivers/avr/ws2812.c ****   ws2812_sendarray_mask((uint8_t*)ledarray,leds+leds+leds,pinmask);
+ 104               		.loc 1 157 0
+ 105 0006 9B01      		movw r18,r22
+ 106 0008 220F      		lsl r18
+ 107 000a 331F      		rol r19
+ 108 000c 260F      		add r18,r22
+ 109 000e 371F      		adc r19,r23
+ 110 0010 B901      		movw r22,r18
+ 111               	.LVL11:
+ 112 0012 0E94 0000 		call ws2812_sendarray_mask
+ 113               	.LVL12:
+ 114               	.LBB6:
+ 115               	.LBB7:
+ 116               		.file 2 "/usr/lib/avr/include/util/delay.h"
+   1:/usr/lib/avr/include/util/delay.h **** /* Copyright (c) 2002, Marek Michalkiewicz
+   2:/usr/lib/avr/include/util/delay.h ****    Copyright (c) 2004,2005,2007 Joerg Wunsch
+   3:/usr/lib/avr/include/util/delay.h ****    Copyright (c) 2007  Florin-Viorel Petrov
+   4:/usr/lib/avr/include/util/delay.h ****    All rights reserved.
+   5:/usr/lib/avr/include/util/delay.h **** 
+   6:/usr/lib/avr/include/util/delay.h ****    Redistribution and use in source and binary forms, with or without
+   7:/usr/lib/avr/include/util/delay.h ****    modification, are permitted provided that the following conditions are met:
+   8:/usr/lib/avr/include/util/delay.h **** 
+   9:/usr/lib/avr/include/util/delay.h ****    * Redistributions of source code must retain the above copyright
+  10:/usr/lib/avr/include/util/delay.h ****      notice, this list of conditions and the following disclaimer.
+  11:/usr/lib/avr/include/util/delay.h **** 
+  12:/usr/lib/avr/include/util/delay.h ****    * Redistributions in binary form must reproduce the above copyright
+  13:/usr/lib/avr/include/util/delay.h ****      notice, this list of conditions and the following disclaimer in
+  14:/usr/lib/avr/include/util/delay.h ****      the documentation and/or other materials provided with the
+  15:/usr/lib/avr/include/util/delay.h ****      distribution.
+  16:/usr/lib/avr/include/util/delay.h **** 
+  17:/usr/lib/avr/include/util/delay.h ****    * Neither the name of the copyright holders nor the names of
+  18:/usr/lib/avr/include/util/delay.h ****      contributors may be used to endorse or promote products derived
+  19:/usr/lib/avr/include/util/delay.h ****      from this software without specific prior written permission.
+  20:/usr/lib/avr/include/util/delay.h **** 
+  21:/usr/lib/avr/include/util/delay.h ****   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  22:/usr/lib/avr/include/util/delay.h ****   AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  23:/usr/lib/avr/include/util/delay.h ****   IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+  24:/usr/lib/avr/include/util/delay.h ****   ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+  25:/usr/lib/avr/include/util/delay.h ****   LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+  26:/usr/lib/avr/include/util/delay.h ****   CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+  27:/usr/lib/avr/include/util/delay.h ****   SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+  28:/usr/lib/avr/include/util/delay.h ****   INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+  29:/usr/lib/avr/include/util/delay.h ****   CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+  30:/usr/lib/avr/include/util/delay.h ****   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  31:/usr/lib/avr/include/util/delay.h ****   POSSIBILITY OF SUCH DAMAGE. */
+  32:/usr/lib/avr/include/util/delay.h **** 
+  33:/usr/lib/avr/include/util/delay.h **** /* $Id: delay.h.in 2251 2011-09-14 08:20:33Z joerg_wunsch $ */
+  34:/usr/lib/avr/include/util/delay.h **** 
+  35:/usr/lib/avr/include/util/delay.h **** #ifndef _UTIL_DELAY_H_
+  36:/usr/lib/avr/include/util/delay.h **** #define _UTIL_DELAY_H_ 1
+  37:/usr/lib/avr/include/util/delay.h **** 
+  38:/usr/lib/avr/include/util/delay.h **** #ifndef __HAS_DELAY_CYCLES
+  39:/usr/lib/avr/include/util/delay.h **** #define __HAS_DELAY_CYCLES 1
+  40:/usr/lib/avr/include/util/delay.h **** #endif
+  41:/usr/lib/avr/include/util/delay.h **** 
+  42:/usr/lib/avr/include/util/delay.h **** #include <inttypes.h>
+  43:/usr/lib/avr/include/util/delay.h **** #include <util/delay_basic.h>
+  44:/usr/lib/avr/include/util/delay.h **** #include <math.h>
+  45:/usr/lib/avr/include/util/delay.h **** 
+  46:/usr/lib/avr/include/util/delay.h **** /** \file */
+  47:/usr/lib/avr/include/util/delay.h **** /** \defgroup util_delay <util/delay.h>: Convenience functions for busy-wait delay loops
+  48:/usr/lib/avr/include/util/delay.h ****     \code
+  49:/usr/lib/avr/include/util/delay.h ****     #define F_CPU 1000000UL  // 1 MHz
+  50:/usr/lib/avr/include/util/delay.h ****     //#define F_CPU 14.7456E6
+  51:/usr/lib/avr/include/util/delay.h ****     #include <util/delay.h>
+  52:/usr/lib/avr/include/util/delay.h ****     \endcode
+  53:/usr/lib/avr/include/util/delay.h **** 
+  54:/usr/lib/avr/include/util/delay.h ****     \note As an alternative method, it is possible to pass the
+  55:/usr/lib/avr/include/util/delay.h ****     F_CPU macro down to the compiler from the Makefile.
+  56:/usr/lib/avr/include/util/delay.h ****     Obviously, in that case, no \c \#define statement should be
+  57:/usr/lib/avr/include/util/delay.h ****     used.
+  58:/usr/lib/avr/include/util/delay.h **** 
+  59:/usr/lib/avr/include/util/delay.h ****     The functions in this header file are wrappers around the basic
+  60:/usr/lib/avr/include/util/delay.h ****     busy-wait functions from <util/delay_basic.h>.  They are meant as
+  61:/usr/lib/avr/include/util/delay.h ****     convenience functions where actual time values can be specified
+  62:/usr/lib/avr/include/util/delay.h ****     rather than a number of cycles to wait for.  The idea behind is
+  63:/usr/lib/avr/include/util/delay.h ****     that compile-time constant expressions will be eliminated by
+  64:/usr/lib/avr/include/util/delay.h ****     compiler optimization so floating-point expressions can be used
+  65:/usr/lib/avr/include/util/delay.h ****     to calculate the number of delay cycles needed based on the CPU
+  66:/usr/lib/avr/include/util/delay.h ****     frequency passed by the macro F_CPU.
+  67:/usr/lib/avr/include/util/delay.h **** 
+  68:/usr/lib/avr/include/util/delay.h ****     \note In order for these functions to work as intended, compiler
+  69:/usr/lib/avr/include/util/delay.h ****     optimizations <em>must</em> be enabled, and the delay time
+  70:/usr/lib/avr/include/util/delay.h ****     <em>must</em> be an expression that is a known constant at
+  71:/usr/lib/avr/include/util/delay.h ****     compile-time.  If these requirements are not met, the resulting
+  72:/usr/lib/avr/include/util/delay.h ****     delay will be much longer (and basically unpredictable), and
+  73:/usr/lib/avr/include/util/delay.h ****     applications that otherwise do not use floating-point calculations
+  74:/usr/lib/avr/include/util/delay.h ****     will experience severe code bloat by the floating-point library
+  75:/usr/lib/avr/include/util/delay.h ****     routines linked into the application.
+  76:/usr/lib/avr/include/util/delay.h **** 
+  77:/usr/lib/avr/include/util/delay.h ****     The functions available allow the specification of microsecond, and
+  78:/usr/lib/avr/include/util/delay.h ****     millisecond delays directly, using the application-supplied macro
+  79:/usr/lib/avr/include/util/delay.h ****     F_CPU as the CPU clock frequency (in Hertz).
+  80:/usr/lib/avr/include/util/delay.h **** 
+  81:/usr/lib/avr/include/util/delay.h **** */
+  82:/usr/lib/avr/include/util/delay.h **** 
+  83:/usr/lib/avr/include/util/delay.h **** #if !defined(__DOXYGEN__)
+  84:/usr/lib/avr/include/util/delay.h **** static inline void _delay_us(double __us) __attribute__((always_inline));
+  85:/usr/lib/avr/include/util/delay.h **** static inline void _delay_ms(double __ms) __attribute__((always_inline));
+  86:/usr/lib/avr/include/util/delay.h **** #endif
+  87:/usr/lib/avr/include/util/delay.h **** 
+  88:/usr/lib/avr/include/util/delay.h **** #ifndef F_CPU
+  89:/usr/lib/avr/include/util/delay.h **** /* prevent compiler error by supplying a default */
+  90:/usr/lib/avr/include/util/delay.h **** # warning "F_CPU not defined for <util/delay.h>"
+  91:/usr/lib/avr/include/util/delay.h **** # define F_CPU 1000000UL
+  92:/usr/lib/avr/include/util/delay.h **** #endif
+  93:/usr/lib/avr/include/util/delay.h **** 
+  94:/usr/lib/avr/include/util/delay.h **** #ifndef __OPTIMIZE__
+  95:/usr/lib/avr/include/util/delay.h **** # warning "Compiler optimizations disabled; functions from <util/delay.h> won't work as designed"
+  96:/usr/lib/avr/include/util/delay.h **** #endif
+  97:/usr/lib/avr/include/util/delay.h **** 
+  98:/usr/lib/avr/include/util/delay.h **** #if __HAS_DELAY_CYCLES && defined(__OPTIMIZE__) && \
+  99:/usr/lib/avr/include/util/delay.h ****   !defined(__DELAY_BACKWARD_COMPATIBLE__) &&	   \
+ 100:/usr/lib/avr/include/util/delay.h ****   __STDC_HOSTED__
+ 101:/usr/lib/avr/include/util/delay.h **** #  include <math.h>
+ 102:/usr/lib/avr/include/util/delay.h **** #endif
+ 103:/usr/lib/avr/include/util/delay.h **** 
+ 104:/usr/lib/avr/include/util/delay.h **** /**
+ 105:/usr/lib/avr/include/util/delay.h ****    \ingroup util_delay
+ 106:/usr/lib/avr/include/util/delay.h **** 
+ 107:/usr/lib/avr/include/util/delay.h ****    Perform a delay of \c __ms milliseconds, using _delay_loop_2().
+ 108:/usr/lib/avr/include/util/delay.h **** 
+ 109:/usr/lib/avr/include/util/delay.h ****    The macro F_CPU is supposed to be defined to a
+ 110:/usr/lib/avr/include/util/delay.h ****    constant defining the CPU clock frequency (in Hertz).
+ 111:/usr/lib/avr/include/util/delay.h **** 
+ 112:/usr/lib/avr/include/util/delay.h ****    The maximal possible delay is 262.14 ms / F_CPU in MHz.
+ 113:/usr/lib/avr/include/util/delay.h **** 
+ 114:/usr/lib/avr/include/util/delay.h ****    When the user request delay which exceed the maximum possible one,
+ 115:/usr/lib/avr/include/util/delay.h ****    _delay_ms() provides a decreased resolution functionality. In this
+ 116:/usr/lib/avr/include/util/delay.h ****    mode _delay_ms() will work with a resolution of 1/10 ms, providing
+ 117:/usr/lib/avr/include/util/delay.h ****    delays up to 6.5535 seconds (independent from CPU frequency).  The
+ 118:/usr/lib/avr/include/util/delay.h ****    user will not be informed about decreased resolution.
+ 119:/usr/lib/avr/include/util/delay.h **** 
+ 120:/usr/lib/avr/include/util/delay.h ****    If the avr-gcc toolchain has __builtin_avr_delay_cycles(unsigned long)
+ 121:/usr/lib/avr/include/util/delay.h ****    support, maximal possible delay is 4294967.295 ms/ F_CPU in MHz. For
+ 122:/usr/lib/avr/include/util/delay.h ****    values greater than the maximal possible delay, overflows results in
+ 123:/usr/lib/avr/include/util/delay.h ****    no delay i.e., 0ms.
+ 124:/usr/lib/avr/include/util/delay.h **** 
+ 125:/usr/lib/avr/include/util/delay.h ****    Conversion of __us into clock cycles may not always result in integer.
+ 126:/usr/lib/avr/include/util/delay.h ****    By default, the clock cycles rounded up to next integer. This ensures that
+ 127:/usr/lib/avr/include/util/delay.h ****    the user gets atleast __us microseconds of delay.
+ 128:/usr/lib/avr/include/util/delay.h **** 
+ 129:/usr/lib/avr/include/util/delay.h ****    Alternatively, user can define __DELAY_ROUND_DOWN__ and __DELAY_ROUND_CLOSEST__
+ 130:/usr/lib/avr/include/util/delay.h ****    to round down and round to closest integer.
+ 131:/usr/lib/avr/include/util/delay.h **** 
+ 132:/usr/lib/avr/include/util/delay.h ****    Note: The new implementation of _delay_ms(double __ms) with 
+ 133:/usr/lib/avr/include/util/delay.h ****     __builtin_avr_delay_cycles(unsigned long) support is not backward compatible. 
+ 134:/usr/lib/avr/include/util/delay.h ****    User can define __DELAY_BACKWARD_COMPATIBLE__ to get a backward compatible delay.
+ 135:/usr/lib/avr/include/util/delay.h ****    Also, the backward compatible
+ 136:/usr/lib/avr/include/util/delay.h ****    algorithm will be chosen if the code is compiled in a <em>freestanding
+ 137:/usr/lib/avr/include/util/delay.h ****    environment</em> (GCC option \c -ffreestanding), as the math functions
+ 138:/usr/lib/avr/include/util/delay.h ****    required for rounding are not available to the compiler then.
+ 139:/usr/lib/avr/include/util/delay.h **** 
+ 140:/usr/lib/avr/include/util/delay.h ****  */
+ 141:/usr/lib/avr/include/util/delay.h **** void
+ 142:/usr/lib/avr/include/util/delay.h **** _delay_ms(double __ms)
+ 143:/usr/lib/avr/include/util/delay.h **** {
+ 144:/usr/lib/avr/include/util/delay.h **** 	uint16_t __ticks;
+ 145:/usr/lib/avr/include/util/delay.h **** 	double __tmp ; 
+ 146:/usr/lib/avr/include/util/delay.h **** #if __HAS_DELAY_CYCLES && defined(__OPTIMIZE__) && \
+ 147:/usr/lib/avr/include/util/delay.h ****   !defined(__DELAY_BACKWARD_COMPATIBLE__) &&	   \
+ 148:/usr/lib/avr/include/util/delay.h ****   __STDC_HOSTED__
+ 149:/usr/lib/avr/include/util/delay.h **** 	uint32_t __ticks_dc;
+ 150:/usr/lib/avr/include/util/delay.h **** 	extern void __builtin_avr_delay_cycles(unsigned long);
+ 151:/usr/lib/avr/include/util/delay.h **** 	__tmp = ((F_CPU) / 1e3) * __ms;
+ 152:/usr/lib/avr/include/util/delay.h **** 
+ 153:/usr/lib/avr/include/util/delay.h **** 	#if defined(__DELAY_ROUND_DOWN__)
+ 154:/usr/lib/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)fabs(__tmp);
+ 155:/usr/lib/avr/include/util/delay.h **** 
+ 156:/usr/lib/avr/include/util/delay.h **** 	#elif defined(__DELAY_ROUND_CLOSEST__)
+ 157:/usr/lib/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)(fabs(__tmp)+0.5);
+ 158:/usr/lib/avr/include/util/delay.h **** 
+ 159:/usr/lib/avr/include/util/delay.h **** 	#else
+ 160:/usr/lib/avr/include/util/delay.h **** 		//round up by default
+ 161:/usr/lib/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+ 162:/usr/lib/avr/include/util/delay.h **** 	#endif
+ 163:/usr/lib/avr/include/util/delay.h **** 
+ 164:/usr/lib/avr/include/util/delay.h **** 	__builtin_avr_delay_cycles(__ticks_dc);
+ 165:/usr/lib/avr/include/util/delay.h **** 
+ 166:/usr/lib/avr/include/util/delay.h **** #else
+ 167:/usr/lib/avr/include/util/delay.h **** 	__tmp = ((F_CPU) / 4e3) * __ms;
+ 168:/usr/lib/avr/include/util/delay.h **** 	if (__tmp < 1.0)
+ 169:/usr/lib/avr/include/util/delay.h **** 		__ticks = 1;
+ 170:/usr/lib/avr/include/util/delay.h **** 	else if (__tmp > 65535)
+ 171:/usr/lib/avr/include/util/delay.h **** 	{
+ 172:/usr/lib/avr/include/util/delay.h **** 		//	__ticks = requested delay in 1/10 ms
+ 173:/usr/lib/avr/include/util/delay.h **** 		__ticks = (uint16_t) (__ms * 10.0);
+ 174:/usr/lib/avr/include/util/delay.h **** 		while(__ticks)
+ 175:/usr/lib/avr/include/util/delay.h **** 		{
+ 176:/usr/lib/avr/include/util/delay.h **** 			// wait 1/10 ms
+ 177:/usr/lib/avr/include/util/delay.h **** 			_delay_loop_2(((F_CPU) / 4e3) / 10);
+ 178:/usr/lib/avr/include/util/delay.h **** 			__ticks --;
+ 179:/usr/lib/avr/include/util/delay.h **** 		}
+ 180:/usr/lib/avr/include/util/delay.h **** 		return;
+ 181:/usr/lib/avr/include/util/delay.h **** 	}
+ 182:/usr/lib/avr/include/util/delay.h **** 	else
+ 183:/usr/lib/avr/include/util/delay.h **** 		__ticks = (uint16_t)__tmp;
+ 184:/usr/lib/avr/include/util/delay.h **** 	_delay_loop_2(__ticks);
+ 185:/usr/lib/avr/include/util/delay.h **** #endif
+ 186:/usr/lib/avr/include/util/delay.h **** }
+ 187:/usr/lib/avr/include/util/delay.h **** 
+ 188:/usr/lib/avr/include/util/delay.h **** /**
+ 189:/usr/lib/avr/include/util/delay.h ****    \ingroup util_delay
+ 190:/usr/lib/avr/include/util/delay.h **** 
+ 191:/usr/lib/avr/include/util/delay.h ****    Perform a delay of \c __us microseconds, using _delay_loop_1().
+ 192:/usr/lib/avr/include/util/delay.h **** 
+ 193:/usr/lib/avr/include/util/delay.h ****    The macro F_CPU is supposed to be defined to a
+ 194:/usr/lib/avr/include/util/delay.h ****    constant defining the CPU clock frequency (in Hertz).
+ 195:/usr/lib/avr/include/util/delay.h **** 
+ 196:/usr/lib/avr/include/util/delay.h ****    The maximal possible delay is 768 us / F_CPU in MHz.
+ 197:/usr/lib/avr/include/util/delay.h **** 
+ 198:/usr/lib/avr/include/util/delay.h ****    If the user requests a delay greater than the maximal possible one,
+ 199:/usr/lib/avr/include/util/delay.h ****    _delay_us() will automatically call _delay_ms() instead.  The user
+ 200:/usr/lib/avr/include/util/delay.h ****    will not be informed about this case.
+ 201:/usr/lib/avr/include/util/delay.h **** 
+ 202:/usr/lib/avr/include/util/delay.h ****    If the avr-gcc toolchain has __builtin_avr_delay_cycles(unsigned long)
+ 203:/usr/lib/avr/include/util/delay.h ****    support, maximal possible delay is 4294967.295 us/ F_CPU in MHz. For
+ 204:/usr/lib/avr/include/util/delay.h ****    values greater than the maximal possible delay, overflow results in
+ 205:/usr/lib/avr/include/util/delay.h ****    no delay i.e., 0us.
+ 206:/usr/lib/avr/include/util/delay.h ****   
+ 207:/usr/lib/avr/include/util/delay.h ****    Conversion of __us into clock cycles may not always result in integer.
+ 208:/usr/lib/avr/include/util/delay.h ****    By default, the clock cycles rounded up to next integer. This ensures that
+ 209:/usr/lib/avr/include/util/delay.h ****    the user gets atleast __us microseconds of delay.
+ 210:/usr/lib/avr/include/util/delay.h **** 
+ 211:/usr/lib/avr/include/util/delay.h ****    Alternatively, user can define __DELAY_ROUND_DOWN__ and __DELAY_ROUND_CLOSEST__
+ 212:/usr/lib/avr/include/util/delay.h ****    to round down and round to closest integer.
+ 213:/usr/lib/avr/include/util/delay.h ****  
+ 214:/usr/lib/avr/include/util/delay.h ****    Note: The new implementation of _delay_us(double __us) with 
+ 215:/usr/lib/avr/include/util/delay.h ****     __builtin_avr_delay_cycles(unsigned long) support is not backward compatible.
+ 216:/usr/lib/avr/include/util/delay.h ****    User can define __DELAY_BACKWARD_COMPATIBLE__ to get a backward compatible delay.
+ 217:/usr/lib/avr/include/util/delay.h ****    Also, the backward compatible
+ 218:/usr/lib/avr/include/util/delay.h ****    algorithm will be chosen if the code is compiled in a <em>freestanding
+ 219:/usr/lib/avr/include/util/delay.h ****    environment</em> (GCC option \c -ffreestanding), as the math functions
+ 220:/usr/lib/avr/include/util/delay.h ****    required for rounding are not available to the compiler then.
+ 221:/usr/lib/avr/include/util/delay.h **** 
+ 222:/usr/lib/avr/include/util/delay.h ****  */
+ 223:/usr/lib/avr/include/util/delay.h **** void
+ 224:/usr/lib/avr/include/util/delay.h **** _delay_us(double __us)
+ 225:/usr/lib/avr/include/util/delay.h **** {
+ 226:/usr/lib/avr/include/util/delay.h **** 	uint8_t __ticks;
+ 227:/usr/lib/avr/include/util/delay.h **** 	double __tmp ; 
+ 228:/usr/lib/avr/include/util/delay.h **** #if __HAS_DELAY_CYCLES && defined(__OPTIMIZE__) && \
+ 229:/usr/lib/avr/include/util/delay.h ****   !defined(__DELAY_BACKWARD_COMPATIBLE__) &&	   \
+ 230:/usr/lib/avr/include/util/delay.h ****   __STDC_HOSTED__
+ 231:/usr/lib/avr/include/util/delay.h **** 	uint32_t __ticks_dc;
+ 232:/usr/lib/avr/include/util/delay.h **** 	extern void __builtin_avr_delay_cycles(unsigned long);
+ 233:/usr/lib/avr/include/util/delay.h **** 	__tmp = ((F_CPU) / 1e6) * __us;
+ 234:/usr/lib/avr/include/util/delay.h **** 
+ 235:/usr/lib/avr/include/util/delay.h **** 	#if defined(__DELAY_ROUND_DOWN__)
+ 236:/usr/lib/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)fabs(__tmp);
+ 237:/usr/lib/avr/include/util/delay.h **** 
+ 238:/usr/lib/avr/include/util/delay.h **** 	#elif defined(__DELAY_ROUND_CLOSEST__)
+ 239:/usr/lib/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)(fabs(__tmp)+0.5);
+ 240:/usr/lib/avr/include/util/delay.h **** 
+ 241:/usr/lib/avr/include/util/delay.h **** 	#else
+ 242:/usr/lib/avr/include/util/delay.h **** 		//round up by default
+ 243:/usr/lib/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+ 244:/usr/lib/avr/include/util/delay.h **** 	#endif
+ 245:/usr/lib/avr/include/util/delay.h **** 
+ 246:/usr/lib/avr/include/util/delay.h **** 	__builtin_avr_delay_cycles(__ticks_dc);
+ 117               		.loc 2 246 0
+ 118 0016 87EC      		ldi r24,lo8(199)
+ 119 0018 90E0      		ldi r25,hi8(199)
+ 120 001a 0197      		1: sbiw r24,1
+ 121 001c 01F4      		brne 1b
+ 122 001e 00C0      		rjmp .
+ 123 0020 0000      		nop
+ 124 0022 0895      		ret
+ 125               	.LBE7:
+ 126               	.LBE6:
+ 127               		.cfi_endproc
+ 128               	.LFE7:
+ 130               		.section	.text.ws2812_setleds,"ax",@progbits
+ 131               	.global	ws2812_setleds
+ 133               	ws2812_setleds:
+ 134               	.LFB6:
+ 146:./drivers/avr/ws2812.c **** {
+ 135               		.loc 1 146 0
+ 136               		.cfi_startproc
+ 137               	.LVL13:
+ 138               	/* prologue: function */
+ 139               	/* frame size = 0 */
+ 140               	/* stack size = 0 */
+ 141               	.L__stack_usage = 0
+ 148:./drivers/avr/ws2812.c ****    ws2812_setleds_pin(ledarray,leds, _BV(RGB_DI_PIN & 0xF));
+ 142               		.loc 1 148 0
+ 143 0000 40E1      		ldi r20,lo8(16)
+ 144 0002 0C94 0000 		jmp ws2812_setleds_pin
+ 145               	.LVL14:
+ 146               		.cfi_endproc
+ 147               	.LFE6:
+ 149               		.section	.text.ws2812_setleds_rgbw,"ax",@progbits
+ 150               	.global	ws2812_setleds_rgbw
+ 152               	ws2812_setleds_rgbw:
+ 153               	.LFB8:
+ 163:./drivers/avr/ws2812.c **** {
+ 154               		.loc 1 163 0
+ 155               		.cfi_startproc
+ 156               	.LVL15:
+ 157               	/* prologue: function */
+ 158               	/* frame size = 0 */
+ 159               	/* stack size = 0 */
+ 160               	.L__stack_usage = 0
+ 189:./drivers/avr/ws2812.c ****   _SFR_IO8((RGB_DI_PIN >> 4) + 1) |= _BV(RGB_DI_PIN & 0xF);
+ 161               		.loc 1 189 0
+ 162 0000 849A      		sbi 0x10,4
+ 191:./drivers/avr/ws2812.c ****   ws2812_sendarray_mask((uint8_t*)ledarray,leds<<2,_BV(RGB_DI_PIN & 0xF));
+ 163               		.loc 1 191 0
+ 164 0002 660F      		lsl r22
+ 165 0004 771F      		rol r23
+ 166 0006 660F      		lsl r22
+ 167 0008 771F      		rol r23
+ 168               	.LVL16:
+ 169 000a 40E1      		ldi r20,lo8(16)
+ 170 000c 0E94 0000 		call ws2812_sendarray_mask
+ 171               	.LVL17:
+ 172               	.LBB8:
+ 173               	.LBB9:
+ 174               		.loc 2 246 0
+ 175 0010 8FE3      		ldi r24,lo8(319)
+ 176 0012 91E0      		ldi r25,hi8(319)
+ 177 0014 0197      		1: sbiw r24,1
+ 178 0016 01F4      		brne 1b
+ 179 0018 00C0      		rjmp .
+ 180 001a 0000      		nop
+ 181 001c 0895      		ret
+ 182               	.LBE9:
+ 183               	.LBE8:
+ 184               		.cfi_endproc
+ 185               	.LFE8:
+ 187               		.section	.text.ws2812_sendarray,"ax",@progbits
+ 188               	.global	ws2812_sendarray
+ 190               	ws2812_sendarray:
+ 191               	.LFB9:
+ 200:./drivers/avr/ws2812.c **** {
+ 192               		.loc 1 200 0
+ 193               		.cfi_startproc
+ 194               	.LVL18:
+ 195               	/* prologue: function */
+ 196               	/* frame size = 0 */
+ 197               	/* stack size = 0 */
+ 198               	.L__stack_usage = 0
+ 201:./drivers/avr/ws2812.c ****   ws2812_sendarray_mask(data,datlen,_BV(RGB_DI_PIN & 0xF));
+ 199               		.loc 1 201 0
+ 200 0000 40E1      		ldi r20,lo8(16)
+ 201 0002 0C94 0000 		jmp ws2812_sendarray_mask
+ 202               	.LVL19:
+ 203               		.cfi_endproc
+ 204               	.LFE9:
+ 206               		.text
+ 207               	.Letext0:
+ 208               		.file 3 "/usr/lib/avr/include/stdint.h"
+ 209               		.file 4 "./quantum/rgblight_types.h"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 ws2812.c
+     /tmp/ccIhw1p2.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccIhw1p2.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccIhw1p2.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccIhw1p2.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccIhw1p2.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccIhw1p2.s:13     .text.ws2812_sendarray_mask:0000000000000000 ws2812_sendarray_mask
+     /tmp/ccIhw1p2.s:60     .text.ws2812_sendarray_mask:0000000000000020 loop39
+     /tmp/ccIhw1p2.s:91     .text.ws2812_setleds_pin:0000000000000000 ws2812_setleds_pin
+     /tmp/ccIhw1p2.s:133    .text.ws2812_setleds:0000000000000000 ws2812_setleds
+     /tmp/ccIhw1p2.s:152    .text.ws2812_setleds_rgbw:0000000000000000 ws2812_setleds_rgbw
+     /tmp/ccIhw1p2.s:190    .text.ws2812_sendarray:0000000000000000 ws2812_sendarray
+
+NO UNDEFINED SYMBOLS

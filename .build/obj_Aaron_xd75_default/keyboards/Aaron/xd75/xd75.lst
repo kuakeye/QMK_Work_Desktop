@@ -1,0 +1,432 @@
+   1               		.file	"xd75.c"
+   2               	__SP_H__ = 0x3e
+   3               	__SP_L__ = 0x3d
+   4               	__SREG__ = 0x3f
+   5               	__tmp_reg__ = 0
+   6               	__zero_reg__ = 1
+   7               		.text
+   8               	.Ltext0:
+   9               		.cfi_sections	.debug_frame
+  10               		.section	.text.matrix_scan_kb,"ax",@progbits
+  11               	.global	matrix_scan_kb
+  13               	matrix_scan_kb:
+  14               	.LFB107:
+  15               		.file 1 "keyboards/Aaron/xd75/xd75.c"
+   1:keyboards/Aaron/xd75/xd75.c **** /* Copyright 2017 Benjamin Kesselring
+   2:keyboards/Aaron/xd75/xd75.c ****  *
+   3:keyboards/Aaron/xd75/xd75.c ****  * This program is free software: you can redistribute it and/or modify
+   4:keyboards/Aaron/xd75/xd75.c ****  * it under the terms of the GNU General Public License as published by
+   5:keyboards/Aaron/xd75/xd75.c ****  * the Free Software Foundation, either version 2 of the License, or
+   6:keyboards/Aaron/xd75/xd75.c ****  * (at your option) any later version.
+   7:keyboards/Aaron/xd75/xd75.c ****  *
+   8:keyboards/Aaron/xd75/xd75.c ****  * This program is distributed in the hope that it will be useful,
+   9:keyboards/Aaron/xd75/xd75.c ****  * but WITHOUT ANY WARRANTY; without even the implied warranty of
+  10:keyboards/Aaron/xd75/xd75.c ****  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  11:keyboards/Aaron/xd75/xd75.c ****  * GNU General Public License for more details.
+  12:keyboards/Aaron/xd75/xd75.c ****  *
+  13:keyboards/Aaron/xd75/xd75.c ****  * You should have received a copy of the GNU General Public License
+  14:keyboards/Aaron/xd75/xd75.c ****  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  15:keyboards/Aaron/xd75/xd75.c ****  */
+  16:keyboards/Aaron/xd75/xd75.c **** #include "xd75.h"
+  17:keyboards/Aaron/xd75/xd75.c **** 
+  18:keyboards/Aaron/xd75/xd75.c **** #define XD75_CAPSLOCK_LED 2  // B2
+  19:keyboards/Aaron/xd75/xd75.c **** #define XD75_GP103_LED 4  // F4
+  20:keyboards/Aaron/xd75/xd75.c **** #define XD75_KEYCAPS_LED 5  // F5
+  21:keyboards/Aaron/xd75/xd75.c **** #define XD75_GP100_LED 7  // F7
+  22:keyboards/Aaron/xd75/xd75.c **** 
+  23:keyboards/Aaron/xd75/xd75.c **** void matrix_init_kb(void) {
+  24:keyboards/Aaron/xd75/xd75.c **** 	// put your keyboard start-up code here
+  25:keyboards/Aaron/xd75/xd75.c **** 	// runs once when the firmware starts up
+  26:keyboards/Aaron/xd75/xd75.c **** 
+  27:keyboards/Aaron/xd75/xd75.c **** 	capslock_led_init();
+  28:keyboards/Aaron/xd75/xd75.c **** 	gp100_led_init();
+  29:keyboards/Aaron/xd75/xd75.c **** 	gp103_led_init();
+  30:keyboards/Aaron/xd75/xd75.c **** 	keycaps_led_init();
+  31:keyboards/Aaron/xd75/xd75.c **** 
+  32:keyboards/Aaron/xd75/xd75.c **** 	matrix_init_user();
+  33:keyboards/Aaron/xd75/xd75.c **** }
+  34:keyboards/Aaron/xd75/xd75.c **** 
+  35:keyboards/Aaron/xd75/xd75.c **** void matrix_scan_kb(void) {
+  16               		.loc 1 35 0
+  17               		.cfi_startproc
+  18               	/* prologue: function */
+  19               	/* frame size = 0 */
+  20               	/* stack size = 0 */
+  21               	.L__stack_usage = 0
+  36:keyboards/Aaron/xd75/xd75.c **** 	// put your looping keyboard code here
+  37:keyboards/Aaron/xd75/xd75.c **** 	// runs every cycle (a lot)
+  38:keyboards/Aaron/xd75/xd75.c **** 
+  39:keyboards/Aaron/xd75/xd75.c **** 	matrix_scan_user();
+  22               		.loc 1 39 0
+  23 0000 0C94 0000 		jmp matrix_scan_user
+  24               	.LVL0:
+  25               		.cfi_endproc
+  26               	.LFE107:
+  28               		.section	.text.process_record_kb,"ax",@progbits
+  29               	.global	process_record_kb
+  31               	process_record_kb:
+  32               	.LFB108:
+  40:keyboards/Aaron/xd75/xd75.c **** }
+  41:keyboards/Aaron/xd75/xd75.c **** 
+  42:keyboards/Aaron/xd75/xd75.c **** bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
+  33               		.loc 1 42 0
+  34               		.cfi_startproc
+  35               	.LVL1:
+  36               	/* prologue: function */
+  37               	/* frame size = 0 */
+  38               	/* stack size = 0 */
+  39               	.L__stack_usage = 0
+  43:keyboards/Aaron/xd75/xd75.c **** 	// put your per-action keyboard code here
+  44:keyboards/Aaron/xd75/xd75.c **** 	// runs for every action, just before processing by the firmware
+  45:keyboards/Aaron/xd75/xd75.c **** 
+  46:keyboards/Aaron/xd75/xd75.c **** 	return process_record_user(keycode, record);
+  40               		.loc 1 46 0
+  41 0000 0C94 0000 		jmp process_record_user
+  42               	.LVL2:
+  43               		.cfi_endproc
+  44               	.LFE108:
+  46               		.section	.text.led_set_kb,"ax",@progbits
+  47               	.global	led_set_kb
+  49               	led_set_kb:
+  50               	.LFB109:
+  47:keyboards/Aaron/xd75/xd75.c **** }
+  48:keyboards/Aaron/xd75/xd75.c **** 
+  49:keyboards/Aaron/xd75/xd75.c **** void led_set_kb(uint8_t usb_led) {
+  51               		.loc 1 49 0
+  52               		.cfi_startproc
+  53               	.LVL3:
+  54               	/* prologue: function */
+  55               	/* frame size = 0 */
+  56               	/* stack size = 0 */
+  57               	.L__stack_usage = 0
+  50:keyboards/Aaron/xd75/xd75.c **** 	// put your keyboard LED indicator (ex: Caps Lock LED) toggling code here
+  51:keyboards/Aaron/xd75/xd75.c **** 
+  52:keyboards/Aaron/xd75/xd75.c **** 	led_set_user(usb_led);
+  58               		.loc 1 52 0
+  59 0000 0C94 0000 		jmp led_set_user
+  60               	.LVL4:
+  61               		.cfi_endproc
+  62               	.LFE109:
+  64               		.section	.text.capslock_led_off,"ax",@progbits
+  65               	.global	capslock_led_off
+  67               	capslock_led_off:
+  68               	.LFB111:
+  53:keyboards/Aaron/xd75/xd75.c **** }
+  54:keyboards/Aaron/xd75/xd75.c **** 
+  55:keyboards/Aaron/xd75/xd75.c **** void capslock_led_init(void) {
+  56:keyboards/Aaron/xd75/xd75.c **** 	DDRB |= (1 << XD75_CAPSLOCK_LED);
+  57:keyboards/Aaron/xd75/xd75.c **** 	capslock_led_off();
+  58:keyboards/Aaron/xd75/xd75.c **** }
+  59:keyboards/Aaron/xd75/xd75.c **** 
+  60:keyboards/Aaron/xd75/xd75.c **** void capslock_led_off(void) {
+  69               		.loc 1 60 0
+  70               		.cfi_startproc
+  71               	/* prologue: function */
+  72               	/* frame size = 0 */
+  73               	/* stack size = 0 */
+  74               	.L__stack_usage = 0
+  61:keyboards/Aaron/xd75/xd75.c **** 	PORTB |= (1 << XD75_CAPSLOCK_LED);
+  75               		.loc 1 61 0
+  76 0000 2A9A      		sbi 0x5,2
+  77 0002 0895      		ret
+  78               		.cfi_endproc
+  79               	.LFE111:
+  81               		.section	.text.capslock_led_init,"ax",@progbits
+  82               	.global	capslock_led_init
+  84               	capslock_led_init:
+  85               	.LFB110:
+  55:keyboards/Aaron/xd75/xd75.c **** void capslock_led_init(void) {
+  86               		.loc 1 55 0
+  87               		.cfi_startproc
+  88               	/* prologue: function */
+  89               	/* frame size = 0 */
+  90               	/* stack size = 0 */
+  91               	.L__stack_usage = 0
+  56:keyboards/Aaron/xd75/xd75.c **** 	DDRB |= (1 << XD75_CAPSLOCK_LED);
+  92               		.loc 1 56 0
+  93 0000 229A      		sbi 0x4,2
+  57:keyboards/Aaron/xd75/xd75.c **** 	capslock_led_off();
+  94               		.loc 1 57 0
+  95 0002 0C94 0000 		jmp capslock_led_off
+  96               	.LVL5:
+  97               		.cfi_endproc
+  98               	.LFE110:
+ 100               		.section	.text.capslock_led_on,"ax",@progbits
+ 101               	.global	capslock_led_on
+ 103               	capslock_led_on:
+ 104               	.LFB112:
+  62:keyboards/Aaron/xd75/xd75.c **** }
+  63:keyboards/Aaron/xd75/xd75.c **** 
+  64:keyboards/Aaron/xd75/xd75.c **** void capslock_led_on(void) {
+ 105               		.loc 1 64 0
+ 106               		.cfi_startproc
+ 107               	/* prologue: function */
+ 108               	/* frame size = 0 */
+ 109               	/* stack size = 0 */
+ 110               	.L__stack_usage = 0
+  65:keyboards/Aaron/xd75/xd75.c **** 	PORTB &= ~(1 << XD75_CAPSLOCK_LED);
+ 111               		.loc 1 65 0
+ 112 0000 2A98      		cbi 0x5,2
+ 113 0002 0895      		ret
+ 114               		.cfi_endproc
+ 115               	.LFE112:
+ 117               		.section	.text.gp100_led_off,"ax",@progbits
+ 118               	.global	gp100_led_off
+ 120               	gp100_led_off:
+ 121               	.LFB114:
+  66:keyboards/Aaron/xd75/xd75.c **** }
+  67:keyboards/Aaron/xd75/xd75.c **** 
+  68:keyboards/Aaron/xd75/xd75.c **** void gp100_led_init(void) {
+  69:keyboards/Aaron/xd75/xd75.c **** 	DDRF |= (1 << XD75_GP100_LED);
+  70:keyboards/Aaron/xd75/xd75.c **** 	gp100_led_off();
+  71:keyboards/Aaron/xd75/xd75.c **** }
+  72:keyboards/Aaron/xd75/xd75.c **** 
+  73:keyboards/Aaron/xd75/xd75.c **** void gp100_led_off(void) {
+ 122               		.loc 1 73 0
+ 123               		.cfi_startproc
+ 124               	/* prologue: function */
+ 125               	/* frame size = 0 */
+ 126               	/* stack size = 0 */
+ 127               	.L__stack_usage = 0
+  74:keyboards/Aaron/xd75/xd75.c **** 	PORTF |= (1 << XD75_GP100_LED);
+ 128               		.loc 1 74 0
+ 129 0000 8F9A      		sbi 0x11,7
+ 130 0002 0895      		ret
+ 131               		.cfi_endproc
+ 132               	.LFE114:
+ 134               		.section	.text.gp100_led_init,"ax",@progbits
+ 135               	.global	gp100_led_init
+ 137               	gp100_led_init:
+ 138               	.LFB113:
+  68:keyboards/Aaron/xd75/xd75.c **** void gp100_led_init(void) {
+ 139               		.loc 1 68 0
+ 140               		.cfi_startproc
+ 141               	/* prologue: function */
+ 142               	/* frame size = 0 */
+ 143               	/* stack size = 0 */
+ 144               	.L__stack_usage = 0
+  69:keyboards/Aaron/xd75/xd75.c **** 	DDRF |= (1 << XD75_GP100_LED);
+ 145               		.loc 1 69 0
+ 146 0000 879A      		sbi 0x10,7
+  70:keyboards/Aaron/xd75/xd75.c **** 	gp100_led_off();
+ 147               		.loc 1 70 0
+ 148 0002 0C94 0000 		jmp gp100_led_off
+ 149               	.LVL6:
+ 150               		.cfi_endproc
+ 151               	.LFE113:
+ 153               		.section	.text.gp100_led_on,"ax",@progbits
+ 154               	.global	gp100_led_on
+ 156               	gp100_led_on:
+ 157               	.LFB115:
+  75:keyboards/Aaron/xd75/xd75.c **** }
+  76:keyboards/Aaron/xd75/xd75.c **** 
+  77:keyboards/Aaron/xd75/xd75.c **** void gp100_led_on(void) {
+ 158               		.loc 1 77 0
+ 159               		.cfi_startproc
+ 160               	/* prologue: function */
+ 161               	/* frame size = 0 */
+ 162               	/* stack size = 0 */
+ 163               	.L__stack_usage = 0
+  78:keyboards/Aaron/xd75/xd75.c **** 	PORTF &= ~(1 << XD75_GP100_LED);
+ 164               		.loc 1 78 0
+ 165 0000 8F98      		cbi 0x11,7
+ 166 0002 0895      		ret
+ 167               		.cfi_endproc
+ 168               	.LFE115:
+ 170               		.section	.text.gp103_led_off,"ax",@progbits
+ 171               	.global	gp103_led_off
+ 173               	gp103_led_off:
+ 174               	.LFB117:
+  79:keyboards/Aaron/xd75/xd75.c **** }
+  80:keyboards/Aaron/xd75/xd75.c **** 
+  81:keyboards/Aaron/xd75/xd75.c **** void gp103_led_init(void) {
+  82:keyboards/Aaron/xd75/xd75.c **** 	DDRF |= (1 << XD75_GP103_LED);
+  83:keyboards/Aaron/xd75/xd75.c **** 	gp103_led_off();
+  84:keyboards/Aaron/xd75/xd75.c **** }
+  85:keyboards/Aaron/xd75/xd75.c **** 
+  86:keyboards/Aaron/xd75/xd75.c **** void gp103_led_off(void) {
+ 175               		.loc 1 86 0
+ 176               		.cfi_startproc
+ 177               	/* prologue: function */
+ 178               	/* frame size = 0 */
+ 179               	/* stack size = 0 */
+ 180               	.L__stack_usage = 0
+  87:keyboards/Aaron/xd75/xd75.c **** 	PORTF &= ~(1 << XD75_GP103_LED);
+ 181               		.loc 1 87 0
+ 182 0000 8C98      		cbi 0x11,4
+ 183 0002 0895      		ret
+ 184               		.cfi_endproc
+ 185               	.LFE117:
+ 187               		.section	.text.gp103_led_init,"ax",@progbits
+ 188               	.global	gp103_led_init
+ 190               	gp103_led_init:
+ 191               	.LFB116:
+  81:keyboards/Aaron/xd75/xd75.c **** void gp103_led_init(void) {
+ 192               		.loc 1 81 0
+ 193               		.cfi_startproc
+ 194               	/* prologue: function */
+ 195               	/* frame size = 0 */
+ 196               	/* stack size = 0 */
+ 197               	.L__stack_usage = 0
+  82:keyboards/Aaron/xd75/xd75.c **** 	DDRF |= (1 << XD75_GP103_LED);
+ 198               		.loc 1 82 0
+ 199 0000 849A      		sbi 0x10,4
+  83:keyboards/Aaron/xd75/xd75.c **** 	gp103_led_off();
+ 200               		.loc 1 83 0
+ 201 0002 0C94 0000 		jmp gp103_led_off
+ 202               	.LVL7:
+ 203               		.cfi_endproc
+ 204               	.LFE116:
+ 206               		.section	.text.gp103_led_on,"ax",@progbits
+ 207               	.global	gp103_led_on
+ 209               	gp103_led_on:
+ 210               	.LFB118:
+  88:keyboards/Aaron/xd75/xd75.c **** }
+  89:keyboards/Aaron/xd75/xd75.c **** 
+  90:keyboards/Aaron/xd75/xd75.c **** void gp103_led_on(void) {
+ 211               		.loc 1 90 0
+ 212               		.cfi_startproc
+ 213               	/* prologue: function */
+ 214               	/* frame size = 0 */
+ 215               	/* stack size = 0 */
+ 216               	.L__stack_usage = 0
+  91:keyboards/Aaron/xd75/xd75.c **** 	PORTF |= (1 << XD75_GP103_LED);
+ 217               		.loc 1 91 0
+ 218 0000 8C9A      		sbi 0x11,4
+ 219 0002 0895      		ret
+ 220               		.cfi_endproc
+ 221               	.LFE118:
+ 223               		.section	.text.keycaps_led_off,"ax",@progbits
+ 224               	.global	keycaps_led_off
+ 226               	keycaps_led_off:
+ 227               	.LFB120:
+  92:keyboards/Aaron/xd75/xd75.c **** }
+  93:keyboards/Aaron/xd75/xd75.c **** 
+  94:keyboards/Aaron/xd75/xd75.c **** void keycaps_led_init(void) {
+  95:keyboards/Aaron/xd75/xd75.c **** 	DDRF |= (1 << XD75_KEYCAPS_LED);
+  96:keyboards/Aaron/xd75/xd75.c **** 	keycaps_led_off();
+  97:keyboards/Aaron/xd75/xd75.c **** }
+  98:keyboards/Aaron/xd75/xd75.c **** 
+  99:keyboards/Aaron/xd75/xd75.c **** void keycaps_led_off(void) {
+ 228               		.loc 1 99 0
+ 229               		.cfi_startproc
+ 230               	/* prologue: function */
+ 231               	/* frame size = 0 */
+ 232               	/* stack size = 0 */
+ 233               	.L__stack_usage = 0
+ 100:keyboards/Aaron/xd75/xd75.c **** 	PORTF |= (1 << XD75_KEYCAPS_LED);
+ 234               		.loc 1 100 0
+ 235 0000 8D9A      		sbi 0x11,5
+ 236 0002 0895      		ret
+ 237               		.cfi_endproc
+ 238               	.LFE120:
+ 240               		.section	.text.keycaps_led_init,"ax",@progbits
+ 241               	.global	keycaps_led_init
+ 243               	keycaps_led_init:
+ 244               	.LFB119:
+  94:keyboards/Aaron/xd75/xd75.c **** void keycaps_led_init(void) {
+ 245               		.loc 1 94 0
+ 246               		.cfi_startproc
+ 247               	/* prologue: function */
+ 248               	/* frame size = 0 */
+ 249               	/* stack size = 0 */
+ 250               	.L__stack_usage = 0
+  95:keyboards/Aaron/xd75/xd75.c **** 	DDRF |= (1 << XD75_KEYCAPS_LED);
+ 251               		.loc 1 95 0
+ 252 0000 859A      		sbi 0x10,5
+  96:keyboards/Aaron/xd75/xd75.c **** 	keycaps_led_off();
+ 253               		.loc 1 96 0
+ 254 0002 0C94 0000 		jmp keycaps_led_off
+ 255               	.LVL8:
+ 256               		.cfi_endproc
+ 257               	.LFE119:
+ 259               		.section	.text.matrix_init_kb,"ax",@progbits
+ 260               	.global	matrix_init_kb
+ 262               	matrix_init_kb:
+ 263               	.LFB106:
+  23:keyboards/Aaron/xd75/xd75.c **** void matrix_init_kb(void) {
+ 264               		.loc 1 23 0
+ 265               		.cfi_startproc
+ 266               	/* prologue: function */
+ 267               	/* frame size = 0 */
+ 268               	/* stack size = 0 */
+ 269               	.L__stack_usage = 0
+  27:keyboards/Aaron/xd75/xd75.c **** 	capslock_led_init();
+ 270               		.loc 1 27 0
+ 271 0000 0E94 0000 		call capslock_led_init
+ 272               	.LVL9:
+  28:keyboards/Aaron/xd75/xd75.c **** 	gp100_led_init();
+ 273               		.loc 1 28 0
+ 274 0004 0E94 0000 		call gp100_led_init
+ 275               	.LVL10:
+  29:keyboards/Aaron/xd75/xd75.c **** 	gp103_led_init();
+ 276               		.loc 1 29 0
+ 277 0008 0E94 0000 		call gp103_led_init
+ 278               	.LVL11:
+  30:keyboards/Aaron/xd75/xd75.c **** 	keycaps_led_init();
+ 279               		.loc 1 30 0
+ 280 000c 0E94 0000 		call keycaps_led_init
+ 281               	.LVL12:
+  32:keyboards/Aaron/xd75/xd75.c **** 	matrix_init_user();
+ 282               		.loc 1 32 0
+ 283 0010 0C94 0000 		jmp matrix_init_user
+ 284               	.LVL13:
+ 285               		.cfi_endproc
+ 286               	.LFE106:
+ 288               		.section	.text.keycaps_led_on,"ax",@progbits
+ 289               	.global	keycaps_led_on
+ 291               	keycaps_led_on:
+ 292               	.LFB121:
+ 101:keyboards/Aaron/xd75/xd75.c **** }
+ 102:keyboards/Aaron/xd75/xd75.c **** 
+ 103:keyboards/Aaron/xd75/xd75.c **** void keycaps_led_on(void) {
+ 293               		.loc 1 103 0
+ 294               		.cfi_startproc
+ 295               	/* prologue: function */
+ 296               	/* frame size = 0 */
+ 297               	/* stack size = 0 */
+ 298               	.L__stack_usage = 0
+ 104:keyboards/Aaron/xd75/xd75.c **** 	PORTF &= ~(1 << XD75_KEYCAPS_LED);
+ 299               		.loc 1 104 0
+ 300 0000 8D98      		cbi 0x11,5
+ 301 0002 0895      		ret
+ 302               		.cfi_endproc
+ 303               	.LFE121:
+ 305               		.text
+ 306               	.Letext0:
+ 307               		.file 2 "/usr/lib/avr/include/stdint.h"
+ 308               		.file 3 "./tmk_core/common/keyboard.h"
+ 309               		.file 4 "./tmk_core/common/action.h"
+ 310               		.file 5 "./tmk_core/common/report.h"
+ 311               		.file 6 "./lib/lufa/LUFA/Drivers/USB/Core/USBTask.h"
+ 312               		.file 7 "./tmk_core/common/action_util.h"
+ 313               		.file 8 "./quantum/quantum.h"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 xd75.c
+     /tmp/cc7H7Z3f.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/cc7H7Z3f.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/cc7H7Z3f.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/cc7H7Z3f.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/cc7H7Z3f.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/cc7H7Z3f.s:13     .text.matrix_scan_kb:0000000000000000 matrix_scan_kb
+     /tmp/cc7H7Z3f.s:31     .text.process_record_kb:0000000000000000 process_record_kb
+     /tmp/cc7H7Z3f.s:49     .text.led_set_kb:0000000000000000 led_set_kb
+     /tmp/cc7H7Z3f.s:67     .text.capslock_led_off:0000000000000000 capslock_led_off
+     /tmp/cc7H7Z3f.s:84     .text.capslock_led_init:0000000000000000 capslock_led_init
+     /tmp/cc7H7Z3f.s:103    .text.capslock_led_on:0000000000000000 capslock_led_on
+     /tmp/cc7H7Z3f.s:120    .text.gp100_led_off:0000000000000000 gp100_led_off
+     /tmp/cc7H7Z3f.s:137    .text.gp100_led_init:0000000000000000 gp100_led_init
+     /tmp/cc7H7Z3f.s:156    .text.gp100_led_on:0000000000000000 gp100_led_on
+     /tmp/cc7H7Z3f.s:173    .text.gp103_led_off:0000000000000000 gp103_led_off
+     /tmp/cc7H7Z3f.s:190    .text.gp103_led_init:0000000000000000 gp103_led_init
+     /tmp/cc7H7Z3f.s:209    .text.gp103_led_on:0000000000000000 gp103_led_on
+     /tmp/cc7H7Z3f.s:226    .text.keycaps_led_off:0000000000000000 keycaps_led_off
+     /tmp/cc7H7Z3f.s:243    .text.keycaps_led_init:0000000000000000 keycaps_led_init
+     /tmp/cc7H7Z3f.s:262    .text.matrix_init_kb:0000000000000000 matrix_init_kb
+     /tmp/cc7H7Z3f.s:291    .text.keycaps_led_on:0000000000000000 keycaps_led_on
+
+UNDEFINED SYMBOLS
+matrix_scan_user
+process_record_user
+led_set_user
+matrix_init_user

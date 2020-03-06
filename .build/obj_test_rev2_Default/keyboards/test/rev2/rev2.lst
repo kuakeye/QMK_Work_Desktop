@@ -1,0 +1,295 @@
+   1               		.file	"rev2.c"
+   2               	__SP_H__ = 0x3e
+   3               	__SP_L__ = 0x3d
+   4               	__SREG__ = 0x3f
+   5               	__tmp_reg__ = 0
+   6               	__zero_reg__ = 1
+   7               		.text
+   8               	.Ltext0:
+   9               		.cfi_sections	.debug_frame
+  10               		.section	.text.rgblight_toggle,"ax",@progbits
+  11               		.weak	rgblight_toggle
+  13               	rgblight_toggle:
+  14               	.LFB10:
+  15               		.file 1 "./quantum/rgb.h"
+   1:./quantum/rgb.h **** /* Copyright 2017 Jack Humbert
+   2:./quantum/rgb.h ****  *
+   3:./quantum/rgb.h ****  * This program is free software: you can redistribute it and/or modify
+   4:./quantum/rgb.h ****  * it under the terms of the GNU General Public License as published by
+   5:./quantum/rgb.h ****  * the Free Software Foundation, either version 2 of the License, or
+   6:./quantum/rgb.h ****  * (at your option) any later version.
+   7:./quantum/rgb.h ****  *
+   8:./quantum/rgb.h ****  * This program is distributed in the hope that it will be useful,
+   9:./quantum/rgb.h ****  * but WITHOUT ANY WARRANTY; without even the implied warranty of
+  10:./quantum/rgb.h ****  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  11:./quantum/rgb.h ****  * GNU General Public License for more details.
+  12:./quantum/rgb.h ****  *
+  13:./quantum/rgb.h ****  * You should have received a copy of the GNU General Public License
+  14:./quantum/rgb.h ****  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  15:./quantum/rgb.h ****  */
+  16:./quantum/rgb.h **** 
+  17:./quantum/rgb.h **** #ifndef RGB_H
+  18:./quantum/rgb.h **** #define RGB_H
+  19:./quantum/rgb.h **** 
+  20:./quantum/rgb.h **** __attribute__((weak))
+  21:./quantum/rgb.h **** void rgblight_toggle(void) {};
+  16               		.loc 1 21 0
+  17               		.cfi_startproc
+  18               	/* prologue: function */
+  19               	/* frame size = 0 */
+  20               	/* stack size = 0 */
+  21               	.L__stack_usage = 0
+  22 0000 0895      		ret
+  23               		.cfi_endproc
+  24               	.LFE10:
+  26               		.section	.text.rgblight_step,"ax",@progbits
+  27               		.weak	rgblight_step
+  29               	rgblight_step:
+  30               	.LFB11:
+  22:./quantum/rgb.h **** 
+  23:./quantum/rgb.h **** __attribute__((weak))
+  24:./quantum/rgb.h **** void rgblight_step(void) {};
+  31               		.loc 1 24 0
+  32               		.cfi_startproc
+  33               	/* prologue: function */
+  34               	/* frame size = 0 */
+  35               	/* stack size = 0 */
+  36               	.L__stack_usage = 0
+  37 0000 0895      		ret
+  38               		.cfi_endproc
+  39               	.LFE11:
+  41               		.section	.text.rgblight_step_reverse,"ax",@progbits
+  42               		.weak	rgblight_step_reverse
+  44               	rgblight_step_reverse:
+  45               	.LFB12:
+  25:./quantum/rgb.h **** 
+  26:./quantum/rgb.h **** __attribute__((weak))
+  27:./quantum/rgb.h **** void rgblight_step_reverse(void) {};
+  46               		.loc 1 27 0
+  47               		.cfi_startproc
+  48               	/* prologue: function */
+  49               	/* frame size = 0 */
+  50               	/* stack size = 0 */
+  51               	.L__stack_usage = 0
+  52 0000 0895      		ret
+  53               		.cfi_endproc
+  54               	.LFE12:
+  56               		.section	.text.rgblight_increase_hue,"ax",@progbits
+  57               		.weak	rgblight_increase_hue
+  59               	rgblight_increase_hue:
+  60               	.LFB13:
+  28:./quantum/rgb.h **** 
+  29:./quantum/rgb.h **** __attribute__((weak))
+  30:./quantum/rgb.h **** void rgblight_increase_hue(void) {};
+  61               		.loc 1 30 0
+  62               		.cfi_startproc
+  63               	/* prologue: function */
+  64               	/* frame size = 0 */
+  65               	/* stack size = 0 */
+  66               	.L__stack_usage = 0
+  67 0000 0895      		ret
+  68               		.cfi_endproc
+  69               	.LFE13:
+  71               		.section	.text.rgblight_decrease_hue,"ax",@progbits
+  72               		.weak	rgblight_decrease_hue
+  74               	rgblight_decrease_hue:
+  75               	.LFB14:
+  31:./quantum/rgb.h **** 
+  32:./quantum/rgb.h **** __attribute__((weak))
+  33:./quantum/rgb.h **** void rgblight_decrease_hue(void) {};
+  76               		.loc 1 33 0
+  77               		.cfi_startproc
+  78               	/* prologue: function */
+  79               	/* frame size = 0 */
+  80               	/* stack size = 0 */
+  81               	.L__stack_usage = 0
+  82 0000 0895      		ret
+  83               		.cfi_endproc
+  84               	.LFE14:
+  86               		.section	.text.rgblight_increase_sat,"ax",@progbits
+  87               		.weak	rgblight_increase_sat
+  89               	rgblight_increase_sat:
+  90               	.LFB15:
+  34:./quantum/rgb.h **** 
+  35:./quantum/rgb.h **** __attribute__((weak))
+  36:./quantum/rgb.h **** void rgblight_increase_sat(void) {};
+  91               		.loc 1 36 0
+  92               		.cfi_startproc
+  93               	/* prologue: function */
+  94               	/* frame size = 0 */
+  95               	/* stack size = 0 */
+  96               	.L__stack_usage = 0
+  97 0000 0895      		ret
+  98               		.cfi_endproc
+  99               	.LFE15:
+ 101               		.section	.text.rgblight_decrease_sat,"ax",@progbits
+ 102               		.weak	rgblight_decrease_sat
+ 104               	rgblight_decrease_sat:
+ 105               	.LFB16:
+  37:./quantum/rgb.h **** 
+  38:./quantum/rgb.h **** __attribute__((weak))
+  39:./quantum/rgb.h **** void rgblight_decrease_sat(void) {};
+ 106               		.loc 1 39 0
+ 107               		.cfi_startproc
+ 108               	/* prologue: function */
+ 109               	/* frame size = 0 */
+ 110               	/* stack size = 0 */
+ 111               	.L__stack_usage = 0
+ 112 0000 0895      		ret
+ 113               		.cfi_endproc
+ 114               	.LFE16:
+ 116               		.section	.text.rgblight_increase_val,"ax",@progbits
+ 117               		.weak	rgblight_increase_val
+ 119               	rgblight_increase_val:
+ 120               	.LFB17:
+  40:./quantum/rgb.h **** 
+  41:./quantum/rgb.h **** __attribute__((weak))
+  42:./quantum/rgb.h **** void rgblight_increase_val(void) {};
+ 121               		.loc 1 42 0
+ 122               		.cfi_startproc
+ 123               	/* prologue: function */
+ 124               	/* frame size = 0 */
+ 125               	/* stack size = 0 */
+ 126               	.L__stack_usage = 0
+ 127 0000 0895      		ret
+ 128               		.cfi_endproc
+ 129               	.LFE17:
+ 131               		.section	.text.rgblight_decrease_val,"ax",@progbits
+ 132               		.weak	rgblight_decrease_val
+ 134               	rgblight_decrease_val:
+ 135               	.LFB18:
+  43:./quantum/rgb.h **** 
+  44:./quantum/rgb.h **** __attribute__((weak))
+  45:./quantum/rgb.h **** void rgblight_decrease_val(void) {};
+ 136               		.loc 1 45 0
+ 137               		.cfi_startproc
+ 138               	/* prologue: function */
+ 139               	/* frame size = 0 */
+ 140               	/* stack size = 0 */
+ 141               	.L__stack_usage = 0
+ 142 0000 0895      		ret
+ 143               		.cfi_endproc
+ 144               	.LFE18:
+ 146               		.section	.text.rgblight_increase_speed,"ax",@progbits
+ 147               		.weak	rgblight_increase_speed
+ 149               	rgblight_increase_speed:
+ 150               	.LFB19:
+  46:./quantum/rgb.h **** 
+  47:./quantum/rgb.h **** __attribute__((weak))
+  48:./quantum/rgb.h **** void rgblight_increase_speed(void) {};
+ 151               		.loc 1 48 0
+ 152               		.cfi_startproc
+ 153               	/* prologue: function */
+ 154               	/* frame size = 0 */
+ 155               	/* stack size = 0 */
+ 156               	.L__stack_usage = 0
+ 157 0000 0895      		ret
+ 158               		.cfi_endproc
+ 159               	.LFE19:
+ 161               		.section	.text.rgblight_decrease_speed,"ax",@progbits
+ 162               		.weak	rgblight_decrease_speed
+ 164               	rgblight_decrease_speed:
+ 165               	.LFB20:
+  49:./quantum/rgb.h **** 
+  50:./quantum/rgb.h **** __attribute__((weak))
+  51:./quantum/rgb.h **** void rgblight_decrease_speed(void) {};
+ 166               		.loc 1 51 0
+ 167               		.cfi_startproc
+ 168               	/* prologue: function */
+ 169               	/* frame size = 0 */
+ 170               	/* stack size = 0 */
+ 171               	.L__stack_usage = 0
+ 172 0000 0895      		ret
+ 173               		.cfi_endproc
+ 174               	.LFE20:
+ 176               		.section	.text.matrix_init_kb,"ax",@progbits
+ 177               	.global	matrix_init_kb
+ 179               	matrix_init_kb:
+ 180               	.LFB24:
+ 181               		.file 2 "keyboards/test/rev2/rev2.c"
+   1:keyboards/test/rev2/rev2.c **** #include "Manuform.h"
+   2:keyboards/test/rev2/rev2.c **** 
+   3:keyboards/test/rev2/rev2.c **** #ifdef AUDIO_ENABLE
+   4:keyboards/test/rev2/rev2.c ****     float tone_startup[][2] = SONG(STARTUP_SOUND);
+   5:keyboards/test/rev2/rev2.c ****     float tone_goodbye[][2] = SONG(GOODBYE_SOUND);
+   6:keyboards/test/rev2/rev2.c **** #endif
+   7:keyboards/test/rev2/rev2.c **** 
+   8:keyboards/test/rev2/rev2.c **** #ifdef SSD1306OLED
+   9:keyboards/test/rev2/rev2.c **** void led_set_kb(uint8_t usb_led) {
+  10:keyboards/test/rev2/rev2.c ****     // put your keyboard LED indicator (ex: Caps Lock LED) toggling code here
+  11:keyboards/test/rev2/rev2.c ****     led_set_user(usb_led);
+  12:keyboards/test/rev2/rev2.c **** }
+  13:keyboards/test/rev2/rev2.c **** #endif
+  14:keyboards/test/rev2/rev2.c **** 
+  15:keyboards/test/rev2/rev2.c **** void matrix_init_kb(void) {
+ 182               		.loc 2 15 0
+ 183               		.cfi_startproc
+ 184               	/* prologue: function */
+ 185               	/* frame size = 0 */
+ 186               	/* stack size = 0 */
+ 187               	.L__stack_usage = 0
+  16:keyboards/test/rev2/rev2.c **** 
+  17:keyboards/test/rev2/rev2.c ****     #ifdef AUDIO_ENABLE
+  18:keyboards/test/rev2/rev2.c ****         _delay_ms(20); // gets rid of tick
+  19:keyboards/test/rev2/rev2.c ****         PLAY_SONG(tone_startup);
+  20:keyboards/test/rev2/rev2.c ****     #endif
+  21:keyboards/test/rev2/rev2.c **** 
+  22:keyboards/test/rev2/rev2.c ****     // // green led on
+  23:keyboards/test/rev2/rev2.c ****     // DDRD |= (1<<5);
+  24:keyboards/test/rev2/rev2.c ****     // PORTD &= ~(1<<5);
+  25:keyboards/test/rev2/rev2.c **** 
+  26:keyboards/test/rev2/rev2.c ****     // // orange led on
+  27:keyboards/test/rev2/rev2.c ****     // DDRB |= (1<<0);
+  28:keyboards/test/rev2/rev2.c ****     // PORTB &= ~(1<<0);
+  29:keyboards/test/rev2/rev2.c **** 
+  30:keyboards/test/rev2/rev2.c **** 	matrix_init_user();
+ 188               		.loc 2 30 0
+ 189 0000 0C94 0000 		jmp matrix_init_user
+ 190               	.LVL0:
+ 191               		.cfi_endproc
+ 192               	.LFE24:
+ 194               		.section	.text.shutdown_user,"ax",@progbits
+ 195               	.global	shutdown_user
+ 197               	shutdown_user:
+ 198               	.LFB25:
+  31:keyboards/test/rev2/rev2.c **** };
+  32:keyboards/test/rev2/rev2.c **** 
+  33:keyboards/test/rev2/rev2.c **** void shutdown_user(void) {
+ 199               		.loc 2 33 0
+ 200               		.cfi_startproc
+ 201               	/* prologue: function */
+ 202               	/* frame size = 0 */
+ 203               	/* stack size = 0 */
+ 204               	.L__stack_usage = 0
+ 205 0000 0895      		ret
+ 206               		.cfi_endproc
+ 207               	.LFE25:
+ 209               		.text
+ 210               	.Letext0:
+ 211               		.file 3 "./tmk_core/common/report.h"
+ 212               		.file 4 "/usr/lib/avr/include/stdint.h"
+ 213               		.file 5 "./tmk_core/common/action_util.h"
+ 214               		.file 6 "./quantum/quantum.h"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 rev2.c
+     /tmp/ccvGJg2y.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccvGJg2y.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccvGJg2y.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccvGJg2y.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccvGJg2y.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccvGJg2y.s:13     .text.rgblight_toggle:0000000000000000 rgblight_toggle
+     /tmp/ccvGJg2y.s:29     .text.rgblight_step:0000000000000000 rgblight_step
+     /tmp/ccvGJg2y.s:44     .text.rgblight_step_reverse:0000000000000000 rgblight_step_reverse
+     /tmp/ccvGJg2y.s:59     .text.rgblight_increase_hue:0000000000000000 rgblight_increase_hue
+     /tmp/ccvGJg2y.s:74     .text.rgblight_decrease_hue:0000000000000000 rgblight_decrease_hue
+     /tmp/ccvGJg2y.s:89     .text.rgblight_increase_sat:0000000000000000 rgblight_increase_sat
+     /tmp/ccvGJg2y.s:104    .text.rgblight_decrease_sat:0000000000000000 rgblight_decrease_sat
+     /tmp/ccvGJg2y.s:119    .text.rgblight_increase_val:0000000000000000 rgblight_increase_val
+     /tmp/ccvGJg2y.s:134    .text.rgblight_decrease_val:0000000000000000 rgblight_decrease_val
+     /tmp/ccvGJg2y.s:149    .text.rgblight_increase_speed:0000000000000000 rgblight_increase_speed
+     /tmp/ccvGJg2y.s:164    .text.rgblight_decrease_speed:0000000000000000 rgblight_decrease_speed
+     /tmp/ccvGJg2y.s:179    .text.matrix_init_kb:0000000000000000 matrix_init_kb
+     /tmp/ccvGJg2y.s:197    .text.shutdown_user:0000000000000000 shutdown_user
+
+UNDEFINED SYMBOLS
+matrix_init_user

@@ -1,0 +1,1807 @@
+   1               		.file	"matrix.c"
+   2               	__SP_H__ = 0x3e
+   3               	__SP_L__ = 0x3d
+   4               	__SREG__ = 0x3f
+   5               	__tmp_reg__ = 0
+   6               	__zero_reg__ = 1
+   7               		.text
+   8               	.Ltext0:
+   9               		.cfi_sections	.debug_frame
+  10               		.section	.text.matrix_init_user,"ax",@progbits
+  11               		.weak	matrix_init_user
+  13               	matrix_init_user:
+  14               	.LFB11:
+  15               		.file 1 "keyboards/Manuform6x6/matrix.c"
+   1:keyboards/Manuform6x6/matrix.c **** /*
+   2:keyboards/Manuform6x6/matrix.c **** Copyright 2012 Jun Wako <wakojun@gmail.com>
+   3:keyboards/Manuform6x6/matrix.c **** 
+   4:keyboards/Manuform6x6/matrix.c **** This program is free software: you can redistribute it and/or modify
+   5:keyboards/Manuform6x6/matrix.c **** it under the terms of the GNU General Public License as published by
+   6:keyboards/Manuform6x6/matrix.c **** the Free Software Foundation, either version 2 of the License, or
+   7:keyboards/Manuform6x6/matrix.c **** (at your option) any later version.
+   8:keyboards/Manuform6x6/matrix.c **** 
+   9:keyboards/Manuform6x6/matrix.c **** This program is distributed in the hope that it will be useful,
+  10:keyboards/Manuform6x6/matrix.c **** but WITHOUT ANY WARRANTY; without even the implied warranty of
+  11:keyboards/Manuform6x6/matrix.c **** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  12:keyboards/Manuform6x6/matrix.c **** GNU General Public License for more details.
+  13:keyboards/Manuform6x6/matrix.c **** 
+  14:keyboards/Manuform6x6/matrix.c **** You should have received a copy of the GNU General Public License
+  15:keyboards/Manuform6x6/matrix.c **** along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  16:keyboards/Manuform6x6/matrix.c **** */
+  17:keyboards/Manuform6x6/matrix.c **** 
+  18:keyboards/Manuform6x6/matrix.c **** /*
+  19:keyboards/Manuform6x6/matrix.c ****  * scan matrix
+  20:keyboards/Manuform6x6/matrix.c ****  */
+  21:keyboards/Manuform6x6/matrix.c **** #include <stdint.h>
+  22:keyboards/Manuform6x6/matrix.c **** #include <stdbool.h>
+  23:keyboards/Manuform6x6/matrix.c **** #include <avr/io.h>
+  24:keyboards/Manuform6x6/matrix.c **** #include "wait.h"
+  25:keyboards/Manuform6x6/matrix.c **** #include "print.h"
+  26:keyboards/Manuform6x6/matrix.c **** #include "debug.h"
+  27:keyboards/Manuform6x6/matrix.c **** #include "util.h"
+  28:keyboards/Manuform6x6/matrix.c **** #include "matrix.h"
+  29:keyboards/Manuform6x6/matrix.c **** #include "split_util.h"
+  30:keyboards/Manuform6x6/matrix.c **** #include "pro_micro.h"
+  31:keyboards/Manuform6x6/matrix.c **** #include "config.h"
+  32:keyboards/Manuform6x6/matrix.c **** #include "timer.h"
+  33:keyboards/Manuform6x6/matrix.c **** 
+  34:keyboards/Manuform6x6/matrix.c **** #ifdef USE_I2C
+  35:keyboards/Manuform6x6/matrix.c **** #  include "i2c.h"
+  36:keyboards/Manuform6x6/matrix.c **** #else // USE_SERIAL
+  37:keyboards/Manuform6x6/matrix.c **** #  include "serial.h"
+  38:keyboards/Manuform6x6/matrix.c **** #endif
+  39:keyboards/Manuform6x6/matrix.c **** 
+  40:keyboards/Manuform6x6/matrix.c **** #ifndef DEBOUNCING_DELAY
+  41:keyboards/Manuform6x6/matrix.c **** #   define DEBOUNCING_DELAY 5
+  42:keyboards/Manuform6x6/matrix.c **** #endif
+  43:keyboards/Manuform6x6/matrix.c **** 
+  44:keyboards/Manuform6x6/matrix.c **** #if (DEBOUNCING_DELAY > 0)
+  45:keyboards/Manuform6x6/matrix.c ****     static uint16_t debouncing_time;
+  46:keyboards/Manuform6x6/matrix.c ****     static bool debouncing = false;
+  47:keyboards/Manuform6x6/matrix.c **** #endif
+  48:keyboards/Manuform6x6/matrix.c **** 
+  49:keyboards/Manuform6x6/matrix.c **** #if (MATRIX_COLS <= 8)
+  50:keyboards/Manuform6x6/matrix.c **** #    define print_matrix_header()  print("\nr/c 01234567\n")
+  51:keyboards/Manuform6x6/matrix.c **** #    define print_matrix_row(row)  print_bin_reverse8(matrix_get_row(row))
+  52:keyboards/Manuform6x6/matrix.c **** #    define matrix_bitpop(i)       bitpop(matrix[i])
+  53:keyboards/Manuform6x6/matrix.c **** #    define ROW_SHIFTER ((uint8_t)1)
+  54:keyboards/Manuform6x6/matrix.c **** #else
+  55:keyboards/Manuform6x6/matrix.c **** #    error "Currently only supports 8 COLS"
+  56:keyboards/Manuform6x6/matrix.c **** #endif
+  57:keyboards/Manuform6x6/matrix.c **** static matrix_row_t matrix_debouncing[MATRIX_ROWS];
+  58:keyboards/Manuform6x6/matrix.c **** 
+  59:keyboards/Manuform6x6/matrix.c **** #define ERROR_DISCONNECT_COUNT 5
+  60:keyboards/Manuform6x6/matrix.c **** 
+  61:keyboards/Manuform6x6/matrix.c **** #define ROWS_PER_HAND (MATRIX_ROWS/2)
+  62:keyboards/Manuform6x6/matrix.c **** 
+  63:keyboards/Manuform6x6/matrix.c **** static uint8_t error_count = 0;
+  64:keyboards/Manuform6x6/matrix.c **** 
+  65:keyboards/Manuform6x6/matrix.c **** static const uint8_t row_pins[MATRIX_ROWS] = MATRIX_ROW_PINS;
+  66:keyboards/Manuform6x6/matrix.c **** static const uint8_t col_pins[MATRIX_COLS] = MATRIX_COL_PINS;
+  67:keyboards/Manuform6x6/matrix.c **** 
+  68:keyboards/Manuform6x6/matrix.c **** /* matrix state(1:on, 0:off) */
+  69:keyboards/Manuform6x6/matrix.c **** static matrix_row_t matrix[MATRIX_ROWS];
+  70:keyboards/Manuform6x6/matrix.c **** static matrix_row_t matrix_debouncing[MATRIX_ROWS];
+  71:keyboards/Manuform6x6/matrix.c **** 
+  72:keyboards/Manuform6x6/matrix.c **** #if (DIODE_DIRECTION == COL2ROW)
+  73:keyboards/Manuform6x6/matrix.c ****     static void init_cols(void);
+  74:keyboards/Manuform6x6/matrix.c ****     static bool read_cols_on_row(matrix_row_t current_matrix[], uint8_t current_row);
+  75:keyboards/Manuform6x6/matrix.c ****     static void unselect_rows(void);
+  76:keyboards/Manuform6x6/matrix.c ****     static void select_row(uint8_t row);
+  77:keyboards/Manuform6x6/matrix.c ****     static void unselect_row(uint8_t row);
+  78:keyboards/Manuform6x6/matrix.c **** #elif (DIODE_DIRECTION == ROW2COL)
+  79:keyboards/Manuform6x6/matrix.c ****     static void init_rows(void);
+  80:keyboards/Manuform6x6/matrix.c ****     static bool read_rows_on_col(matrix_row_t current_matrix[], uint8_t current_col);
+  81:keyboards/Manuform6x6/matrix.c ****     static void unselect_cols(void);
+  82:keyboards/Manuform6x6/matrix.c ****     static void unselect_col(uint8_t col);
+  83:keyboards/Manuform6x6/matrix.c ****     static void select_col(uint8_t col);
+  84:keyboards/Manuform6x6/matrix.c **** #endif
+  85:keyboards/Manuform6x6/matrix.c **** __attribute__ ((weak))
+  86:keyboards/Manuform6x6/matrix.c **** void matrix_init_quantum(void) {
+  87:keyboards/Manuform6x6/matrix.c ****     matrix_init_kb();
+  88:keyboards/Manuform6x6/matrix.c **** }
+  89:keyboards/Manuform6x6/matrix.c **** 
+  90:keyboards/Manuform6x6/matrix.c **** __attribute__ ((weak))
+  91:keyboards/Manuform6x6/matrix.c **** void matrix_scan_quantum(void) {
+  92:keyboards/Manuform6x6/matrix.c ****     matrix_scan_kb();
+  93:keyboards/Manuform6x6/matrix.c **** }
+  94:keyboards/Manuform6x6/matrix.c **** 
+  95:keyboards/Manuform6x6/matrix.c **** __attribute__ ((weak))
+  96:keyboards/Manuform6x6/matrix.c **** void matrix_init_kb(void) {
+  97:keyboards/Manuform6x6/matrix.c ****     matrix_init_user();
+  98:keyboards/Manuform6x6/matrix.c **** }
+  99:keyboards/Manuform6x6/matrix.c **** 
+ 100:keyboards/Manuform6x6/matrix.c **** __attribute__ ((weak))
+ 101:keyboards/Manuform6x6/matrix.c **** void matrix_scan_kb(void) {
+ 102:keyboards/Manuform6x6/matrix.c ****     matrix_scan_user();
+ 103:keyboards/Manuform6x6/matrix.c **** }
+ 104:keyboards/Manuform6x6/matrix.c **** 
+ 105:keyboards/Manuform6x6/matrix.c **** __attribute__ ((weak))
+ 106:keyboards/Manuform6x6/matrix.c **** void matrix_init_user(void) {
+  16               		.loc 1 106 0
+  17               		.cfi_startproc
+  18               	/* prologue: function */
+  19               	/* frame size = 0 */
+  20               	/* stack size = 0 */
+  21               	.L__stack_usage = 0
+  22 0000 0895      		ret
+  23               		.cfi_endproc
+  24               	.LFE11:
+  26               		.section	.text.matrix_init_kb,"ax",@progbits
+  27               		.weak	matrix_init_kb
+  29               	matrix_init_kb:
+  30               	.LFB9:
+  96:keyboards/Manuform6x6/matrix.c **** void matrix_init_kb(void) {
+  31               		.loc 1 96 0
+  32               		.cfi_startproc
+  33               	/* prologue: function */
+  34               	/* frame size = 0 */
+  35               	/* stack size = 0 */
+  36               	.L__stack_usage = 0
+  97:keyboards/Manuform6x6/matrix.c ****     matrix_init_user();
+  37               		.loc 1 97 0
+  38 0000 0C94 0000 		jmp matrix_init_user
+  39               	.LVL0:
+  40               		.cfi_endproc
+  41               	.LFE9:
+  43               		.section	.text.matrix_init_quantum,"ax",@progbits
+  44               		.weak	matrix_init_quantum
+  46               	matrix_init_quantum:
+  47               	.LFB7:
+  86:keyboards/Manuform6x6/matrix.c **** void matrix_init_quantum(void) {
+  48               		.loc 1 86 0
+  49               		.cfi_startproc
+  50               	/* prologue: function */
+  51               	/* frame size = 0 */
+  52               	/* stack size = 0 */
+  53               	.L__stack_usage = 0
+  87:keyboards/Manuform6x6/matrix.c ****     matrix_init_kb();
+  54               		.loc 1 87 0
+  55 0000 0C94 0000 		jmp matrix_init_kb
+  56               	.LVL1:
+  57               		.cfi_endproc
+  58               	.LFE7:
+  60               		.section	.text.matrix_scan_user,"ax",@progbits
+  61               		.weak	matrix_scan_user
+  63               	matrix_scan_user:
+  64               	.LFB12:
+ 107:keyboards/Manuform6x6/matrix.c **** }
+ 108:keyboards/Manuform6x6/matrix.c **** 
+ 109:keyboards/Manuform6x6/matrix.c **** __attribute__ ((weak))
+ 110:keyboards/Manuform6x6/matrix.c **** void matrix_scan_user(void) {
+  65               		.loc 1 110 0
+  66               		.cfi_startproc
+  67               	/* prologue: function */
+  68               	/* frame size = 0 */
+  69               	/* stack size = 0 */
+  70               	.L__stack_usage = 0
+  71 0000 0895      		ret
+  72               		.cfi_endproc
+  73               	.LFE12:
+  75               		.section	.text.matrix_scan_kb,"ax",@progbits
+  76               		.weak	matrix_scan_kb
+  78               	matrix_scan_kb:
+  79               	.LFB10:
+ 101:keyboards/Manuform6x6/matrix.c **** void matrix_scan_kb(void) {
+  80               		.loc 1 101 0
+  81               		.cfi_startproc
+  82               	/* prologue: function */
+  83               	/* frame size = 0 */
+  84               	/* stack size = 0 */
+  85               	.L__stack_usage = 0
+ 102:keyboards/Manuform6x6/matrix.c ****     matrix_scan_user();
+  86               		.loc 1 102 0
+  87 0000 0C94 0000 		jmp matrix_scan_user
+  88               	.LVL2:
+  89               		.cfi_endproc
+  90               	.LFE10:
+  92               		.section	.text.matrix_scan_quantum,"ax",@progbits
+  93               		.weak	matrix_scan_quantum
+  95               	matrix_scan_quantum:
+  96               	.LFB8:
+  91:keyboards/Manuform6x6/matrix.c **** void matrix_scan_quantum(void) {
+  97               		.loc 1 91 0
+  98               		.cfi_startproc
+  99               	/* prologue: function */
+ 100               	/* frame size = 0 */
+ 101               	/* stack size = 0 */
+ 102               	.L__stack_usage = 0
+  92:keyboards/Manuform6x6/matrix.c ****     matrix_scan_kb();
+ 103               		.loc 1 92 0
+ 104 0000 0C94 0000 		jmp matrix_scan_kb
+ 105               	.LVL3:
+ 106               		.cfi_endproc
+ 107               	.LFE8:
+ 109               		.section	.text.matrix_rows,"ax",@progbits
+ 110               	.global	matrix_rows
+ 112               	matrix_rows:
+ 113               	.LFB13:
+ 111:keyboards/Manuform6x6/matrix.c **** }
+ 112:keyboards/Manuform6x6/matrix.c **** 
+ 113:keyboards/Manuform6x6/matrix.c **** inline
+ 114:keyboards/Manuform6x6/matrix.c **** uint8_t matrix_rows(void)
+ 115:keyboards/Manuform6x6/matrix.c **** {
+ 114               		.loc 1 115 0
+ 115               		.cfi_startproc
+ 116               	/* prologue: function */
+ 117               	/* frame size = 0 */
+ 118               	/* stack size = 0 */
+ 119               	.L__stack_usage = 0
+ 116:keyboards/Manuform6x6/matrix.c ****     return MATRIX_ROWS;
+ 117:keyboards/Manuform6x6/matrix.c **** }
+ 120               		.loc 1 117 0
+ 121 0000 8EE0      		ldi r24,lo8(14)
+ 122 0002 0895      		ret
+ 123               		.cfi_endproc
+ 124               	.LFE13:
+ 126               		.section	.text.matrix_cols,"ax",@progbits
+ 127               	.global	matrix_cols
+ 129               	matrix_cols:
+ 130               	.LFB14:
+ 118:keyboards/Manuform6x6/matrix.c **** 
+ 119:keyboards/Manuform6x6/matrix.c **** inline
+ 120:keyboards/Manuform6x6/matrix.c **** uint8_t matrix_cols(void)
+ 121:keyboards/Manuform6x6/matrix.c **** {
+ 131               		.loc 1 121 0
+ 132               		.cfi_startproc
+ 133               	/* prologue: function */
+ 134               	/* frame size = 0 */
+ 135               	/* stack size = 0 */
+ 136               	.L__stack_usage = 0
+ 122:keyboards/Manuform6x6/matrix.c ****     return MATRIX_COLS;
+ 123:keyboards/Manuform6x6/matrix.c **** }
+ 137               		.loc 1 123 0
+ 138 0000 86E0      		ldi r24,lo8(6)
+ 139 0002 0895      		ret
+ 140               		.cfi_endproc
+ 141               	.LFE14:
+ 143               		.section	.text.matrix_init,"ax",@progbits
+ 144               	.global	matrix_init
+ 146               	matrix_init:
+ 147               	.LFB15:
+ 124:keyboards/Manuform6x6/matrix.c **** 
+ 125:keyboards/Manuform6x6/matrix.c **** void matrix_init(void)
+ 126:keyboards/Manuform6x6/matrix.c **** {
+ 148               		.loc 1 126 0
+ 149               		.cfi_startproc
+ 150               	/* prologue: function */
+ 151               	/* frame size = 0 */
+ 152               	/* stack size = 0 */
+ 153               	.L__stack_usage = 0
+ 127:keyboards/Manuform6x6/matrix.c ****     debug_enable = true;
+ 154               		.loc 1 127 0
+ 155 0000 8091 0000 		lds r24,debug_config
+ 128:keyboards/Manuform6x6/matrix.c ****     debug_matrix = true;
+ 129:keyboards/Manuform6x6/matrix.c ****     debug_mouse = true;
+ 156               		.loc 1 129 0
+ 157 0004 8360      		ori r24,lo8(3)
+ 158 0006 8860      		ori r24,lo8(1<<3)
+ 159 0008 8093 0000 		sts debug_config,r24
+ 160               	.LVL4:
+ 161 000c A0E0      		ldi r26,lo8(row_pins)
+ 162 000e B0E0      		ldi r27,hi8(row_pins)
+ 163               	.LBB15:
+ 164               	.LBB16:
+ 165               	.LBB17:
+ 130:keyboards/Manuform6x6/matrix.c ****     // initialize row and col
+ 131:keyboards/Manuform6x6/matrix.c ****     unselect_rows();
+ 132:keyboards/Manuform6x6/matrix.c ****     init_cols();
+ 133:keyboards/Manuform6x6/matrix.c **** 
+ 134:keyboards/Manuform6x6/matrix.c ****     TX_RX_LED_INIT;
+ 135:keyboards/Manuform6x6/matrix.c **** 
+ 136:keyboards/Manuform6x6/matrix.c ****     // initialize matrix state: all keys off
+ 137:keyboards/Manuform6x6/matrix.c ****     for (uint8_t i=0; i < MATRIX_ROWS; i++) {
+ 138:keyboards/Manuform6x6/matrix.c ****         matrix[i] = 0;
+ 139:keyboards/Manuform6x6/matrix.c ****         matrix_debouncing[i] = 0;
+ 140:keyboards/Manuform6x6/matrix.c ****     }
+ 141:keyboards/Manuform6x6/matrix.c **** 
+ 142:keyboards/Manuform6x6/matrix.c ****     matrix_init_quantum();
+ 143:keyboards/Manuform6x6/matrix.c **** 
+ 144:keyboards/Manuform6x6/matrix.c **** }
+ 145:keyboards/Manuform6x6/matrix.c **** 
+ 146:keyboards/Manuform6x6/matrix.c **** uint8_t _matrix_scan(void)
+ 147:keyboards/Manuform6x6/matrix.c **** {
+ 148:keyboards/Manuform6x6/matrix.c ****     int offset = isLeftHand ? 0 : (ROWS_PER_HAND);
+ 149:keyboards/Manuform6x6/matrix.c **** #if (DIODE_DIRECTION == COL2ROW)
+ 150:keyboards/Manuform6x6/matrix.c ****     // Set row, read cols
+ 151:keyboards/Manuform6x6/matrix.c ****     for (uint8_t current_row = 0; current_row < ROWS_PER_HAND; current_row++) {
+ 152:keyboards/Manuform6x6/matrix.c **** #       if (DEBOUNCING_DELAY > 0)
+ 153:keyboards/Manuform6x6/matrix.c ****             bool matrix_changed = read_cols_on_row(matrix_debouncing+offset, current_row);
+ 154:keyboards/Manuform6x6/matrix.c **** 
+ 155:keyboards/Manuform6x6/matrix.c ****             if (matrix_changed) {
+ 156:keyboards/Manuform6x6/matrix.c ****                 debouncing = true;
+ 157:keyboards/Manuform6x6/matrix.c ****                 debouncing_time = timer_read();
+ 158:keyboards/Manuform6x6/matrix.c ****                 PORTD ^= (1 << 2);
+ 159:keyboards/Manuform6x6/matrix.c ****             }
+ 160:keyboards/Manuform6x6/matrix.c **** 
+ 161:keyboards/Manuform6x6/matrix.c **** #       else
+ 162:keyboards/Manuform6x6/matrix.c ****             read_cols_on_row(matrix+offset, current_row);
+ 163:keyboards/Manuform6x6/matrix.c **** #       endif
+ 164:keyboards/Manuform6x6/matrix.c **** 
+ 165:keyboards/Manuform6x6/matrix.c ****     }
+ 166:keyboards/Manuform6x6/matrix.c **** 
+ 167:keyboards/Manuform6x6/matrix.c **** #elif (DIODE_DIRECTION == ROW2COL)
+ 168:keyboards/Manuform6x6/matrix.c ****     // Set col, read rows
+ 169:keyboards/Manuform6x6/matrix.c ****     for (uint8_t current_col = 0; current_col < MATRIX_COLS; current_col++) {
+ 170:keyboards/Manuform6x6/matrix.c **** #       if (DEBOUNCING_DELAY > 0)
+ 171:keyboards/Manuform6x6/matrix.c ****             bool matrix_changed = read_rows_on_col(matrix_debouncing+offset, current_col);
+ 172:keyboards/Manuform6x6/matrix.c ****             if (matrix_changed) {
+ 173:keyboards/Manuform6x6/matrix.c ****                 debouncing = true;
+ 174:keyboards/Manuform6x6/matrix.c ****                 debouncing_time = timer_read();
+ 175:keyboards/Manuform6x6/matrix.c ****             }
+ 176:keyboards/Manuform6x6/matrix.c **** #       else
+ 177:keyboards/Manuform6x6/matrix.c ****              read_rows_on_col(matrix+offset, current_col);
+ 178:keyboards/Manuform6x6/matrix.c **** #       endif
+ 179:keyboards/Manuform6x6/matrix.c **** 
+ 180:keyboards/Manuform6x6/matrix.c ****     }
+ 181:keyboards/Manuform6x6/matrix.c **** #endif
+ 182:keyboards/Manuform6x6/matrix.c **** 
+ 183:keyboards/Manuform6x6/matrix.c **** #   if (DEBOUNCING_DELAY > 0)
+ 184:keyboards/Manuform6x6/matrix.c ****         if (debouncing && (timer_elapsed(debouncing_time) > DEBOUNCING_DELAY)) {
+ 185:keyboards/Manuform6x6/matrix.c ****             for (uint8_t i = 0; i < ROWS_PER_HAND; i++) {
+ 186:keyboards/Manuform6x6/matrix.c ****                 matrix[i+offset] = matrix_debouncing[i+offset];
+ 187:keyboards/Manuform6x6/matrix.c ****             }
+ 188:keyboards/Manuform6x6/matrix.c ****             debouncing = false;
+ 189:keyboards/Manuform6x6/matrix.c ****         }
+ 190:keyboards/Manuform6x6/matrix.c **** #   endif
+ 191:keyboards/Manuform6x6/matrix.c **** 
+ 192:keyboards/Manuform6x6/matrix.c ****     return 1;
+ 193:keyboards/Manuform6x6/matrix.c **** }
+ 194:keyboards/Manuform6x6/matrix.c **** 
+ 195:keyboards/Manuform6x6/matrix.c **** #ifdef USE_I2C
+ 196:keyboards/Manuform6x6/matrix.c **** 
+ 197:keyboards/Manuform6x6/matrix.c **** // Get rows from other half over i2c
+ 198:keyboards/Manuform6x6/matrix.c **** int i2c_transaction(void) {
+ 199:keyboards/Manuform6x6/matrix.c ****     int slaveOffset = (isLeftHand) ? (ROWS_PER_HAND) : 0;
+ 200:keyboards/Manuform6x6/matrix.c **** 
+ 201:keyboards/Manuform6x6/matrix.c ****     int err = i2c_master_start(SLAVE_I2C_ADDRESS + I2C_WRITE);
+ 202:keyboards/Manuform6x6/matrix.c ****     if (err) goto i2c_error;
+ 203:keyboards/Manuform6x6/matrix.c **** 
+ 204:keyboards/Manuform6x6/matrix.c ****     // start of matrix stored at 0x00
+ 205:keyboards/Manuform6x6/matrix.c ****     err = i2c_master_write(0x00);
+ 206:keyboards/Manuform6x6/matrix.c ****     if (err) goto i2c_error;
+ 207:keyboards/Manuform6x6/matrix.c **** 
+ 208:keyboards/Manuform6x6/matrix.c ****     // Start read
+ 209:keyboards/Manuform6x6/matrix.c ****     err = i2c_master_start(SLAVE_I2C_ADDRESS + I2C_READ);
+ 210:keyboards/Manuform6x6/matrix.c ****     if (err) goto i2c_error;
+ 211:keyboards/Manuform6x6/matrix.c **** 
+ 212:keyboards/Manuform6x6/matrix.c ****     if (!err) {
+ 213:keyboards/Manuform6x6/matrix.c ****         int i;
+ 214:keyboards/Manuform6x6/matrix.c ****         for (i = 0; i < ROWS_PER_HAND-1; ++i) {
+ 215:keyboards/Manuform6x6/matrix.c ****             matrix[slaveOffset+i] = i2c_master_read(I2C_ACK);
+ 216:keyboards/Manuform6x6/matrix.c ****         }
+ 217:keyboards/Manuform6x6/matrix.c ****         matrix[slaveOffset+i] = i2c_master_read(I2C_NACK);
+ 218:keyboards/Manuform6x6/matrix.c ****         i2c_master_stop();
+ 219:keyboards/Manuform6x6/matrix.c ****     } else {
+ 220:keyboards/Manuform6x6/matrix.c **** i2c_error: // the cable is disconnceted, or something else went wrong
+ 221:keyboards/Manuform6x6/matrix.c ****         i2c_reset_state();
+ 222:keyboards/Manuform6x6/matrix.c ****         return err;
+ 223:keyboards/Manuform6x6/matrix.c ****     }
+ 224:keyboards/Manuform6x6/matrix.c **** 
+ 225:keyboards/Manuform6x6/matrix.c ****     return 0;
+ 226:keyboards/Manuform6x6/matrix.c **** }
+ 227:keyboards/Manuform6x6/matrix.c **** 
+ 228:keyboards/Manuform6x6/matrix.c **** #else // USE_SERIAL
+ 229:keyboards/Manuform6x6/matrix.c **** 
+ 230:keyboards/Manuform6x6/matrix.c **** int serial_transaction(void) {
+ 231:keyboards/Manuform6x6/matrix.c ****     int slaveOffset = (isLeftHand) ? (ROWS_PER_HAND) : 0;
+ 232:keyboards/Manuform6x6/matrix.c **** 
+ 233:keyboards/Manuform6x6/matrix.c ****     if (serial_update_buffers()) {
+ 234:keyboards/Manuform6x6/matrix.c ****         return 1;
+ 235:keyboards/Manuform6x6/matrix.c ****     }
+ 236:keyboards/Manuform6x6/matrix.c **** 
+ 237:keyboards/Manuform6x6/matrix.c ****     for (int i = 0; i < ROWS_PER_HAND; ++i) {
+ 238:keyboards/Manuform6x6/matrix.c ****         matrix[slaveOffset+i] = serial_slave_buffer[i];
+ 239:keyboards/Manuform6x6/matrix.c ****     }
+ 240:keyboards/Manuform6x6/matrix.c ****     return 0;
+ 241:keyboards/Manuform6x6/matrix.c **** }
+ 242:keyboards/Manuform6x6/matrix.c **** #endif
+ 243:keyboards/Manuform6x6/matrix.c **** 
+ 244:keyboards/Manuform6x6/matrix.c **** uint8_t matrix_scan(void)
+ 245:keyboards/Manuform6x6/matrix.c **** {
+ 246:keyboards/Manuform6x6/matrix.c ****     uint8_t ret = _matrix_scan();
+ 247:keyboards/Manuform6x6/matrix.c **** 
+ 248:keyboards/Manuform6x6/matrix.c **** #ifdef USE_I2C
+ 249:keyboards/Manuform6x6/matrix.c ****     if( i2c_transaction() ) {
+ 250:keyboards/Manuform6x6/matrix.c **** #else // USE_SERIAL
+ 251:keyboards/Manuform6x6/matrix.c ****     if( serial_transaction() ) {
+ 252:keyboards/Manuform6x6/matrix.c **** #endif
+ 253:keyboards/Manuform6x6/matrix.c ****         // turn on the indicator led when halves are disconnected
+ 254:keyboards/Manuform6x6/matrix.c ****         TXLED1;
+ 255:keyboards/Manuform6x6/matrix.c **** 
+ 256:keyboards/Manuform6x6/matrix.c ****         error_count++;
+ 257:keyboards/Manuform6x6/matrix.c **** 
+ 258:keyboards/Manuform6x6/matrix.c ****         if (error_count > ERROR_DISCONNECT_COUNT) {
+ 259:keyboards/Manuform6x6/matrix.c ****             // reset other half if disconnected
+ 260:keyboards/Manuform6x6/matrix.c ****             int slaveOffset = (isLeftHand) ? (ROWS_PER_HAND) : 0;
+ 261:keyboards/Manuform6x6/matrix.c ****             for (int i = 0; i < ROWS_PER_HAND; ++i) {
+ 262:keyboards/Manuform6x6/matrix.c ****                 matrix[slaveOffset+i] = 0;
+ 263:keyboards/Manuform6x6/matrix.c ****             }
+ 264:keyboards/Manuform6x6/matrix.c ****         }
+ 265:keyboards/Manuform6x6/matrix.c ****     } else {
+ 266:keyboards/Manuform6x6/matrix.c ****         // turn off the indicator led on no error
+ 267:keyboards/Manuform6x6/matrix.c ****         TXLED0;
+ 268:keyboards/Manuform6x6/matrix.c ****         error_count = 0;
+ 269:keyboards/Manuform6x6/matrix.c ****     }
+ 270:keyboards/Manuform6x6/matrix.c ****     matrix_scan_quantum();
+ 271:keyboards/Manuform6x6/matrix.c ****     return ret;
+ 272:keyboards/Manuform6x6/matrix.c **** }
+ 273:keyboards/Manuform6x6/matrix.c **** 
+ 274:keyboards/Manuform6x6/matrix.c **** void matrix_slave_scan(void) {
+ 275:keyboards/Manuform6x6/matrix.c ****     _matrix_scan();
+ 276:keyboards/Manuform6x6/matrix.c **** 
+ 277:keyboards/Manuform6x6/matrix.c ****     int offset = (isLeftHand) ? 0 : ROWS_PER_HAND;
+ 278:keyboards/Manuform6x6/matrix.c **** 
+ 279:keyboards/Manuform6x6/matrix.c **** #ifdef USE_I2C
+ 280:keyboards/Manuform6x6/matrix.c ****     for (int i = 0; i < ROWS_PER_HAND; ++i) {
+ 281:keyboards/Manuform6x6/matrix.c ****         i2c_slave_buffer[i] = matrix[offset+i];
+ 282:keyboards/Manuform6x6/matrix.c ****     }
+ 283:keyboards/Manuform6x6/matrix.c **** #else // USE_SERIAL
+ 284:keyboards/Manuform6x6/matrix.c ****     for (int i = 0; i < ROWS_PER_HAND; ++i) {
+ 285:keyboards/Manuform6x6/matrix.c ****         serial_slave_buffer[i] = matrix[offset+i];
+ 286:keyboards/Manuform6x6/matrix.c ****     }
+ 287:keyboards/Manuform6x6/matrix.c **** #endif
+ 288:keyboards/Manuform6x6/matrix.c **** }
+ 289:keyboards/Manuform6x6/matrix.c **** 
+ 290:keyboards/Manuform6x6/matrix.c **** bool matrix_is_modified(void)
+ 291:keyboards/Manuform6x6/matrix.c **** {
+ 292:keyboards/Manuform6x6/matrix.c ****     if (debouncing) return false;
+ 293:keyboards/Manuform6x6/matrix.c ****     return true;
+ 294:keyboards/Manuform6x6/matrix.c **** }
+ 295:keyboards/Manuform6x6/matrix.c **** 
+ 296:keyboards/Manuform6x6/matrix.c **** inline
+ 297:keyboards/Manuform6x6/matrix.c **** bool matrix_is_on(uint8_t row, uint8_t col)
+ 298:keyboards/Manuform6x6/matrix.c **** {
+ 299:keyboards/Manuform6x6/matrix.c ****     return (matrix[row] & ((matrix_row_t)1<<col));
+ 300:keyboards/Manuform6x6/matrix.c **** }
+ 301:keyboards/Manuform6x6/matrix.c **** 
+ 302:keyboards/Manuform6x6/matrix.c **** inline
+ 303:keyboards/Manuform6x6/matrix.c **** matrix_row_t matrix_get_row(uint8_t row)
+ 304:keyboards/Manuform6x6/matrix.c **** {
+ 305:keyboards/Manuform6x6/matrix.c ****     return matrix[row];
+ 306:keyboards/Manuform6x6/matrix.c **** }
+ 307:keyboards/Manuform6x6/matrix.c **** 
+ 308:keyboards/Manuform6x6/matrix.c **** void matrix_print(void)
+ 309:keyboards/Manuform6x6/matrix.c **** {
+ 310:keyboards/Manuform6x6/matrix.c ****     print("\nr/c 0123456789ABCDEF\n");
+ 311:keyboards/Manuform6x6/matrix.c ****     for (uint8_t row = 0; row < MATRIX_ROWS; row++) {
+ 312:keyboards/Manuform6x6/matrix.c ****         phex(row); print(": ");
+ 313:keyboards/Manuform6x6/matrix.c ****         pbin_reverse16(matrix_get_row(row));
+ 314:keyboards/Manuform6x6/matrix.c ****         print("\n");
+ 315:keyboards/Manuform6x6/matrix.c ****     }
+ 316:keyboards/Manuform6x6/matrix.c **** }
+ 317:keyboards/Manuform6x6/matrix.c **** 
+ 318:keyboards/Manuform6x6/matrix.c **** uint8_t matrix_key_count(void)
+ 319:keyboards/Manuform6x6/matrix.c **** {
+ 320:keyboards/Manuform6x6/matrix.c ****     uint8_t count = 0;
+ 321:keyboards/Manuform6x6/matrix.c ****     for (uint8_t i = 0; i < MATRIX_ROWS; i++) {
+ 322:keyboards/Manuform6x6/matrix.c ****         count += bitpop16(matrix[i]);
+ 323:keyboards/Manuform6x6/matrix.c ****     }
+ 324:keyboards/Manuform6x6/matrix.c ****     return count;
+ 325:keyboards/Manuform6x6/matrix.c **** }
+ 326:keyboards/Manuform6x6/matrix.c **** 
+ 327:keyboards/Manuform6x6/matrix.c **** #if (DIODE_DIRECTION == COL2ROW)
+ 328:keyboards/Manuform6x6/matrix.c **** 
+ 329:keyboards/Manuform6x6/matrix.c **** static void init_cols(void)
+ 330:keyboards/Manuform6x6/matrix.c **** {
+ 331:keyboards/Manuform6x6/matrix.c ****     for(uint8_t x = 0; x < MATRIX_COLS; x++) {
+ 332:keyboards/Manuform6x6/matrix.c ****         uint8_t pin = col_pins[x];
+ 333:keyboards/Manuform6x6/matrix.c ****         _SFR_IO8((pin >> 4) + 1) &= ~_BV(pin & 0xF); // IN
+ 334:keyboards/Manuform6x6/matrix.c ****         _SFR_IO8((pin >> 4) + 2) |=  _BV(pin & 0xF); // HI
+ 335:keyboards/Manuform6x6/matrix.c ****     }
+ 336:keyboards/Manuform6x6/matrix.c **** }
+ 337:keyboards/Manuform6x6/matrix.c **** 
+ 338:keyboards/Manuform6x6/matrix.c **** static bool read_cols_on_row(matrix_row_t current_matrix[], uint8_t current_row)
+ 339:keyboards/Manuform6x6/matrix.c **** {
+ 340:keyboards/Manuform6x6/matrix.c ****     // Store last value of row prior to reading
+ 341:keyboards/Manuform6x6/matrix.c ****     matrix_row_t last_row_value = current_matrix[current_row];
+ 342:keyboards/Manuform6x6/matrix.c **** 
+ 343:keyboards/Manuform6x6/matrix.c ****     // Clear data in matrix row
+ 344:keyboards/Manuform6x6/matrix.c ****     current_matrix[current_row] = 0;
+ 345:keyboards/Manuform6x6/matrix.c **** 
+ 346:keyboards/Manuform6x6/matrix.c ****     // Select row and wait for row selecton to stabilize
+ 347:keyboards/Manuform6x6/matrix.c ****     select_row(current_row);
+ 348:keyboards/Manuform6x6/matrix.c ****     wait_us(30);
+ 349:keyboards/Manuform6x6/matrix.c **** 
+ 350:keyboards/Manuform6x6/matrix.c ****     // For each col...
+ 351:keyboards/Manuform6x6/matrix.c ****     for(uint8_t col_index = 0; col_index < MATRIX_COLS; col_index++) {
+ 352:keyboards/Manuform6x6/matrix.c **** 
+ 353:keyboards/Manuform6x6/matrix.c ****         // Select the col pin to read (active low)
+ 354:keyboards/Manuform6x6/matrix.c ****         uint8_t pin = col_pins[col_index];
+ 355:keyboards/Manuform6x6/matrix.c ****         uint8_t pin_state = (_SFR_IO8(pin >> 4) & _BV(pin & 0xF));
+ 356:keyboards/Manuform6x6/matrix.c **** 
+ 357:keyboards/Manuform6x6/matrix.c ****         // Populate the matrix row with the state of the col pin
+ 358:keyboards/Manuform6x6/matrix.c ****         current_matrix[current_row] |=  pin_state ? 0 : (ROW_SHIFTER << col_index);
+ 359:keyboards/Manuform6x6/matrix.c ****     }
+ 360:keyboards/Manuform6x6/matrix.c **** 
+ 361:keyboards/Manuform6x6/matrix.c ****     // Unselect row
+ 362:keyboards/Manuform6x6/matrix.c ****     unselect_row(current_row);
+ 363:keyboards/Manuform6x6/matrix.c **** 
+ 364:keyboards/Manuform6x6/matrix.c ****     return (last_row_value != current_matrix[current_row]);
+ 365:keyboards/Manuform6x6/matrix.c **** }
+ 366:keyboards/Manuform6x6/matrix.c **** 
+ 367:keyboards/Manuform6x6/matrix.c **** static void select_row(uint8_t row)
+ 368:keyboards/Manuform6x6/matrix.c **** {
+ 369:keyboards/Manuform6x6/matrix.c ****     uint8_t pin = row_pins[row];
+ 370:keyboards/Manuform6x6/matrix.c ****     _SFR_IO8((pin >> 4) + 1) |=  _BV(pin & 0xF); // OUT
+ 371:keyboards/Manuform6x6/matrix.c ****     _SFR_IO8((pin >> 4) + 2) &= ~_BV(pin & 0xF); // LOW
+ 372:keyboards/Manuform6x6/matrix.c **** }
+ 373:keyboards/Manuform6x6/matrix.c **** 
+ 374:keyboards/Manuform6x6/matrix.c **** static void unselect_row(uint8_t row)
+ 375:keyboards/Manuform6x6/matrix.c **** {
+ 376:keyboards/Manuform6x6/matrix.c ****     uint8_t pin = row_pins[row];
+ 377:keyboards/Manuform6x6/matrix.c ****     _SFR_IO8((pin >> 4) + 1) &= ~_BV(pin & 0xF); // IN
+ 378:keyboards/Manuform6x6/matrix.c ****     _SFR_IO8((pin >> 4) + 2) |=  _BV(pin & 0xF); // HI
+ 379:keyboards/Manuform6x6/matrix.c **** }
+ 380:keyboards/Manuform6x6/matrix.c **** 
+ 381:keyboards/Manuform6x6/matrix.c **** static void unselect_rows(void)
+ 382:keyboards/Manuform6x6/matrix.c **** {
+ 383:keyboards/Manuform6x6/matrix.c ****     for(uint8_t x = 0; x < ROWS_PER_HAND; x++) {
+ 384:keyboards/Manuform6x6/matrix.c ****         uint8_t pin = row_pins[x];
+ 385:keyboards/Manuform6x6/matrix.c ****         _SFR_IO8((pin >> 4) + 1) &= ~_BV(pin & 0xF); // IN
+ 166               		.loc 1 385 0
+ 167 0010 21E0      		ldi r18,lo8(1)
+ 168 0012 30E0      		ldi r19,0
+ 169               	.LVL5:
+ 170               	.L11:
+ 384:keyboards/Manuform6x6/matrix.c ****         uint8_t pin = row_pins[x];
+ 171               		.loc 1 384 0
+ 172 0014 8D91      		ld r24,X+
+ 173               	.LVL6:
+ 174               		.loc 1 385 0
+ 175 0016 E82F      		mov r30,r24
+ 176 0018 E295      		swap r30
+ 177 001a EF70      		andi r30,lo8(15)
+ 178 001c F0E0      		ldi r31,0
+ 179 001e 41A1      		ldd r20,Z+33
+ 180 0020 8F70      		andi r24,lo8(15)
+ 181               	.LVL7:
+ 182 0022 B901      		movw r22,r18
+ 183 0024 00C0      		rjmp 2f
+ 184               		1:
+ 185 0026 660F      		lsl r22
+ 186 0028 771F      		rol r23
+ 187               		2:
+ 188 002a 8A95      		dec r24
+ 189 002c 02F4      		brpl 1b
+ 190 002e CB01      		movw r24,r22
+ 191 0030 962F      		mov r25,r22
+ 192 0032 9095      		com r25
+ 193 0034 4923      		and r20,r25
+ 194 0036 41A3      		std Z+33,r20
+ 195               	.LVL8:
+ 386:keyboards/Manuform6x6/matrix.c ****         _SFR_IO8((pin >> 4) + 2) |=  _BV(pin & 0xF); // HI
+ 196               		.loc 1 386 0
+ 197 0038 92A1      		ldd r25,Z+34
+ 198 003a 982B      		or r25,r24
+ 199 003c 92A3      		std Z+34,r25
+ 200               	.LVL9:
+ 201               	.LBE17:
+ 383:keyboards/Manuform6x6/matrix.c ****     for(uint8_t x = 0; x < ROWS_PER_HAND; x++) {
+ 202               		.loc 1 383 0
+ 203 003e 70E0      		ldi r23,hi8(row_pins+7)
+ 204 0040 A030      		cpi r26,lo8(row_pins+7)
+ 205 0042 B707      		cpc r27,r23
+ 206 0044 01F4      		brne .L11
+ 207 0046 A0E0      		ldi r26,lo8(col_pins)
+ 208 0048 B0E0      		ldi r27,hi8(col_pins)
+ 209               	.LVL10:
+ 210               	.LBE16:
+ 211               	.LBE15:
+ 212               	.LBB18:
+ 213               	.LBB19:
+ 214               	.LBB20:
+ 333:keyboards/Manuform6x6/matrix.c ****         _SFR_IO8((pin >> 4) + 1) &= ~_BV(pin & 0xF); // IN
+ 215               		.loc 1 333 0
+ 216 004a 21E0      		ldi r18,lo8(1)
+ 217 004c 30E0      		ldi r19,0
+ 218               	.L13:
+ 219               	.LVL11:
+ 332:keyboards/Manuform6x6/matrix.c ****         uint8_t pin = col_pins[x];
+ 220               		.loc 1 332 0
+ 221 004e 8D91      		ld r24,X+
+ 222               	.LVL12:
+ 333:keyboards/Manuform6x6/matrix.c ****         _SFR_IO8((pin >> 4) + 1) &= ~_BV(pin & 0xF); // IN
+ 223               		.loc 1 333 0
+ 224 0050 E82F      		mov r30,r24
+ 225 0052 E295      		swap r30
+ 226 0054 EF70      		andi r30,lo8(15)
+ 227 0056 F0E0      		ldi r31,0
+ 228 0058 41A1      		ldd r20,Z+33
+ 229 005a 8F70      		andi r24,lo8(15)
+ 230               	.LVL13:
+ 231 005c B901      		movw r22,r18
+ 232 005e 00C0      		rjmp 2f
+ 233               		1:
+ 234 0060 660F      		lsl r22
+ 235 0062 771F      		rol r23
+ 236               		2:
+ 237 0064 8A95      		dec r24
+ 238 0066 02F4      		brpl 1b
+ 239 0068 CB01      		movw r24,r22
+ 240 006a 962F      		mov r25,r22
+ 241 006c 9095      		com r25
+ 242 006e 4923      		and r20,r25
+ 243 0070 41A3      		std Z+33,r20
+ 244               	.LVL14:
+ 334:keyboards/Manuform6x6/matrix.c ****         _SFR_IO8((pin >> 4) + 2) |=  _BV(pin & 0xF); // HI
+ 245               		.loc 1 334 0
+ 246 0072 92A1      		ldd r25,Z+34
+ 247 0074 982B      		or r25,r24
+ 248 0076 92A3      		std Z+34,r25
+ 249               	.LVL15:
+ 250               	.LBE20:
+ 331:keyboards/Manuform6x6/matrix.c ****     for(uint8_t x = 0; x < MATRIX_COLS; x++) {
+ 251               		.loc 1 331 0
+ 252 0078 70E0      		ldi r23,hi8(col_pins+6)
+ 253 007a A030      		cpi r26,lo8(col_pins+6)
+ 254 007c B707      		cpc r27,r23
+ 255 007e 01F4      		brne .L13
+ 256               	.LBE19:
+ 257               	.LBE18:
+ 134:keyboards/Manuform6x6/matrix.c ****     TX_RX_LED_INIT;
+ 258               		.loc 1 134 0
+ 259 0080 559A      		sbi 0xa,5
+ 260 0082 209A      		sbi 0x4,0
+ 261               	.LVL16:
+ 262 0084 E0E0      		ldi r30,lo8(matrix)
+ 263 0086 F0E0      		ldi r31,hi8(matrix)
+ 264 0088 A0E0      		ldi r26,lo8(matrix_debouncing)
+ 265 008a B0E0      		ldi r27,hi8(matrix_debouncing)
+ 266               	.LVL17:
+ 267               	.L15:
+ 268               	.LBB21:
+ 138:keyboards/Manuform6x6/matrix.c ****         matrix[i] = 0;
+ 269               		.loc 1 138 0 discriminator 2
+ 270 008c 1192      		st Z+,__zero_reg__
+ 271               	.LVL18:
+ 139:keyboards/Manuform6x6/matrix.c ****         matrix_debouncing[i] = 0;
+ 272               		.loc 1 139 0 discriminator 2
+ 273 008e 1D92      		st X+,__zero_reg__
+ 274               	.LVL19:
+ 137:keyboards/Manuform6x6/matrix.c ****     for (uint8_t i=0; i < MATRIX_ROWS; i++) {
+ 275               		.loc 1 137 0 discriminator 2
+ 276 0090 80E0      		ldi r24,hi8(matrix+14)
+ 277 0092 E030      		cpi r30,lo8(matrix+14)
+ 278 0094 F807      		cpc r31,r24
+ 279 0096 01F4      		brne .L15
+ 280               	.LBE21:
+ 142:keyboards/Manuform6x6/matrix.c ****     matrix_init_quantum();
+ 281               		.loc 1 142 0
+ 282 0098 0C94 0000 		jmp matrix_init_quantum
+ 283               	.LVL20:
+ 284               		.cfi_endproc
+ 285               	.LFE15:
+ 287               		.section	.text._matrix_scan,"ax",@progbits
+ 288               	.global	_matrix_scan
+ 290               	_matrix_scan:
+ 291               	.LFB16:
+ 147:keyboards/Manuform6x6/matrix.c **** {
+ 292               		.loc 1 147 0
+ 293               		.cfi_startproc
+ 294 0000 2F92      		push r2
+ 295               	.LCFI0:
+ 296               		.cfi_def_cfa_offset 3
+ 297               		.cfi_offset 2, -2
+ 298 0002 3F92      		push r3
+ 299               	.LCFI1:
+ 300               		.cfi_def_cfa_offset 4
+ 301               		.cfi_offset 3, -3
+ 302 0004 4F92      		push r4
+ 303               	.LCFI2:
+ 304               		.cfi_def_cfa_offset 5
+ 305               		.cfi_offset 4, -4
+ 306 0006 5F92      		push r5
+ 307               	.LCFI3:
+ 308               		.cfi_def_cfa_offset 6
+ 309               		.cfi_offset 5, -5
+ 310 0008 6F92      		push r6
+ 311               	.LCFI4:
+ 312               		.cfi_def_cfa_offset 7
+ 313               		.cfi_offset 6, -6
+ 314 000a 7F92      		push r7
+ 315               	.LCFI5:
+ 316               		.cfi_def_cfa_offset 8
+ 317               		.cfi_offset 7, -7
+ 318 000c 8F92      		push r8
+ 319               	.LCFI6:
+ 320               		.cfi_def_cfa_offset 9
+ 321               		.cfi_offset 8, -8
+ 322 000e 9F92      		push r9
+ 323               	.LCFI7:
+ 324               		.cfi_def_cfa_offset 10
+ 325               		.cfi_offset 9, -9
+ 326 0010 AF92      		push r10
+ 327               	.LCFI8:
+ 328               		.cfi_def_cfa_offset 11
+ 329               		.cfi_offset 10, -10
+ 330 0012 BF92      		push r11
+ 331               	.LCFI9:
+ 332               		.cfi_def_cfa_offset 12
+ 333               		.cfi_offset 11, -11
+ 334 0014 CF92      		push r12
+ 335               	.LCFI10:
+ 336               		.cfi_def_cfa_offset 13
+ 337               		.cfi_offset 12, -12
+ 338 0016 DF92      		push r13
+ 339               	.LCFI11:
+ 340               		.cfi_def_cfa_offset 14
+ 341               		.cfi_offset 13, -13
+ 342 0018 EF92      		push r14
+ 343               	.LCFI12:
+ 344               		.cfi_def_cfa_offset 15
+ 345               		.cfi_offset 14, -14
+ 346 001a FF92      		push r15
+ 347               	.LCFI13:
+ 348               		.cfi_def_cfa_offset 16
+ 349               		.cfi_offset 15, -15
+ 350 001c 0F93      		push r16
+ 351               	.LCFI14:
+ 352               		.cfi_def_cfa_offset 17
+ 353               		.cfi_offset 16, -16
+ 354 001e 1F93      		push r17
+ 355               	.LCFI15:
+ 356               		.cfi_def_cfa_offset 18
+ 357               		.cfi_offset 17, -17
+ 358 0020 CF93      		push r28
+ 359               	.LCFI16:
+ 360               		.cfi_def_cfa_offset 19
+ 361               		.cfi_offset 28, -18
+ 362 0022 DF93      		push r29
+ 363               	.LCFI17:
+ 364               		.cfi_def_cfa_offset 20
+ 365               		.cfi_offset 29, -19
+ 366               	/* prologue: function */
+ 367               	/* frame size = 0 */
+ 368               	/* stack size = 18 */
+ 369               	.L__stack_usage = 18
+ 148:keyboards/Manuform6x6/matrix.c ****     int offset = isLeftHand ? 0 : (ROWS_PER_HAND);
+ 370               		.loc 1 148 0
+ 371 0024 8091 0000 		lds r24,isLeftHand
+ 372 0028 8823      		tst r24
+ 373 002a 01F0      		breq .L30
+ 374 002c 00E0      		ldi r16,0
+ 375 002e 10E0      		ldi r17,0
+ 376 0030 00C0      		rjmp .L18
+ 377               	.L30:
+ 378 0032 07E0      		ldi r16,lo8(7)
+ 379 0034 10E0      		ldi r17,0
+ 380               	.L18:
+ 381               	.LVL21:
+ 382 0036 90E0      		ldi r25,lo8(row_pins)
+ 383 0038 E92E      		mov r14,r25
+ 384 003a 90E0      		ldi r25,hi8(row_pins)
+ 385 003c F92E      		mov r15,r25
+ 386 003e A801      		movw r20,r16
+ 387 0040 4050      		subi r20,lo8(-(matrix_debouncing))
+ 388 0042 5040      		sbci r21,hi8(-(matrix_debouncing))
+ 389 0044 6A01      		movw r12,r20
+ 390 0046 EA01      		movw r28,r20
+ 391               	.LBB35:
+ 392               	.LBB36:
+ 393               	.LBB37:
+ 394               	.LBB38:
+ 395               	.LBB39:
+ 396               	.LBB40:
+ 370:keyboards/Manuform6x6/matrix.c ****     _SFR_IO8((pin >> 4) + 1) |=  _BV(pin & 0xF); // OUT
+ 397               		.loc 1 370 0 discriminator 3
+ 398 0048 AA24      		clr r10
+ 399 004a A394      		inc r10
+ 400 004c B12C      		mov r11,__zero_reg__
+ 401               	.LBE40:
+ 402               	.LBE39:
+ 403               	.LBE38:
+ 404               	.LBE37:
+ 156:keyboards/Manuform6x6/matrix.c ****                 debouncing = true;
+ 405               		.loc 1 156 0 discriminator 3
+ 406 004e 6624      		clr r6
+ 407 0050 6394      		inc r6
+ 158:keyboards/Manuform6x6/matrix.c ****                 PORTD ^= (1 << 2);
+ 408               		.loc 1 158 0 discriminator 3
+ 409 0052 34E0      		ldi r19,lo8(4)
+ 410 0054 732E      		mov r7,r19
+ 411               	.LVL22:
+ 412               	.L24:
+ 413 0056 4E01      		movw r8,r28
+ 414               	.LBB50:
+ 415               	.LBB49:
+ 341:keyboards/Manuform6x6/matrix.c ****     matrix_row_t last_row_value = current_matrix[current_row];
+ 416               		.loc 1 341 0
+ 417 0058 5880      		ld r5,Y
+ 418               	.LVL23:
+ 344:keyboards/Manuform6x6/matrix.c ****     current_matrix[current_row] = 0;
+ 419               		.loc 1 344 0
+ 420 005a 1882      		st Y,__zero_reg__
+ 421               	.LVL24:
+ 422               	.LBB42:
+ 423               	.LBB41:
+ 369:keyboards/Manuform6x6/matrix.c ****     uint8_t pin = row_pins[row];
+ 424               		.loc 1 369 0
+ 425 005c D701      		movw r26,r14
+ 426 005e 2D91      		ld r18,X+
+ 427 0060 7D01      		movw r14,r26
+ 428               	.LVL25:
+ 370:keyboards/Manuform6x6/matrix.c ****     _SFR_IO8((pin >> 4) + 1) |=  _BV(pin & 0xF); // OUT
+ 429               		.loc 1 370 0
+ 430 0062 E22F      		mov r30,r18
+ 431 0064 E295      		swap r30
+ 432 0066 EF70      		andi r30,lo8(15)
+ 433 0068 F0E0      		ldi r31,0
+ 434 006a 81A1      		ldd r24,Z+33
+ 435 006c 2F70      		andi r18,lo8(15)
+ 436               	.LVL26:
+ 437 006e A501      		movw r20,r10
+ 438 0070 00C0      		rjmp 2f
+ 439               		1:
+ 440 0072 440F      		lsl r20
+ 441 0074 551F      		rol r21
+ 442               		2:
+ 443 0076 2A95      		dec r18
+ 444 0078 02F4      		brpl 1b
+ 445 007a 9A01      		movw r18,r20
+ 446 007c 842B      		or r24,r20
+ 447 007e 81A3      		std Z+33,r24
+ 448               	.LVL27:
+ 371:keyboards/Manuform6x6/matrix.c ****     _SFR_IO8((pin >> 4) + 2) &= ~_BV(pin & 0xF); // LOW
+ 449               		.loc 1 371 0
+ 450 0080 82A1      		ldd r24,Z+34
+ 451 0082 442E      		mov r4,r20
+ 452 0084 4094      		com r4
+ 453 0086 8421      		and r24,r4
+ 454 0088 82A3      		std Z+34,r24
+ 455               	.LVL28:
+ 456               	.LBE41:
+ 457               	.LBE42:
+ 458               	.LBB43:
+ 459               	.LBB44:
+ 460               		.file 2 "/usr/lib/avr/include/util/delay.h"
+   1:/usr/lib/avr/include/util/delay.h **** /* Copyright (c) 2002, Marek Michalkiewicz
+   2:/usr/lib/avr/include/util/delay.h ****    Copyright (c) 2004,2005,2007 Joerg Wunsch
+   3:/usr/lib/avr/include/util/delay.h ****    Copyright (c) 2007  Florin-Viorel Petrov
+   4:/usr/lib/avr/include/util/delay.h ****    All rights reserved.
+   5:/usr/lib/avr/include/util/delay.h **** 
+   6:/usr/lib/avr/include/util/delay.h ****    Redistribution and use in source and binary forms, with or without
+   7:/usr/lib/avr/include/util/delay.h ****    modification, are permitted provided that the following conditions are met:
+   8:/usr/lib/avr/include/util/delay.h **** 
+   9:/usr/lib/avr/include/util/delay.h ****    * Redistributions of source code must retain the above copyright
+  10:/usr/lib/avr/include/util/delay.h ****      notice, this list of conditions and the following disclaimer.
+  11:/usr/lib/avr/include/util/delay.h **** 
+  12:/usr/lib/avr/include/util/delay.h ****    * Redistributions in binary form must reproduce the above copyright
+  13:/usr/lib/avr/include/util/delay.h ****      notice, this list of conditions and the following disclaimer in
+  14:/usr/lib/avr/include/util/delay.h ****      the documentation and/or other materials provided with the
+  15:/usr/lib/avr/include/util/delay.h ****      distribution.
+  16:/usr/lib/avr/include/util/delay.h **** 
+  17:/usr/lib/avr/include/util/delay.h ****    * Neither the name of the copyright holders nor the names of
+  18:/usr/lib/avr/include/util/delay.h ****      contributors may be used to endorse or promote products derived
+  19:/usr/lib/avr/include/util/delay.h ****      from this software without specific prior written permission.
+  20:/usr/lib/avr/include/util/delay.h **** 
+  21:/usr/lib/avr/include/util/delay.h ****   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  22:/usr/lib/avr/include/util/delay.h ****   AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  23:/usr/lib/avr/include/util/delay.h ****   IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+  24:/usr/lib/avr/include/util/delay.h ****   ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+  25:/usr/lib/avr/include/util/delay.h ****   LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+  26:/usr/lib/avr/include/util/delay.h ****   CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+  27:/usr/lib/avr/include/util/delay.h ****   SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+  28:/usr/lib/avr/include/util/delay.h ****   INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+  29:/usr/lib/avr/include/util/delay.h ****   CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+  30:/usr/lib/avr/include/util/delay.h ****   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  31:/usr/lib/avr/include/util/delay.h ****   POSSIBILITY OF SUCH DAMAGE. */
+  32:/usr/lib/avr/include/util/delay.h **** 
+  33:/usr/lib/avr/include/util/delay.h **** /* $Id: delay.h.in 2251 2011-09-14 08:20:33Z joerg_wunsch $ */
+  34:/usr/lib/avr/include/util/delay.h **** 
+  35:/usr/lib/avr/include/util/delay.h **** #ifndef _UTIL_DELAY_H_
+  36:/usr/lib/avr/include/util/delay.h **** #define _UTIL_DELAY_H_ 1
+  37:/usr/lib/avr/include/util/delay.h **** 
+  38:/usr/lib/avr/include/util/delay.h **** #ifndef __HAS_DELAY_CYCLES
+  39:/usr/lib/avr/include/util/delay.h **** #define __HAS_DELAY_CYCLES 1
+  40:/usr/lib/avr/include/util/delay.h **** #endif
+  41:/usr/lib/avr/include/util/delay.h **** 
+  42:/usr/lib/avr/include/util/delay.h **** #include <inttypes.h>
+  43:/usr/lib/avr/include/util/delay.h **** #include <util/delay_basic.h>
+  44:/usr/lib/avr/include/util/delay.h **** #include <math.h>
+  45:/usr/lib/avr/include/util/delay.h **** 
+  46:/usr/lib/avr/include/util/delay.h **** /** \file */
+  47:/usr/lib/avr/include/util/delay.h **** /** \defgroup util_delay <util/delay.h>: Convenience functions for busy-wait delay loops
+  48:/usr/lib/avr/include/util/delay.h ****     \code
+  49:/usr/lib/avr/include/util/delay.h ****     #define F_CPU 1000000UL  // 1 MHz
+  50:/usr/lib/avr/include/util/delay.h ****     //#define F_CPU 14.7456E6
+  51:/usr/lib/avr/include/util/delay.h ****     #include <util/delay.h>
+  52:/usr/lib/avr/include/util/delay.h ****     \endcode
+  53:/usr/lib/avr/include/util/delay.h **** 
+  54:/usr/lib/avr/include/util/delay.h ****     \note As an alternative method, it is possible to pass the
+  55:/usr/lib/avr/include/util/delay.h ****     F_CPU macro down to the compiler from the Makefile.
+  56:/usr/lib/avr/include/util/delay.h ****     Obviously, in that case, no \c \#define statement should be
+  57:/usr/lib/avr/include/util/delay.h ****     used.
+  58:/usr/lib/avr/include/util/delay.h **** 
+  59:/usr/lib/avr/include/util/delay.h ****     The functions in this header file are wrappers around the basic
+  60:/usr/lib/avr/include/util/delay.h ****     busy-wait functions from <util/delay_basic.h>.  They are meant as
+  61:/usr/lib/avr/include/util/delay.h ****     convenience functions where actual time values can be specified
+  62:/usr/lib/avr/include/util/delay.h ****     rather than a number of cycles to wait for.  The idea behind is
+  63:/usr/lib/avr/include/util/delay.h ****     that compile-time constant expressions will be eliminated by
+  64:/usr/lib/avr/include/util/delay.h ****     compiler optimization so floating-point expressions can be used
+  65:/usr/lib/avr/include/util/delay.h ****     to calculate the number of delay cycles needed based on the CPU
+  66:/usr/lib/avr/include/util/delay.h ****     frequency passed by the macro F_CPU.
+  67:/usr/lib/avr/include/util/delay.h **** 
+  68:/usr/lib/avr/include/util/delay.h ****     \note In order for these functions to work as intended, compiler
+  69:/usr/lib/avr/include/util/delay.h ****     optimizations <em>must</em> be enabled, and the delay time
+  70:/usr/lib/avr/include/util/delay.h ****     <em>must</em> be an expression that is a known constant at
+  71:/usr/lib/avr/include/util/delay.h ****     compile-time.  If these requirements are not met, the resulting
+  72:/usr/lib/avr/include/util/delay.h ****     delay will be much longer (and basically unpredictable), and
+  73:/usr/lib/avr/include/util/delay.h ****     applications that otherwise do not use floating-point calculations
+  74:/usr/lib/avr/include/util/delay.h ****     will experience severe code bloat by the floating-point library
+  75:/usr/lib/avr/include/util/delay.h ****     routines linked into the application.
+  76:/usr/lib/avr/include/util/delay.h **** 
+  77:/usr/lib/avr/include/util/delay.h ****     The functions available allow the specification of microsecond, and
+  78:/usr/lib/avr/include/util/delay.h ****     millisecond delays directly, using the application-supplied macro
+  79:/usr/lib/avr/include/util/delay.h ****     F_CPU as the CPU clock frequency (in Hertz).
+  80:/usr/lib/avr/include/util/delay.h **** 
+  81:/usr/lib/avr/include/util/delay.h **** */
+  82:/usr/lib/avr/include/util/delay.h **** 
+  83:/usr/lib/avr/include/util/delay.h **** #if !defined(__DOXYGEN__)
+  84:/usr/lib/avr/include/util/delay.h **** static inline void _delay_us(double __us) __attribute__((always_inline));
+  85:/usr/lib/avr/include/util/delay.h **** static inline void _delay_ms(double __ms) __attribute__((always_inline));
+  86:/usr/lib/avr/include/util/delay.h **** #endif
+  87:/usr/lib/avr/include/util/delay.h **** 
+  88:/usr/lib/avr/include/util/delay.h **** #ifndef F_CPU
+  89:/usr/lib/avr/include/util/delay.h **** /* prevent compiler error by supplying a default */
+  90:/usr/lib/avr/include/util/delay.h **** # warning "F_CPU not defined for <util/delay.h>"
+  91:/usr/lib/avr/include/util/delay.h **** # define F_CPU 1000000UL
+  92:/usr/lib/avr/include/util/delay.h **** #endif
+  93:/usr/lib/avr/include/util/delay.h **** 
+  94:/usr/lib/avr/include/util/delay.h **** #ifndef __OPTIMIZE__
+  95:/usr/lib/avr/include/util/delay.h **** # warning "Compiler optimizations disabled; functions from <util/delay.h> won't work as designed"
+  96:/usr/lib/avr/include/util/delay.h **** #endif
+  97:/usr/lib/avr/include/util/delay.h **** 
+  98:/usr/lib/avr/include/util/delay.h **** #if __HAS_DELAY_CYCLES && defined(__OPTIMIZE__) && \
+  99:/usr/lib/avr/include/util/delay.h ****   !defined(__DELAY_BACKWARD_COMPATIBLE__) &&	   \
+ 100:/usr/lib/avr/include/util/delay.h ****   __STDC_HOSTED__
+ 101:/usr/lib/avr/include/util/delay.h **** #  include <math.h>
+ 102:/usr/lib/avr/include/util/delay.h **** #endif
+ 103:/usr/lib/avr/include/util/delay.h **** 
+ 104:/usr/lib/avr/include/util/delay.h **** /**
+ 105:/usr/lib/avr/include/util/delay.h ****    \ingroup util_delay
+ 106:/usr/lib/avr/include/util/delay.h **** 
+ 107:/usr/lib/avr/include/util/delay.h ****    Perform a delay of \c __ms milliseconds, using _delay_loop_2().
+ 108:/usr/lib/avr/include/util/delay.h **** 
+ 109:/usr/lib/avr/include/util/delay.h ****    The macro F_CPU is supposed to be defined to a
+ 110:/usr/lib/avr/include/util/delay.h ****    constant defining the CPU clock frequency (in Hertz).
+ 111:/usr/lib/avr/include/util/delay.h **** 
+ 112:/usr/lib/avr/include/util/delay.h ****    The maximal possible delay is 262.14 ms / F_CPU in MHz.
+ 113:/usr/lib/avr/include/util/delay.h **** 
+ 114:/usr/lib/avr/include/util/delay.h ****    When the user request delay which exceed the maximum possible one,
+ 115:/usr/lib/avr/include/util/delay.h ****    _delay_ms() provides a decreased resolution functionality. In this
+ 116:/usr/lib/avr/include/util/delay.h ****    mode _delay_ms() will work with a resolution of 1/10 ms, providing
+ 117:/usr/lib/avr/include/util/delay.h ****    delays up to 6.5535 seconds (independent from CPU frequency).  The
+ 118:/usr/lib/avr/include/util/delay.h ****    user will not be informed about decreased resolution.
+ 119:/usr/lib/avr/include/util/delay.h **** 
+ 120:/usr/lib/avr/include/util/delay.h ****    If the avr-gcc toolchain has __builtin_avr_delay_cycles(unsigned long)
+ 121:/usr/lib/avr/include/util/delay.h ****    support, maximal possible delay is 4294967.295 ms/ F_CPU in MHz. For
+ 122:/usr/lib/avr/include/util/delay.h ****    values greater than the maximal possible delay, overflows results in
+ 123:/usr/lib/avr/include/util/delay.h ****    no delay i.e., 0ms.
+ 124:/usr/lib/avr/include/util/delay.h **** 
+ 125:/usr/lib/avr/include/util/delay.h ****    Conversion of __us into clock cycles may not always result in integer.
+ 126:/usr/lib/avr/include/util/delay.h ****    By default, the clock cycles rounded up to next integer. This ensures that
+ 127:/usr/lib/avr/include/util/delay.h ****    the user gets atleast __us microseconds of delay.
+ 128:/usr/lib/avr/include/util/delay.h **** 
+ 129:/usr/lib/avr/include/util/delay.h ****    Alternatively, user can define __DELAY_ROUND_DOWN__ and __DELAY_ROUND_CLOSEST__
+ 130:/usr/lib/avr/include/util/delay.h ****    to round down and round to closest integer.
+ 131:/usr/lib/avr/include/util/delay.h **** 
+ 132:/usr/lib/avr/include/util/delay.h ****    Note: The new implementation of _delay_ms(double __ms) with 
+ 133:/usr/lib/avr/include/util/delay.h ****     __builtin_avr_delay_cycles(unsigned long) support is not backward compatible. 
+ 134:/usr/lib/avr/include/util/delay.h ****    User can define __DELAY_BACKWARD_COMPATIBLE__ to get a backward compatible delay.
+ 135:/usr/lib/avr/include/util/delay.h ****    Also, the backward compatible
+ 136:/usr/lib/avr/include/util/delay.h ****    algorithm will be chosen if the code is compiled in a <em>freestanding
+ 137:/usr/lib/avr/include/util/delay.h ****    environment</em> (GCC option \c -ffreestanding), as the math functions
+ 138:/usr/lib/avr/include/util/delay.h ****    required for rounding are not available to the compiler then.
+ 139:/usr/lib/avr/include/util/delay.h **** 
+ 140:/usr/lib/avr/include/util/delay.h ****  */
+ 141:/usr/lib/avr/include/util/delay.h **** void
+ 142:/usr/lib/avr/include/util/delay.h **** _delay_ms(double __ms)
+ 143:/usr/lib/avr/include/util/delay.h **** {
+ 144:/usr/lib/avr/include/util/delay.h **** 	uint16_t __ticks;
+ 145:/usr/lib/avr/include/util/delay.h **** 	double __tmp ; 
+ 146:/usr/lib/avr/include/util/delay.h **** #if __HAS_DELAY_CYCLES && defined(__OPTIMIZE__) && \
+ 147:/usr/lib/avr/include/util/delay.h ****   !defined(__DELAY_BACKWARD_COMPATIBLE__) &&	   \
+ 148:/usr/lib/avr/include/util/delay.h ****   __STDC_HOSTED__
+ 149:/usr/lib/avr/include/util/delay.h **** 	uint32_t __ticks_dc;
+ 150:/usr/lib/avr/include/util/delay.h **** 	extern void __builtin_avr_delay_cycles(unsigned long);
+ 151:/usr/lib/avr/include/util/delay.h **** 	__tmp = ((F_CPU) / 1e3) * __ms;
+ 152:/usr/lib/avr/include/util/delay.h **** 
+ 153:/usr/lib/avr/include/util/delay.h **** 	#if defined(__DELAY_ROUND_DOWN__)
+ 154:/usr/lib/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)fabs(__tmp);
+ 155:/usr/lib/avr/include/util/delay.h **** 
+ 156:/usr/lib/avr/include/util/delay.h **** 	#elif defined(__DELAY_ROUND_CLOSEST__)
+ 157:/usr/lib/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)(fabs(__tmp)+0.5);
+ 158:/usr/lib/avr/include/util/delay.h **** 
+ 159:/usr/lib/avr/include/util/delay.h **** 	#else
+ 160:/usr/lib/avr/include/util/delay.h **** 		//round up by default
+ 161:/usr/lib/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+ 162:/usr/lib/avr/include/util/delay.h **** 	#endif
+ 163:/usr/lib/avr/include/util/delay.h **** 
+ 164:/usr/lib/avr/include/util/delay.h **** 	__builtin_avr_delay_cycles(__ticks_dc);
+ 165:/usr/lib/avr/include/util/delay.h **** 
+ 166:/usr/lib/avr/include/util/delay.h **** #else
+ 167:/usr/lib/avr/include/util/delay.h **** 	__tmp = ((F_CPU) / 4e3) * __ms;
+ 168:/usr/lib/avr/include/util/delay.h **** 	if (__tmp < 1.0)
+ 169:/usr/lib/avr/include/util/delay.h **** 		__ticks = 1;
+ 170:/usr/lib/avr/include/util/delay.h **** 	else if (__tmp > 65535)
+ 171:/usr/lib/avr/include/util/delay.h **** 	{
+ 172:/usr/lib/avr/include/util/delay.h **** 		//	__ticks = requested delay in 1/10 ms
+ 173:/usr/lib/avr/include/util/delay.h **** 		__ticks = (uint16_t) (__ms * 10.0);
+ 174:/usr/lib/avr/include/util/delay.h **** 		while(__ticks)
+ 175:/usr/lib/avr/include/util/delay.h **** 		{
+ 176:/usr/lib/avr/include/util/delay.h **** 			// wait 1/10 ms
+ 177:/usr/lib/avr/include/util/delay.h **** 			_delay_loop_2(((F_CPU) / 4e3) / 10);
+ 178:/usr/lib/avr/include/util/delay.h **** 			__ticks --;
+ 179:/usr/lib/avr/include/util/delay.h **** 		}
+ 180:/usr/lib/avr/include/util/delay.h **** 		return;
+ 181:/usr/lib/avr/include/util/delay.h **** 	}
+ 182:/usr/lib/avr/include/util/delay.h **** 	else
+ 183:/usr/lib/avr/include/util/delay.h **** 		__ticks = (uint16_t)__tmp;
+ 184:/usr/lib/avr/include/util/delay.h **** 	_delay_loop_2(__ticks);
+ 185:/usr/lib/avr/include/util/delay.h **** #endif
+ 186:/usr/lib/avr/include/util/delay.h **** }
+ 187:/usr/lib/avr/include/util/delay.h **** 
+ 188:/usr/lib/avr/include/util/delay.h **** /**
+ 189:/usr/lib/avr/include/util/delay.h ****    \ingroup util_delay
+ 190:/usr/lib/avr/include/util/delay.h **** 
+ 191:/usr/lib/avr/include/util/delay.h ****    Perform a delay of \c __us microseconds, using _delay_loop_1().
+ 192:/usr/lib/avr/include/util/delay.h **** 
+ 193:/usr/lib/avr/include/util/delay.h ****    The macro F_CPU is supposed to be defined to a
+ 194:/usr/lib/avr/include/util/delay.h ****    constant defining the CPU clock frequency (in Hertz).
+ 195:/usr/lib/avr/include/util/delay.h **** 
+ 196:/usr/lib/avr/include/util/delay.h ****    The maximal possible delay is 768 us / F_CPU in MHz.
+ 197:/usr/lib/avr/include/util/delay.h **** 
+ 198:/usr/lib/avr/include/util/delay.h ****    If the user requests a delay greater than the maximal possible one,
+ 199:/usr/lib/avr/include/util/delay.h ****    _delay_us() will automatically call _delay_ms() instead.  The user
+ 200:/usr/lib/avr/include/util/delay.h ****    will not be informed about this case.
+ 201:/usr/lib/avr/include/util/delay.h **** 
+ 202:/usr/lib/avr/include/util/delay.h ****    If the avr-gcc toolchain has __builtin_avr_delay_cycles(unsigned long)
+ 203:/usr/lib/avr/include/util/delay.h ****    support, maximal possible delay is 4294967.295 us/ F_CPU in MHz. For
+ 204:/usr/lib/avr/include/util/delay.h ****    values greater than the maximal possible delay, overflow results in
+ 205:/usr/lib/avr/include/util/delay.h ****    no delay i.e., 0us.
+ 206:/usr/lib/avr/include/util/delay.h ****   
+ 207:/usr/lib/avr/include/util/delay.h ****    Conversion of __us into clock cycles may not always result in integer.
+ 208:/usr/lib/avr/include/util/delay.h ****    By default, the clock cycles rounded up to next integer. This ensures that
+ 209:/usr/lib/avr/include/util/delay.h ****    the user gets atleast __us microseconds of delay.
+ 210:/usr/lib/avr/include/util/delay.h **** 
+ 211:/usr/lib/avr/include/util/delay.h ****    Alternatively, user can define __DELAY_ROUND_DOWN__ and __DELAY_ROUND_CLOSEST__
+ 212:/usr/lib/avr/include/util/delay.h ****    to round down and round to closest integer.
+ 213:/usr/lib/avr/include/util/delay.h ****  
+ 214:/usr/lib/avr/include/util/delay.h ****    Note: The new implementation of _delay_us(double __us) with 
+ 215:/usr/lib/avr/include/util/delay.h ****     __builtin_avr_delay_cycles(unsigned long) support is not backward compatible.
+ 216:/usr/lib/avr/include/util/delay.h ****    User can define __DELAY_BACKWARD_COMPATIBLE__ to get a backward compatible delay.
+ 217:/usr/lib/avr/include/util/delay.h ****    Also, the backward compatible
+ 218:/usr/lib/avr/include/util/delay.h ****    algorithm will be chosen if the code is compiled in a <em>freestanding
+ 219:/usr/lib/avr/include/util/delay.h ****    environment</em> (GCC option \c -ffreestanding), as the math functions
+ 220:/usr/lib/avr/include/util/delay.h ****    required for rounding are not available to the compiler then.
+ 221:/usr/lib/avr/include/util/delay.h **** 
+ 222:/usr/lib/avr/include/util/delay.h ****  */
+ 223:/usr/lib/avr/include/util/delay.h **** void
+ 224:/usr/lib/avr/include/util/delay.h **** _delay_us(double __us)
+ 225:/usr/lib/avr/include/util/delay.h **** {
+ 226:/usr/lib/avr/include/util/delay.h **** 	uint8_t __ticks;
+ 227:/usr/lib/avr/include/util/delay.h **** 	double __tmp ; 
+ 228:/usr/lib/avr/include/util/delay.h **** #if __HAS_DELAY_CYCLES && defined(__OPTIMIZE__) && \
+ 229:/usr/lib/avr/include/util/delay.h ****   !defined(__DELAY_BACKWARD_COMPATIBLE__) &&	   \
+ 230:/usr/lib/avr/include/util/delay.h ****   __STDC_HOSTED__
+ 231:/usr/lib/avr/include/util/delay.h **** 	uint32_t __ticks_dc;
+ 232:/usr/lib/avr/include/util/delay.h **** 	extern void __builtin_avr_delay_cycles(unsigned long);
+ 233:/usr/lib/avr/include/util/delay.h **** 	__tmp = ((F_CPU) / 1e6) * __us;
+ 234:/usr/lib/avr/include/util/delay.h **** 
+ 235:/usr/lib/avr/include/util/delay.h **** 	#if defined(__DELAY_ROUND_DOWN__)
+ 236:/usr/lib/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)fabs(__tmp);
+ 237:/usr/lib/avr/include/util/delay.h **** 
+ 238:/usr/lib/avr/include/util/delay.h **** 	#elif defined(__DELAY_ROUND_CLOSEST__)
+ 239:/usr/lib/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)(fabs(__tmp)+0.5);
+ 240:/usr/lib/avr/include/util/delay.h **** 
+ 241:/usr/lib/avr/include/util/delay.h **** 	#else
+ 242:/usr/lib/avr/include/util/delay.h **** 		//round up by default
+ 243:/usr/lib/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+ 244:/usr/lib/avr/include/util/delay.h **** 	#endif
+ 245:/usr/lib/avr/include/util/delay.h **** 
+ 246:/usr/lib/avr/include/util/delay.h **** 	__builtin_avr_delay_cycles(__ticks_dc);
+ 461               		.loc 2 246 0
+ 462 008a 50EA      		ldi r21,lo8(-96)
+ 463 008c 5A95      		1: dec r21
+ 464 008e 01F4      		brne 1b
+ 465               	.LVL29:
+ 466 0090 80E0      		ldi r24,lo8(col_pins)
+ 467 0092 282E      		mov r2,r24
+ 468 0094 80E0      		ldi r24,hi8(col_pins)
+ 469 0096 382E      		mov r3,r24
+ 470 0098 80E0      		ldi r24,0
+ 471 009a 90E0      		ldi r25,0
+ 472               	.LVL30:
+ 473               	.L21:
+ 474               	.LBE44:
+ 475               	.LBE43:
+ 476               	.LBB45:
+ 477               	.LBB46:
+ 354:keyboards/Manuform6x6/matrix.c ****         uint8_t pin = col_pins[col_index];
+ 478               		.loc 1 354 0
+ 479 009c D101      		movw r26,r2
+ 480 009e 5D91      		ld r21,X+
+ 481 00a0 1D01      		movw r2,r26
+ 482               	.LVL31:
+ 355:keyboards/Manuform6x6/matrix.c ****         uint8_t pin_state = (_SFR_IO8(pin >> 4) & _BV(pin & 0xF));
+ 483               		.loc 1 355 0
+ 484 00a2 652F      		mov r22,r21
+ 485 00a4 6295      		swap r22
+ 486 00a6 6F70      		andi r22,lo8(15)
+ 487 00a8 70E0      		ldi r23,0
+ 488 00aa DB01      		movw r26,r22
+ 489 00ac 9096      		adiw r26,32
+ 490 00ae 6C91      		ld r22,X
+ 491               	.LVL32:
+ 358:keyboards/Manuform6x6/matrix.c ****         current_matrix[current_row] |=  pin_state ? 0 : (ROW_SHIFTER << col_index);
+ 492               		.loc 1 358 0
+ 493 00b0 7881      		ld r23,Y
+ 355:keyboards/Manuform6x6/matrix.c ****         uint8_t pin_state = (_SFR_IO8(pin >> 4) & _BV(pin & 0xF));
+ 494               		.loc 1 355 0
+ 495 00b2 5F70      		andi r21,lo8(15)
+ 496               	.LVL33:
+ 497 00b4 D501      		movw r26,r10
+ 498 00b6 00C0      		rjmp 2f
+ 499               		1:
+ 500 00b8 AA0F      		lsl r26
+ 501 00ba BB1F      		rol r27
+ 502               		2:
+ 503 00bc 5A95      		dec r21
+ 504 00be 02F4      		brpl 1b
+ 505 00c0 6A23      		and r22,r26
+ 506               	.LVL34:
+ 358:keyboards/Manuform6x6/matrix.c ****         current_matrix[current_row] |=  pin_state ? 0 : (ROW_SHIFTER << col_index);
+ 507               		.loc 1 358 0
+ 508 00c2 01F4      		brne .L31
+ 509 00c4 4A2D      		mov r20,r10
+ 510 00c6 082E      		mov r0,r24
+ 511 00c8 00C0      		rjmp 2f
+ 512               		1:
+ 513 00ca 440F      		lsl r20
+ 514               		2:
+ 515 00cc 0A94      		dec r0
+ 516 00ce 02F4      		brpl 1b
+ 517 00d0 00C0      		rjmp .L19
+ 518               	.L31:
+ 519 00d2 40E0      		ldi r20,0
+ 520               	.L19:
+ 521 00d4 472B      		or r20,r23
+ 522 00d6 4883      		st Y,r20
+ 523               	.LVL35:
+ 524 00d8 0196      		adiw r24,1
+ 525               	.LVL36:
+ 526               	.LBE46:
+ 351:keyboards/Manuform6x6/matrix.c ****     for(uint8_t col_index = 0; col_index < MATRIX_COLS; col_index++) {
+ 527               		.loc 1 351 0
+ 528 00da 8630      		cpi r24,6
+ 529 00dc 9105      		cpc r25,__zero_reg__
+ 530 00de 01F4      		brne .L21
+ 531               	.LVL37:
+ 532               	.LBE45:
+ 533               	.LBB47:
+ 534               	.LBB48:
+ 377:keyboards/Manuform6x6/matrix.c ****     _SFR_IO8((pin >> 4) + 1) &= ~_BV(pin & 0xF); // IN
+ 535               		.loc 1 377 0
+ 536 00e0 81A1      		ldd r24,Z+33
+ 537               	.LVL38:
+ 538 00e2 8421      		and r24,r4
+ 539 00e4 81A3      		std Z+33,r24
+ 540               	.LVL39:
+ 378:keyboards/Manuform6x6/matrix.c ****     _SFR_IO8((pin >> 4) + 2) |=  _BV(pin & 0xF); // HI
+ 541               		.loc 1 378 0
+ 542 00e6 82A1      		ldd r24,Z+34
+ 543 00e8 822B      		or r24,r18
+ 544 00ea 82A3      		std Z+34,r24
+ 545 00ec 2196      		adiw r28,1
+ 546               	.LBE48:
+ 547               	.LBE47:
+ 548               	.LBE49:
+ 549               	.LBE50:
+ 155:keyboards/Manuform6x6/matrix.c ****             if (matrix_changed) {
+ 550               		.loc 1 155 0
+ 551 00ee F401      		movw r30,r8
+ 552 00f0 8081      		ld r24,Z
+ 553 00f2 5816      		cp r5,r24
+ 554 00f4 01F0      		breq .L22
+ 156:keyboards/Manuform6x6/matrix.c ****                 debouncing = true;
+ 555               		.loc 1 156 0
+ 556 00f6 6092 0000 		sts debouncing,r6
+ 157:keyboards/Manuform6x6/matrix.c ****                 debouncing_time = timer_read();
+ 557               		.loc 1 157 0
+ 558 00fa 0E94 0000 		call timer_read
+ 559               	.LVL40:
+ 560 00fe 9093 0000 		sts debouncing_time+1,r25
+ 561 0102 8093 0000 		sts debouncing_time,r24
+ 158:keyboards/Manuform6x6/matrix.c ****                 PORTD ^= (1 << 2);
+ 562               		.loc 1 158 0
+ 563 0106 8BB1      		in r24,0xb
+ 564 0108 8725      		eor r24,r7
+ 565 010a 8BB9      		out 0xb,r24
+ 566               	.L22:
+ 567               	.LBE36:
+ 151:keyboards/Manuform6x6/matrix.c ****     for (uint8_t current_row = 0; current_row < ROWS_PER_HAND; current_row++) {
+ 568               		.loc 1 151 0
+ 569 010c F0E0      		ldi r31,lo8(row_pins+7)
+ 570 010e EF16      		cp r14,r31
+ 571 0110 F0E0      		ldi r31,hi8(row_pins+7)
+ 572 0112 FF06      		cpc r15,r31
+ 573 0114 01F0      		breq .+2
+ 574 0116 00C0      		rjmp .L24
+ 575               	.LBE35:
+ 184:keyboards/Manuform6x6/matrix.c ****         if (debouncing && (timer_elapsed(debouncing_time) > DEBOUNCING_DELAY)) {
+ 576               		.loc 1 184 0
+ 577 0118 8091 0000 		lds r24,debouncing
+ 578 011c 8823      		tst r24
+ 579 011e 01F0      		breq .L26
+ 184:keyboards/Manuform6x6/matrix.c ****         if (debouncing && (timer_elapsed(debouncing_time) > DEBOUNCING_DELAY)) {
+ 580               		.loc 1 184 0 is_stmt 0 discriminator 1
+ 581 0120 8091 0000 		lds r24,debouncing_time
+ 582 0124 9091 0000 		lds r25,debouncing_time+1
+ 583 0128 0E94 0000 		call timer_elapsed
+ 584               	.LVL41:
+ 585 012c 0697      		sbiw r24,6
+ 586 012e 00F0      		brlo .L26
+ 184:keyboards/Manuform6x6/matrix.c ****         if (debouncing && (timer_elapsed(debouncing_time) > DEBOUNCING_DELAY)) {
+ 587               		.loc 1 184 0
+ 588 0130 80E0      		ldi r24,0
+ 589 0132 90E0      		ldi r25,0
+ 590 0134 0050      		subi r16,lo8(-(matrix))
+ 591 0136 1040      		sbci r17,hi8(-(matrix))
+ 592               	.L29:
+ 593               	.LVL42:
+ 594 0138 F801      		movw r30,r16
+ 595 013a E80F      		add r30,r24
+ 596 013c F91F      		adc r31,r25
+ 597 013e D601      		movw r26,r12
+ 598 0140 A80F      		add r26,r24
+ 599 0142 B91F      		adc r27,r25
+ 600               	.LBB51:
+ 186:keyboards/Manuform6x6/matrix.c ****                 matrix[i+offset] = matrix_debouncing[i+offset];
+ 601               		.loc 1 186 0 is_stmt 1 discriminator 2
+ 602 0144 2C91      		ld r18,X
+ 603 0146 2083      		st Z,r18
+ 604               	.LVL43:
+ 605 0148 0196      		adiw r24,1
+ 606               	.LVL44:
+ 185:keyboards/Manuform6x6/matrix.c ****             for (uint8_t i = 0; i < ROWS_PER_HAND; i++) {
+ 607               		.loc 1 185 0 discriminator 2
+ 608 014a 8730      		cpi r24,7
+ 609 014c 9105      		cpc r25,__zero_reg__
+ 610 014e 01F4      		brne .L29
+ 611               	.LBE51:
+ 188:keyboards/Manuform6x6/matrix.c ****             debouncing = false;
+ 612               		.loc 1 188 0
+ 613 0150 1092 0000 		sts debouncing,__zero_reg__
+ 614               	.LVL45:
+ 615               	.L26:
+ 193:keyboards/Manuform6x6/matrix.c **** }
+ 616               		.loc 1 193 0
+ 617 0154 81E0      		ldi r24,lo8(1)
+ 618               	/* epilogue start */
+ 619 0156 DF91      		pop r29
+ 620 0158 CF91      		pop r28
+ 621 015a 1F91      		pop r17
+ 622 015c 0F91      		pop r16
+ 623 015e FF90      		pop r15
+ 624 0160 EF90      		pop r14
+ 625 0162 DF90      		pop r13
+ 626 0164 CF90      		pop r12
+ 627               	.LVL46:
+ 628 0166 BF90      		pop r11
+ 629 0168 AF90      		pop r10
+ 630 016a 9F90      		pop r9
+ 631 016c 8F90      		pop r8
+ 632 016e 7F90      		pop r7
+ 633 0170 6F90      		pop r6
+ 634 0172 5F90      		pop r5
+ 635               	.LVL47:
+ 636 0174 4F90      		pop r4
+ 637 0176 3F90      		pop r3
+ 638 0178 2F90      		pop r2
+ 639 017a 0895      		ret
+ 640               		.cfi_endproc
+ 641               	.LFE16:
+ 643               		.section	.text.serial_transaction,"ax",@progbits
+ 644               	.global	serial_transaction
+ 646               	serial_transaction:
+ 647               	.LFB17:
+ 230:keyboards/Manuform6x6/matrix.c **** int serial_transaction(void) {
+ 648               		.loc 1 230 0
+ 649               		.cfi_startproc
+ 650 0000 CF93      		push r28
+ 651               	.LCFI18:
+ 652               		.cfi_def_cfa_offset 3
+ 653               		.cfi_offset 28, -2
+ 654 0002 DF93      		push r29
+ 655               	.LCFI19:
+ 656               		.cfi_def_cfa_offset 4
+ 657               		.cfi_offset 29, -3
+ 658               	/* prologue: function */
+ 659               	/* frame size = 0 */
+ 660               	/* stack size = 2 */
+ 661               	.L__stack_usage = 2
+ 231:keyboards/Manuform6x6/matrix.c ****     int slaveOffset = (isLeftHand) ? (ROWS_PER_HAND) : 0;
+ 662               		.loc 1 231 0
+ 663 0004 8091 0000 		lds r24,isLeftHand
+ 664 0008 8823      		tst r24
+ 665 000a 01F0      		breq .L36
+ 666 000c C7E0      		ldi r28,lo8(7)
+ 667 000e D0E0      		ldi r29,0
+ 668 0010 00C0      		rjmp .L33
+ 669               	.L36:
+ 670 0012 C0E0      		ldi r28,0
+ 671 0014 D0E0      		ldi r29,0
+ 672               	.L33:
+ 673               	.LVL48:
+ 233:keyboards/Manuform6x6/matrix.c ****     if (serial_update_buffers()) {
+ 674               		.loc 1 233 0 discriminator 3
+ 675 0016 0E94 0000 		call serial_update_buffers
+ 676               	.LVL49:
+ 677 001a 0097      		sbiw r24,0
+ 678 001c 01F4      		brne .L37
+ 233:keyboards/Manuform6x6/matrix.c ****     if (serial_update_buffers()) {
+ 679               		.loc 1 233 0 is_stmt 0
+ 680 001e 20E0      		ldi r18,0
+ 681 0020 30E0      		ldi r19,0
+ 682 0022 C050      		subi r28,lo8(-(matrix))
+ 683 0024 D040      		sbci r29,hi8(-(matrix))
+ 684               	.LVL50:
+ 685               	.L35:
+ 686               	.LBB52:
+ 238:keyboards/Manuform6x6/matrix.c ****         matrix[slaveOffset+i] = serial_slave_buffer[i];
+ 687               		.loc 1 238 0 is_stmt 1 discriminator 2
+ 688 0026 F901      		movw r30,r18
+ 689 0028 E050      		subi r30,lo8(-(serial_slave_buffer))
+ 690 002a F040      		sbci r31,hi8(-(serial_slave_buffer))
+ 691 002c 4081      		ld r20,Z
+ 692 002e FE01      		movw r30,r28
+ 693 0030 E20F      		add r30,r18
+ 694 0032 F31F      		adc r31,r19
+ 695 0034 4083      		st Z,r20
+ 237:keyboards/Manuform6x6/matrix.c ****     for (int i = 0; i < ROWS_PER_HAND; ++i) {
+ 696               		.loc 1 237 0 discriminator 2
+ 697 0036 2F5F      		subi r18,-1
+ 698 0038 3F4F      		sbci r19,-1
+ 699               	.LVL51:
+ 700 003a 2730      		cpi r18,7
+ 701 003c 3105      		cpc r19,__zero_reg__
+ 702 003e 01F4      		brne .L35
+ 703 0040 00C0      		rjmp .L34
+ 704               	.LVL52:
+ 705               	.L37:
+ 706               	.LBE52:
+ 234:keyboards/Manuform6x6/matrix.c ****         return 1;
+ 707               		.loc 1 234 0
+ 708 0042 81E0      		ldi r24,lo8(1)
+ 709 0044 90E0      		ldi r25,0
+ 710               	.LVL53:
+ 711               	.L34:
+ 712               	/* epilogue start */
+ 241:keyboards/Manuform6x6/matrix.c **** }
+ 713               		.loc 1 241 0
+ 714 0046 DF91      		pop r29
+ 715 0048 CF91      		pop r28
+ 716 004a 0895      		ret
+ 717               		.cfi_endproc
+ 718               	.LFE17:
+ 720               		.section	.text.matrix_scan,"ax",@progbits
+ 721               	.global	matrix_scan
+ 723               	matrix_scan:
+ 724               	.LFB18:
+ 245:keyboards/Manuform6x6/matrix.c **** {
+ 725               		.loc 1 245 0
+ 726               		.cfi_startproc
+ 727 0000 CF93      		push r28
+ 728               	.LCFI20:
+ 729               		.cfi_def_cfa_offset 3
+ 730               		.cfi_offset 28, -2
+ 731               	/* prologue: function */
+ 732               	/* frame size = 0 */
+ 733               	/* stack size = 1 */
+ 734               	.L__stack_usage = 1
+ 246:keyboards/Manuform6x6/matrix.c ****     uint8_t ret = _matrix_scan();
+ 735               		.loc 1 246 0
+ 736 0002 0E94 0000 		call _matrix_scan
+ 737               	.LVL54:
+ 738 0006 C82F      		mov r28,r24
+ 739               	.LVL55:
+ 251:keyboards/Manuform6x6/matrix.c ****     if( serial_transaction() ) {
+ 740               		.loc 1 251 0
+ 741 0008 0E94 0000 		call serial_transaction
+ 742               	.LVL56:
+ 743 000c 892B      		or r24,r25
+ 744 000e 01F0      		breq .L42
+ 254:keyboards/Manuform6x6/matrix.c ****         TXLED1;
+ 745               		.loc 1 254 0
+ 746 0010 5D98      		cbi 0xb,5
+ 256:keyboards/Manuform6x6/matrix.c ****         error_count++;
+ 747               		.loc 1 256 0
+ 748 0012 9091 0000 		lds r25,error_count
+ 749 0016 9F5F      		subi r25,lo8(-(1))
+ 750 0018 9093 0000 		sts error_count,r25
+ 258:keyboards/Manuform6x6/matrix.c ****         if (error_count > ERROR_DISCONNECT_COUNT) {
+ 751               		.loc 1 258 0
+ 752 001c 9630      		cpi r25,lo8(6)
+ 753 001e 00F0      		brlo .L44
+ 754               	.LBB53:
+ 260:keyboards/Manuform6x6/matrix.c ****             int slaveOffset = (isLeftHand) ? (ROWS_PER_HAND) : 0;
+ 755               		.loc 1 260 0
+ 756 0020 8091 0000 		lds r24,isLeftHand
+ 757 0024 8823      		tst r24
+ 758 0026 01F0      		breq .L48
+ 759 0028 47E0      		ldi r20,lo8(7)
+ 760 002a 50E0      		ldi r21,0
+ 761 002c 00C0      		rjmp .L45
+ 762               	.L48:
+ 763 002e 40E0      		ldi r20,0
+ 764 0030 50E0      		ldi r21,0
+ 765               	.L45:
+ 766               	.LVL57:
+ 767               	.LBB54:
+ 261:keyboards/Manuform6x6/matrix.c ****             for (int i = 0; i < ROWS_PER_HAND; ++i) {
+ 768               		.loc 1 261 0 discriminator 3
+ 769 0032 20E0      		ldi r18,0
+ 770 0034 30E0      		ldi r19,0
+ 771 0036 4050      		subi r20,lo8(-(matrix))
+ 772 0038 5040      		sbci r21,hi8(-(matrix))
+ 773               	.LVL58:
+ 774               	.L47:
+ 775 003a FA01      		movw r30,r20
+ 776 003c E20F      		add r30,r18
+ 777 003e F31F      		adc r31,r19
+ 262:keyboards/Manuform6x6/matrix.c ****                 matrix[slaveOffset+i] = 0;
+ 778               		.loc 1 262 0 discriminator 2
+ 779 0040 1082      		st Z,__zero_reg__
+ 261:keyboards/Manuform6x6/matrix.c ****             for (int i = 0; i < ROWS_PER_HAND; ++i) {
+ 780               		.loc 1 261 0 discriminator 2
+ 781 0042 2F5F      		subi r18,-1
+ 782 0044 3F4F      		sbci r19,-1
+ 783               	.LVL59:
+ 784 0046 2730      		cpi r18,7
+ 785 0048 3105      		cpc r19,__zero_reg__
+ 786 004a 01F4      		brne .L47
+ 787 004c 00C0      		rjmp .L44
+ 788               	.LVL60:
+ 789               	.L42:
+ 790               	.LBE54:
+ 791               	.LBE53:
+ 267:keyboards/Manuform6x6/matrix.c ****         TXLED0;
+ 792               		.loc 1 267 0
+ 793 004e 5D9A      		sbi 0xb,5
+ 268:keyboards/Manuform6x6/matrix.c ****         error_count = 0;
+ 794               		.loc 1 268 0
+ 795 0050 1092 0000 		sts error_count,__zero_reg__
+ 796               	.L44:
+ 270:keyboards/Manuform6x6/matrix.c ****     matrix_scan_quantum();
+ 797               		.loc 1 270 0
+ 798 0054 0E94 0000 		call matrix_scan_quantum
+ 799               	.LVL61:
+ 272:keyboards/Manuform6x6/matrix.c **** }
+ 800               		.loc 1 272 0
+ 801 0058 8C2F      		mov r24,r28
+ 802               	/* epilogue start */
+ 803 005a CF91      		pop r28
+ 804               	.LVL62:
+ 805 005c 0895      		ret
+ 806               		.cfi_endproc
+ 807               	.LFE18:
+ 809               		.section	.text.matrix_slave_scan,"ax",@progbits
+ 810               	.global	matrix_slave_scan
+ 812               	matrix_slave_scan:
+ 813               	.LFB19:
+ 274:keyboards/Manuform6x6/matrix.c **** void matrix_slave_scan(void) {
+ 814               		.loc 1 274 0
+ 815               		.cfi_startproc
+ 816               	/* prologue: function */
+ 817               	/* frame size = 0 */
+ 818               	/* stack size = 0 */
+ 819               	.L__stack_usage = 0
+ 275:keyboards/Manuform6x6/matrix.c ****     _matrix_scan();
+ 820               		.loc 1 275 0
+ 821 0000 0E94 0000 		call _matrix_scan
+ 822               	.LVL63:
+ 277:keyboards/Manuform6x6/matrix.c ****     int offset = (isLeftHand) ? 0 : ROWS_PER_HAND;
+ 823               		.loc 1 277 0
+ 824 0004 8091 0000 		lds r24,isLeftHand
+ 825 0008 8823      		tst r24
+ 826 000a 01F0      		breq .L56
+ 827 000c 20E0      		ldi r18,0
+ 828 000e 30E0      		ldi r19,0
+ 829 0010 00C0      		rjmp .L53
+ 830               	.L56:
+ 831 0012 27E0      		ldi r18,lo8(7)
+ 832 0014 30E0      		ldi r19,0
+ 833               	.L53:
+ 834               	.LVL64:
+ 835               	.LBB55:
+ 284:keyboards/Manuform6x6/matrix.c ****     for (int i = 0; i < ROWS_PER_HAND; ++i) {
+ 836               		.loc 1 284 0 discriminator 3
+ 837 0016 80E0      		ldi r24,0
+ 838 0018 90E0      		ldi r25,0
+ 839 001a 2050      		subi r18,lo8(-(matrix))
+ 840 001c 3040      		sbci r19,hi8(-(matrix))
+ 841               	.LVL65:
+ 842               	.L55:
+ 843 001e F901      		movw r30,r18
+ 844 0020 E80F      		add r30,r24
+ 845 0022 F91F      		adc r31,r25
+ 285:keyboards/Manuform6x6/matrix.c ****         serial_slave_buffer[i] = matrix[offset+i];
+ 846               		.loc 1 285 0 discriminator 2
+ 847 0024 4081      		ld r20,Z
+ 848 0026 FC01      		movw r30,r24
+ 849 0028 E050      		subi r30,lo8(-(serial_slave_buffer))
+ 850 002a F040      		sbci r31,hi8(-(serial_slave_buffer))
+ 851 002c 4083      		st Z,r20
+ 284:keyboards/Manuform6x6/matrix.c ****     for (int i = 0; i < ROWS_PER_HAND; ++i) {
+ 852               		.loc 1 284 0 discriminator 2
+ 853 002e 0196      		adiw r24,1
+ 854               	.LVL66:
+ 855 0030 8730      		cpi r24,7
+ 856 0032 9105      		cpc r25,__zero_reg__
+ 857 0034 01F4      		brne .L55
+ 858               	/* epilogue start */
+ 859               	.LBE55:
+ 288:keyboards/Manuform6x6/matrix.c **** }
+ 860               		.loc 1 288 0
+ 861 0036 0895      		ret
+ 862               		.cfi_endproc
+ 863               	.LFE19:
+ 865               		.section	.text.matrix_is_modified,"ax",@progbits
+ 866               	.global	matrix_is_modified
+ 868               	matrix_is_modified:
+ 869               	.LFB20:
+ 291:keyboards/Manuform6x6/matrix.c **** {
+ 870               		.loc 1 291 0
+ 871               		.cfi_startproc
+ 872               	/* prologue: function */
+ 873               	/* frame size = 0 */
+ 874               	/* stack size = 0 */
+ 875               	.L__stack_usage = 0
+ 292:keyboards/Manuform6x6/matrix.c ****     if (debouncing) return false;
+ 876               		.loc 1 292 0
+ 877 0000 9091 0000 		lds r25,debouncing
+ 294:keyboards/Manuform6x6/matrix.c **** }
+ 878               		.loc 1 294 0
+ 879 0004 81E0      		ldi r24,lo8(1)
+ 880 0006 8927      		eor r24,r25
+ 881 0008 0895      		ret
+ 882               		.cfi_endproc
+ 883               	.LFE20:
+ 885               		.section	.text.matrix_is_on,"ax",@progbits
+ 886               	.global	matrix_is_on
+ 888               	matrix_is_on:
+ 889               	.LFB21:
+ 298:keyboards/Manuform6x6/matrix.c **** {
+ 890               		.loc 1 298 0
+ 891               		.cfi_startproc
+ 892               	.LVL67:
+ 893               	/* prologue: function */
+ 894               	/* frame size = 0 */
+ 895               	/* stack size = 0 */
+ 896               	.L__stack_usage = 0
+ 299:keyboards/Manuform6x6/matrix.c ****     return (matrix[row] & ((matrix_row_t)1<<col));
+ 897               		.loc 1 299 0
+ 898 0000 E82F      		mov r30,r24
+ 899 0002 F0E0      		ldi r31,0
+ 900 0004 E050      		subi r30,lo8(-(matrix))
+ 901 0006 F040      		sbci r31,hi8(-(matrix))
+ 902 0008 2081      		ld r18,Z
+ 903 000a 30E0      		ldi r19,0
+ 904 000c 81E0      		ldi r24,lo8(1)
+ 905 000e 90E0      		ldi r25,0
+ 906               	.LVL68:
+ 907 0010 00C0      		rjmp 2f
+ 908               		1:
+ 909 0012 880F      		lsl r24
+ 910 0014 991F      		rol r25
+ 911               		2:
+ 912 0016 6A95      		dec r22
+ 913 0018 02F4      		brpl 1b
+ 914 001a 2823      		and r18,r24
+ 915 001c 3923      		and r19,r25
+ 916 001e 81E0      		ldi r24,lo8(1)
+ 917 0020 232B      		or r18,r19
+ 918 0022 01F4      		brne .L59
+ 919 0024 80E0      		ldi r24,0
+ 920               	.L59:
+ 300:keyboards/Manuform6x6/matrix.c **** }
+ 921               		.loc 1 300 0
+ 922 0026 0895      		ret
+ 923               		.cfi_endproc
+ 924               	.LFE21:
+ 926               		.section	.text.matrix_get_row,"ax",@progbits
+ 927               	.global	matrix_get_row
+ 929               	matrix_get_row:
+ 930               	.LFB22:
+ 304:keyboards/Manuform6x6/matrix.c **** {
+ 931               		.loc 1 304 0
+ 932               		.cfi_startproc
+ 933               	.LVL69:
+ 934               	/* prologue: function */
+ 935               	/* frame size = 0 */
+ 936               	/* stack size = 0 */
+ 937               	.L__stack_usage = 0
+ 305:keyboards/Manuform6x6/matrix.c ****     return matrix[row];
+ 938               		.loc 1 305 0
+ 939 0000 E82F      		mov r30,r24
+ 940 0002 F0E0      		ldi r31,0
+ 941 0004 E050      		subi r30,lo8(-(matrix))
+ 942 0006 F040      		sbci r31,hi8(-(matrix))
+ 306:keyboards/Manuform6x6/matrix.c **** }
+ 943               		.loc 1 306 0
+ 944 0008 8081      		ld r24,Z
+ 945               	.LVL70:
+ 946 000a 0895      		ret
+ 947               		.cfi_endproc
+ 948               	.LFE22:
+ 950               		.section	.text.matrix_print,"ax",@progbits
+ 951               	.global	matrix_print
+ 953               	matrix_print:
+ 954               	.LFB23:
+ 309:keyboards/Manuform6x6/matrix.c **** {
+ 955               		.loc 1 309 0
+ 956               		.cfi_startproc
+ 957               	/* prologue: function */
+ 958               	/* frame size = 0 */
+ 959               	/* stack size = 0 */
+ 960               	.L__stack_usage = 0
+ 961               	.LVL71:
+ 962 0000 0895      		ret
+ 963               		.cfi_endproc
+ 964               	.LFE23:
+ 966               		.section	.text.matrix_key_count,"ax",@progbits
+ 967               	.global	matrix_key_count
+ 969               	matrix_key_count:
+ 970               	.LFB24:
+ 319:keyboards/Manuform6x6/matrix.c **** {
+ 971               		.loc 1 319 0
+ 972               		.cfi_startproc
+ 319:keyboards/Manuform6x6/matrix.c **** {
+ 973               		.loc 1 319 0
+ 974 0000 1F93      		push r17
+ 975               	.LCFI21:
+ 976               		.cfi_def_cfa_offset 3
+ 977               		.cfi_offset 17, -2
+ 978 0002 CF93      		push r28
+ 979               	.LCFI22:
+ 980               		.cfi_def_cfa_offset 4
+ 981               		.cfi_offset 28, -3
+ 982 0004 DF93      		push r29
+ 983               	.LCFI23:
+ 984               		.cfi_def_cfa_offset 5
+ 985               		.cfi_offset 29, -4
+ 986               	/* prologue: function */
+ 987               	/* frame size = 0 */
+ 988               	/* stack size = 3 */
+ 989               	.L__stack_usage = 3
+ 990               	.LVL72:
+ 991 0006 C0E0      		ldi r28,lo8(matrix)
+ 992 0008 D0E0      		ldi r29,hi8(matrix)
+ 320:keyboards/Manuform6x6/matrix.c ****     uint8_t count = 0;
+ 993               		.loc 1 320 0
+ 994 000a 10E0      		ldi r17,0
+ 995               	.LVL73:
+ 996               	.L64:
+ 997               	.LBB56:
+ 322:keyboards/Manuform6x6/matrix.c ****         count += bitpop16(matrix[i]);
+ 998               		.loc 1 322 0 discriminator 2
+ 999 000c 8991      		ld r24,Y+
+ 1000               	.LVL74:
+ 1001 000e 90E0      		ldi r25,0
+ 1002 0010 0E94 0000 		call bitpop16
+ 1003               	.LVL75:
+ 1004 0014 180F      		add r17,r24
+ 1005               	.LVL76:
+ 321:keyboards/Manuform6x6/matrix.c ****     for (uint8_t i = 0; i < MATRIX_ROWS; i++) {
+ 1006               		.loc 1 321 0 discriminator 2
+ 1007 0016 80E0      		ldi r24,hi8(matrix+14)
+ 1008 0018 C030      		cpi r28,lo8(matrix+14)
+ 1009 001a D807      		cpc r29,r24
+ 1010 001c 01F4      		brne .L64
+ 1011               	.LBE56:
+ 325:keyboards/Manuform6x6/matrix.c **** }
+ 1012               		.loc 1 325 0
+ 1013 001e 812F      		mov r24,r17
+ 1014               	/* epilogue start */
+ 1015 0020 DF91      		pop r29
+ 1016 0022 CF91      		pop r28
+ 1017               	.LVL77:
+ 1018 0024 1F91      		pop r17
+ 1019               	.LVL78:
+ 1020 0026 0895      		ret
+ 1021               		.cfi_endproc
+ 1022               	.LFE24:
+ 1024               		.section	.bss.matrix,"aw",@nobits
+ 1027               	matrix:
+ 1028 0000 0000 0000 		.zero	14
+ 1028      0000 0000 
+ 1028      0000 0000 
+ 1028      0000 
+ 1029               		.section	.rodata.col_pins,"a",@progbits
+ 1032               	col_pins:
+ 1033 0000 35        		.byte	53
+ 1034 0001 34        		.byte	52
+ 1035 0002 C6        		.byte	-58
+ 1036 0003 97        		.byte	-105
+ 1037 0004 66        		.byte	102
+ 1038 0005 94        		.byte	-108
+ 1039               		.section	.rodata.row_pins,"a",@progbits
+ 1042               	row_pins:
+ 1043 0000 36        		.byte	54
+ 1044 0001 32        		.byte	50
+ 1045 0002 33        		.byte	51
+ 1046 0003 31        		.byte	49
+ 1047 0004 F7        		.byte	-9
+ 1048 0005 F6        		.byte	-10
+ 1049 0006 F5        		.byte	-11
+ 1050 0007 0000 0000 		.zero	7
+ 1050      0000 00
+ 1051               		.section	.bss.error_count,"aw",@nobits
+ 1054               	error_count:
+ 1055 0000 00        		.zero	1
+ 1056               		.section	.bss.matrix_debouncing,"aw",@nobits
+ 1059               	matrix_debouncing:
+ 1060 0000 0000 0000 		.zero	14
+ 1060      0000 0000 
+ 1060      0000 0000 
+ 1060      0000 
+ 1061               		.section	.bss.debouncing,"aw",@nobits
+ 1064               	debouncing:
+ 1065 0000 00        		.zero	1
+ 1066               		.section	.bss.debouncing_time,"aw",@nobits
+ 1069               	debouncing_time:
+ 1070 0000 0000      		.zero	2
+ 1071               		.text
+ 1072               	.Letext0:
+ 1073               		.file 3 "/usr/lib/avr/include/stdint.h"
+ 1074               		.file 4 "./tmk_core/common/debug.h"
+ 1075               		.file 5 "./tmk_core/common/matrix.h"
+ 1076               		.file 6 "./drivers/avr/pro_micro.h"
+ 1077               		.file 7 "keyboards/Manuform6x6/split_util.h"
+ 1078               		.file 8 "keyboards/Manuform6x6/serial.h"
+ 1079               		.file 9 "./tmk_core/common/timer.h"
+ 1080               		.file 10 "./tmk_core/common/util.h"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 matrix.c
+     /tmp/cc20DANz.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/cc20DANz.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/cc20DANz.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/cc20DANz.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/cc20DANz.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/cc20DANz.s:13     .text.matrix_init_user:0000000000000000 matrix_init_user
+     /tmp/cc20DANz.s:29     .text.matrix_init_kb:0000000000000000 matrix_init_kb
+     /tmp/cc20DANz.s:46     .text.matrix_init_quantum:0000000000000000 matrix_init_quantum
+     /tmp/cc20DANz.s:63     .text.matrix_scan_user:0000000000000000 matrix_scan_user
+     /tmp/cc20DANz.s:78     .text.matrix_scan_kb:0000000000000000 matrix_scan_kb
+     /tmp/cc20DANz.s:95     .text.matrix_scan_quantum:0000000000000000 matrix_scan_quantum
+     /tmp/cc20DANz.s:112    .text.matrix_rows:0000000000000000 matrix_rows
+     /tmp/cc20DANz.s:129    .text.matrix_cols:0000000000000000 matrix_cols
+     /tmp/cc20DANz.s:146    .text.matrix_init:0000000000000000 matrix_init
+     /tmp/cc20DANz.s:1042   .rodata.row_pins:0000000000000000 row_pins
+     /tmp/cc20DANz.s:1032   .rodata.col_pins:0000000000000000 col_pins
+     /tmp/cc20DANz.s:1027   .bss.matrix:0000000000000000 matrix
+     /tmp/cc20DANz.s:1059   .bss.matrix_debouncing:0000000000000000 matrix_debouncing
+     /tmp/cc20DANz.s:290    .text._matrix_scan:0000000000000000 _matrix_scan
+     /tmp/cc20DANz.s:1064   .bss.debouncing:0000000000000000 debouncing
+     /tmp/cc20DANz.s:1069   .bss.debouncing_time:0000000000000000 debouncing_time
+     /tmp/cc20DANz.s:646    .text.serial_transaction:0000000000000000 serial_transaction
+     /tmp/cc20DANz.s:723    .text.matrix_scan:0000000000000000 matrix_scan
+     /tmp/cc20DANz.s:1054   .bss.error_count:0000000000000000 error_count
+     /tmp/cc20DANz.s:812    .text.matrix_slave_scan:0000000000000000 matrix_slave_scan
+     /tmp/cc20DANz.s:868    .text.matrix_is_modified:0000000000000000 matrix_is_modified
+     /tmp/cc20DANz.s:888    .text.matrix_is_on:0000000000000000 matrix_is_on
+     /tmp/cc20DANz.s:929    .text.matrix_get_row:0000000000000000 matrix_get_row
+     /tmp/cc20DANz.s:953    .text.matrix_print:0000000000000000 matrix_print
+     /tmp/cc20DANz.s:969    .text.matrix_key_count:0000000000000000 matrix_key_count
+
+UNDEFINED SYMBOLS
+debug_config
+isLeftHand
+timer_read
+timer_elapsed
+serial_update_buffers
+serial_slave_buffer
+bitpop16
+__do_copy_data
+__do_clear_bss

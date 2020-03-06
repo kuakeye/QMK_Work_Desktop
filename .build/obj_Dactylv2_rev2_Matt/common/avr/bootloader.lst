@@ -1,0 +1,326 @@
+   1               		.file	"bootloader.c"
+   2               	__SP_H__ = 0x3e
+   3               	__SP_L__ = 0x3d
+   4               	__SREG__ = 0x3f
+   5               	__tmp_reg__ = 0
+   6               	__zero_reg__ = 1
+   7               		.text
+   8               	.Ltext0:
+   9               		.cfi_sections	.debug_frame
+  10               		.section	.text.bootloader_jump,"ax",@progbits
+  11               	.global	bootloader_jump
+  13               	bootloader_jump:
+  14               	.LFB100:
+  15               		.file 1 "./tmk_core/common/avr/bootloader.c"
+   1:./tmk_core/common/avr/bootloader.c **** #include <stdint.h>
+   2:./tmk_core/common/avr/bootloader.c **** #include <stdbool.h>
+   3:./tmk_core/common/avr/bootloader.c **** #include <avr/io.h>
+   4:./tmk_core/common/avr/bootloader.c **** #include <avr/eeprom.h>
+   5:./tmk_core/common/avr/bootloader.c **** #include <avr/interrupt.h>
+   6:./tmk_core/common/avr/bootloader.c **** #include <avr/wdt.h>
+   7:./tmk_core/common/avr/bootloader.c **** #include <util/delay.h>
+   8:./tmk_core/common/avr/bootloader.c **** #include "bootloader.h"
+   9:./tmk_core/common/avr/bootloader.c **** #include <avr/boot.h>
+  10:./tmk_core/common/avr/bootloader.c **** 
+  11:./tmk_core/common/avr/bootloader.c **** #ifdef PROTOCOL_LUFA
+  12:./tmk_core/common/avr/bootloader.c **** #include <LUFA/Drivers/USB/USB.h>
+  13:./tmk_core/common/avr/bootloader.c **** #endif
+  14:./tmk_core/common/avr/bootloader.c **** 
+  15:./tmk_core/common/avr/bootloader.c **** 
+  16:./tmk_core/common/avr/bootloader.c **** /** \brief Bootloader Size in *bytes*
+  17:./tmk_core/common/avr/bootloader.c ****  *
+  18:./tmk_core/common/avr/bootloader.c ****  * AVR Boot section size are defined by setting BOOTSZ fuse in fact. Consult with your MCU datashee
+  19:./tmk_core/common/avr/bootloader.c ****  * Note that 'Word'(2 bytes) size and address are used in datasheet while TMK uses 'Byte'.
+  20:./tmk_core/common/avr/bootloader.c ****  *
+  21:./tmk_core/common/avr/bootloader.c ****  * Size of Bootloaders in bytes:
+  22:./tmk_core/common/avr/bootloader.c ****  *   Atmel DFU loader(ATmega32U4)   4096
+  23:./tmk_core/common/avr/bootloader.c ****  *   Atmel DFU loader(AT90USB128)   8192
+  24:./tmk_core/common/avr/bootloader.c ****  *   LUFA bootloader(ATmega32U4)    4096
+  25:./tmk_core/common/avr/bootloader.c ****  *   Arduino Caterina(ATmega32U4)   4096
+  26:./tmk_core/common/avr/bootloader.c ****  *   USBaspLoader(ATmega***)        2048
+  27:./tmk_core/common/avr/bootloader.c ****  *   Teensy   halfKay(ATmega32U4)   512
+  28:./tmk_core/common/avr/bootloader.c ****  *   Teensy++ halfKay(AT90USB128)   1024
+  29:./tmk_core/common/avr/bootloader.c ****  *
+  30:./tmk_core/common/avr/bootloader.c ****  * AVR Boot section is located at the end of Flash memory like the followings.
+  31:./tmk_core/common/avr/bootloader.c ****  *
+  32:./tmk_core/common/avr/bootloader.c ****  * byte     Atmel/LUFA(ATMega32u4)          byte     Atmel(AT90SUB128)
+  33:./tmk_core/common/avr/bootloader.c ****  * 0x0000   +---------------+               0x00000  +---------------+
+  34:./tmk_core/common/avr/bootloader.c ****  *          |               |                        |               |
+  35:./tmk_core/common/avr/bootloader.c ****  *          |               |                        |               |
+  36:./tmk_core/common/avr/bootloader.c ****  *          |  Application  |                        |  Application  |
+  37:./tmk_core/common/avr/bootloader.c ****  *          |               |                        |               |
+  38:./tmk_core/common/avr/bootloader.c ****  *          =               =                        =               =
+  39:./tmk_core/common/avr/bootloader.c ****  *          |               | 32KB-4KB               |               | 128KB-8KB
+  40:./tmk_core/common/avr/bootloader.c ****  * 0x7000   +---------------+               0x1E000  +---------------+
+  41:./tmk_core/common/avr/bootloader.c ****  *          |  Bootloader   | 4KB                    |  Bootloader   | 8KB
+  42:./tmk_core/common/avr/bootloader.c ****  * 0x7FFF   +---------------+               0x1FFFF  +---------------+
+  43:./tmk_core/common/avr/bootloader.c ****  *
+  44:./tmk_core/common/avr/bootloader.c ****  *
+  45:./tmk_core/common/avr/bootloader.c ****  * byte     Teensy(ATMega32u4)              byte     Teensy++(AT90SUB128)
+  46:./tmk_core/common/avr/bootloader.c ****  * 0x0000   +---------------+               0x00000  +---------------+
+  47:./tmk_core/common/avr/bootloader.c ****  *          |               |                        |               |
+  48:./tmk_core/common/avr/bootloader.c ****  *          |               |                        |               |
+  49:./tmk_core/common/avr/bootloader.c ****  *          |  Application  |                        |  Application  |
+  50:./tmk_core/common/avr/bootloader.c ****  *          |               |                        |               |
+  51:./tmk_core/common/avr/bootloader.c ****  *          =               =                        =               =
+  52:./tmk_core/common/avr/bootloader.c ****  *          |               | 32KB-512B              |               | 128KB-1KB
+  53:./tmk_core/common/avr/bootloader.c ****  * 0x7E00   +---------------+               0x1FC00  +---------------+
+  54:./tmk_core/common/avr/bootloader.c ****  *          |  Bootloader   | 512B                   |  Bootloader   | 1KB
+  55:./tmk_core/common/avr/bootloader.c ****  * 0x7FFF   +---------------+               0x1FFFF  +---------------+
+  56:./tmk_core/common/avr/bootloader.c ****  */
+  57:./tmk_core/common/avr/bootloader.c **** #define FLASH_SIZE (FLASHEND + 1L)
+  58:./tmk_core/common/avr/bootloader.c **** 
+  59:./tmk_core/common/avr/bootloader.c **** #if !defined(BOOTLOADER_SIZE)
+  60:./tmk_core/common/avr/bootloader.c ****     uint16_t bootloader_start;
+  61:./tmk_core/common/avr/bootloader.c **** #endif
+  62:./tmk_core/common/avr/bootloader.c **** 
+  63:./tmk_core/common/avr/bootloader.c **** #define BOOT_SIZE_256  0b110
+  64:./tmk_core/common/avr/bootloader.c **** #define BOOT_SIZE_512  0b100
+  65:./tmk_core/common/avr/bootloader.c **** #define BOOT_SIZE_1024 0b010
+  66:./tmk_core/common/avr/bootloader.c **** #define BOOT_SIZE_2048 0b000
+  67:./tmk_core/common/avr/bootloader.c **** 
+  68:./tmk_core/common/avr/bootloader.c **** /** \brief Entering the Bootloader via Software
+  69:./tmk_core/common/avr/bootloader.c ****  *
+  70:./tmk_core/common/avr/bootloader.c ****  * http://www.fourwalledcubicle.com/files/LUFA/Doc/120730/html/_page__software_bootloader_start.htm
+  71:./tmk_core/common/avr/bootloader.c ****  */
+  72:./tmk_core/common/avr/bootloader.c **** #define BOOTLOADER_RESET_KEY 0xB007B007
+  73:./tmk_core/common/avr/bootloader.c **** uint32_t reset_key  __attribute__ ((section (".noinit")));
+  74:./tmk_core/common/avr/bootloader.c **** 
+  75:./tmk_core/common/avr/bootloader.c **** /** \brief initialize MCU status by watchdog reset
+  76:./tmk_core/common/avr/bootloader.c ****  *
+  77:./tmk_core/common/avr/bootloader.c ****  * FIXME: needs doc
+  78:./tmk_core/common/avr/bootloader.c ****  */
+  79:./tmk_core/common/avr/bootloader.c **** void bootloader_jump(void) {
+  16               		.loc 1 79 0
+  17               		.cfi_startproc
+  18               	/* prologue: function */
+  19               	/* frame size = 0 */
+  20               	/* stack size = 0 */
+  21               	.L__stack_usage = 0
+  22               	.LVL0:
+  80:./tmk_core/common/avr/bootloader.c **** 
+  81:./tmk_core/common/avr/bootloader.c ****     #if !defined(BOOTLOADER_SIZE)
+  82:./tmk_core/common/avr/bootloader.c ****         uint8_t high_fuse = boot_lock_fuse_bits_get(GET_HIGH_FUSE_BITS);
+  83:./tmk_core/common/avr/bootloader.c **** 
+  84:./tmk_core/common/avr/bootloader.c ****         if (high_fuse & BOOT_SIZE_256) {
+  85:./tmk_core/common/avr/bootloader.c ****             bootloader_start = (FLASH_SIZE - 512) >> 1;
+  86:./tmk_core/common/avr/bootloader.c ****         } else if (high_fuse & BOOT_SIZE_512) {
+  87:./tmk_core/common/avr/bootloader.c ****             bootloader_start = (FLASH_SIZE - 1024) >> 1;
+  88:./tmk_core/common/avr/bootloader.c ****         } else if (high_fuse & BOOT_SIZE_1024) {
+  89:./tmk_core/common/avr/bootloader.c ****             bootloader_start = (FLASH_SIZE - 2048) >> 1;
+  90:./tmk_core/common/avr/bootloader.c ****         } else {
+  91:./tmk_core/common/avr/bootloader.c ****             bootloader_start = (FLASH_SIZE - 4096) >> 1;
+  92:./tmk_core/common/avr/bootloader.c ****         }
+  93:./tmk_core/common/avr/bootloader.c ****     #endif
+  94:./tmk_core/common/avr/bootloader.c **** 
+  95:./tmk_core/common/avr/bootloader.c ****     // Something like this might work, but it compiled larger than the block above
+  96:./tmk_core/common/avr/bootloader.c ****     // bootloader_start = FLASH_SIZE - (256 << (~high_fuse & 0b110 >> 1));
+  97:./tmk_core/common/avr/bootloader.c **** 
+  98:./tmk_core/common/avr/bootloader.c **** 
+  99:./tmk_core/common/avr/bootloader.c ****     #if defined(BOOTLOADER_HALFKAY)
+ 100:./tmk_core/common/avr/bootloader.c ****         //  http://www.pjrc.com/teensy/jump_to_bootloader.html
+ 101:./tmk_core/common/avr/bootloader.c ****         cli();
+ 102:./tmk_core/common/avr/bootloader.c ****         // disable watchdog, if enabled (it's not)
+ 103:./tmk_core/common/avr/bootloader.c ****         // disable all peripherals
+ 104:./tmk_core/common/avr/bootloader.c ****         // a shutdown call might make sense here
+ 105:./tmk_core/common/avr/bootloader.c ****         UDCON = 1;
+ 106:./tmk_core/common/avr/bootloader.c ****         USBCON = (1<<FRZCLK);  // disable USB
+ 107:./tmk_core/common/avr/bootloader.c ****         UCSR1B = 0;
+ 108:./tmk_core/common/avr/bootloader.c ****         _delay_ms(5);
+ 109:./tmk_core/common/avr/bootloader.c ****         #if defined(__AVR_AT90USB162__)                // Teensy 1.0
+ 110:./tmk_core/common/avr/bootloader.c ****             EIMSK = 0; PCICR = 0; SPCR = 0; ACSR = 0; EECR = 0;
+ 111:./tmk_core/common/avr/bootloader.c ****             TIMSK0 = 0; TIMSK1 = 0; UCSR1B = 0;
+ 112:./tmk_core/common/avr/bootloader.c ****             DDRB = 0; DDRC = 0; DDRD = 0;
+ 113:./tmk_core/common/avr/bootloader.c ****             PORTB = 0; PORTC = 0; PORTD = 0;
+ 114:./tmk_core/common/avr/bootloader.c ****             asm volatile("jmp 0x3E00");
+ 115:./tmk_core/common/avr/bootloader.c ****         #elif defined(__AVR_ATmega32U4__)              // Teensy 2.0
+ 116:./tmk_core/common/avr/bootloader.c ****             EIMSK = 0; PCICR = 0; SPCR = 0; ACSR = 0; EECR = 0; ADCSRA = 0;
+ 117:./tmk_core/common/avr/bootloader.c ****             TIMSK0 = 0; TIMSK1 = 0; TIMSK3 = 0; TIMSK4 = 0; UCSR1B = 0; TWCR = 0;
+ 118:./tmk_core/common/avr/bootloader.c ****             DDRB = 0; DDRC = 0; DDRD = 0; DDRE = 0; DDRF = 0; TWCR = 0;
+ 119:./tmk_core/common/avr/bootloader.c ****             PORTB = 0; PORTC = 0; PORTD = 0; PORTE = 0; PORTF = 0;
+ 120:./tmk_core/common/avr/bootloader.c ****             asm volatile("jmp 0x7E00");
+ 121:./tmk_core/common/avr/bootloader.c ****         #elif defined(__AVR_AT90USB646__)              // Teensy++ 1.0
+ 122:./tmk_core/common/avr/bootloader.c ****             EIMSK = 0; PCICR = 0; SPCR = 0; ACSR = 0; EECR = 0; ADCSRA = 0;
+ 123:./tmk_core/common/avr/bootloader.c ****             TIMSK0 = 0; TIMSK1 = 0; TIMSK2 = 0; TIMSK3 = 0; UCSR1B = 0; TWCR = 0;
+ 124:./tmk_core/common/avr/bootloader.c ****             DDRA = 0; DDRB = 0; DDRC = 0; DDRD = 0; DDRE = 0; DDRF = 0;
+ 125:./tmk_core/common/avr/bootloader.c ****             PORTA = 0; PORTB = 0; PORTC = 0; PORTD = 0; PORTE = 0; PORTF = 0;
+ 126:./tmk_core/common/avr/bootloader.c ****             asm volatile("jmp 0xFC00");
+ 127:./tmk_core/common/avr/bootloader.c ****         #elif defined(__AVR_AT90USB1286__)             // Teensy++ 2.0
+ 128:./tmk_core/common/avr/bootloader.c ****             EIMSK = 0; PCICR = 0; SPCR = 0; ACSR = 0; EECR = 0; ADCSRA = 0;
+ 129:./tmk_core/common/avr/bootloader.c ****             TIMSK0 = 0; TIMSK1 = 0; TIMSK2 = 0; TIMSK3 = 0; UCSR1B = 0; TWCR = 0;
+ 130:./tmk_core/common/avr/bootloader.c ****             DDRA = 0; DDRB = 0; DDRC = 0; DDRD = 0; DDRE = 0; DDRF = 0;
+ 131:./tmk_core/common/avr/bootloader.c ****             PORTA = 0; PORTB = 0; PORTC = 0; PORTD = 0; PORTE = 0; PORTF = 0;
+ 132:./tmk_core/common/avr/bootloader.c ****             asm volatile("jmp 0x1FC00");
+ 133:./tmk_core/common/avr/bootloader.c ****         #endif
+ 134:./tmk_core/common/avr/bootloader.c **** 
+ 135:./tmk_core/common/avr/bootloader.c ****     #elif defined(BOOTLOADER_CATERINA)
+ 136:./tmk_core/common/avr/bootloader.c ****         // this block may be optional
+ 137:./tmk_core/common/avr/bootloader.c ****         // TODO: figure it out
+ 138:./tmk_core/common/avr/bootloader.c **** 
+ 139:./tmk_core/common/avr/bootloader.c ****         uint16_t *const bootKeyPtr = (uint16_t *)0x0800;
+ 140:./tmk_core/common/avr/bootloader.c **** 
+ 141:./tmk_core/common/avr/bootloader.c ****         // Value used by Caterina bootloader use to determine whether to run the
+ 142:./tmk_core/common/avr/bootloader.c ****         // sketch or the bootloader programmer.
+ 143:./tmk_core/common/avr/bootloader.c ****         uint16_t bootKey = 0x7777;
+ 144:./tmk_core/common/avr/bootloader.c **** 
+ 145:./tmk_core/common/avr/bootloader.c ****         *bootKeyPtr = bootKey;
+  23               		.loc 1 145 0
+  24 0000 87E7      		ldi r24,lo8(119)
+  25 0002 97E7      		ldi r25,lo8(119)
+  26 0004 9093 0108 		sts 2048+1,r25
+  27 0008 8093 0008 		sts 2048,r24
+ 146:./tmk_core/common/avr/bootloader.c **** 
+ 147:./tmk_core/common/avr/bootloader.c ****         // setup watchdog timeout
+ 148:./tmk_core/common/avr/bootloader.c ****         wdt_enable(WDTO_60MS);
+  28               		.loc 1 148 0
+  29 000c 2AE0      		ldi r18,lo8(10)
+  30 000e 88E1      		ldi r24,lo8(24)
+  31 0010 90E0      		ldi r25,0
+  32               	/* #APP */
+  33               	 ;  148 "./tmk_core/common/avr/bootloader.c" 1
+  34 0012 0FB6      		in __tmp_reg__,__SREG__
+  35 0014 F894      		cli
+  36 0016 A895      		wdr
+  37 0018 8093 6000 		sts 96,r24
+  38 001c 0FBE      		out __SREG__,__tmp_reg__
+  39 001e 2093 6000 		sts 96,r18
+  40               		
+  41               	 ;  0 "" 2
+  42               	/* #NOAPP */
+  43               	.L2:
+  44 0022 00C0      		rjmp .L2
+  45               		.cfi_endproc
+  46               	.LFE100:
+  48               		.section	.init3,"ax",@progbits
+  49               	.global	bootloader_jump_after_watchdog_reset
+  51               	bootloader_jump_after_watchdog_reset:
+  52               	.LFB101:
+ 149:./tmk_core/common/avr/bootloader.c **** 
+ 150:./tmk_core/common/avr/bootloader.c ****         while(1) {} // wait for watchdog timer to trigger
+ 151:./tmk_core/common/avr/bootloader.c **** 
+ 152:./tmk_core/common/avr/bootloader.c ****     #else // Assume remaining boards are DFU, even if the flag isn't set
+ 153:./tmk_core/common/avr/bootloader.c **** 
+ 154:./tmk_core/common/avr/bootloader.c ****         #if !(defined(__AVR_ATmega32A__) || defined(__AVR_ATmega328P__)) // no USB - maybe BOOTLOAD
+ 155:./tmk_core/common/avr/bootloader.c ****             UDCON = 1;
+ 156:./tmk_core/common/avr/bootloader.c ****             USBCON = (1<<FRZCLK);  // disable USB
+ 157:./tmk_core/common/avr/bootloader.c ****             UCSR1B = 0;
+ 158:./tmk_core/common/avr/bootloader.c ****             _delay_ms(5); // 5 seems to work fine
+ 159:./tmk_core/common/avr/bootloader.c ****         #endif
+ 160:./tmk_core/common/avr/bootloader.c **** 
+ 161:./tmk_core/common/avr/bootloader.c ****         #ifdef BOOTLOADER_BOOTLOADHID
+ 162:./tmk_core/common/avr/bootloader.c ****             // force bootloadHID to stay in bootloader mode, so that it waits
+ 163:./tmk_core/common/avr/bootloader.c ****             // for a new firmware to be flashed
+ 164:./tmk_core/common/avr/bootloader.c ****             eeprom_write_byte((uint8_t *)1, 0x00);
+ 165:./tmk_core/common/avr/bootloader.c ****         #endif
+ 166:./tmk_core/common/avr/bootloader.c **** 
+ 167:./tmk_core/common/avr/bootloader.c ****         // watchdog reset
+ 168:./tmk_core/common/avr/bootloader.c ****         reset_key = BOOTLOADER_RESET_KEY;
+ 169:./tmk_core/common/avr/bootloader.c ****         wdt_enable(WDTO_250MS);
+ 170:./tmk_core/common/avr/bootloader.c ****         for (;;);
+ 171:./tmk_core/common/avr/bootloader.c ****     #endif
+ 172:./tmk_core/common/avr/bootloader.c **** 
+ 173:./tmk_core/common/avr/bootloader.c **** }
+ 174:./tmk_core/common/avr/bootloader.c **** 
+ 175:./tmk_core/common/avr/bootloader.c **** #ifdef __AVR_ATmega32A__
+ 176:./tmk_core/common/avr/bootloader.c ****     // MCUSR is actually called MCUCSR in ATmega32A
+ 177:./tmk_core/common/avr/bootloader.c ****     #define MCUSR MCUCSR
+ 178:./tmk_core/common/avr/bootloader.c **** #endif
+ 179:./tmk_core/common/avr/bootloader.c **** 
+ 180:./tmk_core/common/avr/bootloader.c **** /* this runs before main() */
+ 181:./tmk_core/common/avr/bootloader.c **** void bootloader_jump_after_watchdog_reset(void) __attribute__ ((used, naked, section (".init3")));
+ 182:./tmk_core/common/avr/bootloader.c **** void bootloader_jump_after_watchdog_reset(void)
+ 183:./tmk_core/common/avr/bootloader.c **** {
+  53               		.loc 1 183 0
+  54               		.cfi_startproc
+  55               	/* prologue: naked */
+  56               	/* frame size = 0 */
+  57               	/* stack size = 0 */
+  58               	.L__stack_usage = 0
+ 184:./tmk_core/common/avr/bootloader.c ****     #ifndef BOOTLOADER_HALFKAY
+ 185:./tmk_core/common/avr/bootloader.c ****         if ((MCUSR & (1<<WDRF)) && reset_key == BOOTLOADER_RESET_KEY) {
+  59               		.loc 1 185 0
+  60 0000 04B6      		in __tmp_reg__,0x34
+  61 0002 03FE      		sbrs __tmp_reg__,3
+  62 0004 00C0      		rjmp .L4
+  63               		.loc 1 185 0 is_stmt 0 discriminator 1
+  64 0006 8091 0000 		lds r24,reset_key
+  65 000a 9091 0000 		lds r25,reset_key+1
+  66 000e A091 0000 		lds r26,reset_key+2
+  67 0012 B091 0000 		lds r27,reset_key+3
+  68 0016 8730      		cpi r24,7
+  69 0018 904B      		sbci r25,-80
+  70 001a A740      		sbci r26,7
+  71 001c B04B      		sbci r27,-80
+  72 001e 01F4      		brne .L4
+ 186:./tmk_core/common/avr/bootloader.c ****             reset_key = 0;
+  73               		.loc 1 186 0 is_stmt 1
+  74 0020 1092 0000 		sts reset_key,__zero_reg__
+  75 0024 1092 0000 		sts reset_key+1,__zero_reg__
+  76 0028 1092 0000 		sts reset_key+2,__zero_reg__
+  77 002c 1092 0000 		sts reset_key+3,__zero_reg__
+ 187:./tmk_core/common/avr/bootloader.c **** 
+ 188:./tmk_core/common/avr/bootloader.c ****             // My custom USBasploader requires this to come up.
+ 189:./tmk_core/common/avr/bootloader.c ****             MCUSR = 0;
+  78               		.loc 1 189 0
+  79 0030 14BE      		out 0x34,__zero_reg__
+ 190:./tmk_core/common/avr/bootloader.c **** 
+ 191:./tmk_core/common/avr/bootloader.c ****             // Seems like Teensy halfkay loader requires clearing WDRF and disabling watchdog.
+ 192:./tmk_core/common/avr/bootloader.c ****             MCUSR &= ~(1<<WDRF);
+  80               		.loc 1 192 0
+  81 0032 84B7      		in r24,0x34
+  82 0034 877F      		andi r24,lo8(-9)
+  83 0036 84BF      		out 0x34,r24
+ 193:./tmk_core/common/avr/bootloader.c ****             wdt_disable();
+  84               		.loc 1 193 0
+  85 0038 88E1      		ldi r24,lo8(24)
+  86               	/* #APP */
+  87               	 ;  193 "./tmk_core/common/avr/bootloader.c" 1
+  88 003a 0FB6      		in __tmp_reg__, __SREG__
+  89 003c F894      		cli
+  90 003e 8093 6000 		sts 96, r24
+  91 0042 1092 6000 		sts 96, __zero_reg__
+  92 0046 0FBE      		out __SREG__,__tmp_reg__
+  93               		
+  94               	 ;  0 "" 2
+ 194:./tmk_core/common/avr/bootloader.c **** 
+ 195:./tmk_core/common/avr/bootloader.c **** 
+ 196:./tmk_core/common/avr/bootloader.c ****             // This is compled into 'icall', address should be in word unit, not byte.
+ 197:./tmk_core/common/avr/bootloader.c ****             #ifdef BOOTLOADER_SIZE
+ 198:./tmk_core/common/avr/bootloader.c ****                 ((void (*)(void))( (FLASH_SIZE - BOOTLOADER_SIZE) >> 1))();
+  95               		.loc 1 198 0
+  96               	/* #NOAPP */
+  97 0048 E0E0      		ldi r30,0
+  98 004a F8E3      		ldi r31,lo8(56)
+  99 004c 0995      		icall
+ 100               	.LVL1:
+ 101               	.L4:
+ 102               	/* epilogue start */
+ 199:./tmk_core/common/avr/bootloader.c ****             #else
+ 200:./tmk_core/common/avr/bootloader.c ****                 asm("ijmp" :: "z" (bootloader_start));
+ 201:./tmk_core/common/avr/bootloader.c ****             #endif
+ 202:./tmk_core/common/avr/bootloader.c ****         }
+ 203:./tmk_core/common/avr/bootloader.c ****     #endif
+ 204:./tmk_core/common/avr/bootloader.c **** }
+ 103               		.loc 1 204 0
+ 104               		.cfi_endproc
+ 105               	.LFE101:
+ 107               	.global	reset_key
+ 108               		.section	.noinit,"aw",@nobits
+ 111               	reset_key:
+ 112 0000 0000 0000 		.zero	4
+ 113               		.text
+ 114               	.Letext0:
+ 115               		.file 2 "/usr/lib/avr/include/stdint.h"
+ 116               		.file 3 "./lib/lufa/LUFA/Drivers/USB/Core/USBTask.h"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 bootloader.c
+     /tmp/cciMfzOt.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/cciMfzOt.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/cciMfzOt.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/cciMfzOt.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/cciMfzOt.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/cciMfzOt.s:13     .text.bootloader_jump:0000000000000000 bootloader_jump
+     /tmp/cciMfzOt.s:51     .init3:0000000000000000 bootloader_jump_after_watchdog_reset
+     /tmp/cciMfzOt.s:111    .noinit:0000000000000000 reset_key
+
+NO UNDEFINED SYMBOLS

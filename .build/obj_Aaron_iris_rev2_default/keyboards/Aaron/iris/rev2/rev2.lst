@@ -1,0 +1,62 @@
+   1               		.file	"rev2.c"
+   2               	__SP_H__ = 0x3e
+   3               	__SP_L__ = 0x3d
+   4               	__SREG__ = 0x3f
+   5               	__tmp_reg__ = 0
+   6               	__zero_reg__ = 1
+   7               		.text
+   8               	.Ltext0:
+   9               		.cfi_sections	.debug_frame
+  10               		.section	.text.matrix_init_kb,"ax",@progbits
+  11               	.global	matrix_init_kb
+  13               	matrix_init_kb:
+  14               	.LFB13:
+  15               		.file 1 "keyboards/Aaron/iris/rev2/rev2.c"
+   1:keyboards/Aaron/iris/rev2/rev2.c **** #include "rev2.h"
+   2:keyboards/Aaron/iris/rev2/rev2.c **** 
+   3:keyboards/Aaron/iris/rev2/rev2.c **** #ifdef SSD1306OLED
+   4:keyboards/Aaron/iris/rev2/rev2.c **** void led_set_kb(uint8_t usb_led) {
+   5:keyboards/Aaron/iris/rev2/rev2.c ****     // put your keyboard LED indicator (ex: Caps Lock LED) toggling code here
+   6:keyboards/Aaron/iris/rev2/rev2.c ****     led_set_user(usb_led);
+   7:keyboards/Aaron/iris/rev2/rev2.c **** }
+   8:keyboards/Aaron/iris/rev2/rev2.c **** #endif
+   9:keyboards/Aaron/iris/rev2/rev2.c **** 
+  10:keyboards/Aaron/iris/rev2/rev2.c **** void matrix_init_kb(void) {
+  16               		.loc 1 10 0
+  17               		.cfi_startproc
+  18               	/* prologue: function */
+  19               	/* frame size = 0 */
+  20               	/* stack size = 0 */
+  21               	.L__stack_usage = 0
+  11:keyboards/Aaron/iris/rev2/rev2.c **** 
+  12:keyboards/Aaron/iris/rev2/rev2.c ****     // // green led on
+  13:keyboards/Aaron/iris/rev2/rev2.c ****     // DDRD |= (1<<5);
+  14:keyboards/Aaron/iris/rev2/rev2.c ****     // PORTD &= ~(1<<5);
+  15:keyboards/Aaron/iris/rev2/rev2.c **** 
+  16:keyboards/Aaron/iris/rev2/rev2.c ****     // // orange led on
+  17:keyboards/Aaron/iris/rev2/rev2.c ****     // DDRB |= (1<<0);
+  18:keyboards/Aaron/iris/rev2/rev2.c ****     // PORTB &= ~(1<<0);
+  19:keyboards/Aaron/iris/rev2/rev2.c **** 
+  20:keyboards/Aaron/iris/rev2/rev2.c **** 	matrix_init_user();
+  22               		.loc 1 20 0
+  23 0000 0C94 0000 		jmp matrix_init_user
+  24               	.LVL0:
+  25               		.cfi_endproc
+  26               	.LFE13:
+  28               		.text
+  29               	.Letext0:
+  30               		.file 2 "./tmk_core/common/report.h"
+  31               		.file 3 "/usr/lib/avr/include/stdint.h"
+  32               		.file 4 "./tmk_core/common/action_util.h"
+  33               		.file 5 "./quantum/quantum.h"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 rev2.c
+     /tmp/ccu1I0lX.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccu1I0lX.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccu1I0lX.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccu1I0lX.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccu1I0lX.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccu1I0lX.s:13     .text.matrix_init_kb:0000000000000000 matrix_init_kb
+
+UNDEFINED SYMBOLS
+matrix_init_user

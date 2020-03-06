@@ -1,0 +1,4216 @@
+   1               		.file	"rgblight.c"
+   2               	__SP_H__ = 0x3e
+   3               	__SP_L__ = 0x3d
+   4               	__SREG__ = 0x3f
+   5               	__tmp_reg__ = 0
+   6               	__zero_reg__ = 1
+   7               		.text
+   8               	.Ltext0:
+   9               		.cfi_sections	.debug_frame
+  10               		.section	.text.sethsv,"ax",@progbits
+  11               	.global	sethsv
+  13               	sethsv:
+  14               	.LFB7:
+  15               		.file 1 "quantum/rgblight.c"
+   1:quantum/rgblight.c **** /* Copyright 2016-2017 Yang Liu
+   2:quantum/rgblight.c ****  *
+   3:quantum/rgblight.c ****  * This program is free software: you can redistribute it and/or modify
+   4:quantum/rgblight.c ****  * it under the terms of the GNU General Public License as published by
+   5:quantum/rgblight.c ****  * the Free Software Foundation, either version 2 of the License, or
+   6:quantum/rgblight.c ****  * (at your option) any later version.
+   7:quantum/rgblight.c ****  *
+   8:quantum/rgblight.c ****  * This program is distributed in the hope that it will be useful,
+   9:quantum/rgblight.c ****  * but WITHOUT ANY WARRANTY; without even the implied warranty of
+  10:quantum/rgblight.c ****  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  11:quantum/rgblight.c ****  * GNU General Public License for more details.
+  12:quantum/rgblight.c ****  *
+  13:quantum/rgblight.c ****  * You should have received a copy of the GNU General Public License
+  14:quantum/rgblight.c ****  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  15:quantum/rgblight.c ****  */
+  16:quantum/rgblight.c **** #include <math.h>
+  17:quantum/rgblight.c **** #include <avr/eeprom.h>
+  18:quantum/rgblight.c **** #include <avr/interrupt.h>
+  19:quantum/rgblight.c **** #include <util/delay.h>
+  20:quantum/rgblight.c **** #include "progmem.h"
+  21:quantum/rgblight.c **** #include "timer.h"
+  22:quantum/rgblight.c **** #include "rgblight.h"
+  23:quantum/rgblight.c **** #include "debug.h"
+  24:quantum/rgblight.c **** #include "led_tables.h"
+  25:quantum/rgblight.c **** 
+  26:quantum/rgblight.c **** #ifndef RGBLIGHT_LIMIT_VAL
+  27:quantum/rgblight.c **** #define RGBLIGHT_LIMIT_VAL 255
+  28:quantum/rgblight.c **** #endif
+  29:quantum/rgblight.c **** 
+  30:quantum/rgblight.c **** #define MIN(a,b) (((a)<(b))?(a):(b))
+  31:quantum/rgblight.c **** #define MAX(a,b) (((a)>(b))?(a):(b))
+  32:quantum/rgblight.c **** 
+  33:quantum/rgblight.c **** __attribute__ ((weak))
+  34:quantum/rgblight.c **** const uint8_t RGBLED_BREATHING_INTERVALS[] PROGMEM = {30, 20, 10, 5};
+  35:quantum/rgblight.c **** __attribute__ ((weak))
+  36:quantum/rgblight.c **** const uint8_t RGBLED_RAINBOW_MOOD_INTERVALS[] PROGMEM = {120, 60, 30};
+  37:quantum/rgblight.c **** __attribute__ ((weak))
+  38:quantum/rgblight.c **** const uint8_t RGBLED_RAINBOW_SWIRL_INTERVALS[] PROGMEM = {100, 50, 20};
+  39:quantum/rgblight.c **** __attribute__ ((weak))
+  40:quantum/rgblight.c **** const uint8_t RGBLED_SNAKE_INTERVALS[] PROGMEM = {100, 50, 20};
+  41:quantum/rgblight.c **** __attribute__ ((weak))
+  42:quantum/rgblight.c **** const uint8_t RGBLED_KNIGHT_INTERVALS[] PROGMEM = {127, 63, 31};
+  43:quantum/rgblight.c **** __attribute__ ((weak))
+  44:quantum/rgblight.c **** const uint16_t RGBLED_GRADIENT_RANGES[] PROGMEM = {360, 240, 180, 120, 90};
+  45:quantum/rgblight.c **** 
+  46:quantum/rgblight.c **** rgblight_config_t rgblight_config;
+  47:quantum/rgblight.c **** rgblight_config_t inmem_config;
+  48:quantum/rgblight.c **** 
+  49:quantum/rgblight.c **** LED_TYPE led[RGBLED_NUM];
+  50:quantum/rgblight.c **** uint8_t rgblight_inited = 0;
+  51:quantum/rgblight.c **** bool rgblight_timer_enabled = false;
+  52:quantum/rgblight.c **** 
+  53:quantum/rgblight.c **** void sethsv(uint16_t hue, uint8_t sat, uint8_t val, LED_TYPE *led1) {
+  16               		.loc 1 53 0
+  17               		.cfi_startproc
+  18               	.LVL0:
+  19 0000 DF92      		push r13
+  20               	.LCFI0:
+  21               		.cfi_def_cfa_offset 3
+  22               		.cfi_offset 13, -2
+  23 0002 EF92      		push r14
+  24               	.LCFI1:
+  25               		.cfi_def_cfa_offset 4
+  26               		.cfi_offset 14, -3
+  27 0004 FF92      		push r15
+  28               	.LCFI2:
+  29               		.cfi_def_cfa_offset 5
+  30               		.cfi_offset 15, -4
+  31 0006 0F93      		push r16
+  32               	.LCFI3:
+  33               		.cfi_def_cfa_offset 6
+  34               		.cfi_offset 16, -5
+  35 0008 1F93      		push r17
+  36               	.LCFI4:
+  37               		.cfi_def_cfa_offset 7
+  38               		.cfi_offset 17, -6
+  39 000a CF93      		push r28
+  40               	.LCFI5:
+  41               		.cfi_def_cfa_offset 8
+  42               		.cfi_offset 28, -7
+  43 000c DF93      		push r29
+  44               	.LCFI6:
+  45               		.cfi_def_cfa_offset 9
+  46               		.cfi_offset 29, -8
+  47               	/* prologue: function */
+  48               	/* frame size = 0 */
+  49               	/* stack size = 7 */
+  50               	.L__stack_usage = 7
+  51               	.LVL1:
+  54:quantum/rgblight.c ****   uint8_t r = 0, g = 0, b = 0, base, color;
+  55:quantum/rgblight.c **** 
+  56:quantum/rgblight.c ****   if (val > RGBLIGHT_LIMIT_VAL) {
+  57:quantum/rgblight.c ****       val=RGBLIGHT_LIMIT_VAL; // limit the val
+  58:quantum/rgblight.c ****   }
+  59:quantum/rgblight.c **** 
+  60:quantum/rgblight.c ****   if (sat == 0) { // Acromatic color (gray). Hue doesn't mind.
+  52               		.loc 1 60 0
+  53 000e 6623      		tst r22
+  54 0010 01F4      		brne .+2
+  55 0012 00C0      		rjmp .L10
+  61:quantum/rgblight.c ****     r = val;
+  62:quantum/rgblight.c ****     g = val;
+  63:quantum/rgblight.c ****     b = val;
+  64:quantum/rgblight.c ****   } else {
+  65:quantum/rgblight.c ****     base = ((255 - sat) * val) >> 8;
+  56               		.loc 1 65 0
+  57 0014 E42F      		mov r30,r20
+  58 0016 F0E0      		ldi r31,0
+  59 0018 AFEF      		ldi r26,lo8(-1)
+  60 001a B0E0      		ldi r27,0
+  61 001c A61B      		sub r26,r22
+  62 001e B109      		sbc r27,__zero_reg__
+  63 0020 BF01      		movw r22,r30
+  64               	.LVL2:
+  65 0022 A69F      		mul r26,r22
+  66 0024 E001      		movw r28,r0
+  67 0026 A79F      		mul r26,r23
+  68 0028 D00D      		add r29,r0
+  69 002a B69F      		mul r27,r22
+  70 002c D00D      		add r29,r0
+  71 002e 1124      		clr r1
+  72 0030 FD2F      		mov r31,r29
+  73 0032 DD2E      		mov r13,r29
+  74               	.LVL3:
+  66:quantum/rgblight.c ****     color = (val - base) * (hue % 60) / 60;
+  75               		.loc 1 66 0
+  76 0034 7B01      		movw r14,r22
+  77 0036 ED1A      		sub r14,r29
+  78 0038 F108      		sbc r15,__zero_reg__
+  79 003a 0CE3      		ldi r16,lo8(60)
+  80 003c 10E0      		ldi r17,0
+  81 003e B801      		movw r22,r16
+  82 0040 0E94 0000 		call __udivmodhi4
+  83               	.LVL4:
+  84 0044 EB01      		movw r28,r22
+  85 0046 BC01      		movw r22,r24
+  86 0048 E69E      		mul r14,r22
+  87 004a C001      		movw r24,r0
+  88 004c E79E      		mul r14,r23
+  89 004e 900D      		add r25,r0
+  90 0050 F69E      		mul r15,r22
+  91 0052 900D      		add r25,r0
+  92 0054 1124      		clr r1
+  93 0056 B801      		movw r22,r16
+  94 0058 0E94 0000 		call __udivmodhi4
+  95               	.LVL5:
+  67:quantum/rgblight.c **** 
+  68:quantum/rgblight.c ****     switch (hue / 60) {
+  96               		.loc 1 68 0
+  97 005c C230      		cpi r28,2
+  98 005e D105      		cpc r29,__zero_reg__
+  99 0060 01F0      		breq .L3
+ 100 0062 00F4      		brsh .L4
+ 101 0064 2097      		sbiw r28,0
+ 102 0066 01F0      		breq .L5
+ 103 0068 2197      		sbiw r28,1
+ 104 006a 01F4      		brne .L11
+ 105               	.LVL6:
+  69:quantum/rgblight.c ****       case 0:
+  70:quantum/rgblight.c ****         r = val;
+  71:quantum/rgblight.c ****         g = base + color;
+  72:quantum/rgblight.c ****         b = base;
+  73:quantum/rgblight.c ****         break;
+  74:quantum/rgblight.c ****       case 1:
+  75:quantum/rgblight.c ****         r = val - color;
+  76:quantum/rgblight.c ****         g = val;
+  77:quantum/rgblight.c ****         b = base;
+ 106               		.loc 1 77 0
+ 107 006c 8F2F      		mov r24,r31
+  76:quantum/rgblight.c ****         g = val;
+ 108               		.loc 1 76 0
+ 109 006e D42E      		mov r13,r20
+  75:quantum/rgblight.c ****         r = val - color;
+ 110               		.loc 1 75 0
+ 111 0070 461B      		sub r20,r22
+ 112               	.LVL7:
+  78:quantum/rgblight.c ****         break;
+ 113               		.loc 1 78 0
+ 114 0072 00C0      		rjmp .L2
+ 115               	.LVL8:
+ 116               	.L4:
+  68:quantum/rgblight.c ****     switch (hue / 60) {
+ 117               		.loc 1 68 0
+ 118 0074 C430      		cpi r28,4
+ 119 0076 D105      		cpc r29,__zero_reg__
+ 120 0078 01F0      		breq .L7
+ 121 007a 00F0      		brlo .L8
+ 122 007c 2597      		sbiw r28,5
+ 123 007e 01F4      		brne .L11
+ 124               	.LVL9:
+  79:quantum/rgblight.c ****       case 2:
+  80:quantum/rgblight.c ****         r = base;
+  81:quantum/rgblight.c ****         g = val;
+  82:quantum/rgblight.c ****         b = base + color;
+  83:quantum/rgblight.c ****         break;
+  84:quantum/rgblight.c ****       case 3:
+  85:quantum/rgblight.c ****         r = base;
+  86:quantum/rgblight.c ****         g = val - color;
+  87:quantum/rgblight.c ****         b = val;
+  88:quantum/rgblight.c ****         break;
+  89:quantum/rgblight.c ****       case 4:
+  90:quantum/rgblight.c ****         r = base + color;
+  91:quantum/rgblight.c ****         g = base;
+  92:quantum/rgblight.c ****         b = val;
+  93:quantum/rgblight.c ****         break;
+  94:quantum/rgblight.c ****       case 5:
+  95:quantum/rgblight.c ****         r = val;
+  96:quantum/rgblight.c ****         g = base;
+  97:quantum/rgblight.c ****         b = val - color;
+ 125               		.loc 1 97 0
+ 126 0080 842F      		mov r24,r20
+ 127 0082 861B      		sub r24,r22
+ 128               	.LVL10:
+  98:quantum/rgblight.c ****         break;
+ 129               		.loc 1 98 0
+ 130 0084 00C0      		rjmp .L2
+ 131               	.LVL11:
+ 132               	.L5:
+  72:quantum/rgblight.c ****         b = base;
+ 133               		.loc 1 72 0
+ 134 0086 8F2F      		mov r24,r31
+  71:quantum/rgblight.c ****         g = base + color;
+ 135               		.loc 1 71 0
+ 136 0088 D62E      		mov r13,r22
+ 137               	.LVL12:
+ 138 008a DF0E      		add r13,r31
+ 139               	.LVL13:
+  73:quantum/rgblight.c ****         break;
+ 140               		.loc 1 73 0
+ 141 008c 00C0      		rjmp .L2
+ 142               	.LVL14:
+ 143               	.L3:
+  82:quantum/rgblight.c ****         b = base + color;
+ 144               		.loc 1 82 0
+ 145 008e 862F      		mov r24,r22
+ 146 0090 8F0F      		add r24,r31
+ 147               	.LVL15:
+  83:quantum/rgblight.c ****         break;
+ 148               		.loc 1 83 0
+ 149 0092 D42E      		mov r13,r20
+ 150 0094 00C0      		rjmp .L12
+ 151               	.LVL16:
+ 152               	.L8:
+  86:quantum/rgblight.c ****         g = val - color;
+ 153               		.loc 1 86 0
+ 154 0096 D42E      		mov r13,r20
+ 155 0098 D61A      		sub r13,r22
+ 156               	.LVL17:
+  87:quantum/rgblight.c ****         b = val;
+ 157               		.loc 1 87 0
+ 158 009a 842F      		mov r24,r20
+ 159               	.LVL18:
+ 160               	.L12:
+  85:quantum/rgblight.c ****         r = base;
+ 161               		.loc 1 85 0
+ 162 009c 4F2F      		mov r20,r31
+ 163               	.LVL19:
+  88:quantum/rgblight.c ****         break;
+ 164               		.loc 1 88 0
+ 165 009e 00C0      		rjmp .L2
+ 166               	.LVL20:
+ 167               	.L7:
+  92:quantum/rgblight.c ****         b = val;
+ 168               		.loc 1 92 0
+ 169 00a0 842F      		mov r24,r20
+  90:quantum/rgblight.c ****         r = base + color;
+ 170               		.loc 1 90 0
+ 171 00a2 462F      		mov r20,r22
+ 172               	.LVL21:
+ 173 00a4 4F0F      		add r20,r31
+ 174               	.LVL22:
+  93:quantum/rgblight.c ****         break;
+ 175               		.loc 1 93 0
+ 176 00a6 00C0      		rjmp .L2
+ 177               	.LVL23:
+ 178               	.L10:
+  63:quantum/rgblight.c ****     b = val;
+ 179               		.loc 1 63 0
+ 180 00a8 842F      		mov r24,r20
+ 181               	.LVL24:
+  62:quantum/rgblight.c ****     g = val;
+ 182               		.loc 1 62 0
+ 183 00aa D42E      		mov r13,r20
+ 184 00ac 00C0      		rjmp .L2
+ 185               	.LVL25:
+ 186               	.L11:
+  54:quantum/rgblight.c ****   uint8_t r = 0, g = 0, b = 0, base, color;
+ 187               		.loc 1 54 0
+ 188 00ae 80E0      		ldi r24,0
+ 189 00b0 D12C      		mov r13,__zero_reg__
+ 190 00b2 40E0      		ldi r20,0
+ 191               	.LVL26:
+ 192               	.L2:
+ 193               	.LBB9:
+  99:quantum/rgblight.c ****     }
+ 100:quantum/rgblight.c ****   }
+ 101:quantum/rgblight.c ****   r = pgm_read_byte(&CIE1931_CURVE[r]);
+ 194               		.loc 1 101 0
+ 195 00b4 E42F      		mov r30,r20
+ 196 00b6 F0E0      		ldi r31,0
+ 197 00b8 E050      		subi r30,lo8(-(CIE1931_CURVE))
+ 198 00ba F040      		sbci r31,hi8(-(CIE1931_CURVE))
+ 199               	/* #APP */
+ 200               	 ;  101 "quantum/rgblight.c" 1
+ 201 00bc 4491      		lpm r20, Z
+ 202               		
+ 203               	 ;  0 "" 2
+ 204               	.LVL27:
+ 205               	/* #NOAPP */
+ 206               	.LBE9:
+ 207               	.LBB10:
+ 102:quantum/rgblight.c ****   g = pgm_read_byte(&CIE1931_CURVE[g]);
+ 208               		.loc 1 102 0
+ 209 00be ED2D      		mov r30,r13
+ 210 00c0 F0E0      		ldi r31,0
+ 211 00c2 E050      		subi r30,lo8(-(CIE1931_CURVE))
+ 212 00c4 F040      		sbci r31,hi8(-(CIE1931_CURVE))
+ 213               	/* #APP */
+ 214               	 ;  102 "quantum/rgblight.c" 1
+ 215 00c6 9491      		lpm r25, Z
+ 216               		
+ 217               	 ;  0 "" 2
+ 218               	.LVL28:
+ 219               	/* #NOAPP */
+ 220               	.LBE10:
+ 221               	.LBB11:
+ 103:quantum/rgblight.c ****   b = pgm_read_byte(&CIE1931_CURVE[b]);
+ 222               		.loc 1 103 0
+ 223 00c8 E82F      		mov r30,r24
+ 224 00ca F0E0      		ldi r31,0
+ 225 00cc E050      		subi r30,lo8(-(CIE1931_CURVE))
+ 226 00ce F040      		sbci r31,hi8(-(CIE1931_CURVE))
+ 227               	/* #APP */
+ 228               	 ;  103 "quantum/rgblight.c" 1
+ 229 00d0 E491      		lpm r30, Z
+ 230               		
+ 231               	 ;  0 "" 2
+ 232               	.LVL29:
+ 233               	/* #NOAPP */
+ 234               	.LBE11:
+ 235               	.LBB12:
+ 236               	.LBB13:
+ 104:quantum/rgblight.c **** 
+ 105:quantum/rgblight.c ****   setrgb(r, g, b, led1);
+ 106:quantum/rgblight.c **** }
+ 107:quantum/rgblight.c **** 
+ 108:quantum/rgblight.c **** void setrgb(uint8_t r, uint8_t g, uint8_t b, LED_TYPE *led1) {
+ 109:quantum/rgblight.c ****   (*led1).r = r;
+ 237               		.loc 1 109 0
+ 238 00d2 D901      		movw r26,r18
+ 239 00d4 1196      		adiw r26,1
+ 240 00d6 4C93      		st X,r20
+ 241 00d8 1197      		sbiw r26,1
+ 110:quantum/rgblight.c ****   (*led1).g = g;
+ 242               		.loc 1 110 0
+ 243 00da 9C93      		st X,r25
+ 111:quantum/rgblight.c ****   (*led1).b = b;
+ 244               		.loc 1 111 0
+ 245 00dc 1296      		adiw r26,2
+ 246 00de EC93      		st X,r30
+ 247               	/* epilogue start */
+ 248               	.LBE13:
+ 249               	.LBE12:
+ 106:quantum/rgblight.c **** }
+ 250               		.loc 1 106 0
+ 251 00e0 DF91      		pop r29
+ 252 00e2 CF91      		pop r28
+ 253 00e4 1F91      		pop r17
+ 254 00e6 0F91      		pop r16
+ 255 00e8 FF90      		pop r15
+ 256 00ea EF90      		pop r14
+ 257 00ec DF90      		pop r13
+ 258               	.LVL30:
+ 259 00ee 0895      		ret
+ 260               		.cfi_endproc
+ 261               	.LFE7:
+ 263               		.section	.text.setrgb,"ax",@progbits
+ 264               	.global	setrgb
+ 266               	setrgb:
+ 267               	.LFB8:
+ 108:quantum/rgblight.c **** void setrgb(uint8_t r, uint8_t g, uint8_t b, LED_TYPE *led1) {
+ 268               		.loc 1 108 0
+ 269               		.cfi_startproc
+ 270               	.LVL31:
+ 271               	/* prologue: function */
+ 272               	/* frame size = 0 */
+ 273               	/* stack size = 0 */
+ 274               	.L__stack_usage = 0
+ 275 0000 F901      		movw r30,r18
+ 109:quantum/rgblight.c ****   (*led1).r = r;
+ 276               		.loc 1 109 0
+ 277 0002 8183      		std Z+1,r24
+ 110:quantum/rgblight.c ****   (*led1).g = g;
+ 278               		.loc 1 110 0
+ 279 0004 6083      		st Z,r22
+ 280               		.loc 1 111 0
+ 281 0006 4283      		std Z+2,r20
+ 282 0008 0895      		ret
+ 283               		.cfi_endproc
+ 284               	.LFE8:
+ 286               		.section	.text.eeconfig_read_rgblight,"ax",@progbits
+ 287               	.global	eeconfig_read_rgblight
+ 289               	eeconfig_read_rgblight:
+ 290               	.LFB9:
+ 112:quantum/rgblight.c **** }
+ 113:quantum/rgblight.c **** 
+ 114:quantum/rgblight.c **** 
+ 115:quantum/rgblight.c **** uint32_t eeconfig_read_rgblight(void) {
+ 291               		.loc 1 115 0
+ 292               		.cfi_startproc
+ 293               	/* prologue: function */
+ 294               	/* frame size = 0 */
+ 295               	/* stack size = 0 */
+ 296               	.L__stack_usage = 0
+ 116:quantum/rgblight.c ****   return eeprom_read_dword(EECONFIG_RGBLIGHT);
+ 297               		.loc 1 116 0
+ 298 0000 88E0      		ldi r24,lo8(8)
+ 299 0002 90E0      		ldi r25,0
+ 300 0004 0C94 0000 		jmp __eerd_dword_m32u4
+ 301               	.LVL32:
+ 302               		.cfi_endproc
+ 303               	.LFE9:
+ 305               		.section	.text.eeconfig_update_rgblight,"ax",@progbits
+ 306               	.global	eeconfig_update_rgblight
+ 308               	eeconfig_update_rgblight:
+ 309               	.LFB10:
+ 117:quantum/rgblight.c **** }
+ 118:quantum/rgblight.c **** void eeconfig_update_rgblight(uint32_t val) {
+ 310               		.loc 1 118 0
+ 311               		.cfi_startproc
+ 312               	.LVL33:
+ 313               	/* prologue: function */
+ 314               	/* frame size = 0 */
+ 315               	/* stack size = 0 */
+ 316               	.L__stack_usage = 0
+ 317 0000 AB01      		movw r20,r22
+ 318 0002 BC01      		movw r22,r24
+ 119:quantum/rgblight.c ****   eeprom_update_dword(EECONFIG_RGBLIGHT, val);
+ 319               		.loc 1 119 0
+ 320 0004 88E0      		ldi r24,lo8(8)
+ 321 0006 90E0      		ldi r25,0
+ 322 0008 0C94 0000 		jmp __eeupd_dword_m32u4
+ 323               	.LVL34:
+ 324               		.cfi_endproc
+ 325               	.LFE10:
+ 327               		.section	.text.eeconfig_update_rgblight_default,"ax",@progbits
+ 328               	.global	eeconfig_update_rgblight_default
+ 330               	eeconfig_update_rgblight_default:
+ 331               	.LFB11:
+ 120:quantum/rgblight.c **** }
+ 121:quantum/rgblight.c **** void eeconfig_update_rgblight_default(void) {
+ 332               		.loc 1 121 0
+ 333               		.cfi_startproc
+ 334               	/* prologue: function */
+ 335               	/* frame size = 0 */
+ 336               	/* stack size = 0 */
+ 337               	.L__stack_usage = 0
+ 122:quantum/rgblight.c ****   dprintf("eeconfig_update_rgblight_default\n");
+ 123:quantum/rgblight.c ****   rgblight_config.enable = 1;
+ 338               		.loc 1 123 0
+ 339 0000 E0E0      		ldi r30,lo8(rgblight_config)
+ 340 0002 F0E0      		ldi r31,hi8(rgblight_config)
+ 124:quantum/rgblight.c ****   rgblight_config.mode = 1;
+ 125:quantum/rgblight.c ****   rgblight_config.hue = 0;
+ 341               		.loc 1 125 0
+ 342 0004 83E0      		ldi r24,lo8(3)
+ 343 0006 8083      		st Z,r24
+ 344 0008 1092 0000 		sts rgblight_config+1,__zero_reg__
+ 126:quantum/rgblight.c ****   rgblight_config.sat = 255;
+ 345               		.loc 1 126 0
+ 346 000c 8FEF      		ldi r24,lo8(-1)
+ 347 000e 8093 0000 		sts rgblight_config+2,r24
+ 127:quantum/rgblight.c ****   rgblight_config.val = RGBLIGHT_LIMIT_VAL;
+ 348               		.loc 1 127 0
+ 349 0012 8093 0000 		sts rgblight_config+3,r24
+ 128:quantum/rgblight.c ****   rgblight_config.speed = 0;
+ 350               		.loc 1 128 0
+ 351 0016 1092 0000 		sts rgblight_config+4,__zero_reg__
+ 129:quantum/rgblight.c ****   eeconfig_update_rgblight(rgblight_config.raw);
+ 352               		.loc 1 129 0
+ 353 001a 6081      		ld r22,Z
+ 354 001c 7181      		ldd r23,Z+1
+ 355 001e 8281      		ldd r24,Z+2
+ 356 0020 9381      		ldd r25,Z+3
+ 357 0022 0C94 0000 		jmp eeconfig_update_rgblight
+ 358               	.LVL35:
+ 359               		.cfi_endproc
+ 360               	.LFE11:
+ 362               		.section	.text.eeconfig_debug_rgblight,"ax",@progbits
+ 363               	.global	eeconfig_debug_rgblight
+ 365               	eeconfig_debug_rgblight:
+ 366               	.LFB12:
+ 130:quantum/rgblight.c **** }
+ 131:quantum/rgblight.c **** void eeconfig_debug_rgblight(void) {
+ 367               		.loc 1 131 0
+ 368               		.cfi_startproc
+ 369               	/* prologue: function */
+ 370               	/* frame size = 0 */
+ 371               	/* stack size = 0 */
+ 372               	.L__stack_usage = 0
+ 373 0000 0895      		ret
+ 374               		.cfi_endproc
+ 375               	.LFE12:
+ 377               		.section	.text.rgblight_get_mode,"ax",@progbits
+ 378               	.global	rgblight_get_mode
+ 380               	rgblight_get_mode:
+ 381               	.LFB19:
+ 132:quantum/rgblight.c ****   dprintf("rgblight_config eprom\n");
+ 133:quantum/rgblight.c ****   dprintf("rgblight_config.enable = %d\n", rgblight_config.enable);
+ 134:quantum/rgblight.c ****   dprintf("rghlight_config.mode = %d\n", rgblight_config.mode);
+ 135:quantum/rgblight.c ****   dprintf("rgblight_config.hue = %d\n", rgblight_config.hue);
+ 136:quantum/rgblight.c ****   dprintf("rgblight_config.sat = %d\n", rgblight_config.sat);
+ 137:quantum/rgblight.c ****   dprintf("rgblight_config.val = %d\n", rgblight_config.val);
+ 138:quantum/rgblight.c ****   dprintf("rgblight_config.speed = %d\n", rgblight_config.speed);
+ 139:quantum/rgblight.c **** }
+ 140:quantum/rgblight.c **** 
+ 141:quantum/rgblight.c **** void rgblight_init(void) {
+ 142:quantum/rgblight.c ****   debug_enable = 1; // Debug ON!
+ 143:quantum/rgblight.c ****   dprintf("rgblight_init called.\n");
+ 144:quantum/rgblight.c ****   rgblight_inited = 1;
+ 145:quantum/rgblight.c ****   dprintf("rgblight_init start!\n");
+ 146:quantum/rgblight.c ****   if (!eeconfig_is_enabled()) {
+ 147:quantum/rgblight.c ****     dprintf("rgblight_init eeconfig is not enabled.\n");
+ 148:quantum/rgblight.c ****     eeconfig_init();
+ 149:quantum/rgblight.c ****     eeconfig_update_rgblight_default();
+ 150:quantum/rgblight.c ****   }
+ 151:quantum/rgblight.c ****   rgblight_config.raw = eeconfig_read_rgblight();
+ 152:quantum/rgblight.c ****   if (!rgblight_config.mode) {
+ 153:quantum/rgblight.c ****     dprintf("rgblight_init rgblight_config.mode = 0. Write default values to EEPROM.\n");
+ 154:quantum/rgblight.c ****     eeconfig_update_rgblight_default();
+ 155:quantum/rgblight.c ****     rgblight_config.raw = eeconfig_read_rgblight();
+ 156:quantum/rgblight.c ****   }
+ 157:quantum/rgblight.c ****   eeconfig_debug_rgblight(); // display current eeprom values
+ 158:quantum/rgblight.c **** 
+ 159:quantum/rgblight.c ****   #ifdef RGBLIGHT_ANIMATIONS
+ 160:quantum/rgblight.c ****     rgblight_timer_init(); // setup the timer
+ 161:quantum/rgblight.c ****   #endif
+ 162:quantum/rgblight.c **** 
+ 163:quantum/rgblight.c ****   if (rgblight_config.enable) {
+ 164:quantum/rgblight.c ****     rgblight_mode(rgblight_config.mode);
+ 165:quantum/rgblight.c ****   }
+ 166:quantum/rgblight.c **** }
+ 167:quantum/rgblight.c **** 
+ 168:quantum/rgblight.c **** void rgblight_update_dword(uint32_t dword) {
+ 169:quantum/rgblight.c ****   rgblight_config.raw = dword;
+ 170:quantum/rgblight.c ****   eeconfig_update_rgblight(rgblight_config.raw);
+ 171:quantum/rgblight.c ****   if (rgblight_config.enable)
+ 172:quantum/rgblight.c ****     rgblight_mode(rgblight_config.mode);
+ 173:quantum/rgblight.c ****   else {
+ 174:quantum/rgblight.c ****     #ifdef RGBLIGHT_ANIMATIONS
+ 175:quantum/rgblight.c ****       rgblight_timer_disable();
+ 176:quantum/rgblight.c ****     #endif
+ 177:quantum/rgblight.c ****       rgblight_set();
+ 178:quantum/rgblight.c ****   }
+ 179:quantum/rgblight.c **** }
+ 180:quantum/rgblight.c **** 
+ 181:quantum/rgblight.c **** void rgblight_increase(void) {
+ 182:quantum/rgblight.c ****   uint8_t mode = 0;
+ 183:quantum/rgblight.c ****   if (rgblight_config.mode < RGBLIGHT_MODES) {
+ 184:quantum/rgblight.c ****     mode = rgblight_config.mode + 1;
+ 185:quantum/rgblight.c ****   }
+ 186:quantum/rgblight.c ****   rgblight_mode(mode);
+ 187:quantum/rgblight.c **** }
+ 188:quantum/rgblight.c **** void rgblight_decrease(void) {
+ 189:quantum/rgblight.c ****   uint8_t mode = 0;
+ 190:quantum/rgblight.c ****   // Mode will never be < 1. If it ever is, eeprom needs to be initialized.
+ 191:quantum/rgblight.c ****   if (rgblight_config.mode > 1) {
+ 192:quantum/rgblight.c ****     mode = rgblight_config.mode - 1;
+ 193:quantum/rgblight.c ****   }
+ 194:quantum/rgblight.c ****   rgblight_mode(mode);
+ 195:quantum/rgblight.c **** }
+ 196:quantum/rgblight.c **** void rgblight_step(void) {
+ 197:quantum/rgblight.c ****   uint8_t mode = 0;
+ 198:quantum/rgblight.c ****   mode = rgblight_config.mode + 1;
+ 199:quantum/rgblight.c ****   if (mode > RGBLIGHT_MODES) {
+ 200:quantum/rgblight.c ****     mode = 1;
+ 201:quantum/rgblight.c ****   }
+ 202:quantum/rgblight.c ****   rgblight_mode(mode);
+ 203:quantum/rgblight.c **** }
+ 204:quantum/rgblight.c **** void rgblight_step_reverse(void) {
+ 205:quantum/rgblight.c ****   uint8_t mode = 0;
+ 206:quantum/rgblight.c ****   mode = rgblight_config.mode - 1;
+ 207:quantum/rgblight.c ****   if (mode < 1) {
+ 208:quantum/rgblight.c ****     mode = RGBLIGHT_MODES;
+ 209:quantum/rgblight.c ****   }
+ 210:quantum/rgblight.c ****   rgblight_mode(mode);
+ 211:quantum/rgblight.c **** }
+ 212:quantum/rgblight.c **** 
+ 213:quantum/rgblight.c **** uint32_t rgblight_get_mode(void) {
+ 382               		.loc 1 213 0
+ 383               		.cfi_startproc
+ 384               	/* prologue: function */
+ 385               	/* frame size = 0 */
+ 386               	/* stack size = 0 */
+ 387               	.L__stack_usage = 0
+ 214:quantum/rgblight.c ****   if (!rgblight_config.enable) {
+ 388               		.loc 1 214 0
+ 389 0000 6091 0000 		lds r22,rgblight_config
+ 390 0004 60FF      		sbrs r22,0
+ 391 0006 00C0      		rjmp .L21
+ 215:quantum/rgblight.c ****     return false;
+ 216:quantum/rgblight.c ****   }
+ 217:quantum/rgblight.c **** 
+ 218:quantum/rgblight.c ****   return rgblight_config.mode;
+ 392               		.loc 1 218 0
+ 393 0008 6695      		lsr r22
+ 394 000a 6F73      		andi r22,lo8(63)
+ 395 000c 70E0      		ldi r23,0
+ 396 000e 80E0      		ldi r24,0
+ 397 0010 90E0      		ldi r25,0
+ 398 0012 0895      		ret
+ 399               	.L21:
+ 215:quantum/rgblight.c ****     return false;
+ 400               		.loc 1 215 0
+ 401 0014 60E0      		ldi r22,0
+ 402 0016 70E0      		ldi r23,0
+ 403 0018 CB01      		movw r24,r22
+ 219:quantum/rgblight.c **** }
+ 404               		.loc 1 219 0
+ 405 001a 0895      		ret
+ 406               		.cfi_endproc
+ 407               	.LFE19:
+ 409               		.section	.text.increment,"ax",@progbits
+ 410               	.global	increment
+ 412               	increment:
+ 413               	.LFB24:
+ 220:quantum/rgblight.c **** 
+ 221:quantum/rgblight.c **** void rgblight_mode(uint8_t mode) {
+ 222:quantum/rgblight.c ****   if (!rgblight_config.enable) {
+ 223:quantum/rgblight.c ****     return;
+ 224:quantum/rgblight.c ****   }
+ 225:quantum/rgblight.c ****   if (mode < 1) {
+ 226:quantum/rgblight.c ****     rgblight_config.mode = 1;
+ 227:quantum/rgblight.c ****   } else if (mode > RGBLIGHT_MODES) {
+ 228:quantum/rgblight.c ****     rgblight_config.mode = RGBLIGHT_MODES;
+ 229:quantum/rgblight.c ****   } else {
+ 230:quantum/rgblight.c ****     rgblight_config.mode = mode;
+ 231:quantum/rgblight.c ****   }
+ 232:quantum/rgblight.c ****   eeconfig_update_rgblight(rgblight_config.raw);
+ 233:quantum/rgblight.c ****   xprintf("rgblight mode: %u\n", rgblight_config.mode);
+ 234:quantum/rgblight.c ****   if (rgblight_config.mode == 1) {
+ 235:quantum/rgblight.c ****     #ifdef RGBLIGHT_ANIMATIONS
+ 236:quantum/rgblight.c ****       rgblight_timer_disable();
+ 237:quantum/rgblight.c ****     #endif
+ 238:quantum/rgblight.c ****   } else if (rgblight_config.mode >= 2 && rgblight_config.mode <= 24) {
+ 239:quantum/rgblight.c ****     // MODE 2-5, breathing
+ 240:quantum/rgblight.c ****     // MODE 6-8, rainbow mood
+ 241:quantum/rgblight.c ****     // MODE 9-14, rainbow swirl
+ 242:quantum/rgblight.c ****     // MODE 15-20, snake
+ 243:quantum/rgblight.c ****     // MODE 21-23, knight
+ 244:quantum/rgblight.c ****     // MODE 24, xmas
+ 245:quantum/rgblight.c ****     // MODE 25-34, static rainbow
+ 246:quantum/rgblight.c **** 
+ 247:quantum/rgblight.c ****     #ifdef RGBLIGHT_ANIMATIONS
+ 248:quantum/rgblight.c ****       rgblight_timer_enable();
+ 249:quantum/rgblight.c ****     #endif
+ 250:quantum/rgblight.c ****   } else if (rgblight_config.mode >= 25 && rgblight_config.mode <= 34) {
+ 251:quantum/rgblight.c ****     // MODE 25-34, static gradient
+ 252:quantum/rgblight.c **** 
+ 253:quantum/rgblight.c ****     #ifdef RGBLIGHT_ANIMATIONS
+ 254:quantum/rgblight.c ****       rgblight_timer_disable();
+ 255:quantum/rgblight.c ****     #endif
+ 256:quantum/rgblight.c ****   }
+ 257:quantum/rgblight.c ****   rgblight_sethsv(rgblight_config.hue, rgblight_config.sat, rgblight_config.val);
+ 258:quantum/rgblight.c **** }
+ 259:quantum/rgblight.c **** 
+ 260:quantum/rgblight.c **** void rgblight_toggle(void) {
+ 261:quantum/rgblight.c ****   xprintf("rgblight toggle: rgblight_config.enable = %u\n", !rgblight_config.enable);
+ 262:quantum/rgblight.c ****   if (rgblight_config.enable) {
+ 263:quantum/rgblight.c ****     rgblight_disable();
+ 264:quantum/rgblight.c ****   }
+ 265:quantum/rgblight.c ****   else {
+ 266:quantum/rgblight.c ****     rgblight_enable();
+ 267:quantum/rgblight.c ****   }
+ 268:quantum/rgblight.c **** }
+ 269:quantum/rgblight.c **** 
+ 270:quantum/rgblight.c **** void rgblight_enable(void) {
+ 271:quantum/rgblight.c ****   rgblight_config.enable = 1;
+ 272:quantum/rgblight.c ****   eeconfig_update_rgblight(rgblight_config.raw);
+ 273:quantum/rgblight.c ****   xprintf("rgblight enable: rgblight_config.enable = %u\n", rgblight_config.enable);
+ 274:quantum/rgblight.c ****   rgblight_mode(rgblight_config.mode);
+ 275:quantum/rgblight.c **** }
+ 276:quantum/rgblight.c **** 
+ 277:quantum/rgblight.c **** void rgblight_disable(void) {
+ 278:quantum/rgblight.c ****   rgblight_config.enable = 0;
+ 279:quantum/rgblight.c ****   eeconfig_update_rgblight(rgblight_config.raw);
+ 280:quantum/rgblight.c ****   xprintf("rgblight disable: rgblight_config.enable = %u\n", rgblight_config.enable);
+ 281:quantum/rgblight.c ****   #ifdef RGBLIGHT_ANIMATIONS
+ 282:quantum/rgblight.c ****     rgblight_timer_disable();
+ 283:quantum/rgblight.c ****   #endif
+ 284:quantum/rgblight.c ****   _delay_ms(50);
+ 285:quantum/rgblight.c ****   rgblight_set();
+ 286:quantum/rgblight.c **** }
+ 287:quantum/rgblight.c **** 
+ 288:quantum/rgblight.c **** // Deals with the messy details of incrementing an integer
+ 289:quantum/rgblight.c **** uint8_t increment( uint8_t value, uint8_t step, uint8_t min, uint8_t max ) {
+ 414               		.loc 1 289 0
+ 415               		.cfi_startproc
+ 416               	.LVL36:
+ 417               	/* prologue: function */
+ 418               	/* frame size = 0 */
+ 419               	/* stack size = 0 */
+ 420               	.L__stack_usage = 0
+ 290:quantum/rgblight.c ****     int16_t new_value = value;
+ 291:quantum/rgblight.c ****     new_value += step;
+ 421               		.loc 1 291 0
+ 422 0000 70E0      		ldi r23,0
+ 292:quantum/rgblight.c ****     return MIN( MAX( new_value, min ), max );
+ 423               		.loc 1 292 0
+ 424 0002 50E0      		ldi r21,0
+ 425 0004 680F      		add r22,r24
+ 426 0006 711D      		adc r23,__zero_reg__
+ 427               	.LVL37:
+ 428 0008 6417      		cp r22,r20
+ 429 000a 7507      		cpc r23,r21
+ 430 000c 04F4      		brge .L23
+ 431 000e BA01      		movw r22,r20
+ 432               	.L23:
+ 433 0010 30E0      		ldi r19,0
+ 434 0012 CB01      		movw r24,r22
+ 435               	.LVL38:
+ 436 0014 2617      		cp r18,r22
+ 437 0016 3707      		cpc r19,r23
+ 438 0018 04F4      		brge .L24
+ 439 001a C901      		movw r24,r18
+ 440               	.L24:
+ 293:quantum/rgblight.c **** }
+ 441               		.loc 1 293 0
+ 442 001c 0895      		ret
+ 443               		.cfi_endproc
+ 444               	.LFE24:
+ 446               		.section	.text.decrement,"ax",@progbits
+ 447               	.global	decrement
+ 449               	decrement:
+ 450               	.LFB25:
+ 294:quantum/rgblight.c **** 
+ 295:quantum/rgblight.c **** uint8_t decrement( uint8_t value, uint8_t step, uint8_t min, uint8_t max ) {
+ 451               		.loc 1 295 0
+ 452               		.cfi_startproc
+ 453               	.LVL39:
+ 454               	/* prologue: function */
+ 455               	/* frame size = 0 */
+ 456               	/* stack size = 0 */
+ 457               	.L__stack_usage = 0
+ 296:quantum/rgblight.c ****     int16_t new_value = value;
+ 458               		.loc 1 296 0
+ 459 0000 90E0      		ldi r25,0
+ 460               	.LVL40:
+ 297:quantum/rgblight.c ****     new_value -= step;
+ 298:quantum/rgblight.c ****     return MIN( MAX( new_value, min ), max );
+ 461               		.loc 1 298 0
+ 462 0002 50E0      		ldi r21,0
+ 463 0004 861B      		sub r24,r22
+ 464 0006 9109      		sbc r25,__zero_reg__
+ 465               	.LVL41:
+ 466 0008 8417      		cp r24,r20
+ 467 000a 9507      		cpc r25,r21
+ 468 000c 04F4      		brge .L26
+ 469 000e CA01      		movw r24,r20
+ 470               	.LVL42:
+ 471               	.L26:
+ 472 0010 30E0      		ldi r19,0
+ 473 0012 2817      		cp r18,r24
+ 474 0014 3907      		cpc r19,r25
+ 475 0016 04F4      		brge .L27
+ 476 0018 C901      		movw r24,r18
+ 477               	.L27:
+ 299:quantum/rgblight.c **** }
+ 478               		.loc 1 299 0
+ 479 001a 0895      		ret
+ 480               		.cfi_endproc
+ 481               	.LFE25:
+ 483               		.section	.text.rgblight_increase_speed,"ax",@progbits
+ 484               	.global	rgblight_increase_speed
+ 486               	rgblight_increase_speed:
+ 487               	.LFB32:
+ 300:quantum/rgblight.c **** 
+ 301:quantum/rgblight.c **** void rgblight_increase_hue(void) {
+ 302:quantum/rgblight.c ****   uint16_t hue;
+ 303:quantum/rgblight.c ****   hue = (rgblight_config.hue+RGBLIGHT_HUE_STEP) % 360;
+ 304:quantum/rgblight.c ****   rgblight_sethsv(hue, rgblight_config.sat, rgblight_config.val);
+ 305:quantum/rgblight.c **** }
+ 306:quantum/rgblight.c **** void rgblight_decrease_hue(void) {
+ 307:quantum/rgblight.c ****   uint16_t hue;
+ 308:quantum/rgblight.c ****   if (rgblight_config.hue-RGBLIGHT_HUE_STEP < 0) {
+ 309:quantum/rgblight.c ****     hue = (rgblight_config.hue + 360 - RGBLIGHT_HUE_STEP) % 360;
+ 310:quantum/rgblight.c ****   } else {
+ 311:quantum/rgblight.c ****     hue = (rgblight_config.hue - RGBLIGHT_HUE_STEP) % 360;
+ 312:quantum/rgblight.c ****   }
+ 313:quantum/rgblight.c ****   rgblight_sethsv(hue, rgblight_config.sat, rgblight_config.val);
+ 314:quantum/rgblight.c **** }
+ 315:quantum/rgblight.c **** void rgblight_increase_sat(void) {
+ 316:quantum/rgblight.c ****   uint8_t sat;
+ 317:quantum/rgblight.c ****   if (rgblight_config.sat + RGBLIGHT_SAT_STEP > 255) {
+ 318:quantum/rgblight.c ****     sat = 255;
+ 319:quantum/rgblight.c ****   } else {
+ 320:quantum/rgblight.c ****     sat = rgblight_config.sat + RGBLIGHT_SAT_STEP;
+ 321:quantum/rgblight.c ****   }
+ 322:quantum/rgblight.c ****   rgblight_sethsv(rgblight_config.hue, sat, rgblight_config.val);
+ 323:quantum/rgblight.c **** }
+ 324:quantum/rgblight.c **** void rgblight_decrease_sat(void) {
+ 325:quantum/rgblight.c ****   uint8_t sat;
+ 326:quantum/rgblight.c ****   if (rgblight_config.sat - RGBLIGHT_SAT_STEP < 0) {
+ 327:quantum/rgblight.c ****     sat = 0;
+ 328:quantum/rgblight.c ****   } else {
+ 329:quantum/rgblight.c ****     sat = rgblight_config.sat - RGBLIGHT_SAT_STEP;
+ 330:quantum/rgblight.c ****   }
+ 331:quantum/rgblight.c ****   rgblight_sethsv(rgblight_config.hue, sat, rgblight_config.val);
+ 332:quantum/rgblight.c **** }
+ 333:quantum/rgblight.c **** void rgblight_increase_val(void) {
+ 334:quantum/rgblight.c ****   uint8_t val;
+ 335:quantum/rgblight.c ****   if (rgblight_config.val + RGBLIGHT_VAL_STEP > RGBLIGHT_LIMIT_VAL) {
+ 336:quantum/rgblight.c ****     val = RGBLIGHT_LIMIT_VAL;
+ 337:quantum/rgblight.c ****   } else {
+ 338:quantum/rgblight.c ****     val = rgblight_config.val + RGBLIGHT_VAL_STEP;
+ 339:quantum/rgblight.c ****   }
+ 340:quantum/rgblight.c ****   rgblight_sethsv(rgblight_config.hue, rgblight_config.sat, val);
+ 341:quantum/rgblight.c **** }
+ 342:quantum/rgblight.c **** void rgblight_decrease_val(void) {
+ 343:quantum/rgblight.c ****   uint8_t val;
+ 344:quantum/rgblight.c ****   if (rgblight_config.val - RGBLIGHT_VAL_STEP < 0) {
+ 345:quantum/rgblight.c ****     val = 0;
+ 346:quantum/rgblight.c ****   } else {
+ 347:quantum/rgblight.c ****     val = rgblight_config.val - RGBLIGHT_VAL_STEP;
+ 348:quantum/rgblight.c ****   }
+ 349:quantum/rgblight.c ****   rgblight_sethsv(rgblight_config.hue, rgblight_config.sat, val);
+ 350:quantum/rgblight.c **** }
+ 351:quantum/rgblight.c **** void rgblight_increase_speed(void) {
+ 488               		.loc 1 351 0
+ 489               		.cfi_startproc
+ 490               	/* prologue: function */
+ 491               	/* frame size = 0 */
+ 492               	/* stack size = 0 */
+ 493               	.L__stack_usage = 0
+ 494               	.LVL43:
+ 495               	.LBB16:
+ 496               	.LBB17:
+ 290:quantum/rgblight.c ****     int16_t new_value = value;
+ 497               		.loc 1 290 0
+ 498 0000 8091 0000 		lds r24,rgblight_config+4
+ 499 0004 90E0      		ldi r25,0
+ 500               	.LVL44:
+ 291:quantum/rgblight.c ****     new_value += step;
+ 501               		.loc 1 291 0
+ 502 0006 0196      		adiw r24,1
+ 503               	.LVL45:
+ 292:quantum/rgblight.c ****     return MIN( MAX( new_value, min ), max );
+ 504               		.loc 1 292 0
+ 505 0008 8430      		cpi r24,4
+ 506 000a 9105      		cpc r25,__zero_reg__
+ 507 000c 04F0      		brlt .L30
+ 508 000e 83E0      		ldi r24,lo8(3)
+ 509 0010 90E0      		ldi r25,0
+ 510               	.LVL46:
+ 511               	.L30:
+ 512 0012 8093 0000 		sts rgblight_config+4,r24
+ 513               	.LVL47:
+ 514               	.LBE17:
+ 515               	.LBE16:
+ 352:quantum/rgblight.c ****     rgblight_config.speed = increment( rgblight_config.speed, 1, 0, 3 );
+ 353:quantum/rgblight.c ****     eeconfig_update_rgblight(rgblight_config.raw);//EECONFIG needs to be increased to support this
+ 516               		.loc 1 353 0
+ 517 0016 6091 0000 		lds r22,rgblight_config
+ 518 001a 7091 0000 		lds r23,rgblight_config+1
+ 519 001e 8091 0000 		lds r24,rgblight_config+2
+ 520 0022 9091 0000 		lds r25,rgblight_config+3
+ 521 0026 0C94 0000 		jmp eeconfig_update_rgblight
+ 522               	.LVL48:
+ 523               		.cfi_endproc
+ 524               	.LFE32:
+ 526               		.section	.text.rgblight_decrease_speed,"ax",@progbits
+ 527               	.global	rgblight_decrease_speed
+ 529               	rgblight_decrease_speed:
+ 530               	.LFB33:
+ 354:quantum/rgblight.c **** }
+ 355:quantum/rgblight.c **** 
+ 356:quantum/rgblight.c **** void rgblight_decrease_speed(void) {
+ 531               		.loc 1 356 0
+ 532               		.cfi_startproc
+ 533               	/* prologue: function */
+ 534               	/* frame size = 0 */
+ 535               	/* stack size = 0 */
+ 536               	.L__stack_usage = 0
+ 537               	.LVL49:
+ 538               	.LBB20:
+ 539               	.LBB21:
+ 296:quantum/rgblight.c ****     int16_t new_value = value;
+ 540               		.loc 1 296 0
+ 541 0000 8091 0000 		lds r24,rgblight_config+4
+ 542 0004 90E0      		ldi r25,0
+ 543               	.LVL50:
+ 297:quantum/rgblight.c ****     new_value -= step;
+ 544               		.loc 1 297 0
+ 545 0006 0197      		sbiw r24,1
+ 546               	.LVL51:
+ 298:quantum/rgblight.c ****     return MIN( MAX( new_value, min ), max );
+ 547               		.loc 1 298 0
+ 548 0008 97FF      		sbrs r25,7
+ 549 000a 00C0      		rjmp .L32
+ 550 000c 80E0      		ldi r24,0
+ 551 000e 90E0      		ldi r25,0
+ 552               	.LVL52:
+ 553               	.L32:
+ 554 0010 8430      		cpi r24,4
+ 555 0012 9105      		cpc r25,__zero_reg__
+ 556 0014 04F0      		brlt .L33
+ 557 0016 83E0      		ldi r24,lo8(3)
+ 558 0018 90E0      		ldi r25,0
+ 559               	.L33:
+ 560 001a 8093 0000 		sts rgblight_config+4,r24
+ 561               	.LVL53:
+ 562               	.LBE21:
+ 563               	.LBE20:
+ 357:quantum/rgblight.c ****     rgblight_config.speed = decrement( rgblight_config.speed, 1, 0, 3 );
+ 358:quantum/rgblight.c ****     eeconfig_update_rgblight(rgblight_config.raw);//EECONFIG needs to be increased to support this
+ 564               		.loc 1 358 0
+ 565 001e 6091 0000 		lds r22,rgblight_config
+ 566 0022 7091 0000 		lds r23,rgblight_config+1
+ 567 0026 8091 0000 		lds r24,rgblight_config+2
+ 568 002a 9091 0000 		lds r25,rgblight_config+3
+ 569 002e 0C94 0000 		jmp eeconfig_update_rgblight
+ 570               	.LVL54:
+ 571               		.cfi_endproc
+ 572               	.LFE33:
+ 574               		.section	.text.rgblight_get_hue,"ax",@progbits
+ 575               	.global	rgblight_get_hue
+ 577               	rgblight_get_hue:
+ 578               	.LFB36:
+ 359:quantum/rgblight.c **** }
+ 360:quantum/rgblight.c **** 
+ 361:quantum/rgblight.c **** void rgblight_sethsv_noeeprom(uint16_t hue, uint8_t sat, uint8_t val) {
+ 362:quantum/rgblight.c ****   inmem_config.raw = rgblight_config.raw;
+ 363:quantum/rgblight.c ****   if (rgblight_config.enable) {
+ 364:quantum/rgblight.c ****     LED_TYPE tmp_led;
+ 365:quantum/rgblight.c ****     sethsv(hue, sat, val, &tmp_led);
+ 366:quantum/rgblight.c ****     inmem_config.hue = hue;
+ 367:quantum/rgblight.c ****     inmem_config.sat = sat;
+ 368:quantum/rgblight.c ****     inmem_config.val = val;
+ 369:quantum/rgblight.c ****     // dprintf("rgblight set hue [MEMORY]: %u,%u,%u\n", inmem_config.hue, inmem_config.sat, inmem_c
+ 370:quantum/rgblight.c ****     rgblight_setrgb(tmp_led.r, tmp_led.g, tmp_led.b);
+ 371:quantum/rgblight.c ****   }
+ 372:quantum/rgblight.c **** }
+ 373:quantum/rgblight.c **** void rgblight_sethsv(uint16_t hue, uint8_t sat, uint8_t val) {
+ 374:quantum/rgblight.c ****   if (rgblight_config.enable) {
+ 375:quantum/rgblight.c ****     if (rgblight_config.mode == 1) {
+ 376:quantum/rgblight.c ****       // same static color
+ 377:quantum/rgblight.c ****       rgblight_sethsv_noeeprom(hue, sat, val);
+ 378:quantum/rgblight.c ****     } else {
+ 379:quantum/rgblight.c ****       // all LEDs in same color
+ 380:quantum/rgblight.c ****       if (rgblight_config.mode >= 2 && rgblight_config.mode <= 5) {
+ 381:quantum/rgblight.c ****         // breathing mode, ignore the change of val, use in memory value instead
+ 382:quantum/rgblight.c ****         val = rgblight_config.val;
+ 383:quantum/rgblight.c ****       } else if (rgblight_config.mode >= 6 && rgblight_config.mode <= 14) {
+ 384:quantum/rgblight.c ****         // rainbow mood and rainbow swirl, ignore the change of hue
+ 385:quantum/rgblight.c ****         hue = rgblight_config.hue;
+ 386:quantum/rgblight.c ****       } else if (rgblight_config.mode >= 25 && rgblight_config.mode <= 34) {
+ 387:quantum/rgblight.c ****         // static gradient
+ 388:quantum/rgblight.c ****         uint16_t _hue;
+ 389:quantum/rgblight.c ****         int8_t direction = ((rgblight_config.mode - 25) % 2) ? -1 : 1;
+ 390:quantum/rgblight.c ****         uint16_t range = pgm_read_word(&RGBLED_GRADIENT_RANGES[(rgblight_config.mode - 25) / 2]);
+ 391:quantum/rgblight.c ****         for (uint8_t i = 0; i < RGBLED_NUM; i++) {
+ 392:quantum/rgblight.c ****           _hue = (range / RGBLED_NUM * i * direction + hue + 360) % 360;
+ 393:quantum/rgblight.c ****           dprintf("rgblight rainbow set hsv: %u,%u,%d,%u\n", i, _hue, direction, range);
+ 394:quantum/rgblight.c ****           sethsv(_hue, sat, val, (LED_TYPE *)&led[i]);
+ 395:quantum/rgblight.c ****         }
+ 396:quantum/rgblight.c ****         rgblight_set();
+ 397:quantum/rgblight.c ****       }
+ 398:quantum/rgblight.c ****     }
+ 399:quantum/rgblight.c ****     rgblight_config.hue = hue;
+ 400:quantum/rgblight.c ****     rgblight_config.sat = sat;
+ 401:quantum/rgblight.c ****     rgblight_config.val = val;
+ 402:quantum/rgblight.c ****     eeconfig_update_rgblight(rgblight_config.raw);
+ 403:quantum/rgblight.c ****     xprintf("rgblight set hsv [EEPROM]: %u,%u,%u\n", rgblight_config.hue, rgblight_config.sat, rgbl
+ 404:quantum/rgblight.c ****   }
+ 405:quantum/rgblight.c **** }
+ 406:quantum/rgblight.c **** 
+ 407:quantum/rgblight.c **** uint16_t rgblight_get_hue(void) {
+ 579               		.loc 1 407 0
+ 580               		.cfi_startproc
+ 581               	/* prologue: function */
+ 582               	/* frame size = 0 */
+ 583               	/* stack size = 0 */
+ 584               	.L__stack_usage = 0
+ 408:quantum/rgblight.c ****   return rgblight_config.hue;
+ 585               		.loc 1 408 0
+ 586 0000 8091 0000 		lds r24,rgblight_config
+ 587 0004 881F      		rol r24
+ 588 0006 8827      		clr r24
+ 589 0008 881F      		rol r24
+ 590 000a 9091 0000 		lds r25,rgblight_config+1
+ 591 000e 292F      		mov r18,r25
+ 592 0010 220F      		lsl r18
+ 593 0012 97FB      		bst r25,7
+ 594 0014 9927      		clr r25
+ 595 0016 90F9      		bld r25,0
+ 409:quantum/rgblight.c **** }
+ 596               		.loc 1 409 0
+ 597 0018 822B      		or r24,r18
+ 598 001a 0895      		ret
+ 599               		.cfi_endproc
+ 600               	.LFE36:
+ 602               		.section	.text.rgblight_get_sat,"ax",@progbits
+ 603               	.global	rgblight_get_sat
+ 605               	rgblight_get_sat:
+ 606               	.LFB37:
+ 410:quantum/rgblight.c **** 
+ 411:quantum/rgblight.c **** uint8_t rgblight_get_sat(void) {
+ 607               		.loc 1 411 0
+ 608               		.cfi_startproc
+ 609               	/* prologue: function */
+ 610               	/* frame size = 0 */
+ 611               	/* stack size = 0 */
+ 612               	.L__stack_usage = 0
+ 412:quantum/rgblight.c ****   return rgblight_config.sat;
+ 413:quantum/rgblight.c **** }
+ 613               		.loc 1 413 0
+ 614 0000 8091 0000 		lds r24,rgblight_config+2
+ 615 0004 0895      		ret
+ 616               		.cfi_endproc
+ 617               	.LFE37:
+ 619               		.section	.text.rgblight_get_val,"ax",@progbits
+ 620               	.global	rgblight_get_val
+ 622               	rgblight_get_val:
+ 623               	.LFB38:
+ 414:quantum/rgblight.c **** 
+ 415:quantum/rgblight.c **** uint8_t rgblight_get_val(void) {
+ 624               		.loc 1 415 0
+ 625               		.cfi_startproc
+ 626               	/* prologue: function */
+ 627               	/* frame size = 0 */
+ 628               	/* stack size = 0 */
+ 629               	.L__stack_usage = 0
+ 416:quantum/rgblight.c ****   return rgblight_config.val;
+ 417:quantum/rgblight.c **** }
+ 630               		.loc 1 417 0
+ 631 0000 8091 0000 		lds r24,rgblight_config+3
+ 632 0004 0895      		ret
+ 633               		.cfi_endproc
+ 634               	.LFE38:
+ 636               		.section	.text.rgblight_set,"ax",@progbits
+ 637               	.global	rgblight_set
+ 639               	rgblight_set:
+ 640               	.LFB42:
+ 418:quantum/rgblight.c **** 
+ 419:quantum/rgblight.c **** void rgblight_setrgb(uint8_t r, uint8_t g, uint8_t b) {
+ 420:quantum/rgblight.c ****   if (!rgblight_config.enable) { return; }
+ 421:quantum/rgblight.c **** 
+ 422:quantum/rgblight.c ****   for (uint8_t i = 0; i < RGBLED_NUM; i++) {
+ 423:quantum/rgblight.c ****     led[i].r = r;
+ 424:quantum/rgblight.c ****     led[i].g = g;
+ 425:quantum/rgblight.c ****     led[i].b = b;
+ 426:quantum/rgblight.c ****   }
+ 427:quantum/rgblight.c ****   rgblight_set();
+ 428:quantum/rgblight.c **** }
+ 429:quantum/rgblight.c **** 
+ 430:quantum/rgblight.c **** void rgblight_setrgb_at(uint8_t r, uint8_t g, uint8_t b, uint8_t index) {
+ 431:quantum/rgblight.c ****   if (!rgblight_config.enable || index >= RGBLED_NUM) { return; }
+ 432:quantum/rgblight.c **** 
+ 433:quantum/rgblight.c ****   led[index].r = r;
+ 434:quantum/rgblight.c ****   led[index].g = g;
+ 435:quantum/rgblight.c ****   led[index].b = b;
+ 436:quantum/rgblight.c ****   rgblight_set();
+ 437:quantum/rgblight.c **** }
+ 438:quantum/rgblight.c **** 
+ 439:quantum/rgblight.c **** void rgblight_sethsv_at(uint16_t hue, uint8_t sat, uint8_t val, uint8_t index) {
+ 440:quantum/rgblight.c ****   if (!rgblight_config.enable) { return; }
+ 441:quantum/rgblight.c **** 
+ 442:quantum/rgblight.c ****   LED_TYPE tmp_led;
+ 443:quantum/rgblight.c ****   sethsv(hue, sat, val, &tmp_led);
+ 444:quantum/rgblight.c ****   rgblight_setrgb_at(tmp_led.r, tmp_led.g, tmp_led.b, index);
+ 445:quantum/rgblight.c **** }
+ 446:quantum/rgblight.c **** 
+ 447:quantum/rgblight.c **** #ifndef RGBLIGHT_CUSTOM_DRIVER
+ 448:quantum/rgblight.c **** void rgblight_set(void) {
+ 641               		.loc 1 448 0
+ 642               		.cfi_startproc
+ 643               	/* prologue: function */
+ 644               	/* frame size = 0 */
+ 645               	/* stack size = 0 */
+ 646               	.L__stack_usage = 0
+ 449:quantum/rgblight.c ****   if (rgblight_config.enable) {
+ 647               		.loc 1 449 0
+ 648 0000 8091 0000 		lds r24,rgblight_config
+ 649 0004 80FF      		sbrs r24,0
+ 650 0006 00C0      		rjmp .L38
+ 651               	.L39:
+ 450:quantum/rgblight.c ****     #ifdef RGBW
+ 451:quantum/rgblight.c ****       ws2812_setleds_rgbw(led, RGBLED_NUM);
+ 452:quantum/rgblight.c ****     #else
+ 453:quantum/rgblight.c ****       ws2812_setleds(led, RGBLED_NUM);
+ 652               		.loc 1 453 0
+ 653 0008 6CE0      		ldi r22,lo8(12)
+ 654 000a 70E0      		ldi r23,0
+ 655 000c 80E0      		ldi r24,lo8(led)
+ 656 000e 90E0      		ldi r25,hi8(led)
+ 657 0010 0C94 0000 		jmp ws2812_setleds
+ 658               	.LVL55:
+ 659               	.L38:
+ 660 0014 E0E0      		ldi r30,lo8(led+2)
+ 661 0016 F0E0      		ldi r31,hi8(led+2)
+ 662               	.L40:
+ 663 0018 DF01      		movw r26,r30
+ 664 001a 1197      		sbiw r26,1
+ 665               	.LBB22:
+ 454:quantum/rgblight.c ****     #endif
+ 455:quantum/rgblight.c ****   } else {
+ 456:quantum/rgblight.c ****     for (uint8_t i = 0; i < RGBLED_NUM; i++) {
+ 457:quantum/rgblight.c ****       led[i].r = 0;
+ 666               		.loc 1 457 0 discriminator 2
+ 667 001c 1C92      		st X,__zero_reg__
+ 668 001e DF01      		movw r26,r30
+ 669 0020 1297      		sbiw r26,2
+ 458:quantum/rgblight.c ****       led[i].g = 0;
+ 670               		.loc 1 458 0 discriminator 2
+ 671 0022 1C92      		st X,__zero_reg__
+ 459:quantum/rgblight.c ****       led[i].b = 0;
+ 672               		.loc 1 459 0 discriminator 2
+ 673 0024 1082      		st Z,__zero_reg__
+ 674               	.LVL56:
+ 675 0026 3396      		adiw r30,3
+ 456:quantum/rgblight.c ****     for (uint8_t i = 0; i < RGBLED_NUM; i++) {
+ 676               		.loc 1 456 0 discriminator 2
+ 677 0028 80E0      		ldi r24,hi8(led+38)
+ 678 002a E030      		cpi r30,lo8(led+38)
+ 679 002c F807      		cpc r31,r24
+ 680 002e 01F4      		brne .L40
+ 681 0030 00C0      		rjmp .L39
+ 682               	.LBE22:
+ 683               		.cfi_endproc
+ 684               	.LFE42:
+ 686               		.section	.text.rgblight_setrgb,"ax",@progbits
+ 687               	.global	rgblight_setrgb
+ 689               	rgblight_setrgb:
+ 690               	.LFB39:
+ 419:quantum/rgblight.c **** void rgblight_setrgb(uint8_t r, uint8_t g, uint8_t b) {
+ 691               		.loc 1 419 0
+ 692               		.cfi_startproc
+ 693               	.LVL57:
+ 694               	/* prologue: function */
+ 695               	/* frame size = 0 */
+ 696               	/* stack size = 0 */
+ 697               	.L__stack_usage = 0
+ 420:quantum/rgblight.c ****   if (!rgblight_config.enable) { return; }
+ 698               		.loc 1 420 0
+ 699 0000 9091 0000 		lds r25,rgblight_config
+ 700 0004 90FF      		sbrs r25,0
+ 701 0006 00C0      		rjmp .L43
+ 702 0008 E0E0      		ldi r30,lo8(led+2)
+ 703 000a F0E0      		ldi r31,hi8(led+2)
+ 704               	.L46:
+ 705 000c DF01      		movw r26,r30
+ 706 000e 1197      		sbiw r26,1
+ 707               	.LBB23:
+ 423:quantum/rgblight.c ****     led[i].r = r;
+ 708               		.loc 1 423 0 discriminator 2
+ 709 0010 8C93      		st X,r24
+ 710 0012 DF01      		movw r26,r30
+ 711 0014 1297      		sbiw r26,2
+ 424:quantum/rgblight.c ****     led[i].g = g;
+ 712               		.loc 1 424 0 discriminator 2
+ 713 0016 6C93      		st X,r22
+ 425:quantum/rgblight.c ****     led[i].b = b;
+ 714               		.loc 1 425 0 discriminator 2
+ 715 0018 4083      		st Z,r20
+ 716               	.LVL58:
+ 717 001a 3396      		adiw r30,3
+ 422:quantum/rgblight.c ****   for (uint8_t i = 0; i < RGBLED_NUM; i++) {
+ 718               		.loc 1 422 0 discriminator 2
+ 719 001c 90E0      		ldi r25,hi8(led+38)
+ 720 001e E030      		cpi r30,lo8(led+38)
+ 721 0020 F907      		cpc r31,r25
+ 722 0022 01F4      		brne .L46
+ 723               	.LBE23:
+ 427:quantum/rgblight.c ****   rgblight_set();
+ 724               		.loc 1 427 0
+ 725 0024 0C94 0000 		jmp rgblight_set
+ 726               	.LVL59:
+ 727               	.L43:
+ 728 0028 0895      		ret
+ 729               		.cfi_endproc
+ 730               	.LFE39:
+ 732               		.section	.text.rgblight_sethsv_noeeprom,"ax",@progbits
+ 733               	.global	rgblight_sethsv_noeeprom
+ 735               	rgblight_sethsv_noeeprom:
+ 736               	.LFB34:
+ 361:quantum/rgblight.c **** void rgblight_sethsv_noeeprom(uint16_t hue, uint8_t sat, uint8_t val) {
+ 737               		.loc 1 361 0
+ 738               		.cfi_startproc
+ 739               	.LVL60:
+ 740 0000 CF92      		push r12
+ 741               	.LCFI7:
+ 742               		.cfi_def_cfa_offset 3
+ 743               		.cfi_offset 12, -2
+ 744 0002 DF92      		push r13
+ 745               	.LCFI8:
+ 746               		.cfi_def_cfa_offset 4
+ 747               		.cfi_offset 13, -3
+ 748 0004 EF92      		push r14
+ 749               	.LCFI9:
+ 750               		.cfi_def_cfa_offset 5
+ 751               		.cfi_offset 14, -4
+ 752 0006 FF92      		push r15
+ 753               	.LCFI10:
+ 754               		.cfi_def_cfa_offset 6
+ 755               		.cfi_offset 15, -5
+ 756 0008 0F93      		push r16
+ 757               	.LCFI11:
+ 758               		.cfi_def_cfa_offset 7
+ 759               		.cfi_offset 16, -6
+ 760 000a 1F93      		push r17
+ 761               	.LCFI12:
+ 762               		.cfi_def_cfa_offset 8
+ 763               		.cfi_offset 17, -7
+ 764 000c CF93      		push r28
+ 765               	.LCFI13:
+ 766               		.cfi_def_cfa_offset 9
+ 767               		.cfi_offset 28, -8
+ 768 000e DF93      		push r29
+ 769               	.LCFI14:
+ 770               		.cfi_def_cfa_offset 10
+ 771               		.cfi_offset 29, -9
+ 772 0010 00D0      		rcall .
+ 773 0012 1F92      		push __zero_reg__
+ 774               	.LCFI15:
+ 775               		.cfi_def_cfa_offset 13
+ 776 0014 CDB7      		in r28,__SP_L__
+ 777 0016 DEB7      		in r29,__SP_H__
+ 778               	.LCFI16:
+ 779               		.cfi_def_cfa_register 28
+ 780               	/* prologue: function */
+ 781               	/* frame size = 3 */
+ 782               	/* stack size = 11 */
+ 783               	.L__stack_usage = 11
+ 784 0018 F82E      		mov r15,r24
+ 785 001a C92E      		mov r12,r25
+ 786 001c D62E      		mov r13,r22
+ 787 001e E42E      		mov r14,r20
+ 362:quantum/rgblight.c ****   inmem_config.raw = rgblight_config.raw;
+ 788               		.loc 1 362 0
+ 789 0020 0091 0000 		lds r16,rgblight_config
+ 790 0024 1091 0000 		lds r17,rgblight_config+1
+ 791 0028 2091 0000 		lds r18,rgblight_config+2
+ 792 002c 3091 0000 		lds r19,rgblight_config+3
+ 793 0030 0093 0000 		sts inmem_config,r16
+ 794 0034 1093 0000 		sts inmem_config+1,r17
+ 795 0038 2093 0000 		sts inmem_config+2,r18
+ 796 003c 3093 0000 		sts inmem_config+3,r19
+ 363:quantum/rgblight.c ****   if (rgblight_config.enable) {
+ 797               		.loc 1 363 0
+ 798 0040 8091 0000 		lds r24,rgblight_config
+ 799               	.LVL61:
+ 800 0044 80FF      		sbrs r24,0
+ 801 0046 00C0      		rjmp .L47
+ 802               	.LBB24:
+ 365:quantum/rgblight.c ****     sethsv(hue, sat, val, &tmp_led);
+ 803               		.loc 1 365 0
+ 804 0048 9E01      		movw r18,r28
+ 805 004a 2F5F      		subi r18,-1
+ 806 004c 3F4F      		sbci r19,-1
+ 807 004e 8F2D      		mov r24,r15
+ 808 0050 0E94 0000 		call sethsv
+ 809               	.LVL62:
+ 366:quantum/rgblight.c ****     inmem_config.hue = hue;
+ 810               		.loc 1 366 0
+ 811 0054 8091 0000 		lds r24,inmem_config
+ 812 0058 F0FA      		bst r15,0
+ 813 005a 87F9      		bld r24,7
+ 814 005c 8093 0000 		sts inmem_config,r24
+ 815 0060 F694      		lsr r15
+ 816 0062 2091 0000 		lds r18,inmem_config+1
+ 817 0066 2078      		andi r18,lo8(-128)
+ 818 0068 2F29      		or r18,r15
+ 819 006a C0FA      		bst r12,0
+ 820 006c 27F9      		bld r18,7
+ 821 006e 2093 0000 		sts inmem_config+1,r18
+ 367:quantum/rgblight.c ****     inmem_config.sat = sat;
+ 822               		.loc 1 367 0
+ 823 0072 D092 0000 		sts inmem_config+2,r13
+ 368:quantum/rgblight.c ****     inmem_config.val = val;
+ 824               		.loc 1 368 0
+ 825 0076 E092 0000 		sts inmem_config+3,r14
+ 370:quantum/rgblight.c ****     rgblight_setrgb(tmp_led.r, tmp_led.g, tmp_led.b);
+ 826               		.loc 1 370 0
+ 827 007a 4B81      		ldd r20,Y+3
+ 828 007c 6981      		ldd r22,Y+1
+ 829 007e 8A81      		ldd r24,Y+2
+ 830 0080 0E94 0000 		call rgblight_setrgb
+ 831               	.LVL63:
+ 832               	.L47:
+ 833               	/* epilogue start */
+ 834               	.LBE24:
+ 372:quantum/rgblight.c **** }
+ 835               		.loc 1 372 0
+ 836 0084 0F90      		pop __tmp_reg__
+ 837 0086 0F90      		pop __tmp_reg__
+ 838 0088 0F90      		pop __tmp_reg__
+ 839 008a DF91      		pop r29
+ 840 008c CF91      		pop r28
+ 841 008e 1F91      		pop r17
+ 842 0090 0F91      		pop r16
+ 843 0092 FF90      		pop r15
+ 844 0094 EF90      		pop r14
+ 845               	.LVL64:
+ 846 0096 DF90      		pop r13
+ 847               	.LVL65:
+ 848 0098 CF90      		pop r12
+ 849 009a 0895      		ret
+ 850               		.cfi_endproc
+ 851               	.LFE34:
+ 853               		.section	.text.rgblight_sethsv,"ax",@progbits
+ 854               	.global	rgblight_sethsv
+ 856               	rgblight_sethsv:
+ 857               	.LFB35:
+ 373:quantum/rgblight.c **** void rgblight_sethsv(uint16_t hue, uint8_t sat, uint8_t val) {
+ 858               		.loc 1 373 0
+ 859               		.cfi_startproc
+ 860               	.LVL66:
+ 861 0000 8F92      		push r8
+ 862               	.LCFI17:
+ 863               		.cfi_def_cfa_offset 3
+ 864               		.cfi_offset 8, -2
+ 865 0002 9F92      		push r9
+ 866               	.LCFI18:
+ 867               		.cfi_def_cfa_offset 4
+ 868               		.cfi_offset 9, -3
+ 869 0004 AF92      		push r10
+ 870               	.LCFI19:
+ 871               		.cfi_def_cfa_offset 5
+ 872               		.cfi_offset 10, -4
+ 873 0006 BF92      		push r11
+ 874               	.LCFI20:
+ 875               		.cfi_def_cfa_offset 6
+ 876               		.cfi_offset 11, -5
+ 877 0008 CF92      		push r12
+ 878               	.LCFI21:
+ 879               		.cfi_def_cfa_offset 7
+ 880               		.cfi_offset 12, -6
+ 881 000a DF92      		push r13
+ 882               	.LCFI22:
+ 883               		.cfi_def_cfa_offset 8
+ 884               		.cfi_offset 13, -7
+ 885 000c EF92      		push r14
+ 886               	.LCFI23:
+ 887               		.cfi_def_cfa_offset 9
+ 888               		.cfi_offset 14, -8
+ 889 000e FF92      		push r15
+ 890               	.LCFI24:
+ 891               		.cfi_def_cfa_offset 10
+ 892               		.cfi_offset 15, -9
+ 893 0010 0F93      		push r16
+ 894               	.LCFI25:
+ 895               		.cfi_def_cfa_offset 11
+ 896               		.cfi_offset 16, -10
+ 897 0012 1F93      		push r17
+ 898               	.LCFI26:
+ 899               		.cfi_def_cfa_offset 12
+ 900               		.cfi_offset 17, -11
+ 901 0014 CF93      		push r28
+ 902               	.LCFI27:
+ 903               		.cfi_def_cfa_offset 13
+ 904               		.cfi_offset 28, -12
+ 905 0016 DF93      		push r29
+ 906               	.LCFI28:
+ 907               		.cfi_def_cfa_offset 14
+ 908               		.cfi_offset 29, -13
+ 909               	/* prologue: function */
+ 910               	/* frame size = 0 */
+ 911               	/* stack size = 12 */
+ 912               	.L__stack_usage = 12
+ 913 0018 EC01      		movw r28,r24
+ 914 001a 862E      		mov r8,r22
+ 915 001c 942E      		mov r9,r20
+ 374:quantum/rgblight.c ****   if (rgblight_config.enable) {
+ 916               		.loc 1 374 0
+ 917 001e 8091 0000 		lds r24,rgblight_config
+ 918               	.LVL67:
+ 919 0022 80FF      		sbrs r24,0
+ 920 0024 00C0      		rjmp .L52
+ 375:quantum/rgblight.c ****     if (rgblight_config.mode == 1) {
+ 921               		.loc 1 375 0
+ 922 0026 982F      		mov r25,r24
+ 923 0028 9E77      		andi r25,lo8(126)
+ 924 002a 9230      		cpi r25,lo8(2)
+ 925 002c 01F4      		brne .L54
+ 377:quantum/rgblight.c ****       rgblight_sethsv_noeeprom(hue, sat, val);
+ 926               		.loc 1 377 0
+ 927 002e CE01      		movw r24,r28
+ 928 0030 0E94 0000 		call rgblight_sethsv_noeeprom
+ 929               	.LVL68:
+ 930 0034 00C0      		rjmp .L55
+ 931               	.L54:
+ 380:quantum/rgblight.c ****       if (rgblight_config.mode >= 2 && rgblight_config.mode <= 5) {
+ 932               		.loc 1 380 0
+ 933 0036 E82F      		mov r30,r24
+ 934 0038 E695      		lsr r30
+ 935 003a EF73      		andi r30,lo8(63)
+ 936 003c 9EE3      		ldi r25,lo8(62)
+ 937 003e 9E0F      		add r25,r30
+ 938 0040 9F73      		andi r25,lo8(63)
+ 939 0042 9430      		cpi r25,lo8(4)
+ 940 0044 00F4      		brsh .L56
+ 382:quantum/rgblight.c ****         val = rgblight_config.val;
+ 941               		.loc 1 382 0
+ 942 0046 9090 0000 		lds r9,rgblight_config+3
+ 943               	.LVL69:
+ 944 004a 00C0      		rjmp .L55
+ 945               	.L56:
+ 383:quantum/rgblight.c ****       } else if (rgblight_config.mode >= 6 && rgblight_config.mode <= 14) {
+ 946               		.loc 1 383 0
+ 947 004c 9AE3      		ldi r25,lo8(58)
+ 948 004e 9E0F      		add r25,r30
+ 949 0050 9F73      		andi r25,lo8(63)
+ 950 0052 9930      		cpi r25,lo8(9)
+ 951 0054 00F4      		brsh .L57
+ 385:quantum/rgblight.c ****         hue = rgblight_config.hue;
+ 952               		.loc 1 385 0
+ 953 0056 881F      		rol r24
+ 954 0058 8827      		clr r24
+ 955 005a 881F      		rol r24
+ 956 005c 9091 0000 		lds r25,rgblight_config+1
+ 957 0060 292F      		mov r18,r25
+ 958 0062 220F      		lsl r18
+ 959 0064 C22F      		mov r28,r18
+ 960               	.LVL70:
+ 961 0066 C82B      		or r28,r24
+ 962 0068 97FB      		bst r25,7
+ 963 006a 9927      		clr r25
+ 964 006c 90F9      		bld r25,0
+ 965 006e D92F      		mov r29,r25
+ 966               	.LVL71:
+ 967 0070 00C0      		rjmp .L55
+ 968               	.L57:
+ 386:quantum/rgblight.c ****       } else if (rgblight_config.mode >= 25 && rgblight_config.mode <= 34) {
+ 969               		.loc 1 386 0
+ 970 0072 87E2      		ldi r24,lo8(39)
+ 971 0074 8E0F      		add r24,r30
+ 972 0076 8F73      		andi r24,lo8(63)
+ 973 0078 8A30      		cpi r24,lo8(10)
+ 974 007a 00F4      		brsh .L55
+ 975               	.LBB25:
+ 389:quantum/rgblight.c ****         int8_t direction = ((rgblight_config.mode - 25) % 2) ? -1 : 1;
+ 976               		.loc 1 389 0
+ 977 007c F0E0      		ldi r31,0
+ 978 007e 7997      		sbiw r30,25
+ 979 0080 E0FF      		sbrs r30,0
+ 980 0082 00C0      		rjmp .L61
+ 981 0084 2FEF      		ldi r18,lo8(-1)
+ 982 0086 00C0      		rjmp .L58
+ 983               	.L61:
+ 984 0088 21E0      		ldi r18,lo8(1)
+ 985               	.L58:
+ 986               	.LVL72:
+ 987               	.LBB26:
+ 390:quantum/rgblight.c ****         uint16_t range = pgm_read_word(&RGBLED_GRADIENT_RANGES[(rgblight_config.mode - 25) / 2]);
+ 988               		.loc 1 390 0 discriminator 3
+ 989 008a EE7F      		andi r30,254
+ 990 008c E050      		subi r30,lo8(-(RGBLED_GRADIENT_RANGES))
+ 991 008e F040      		sbci r31,hi8(-(RGBLED_GRADIENT_RANGES))
+ 992               	.LVL73:
+ 993               	/* #APP */
+ 994               	 ;  390 "quantum/rgblight.c" 1
+ 995 0090 8591      		lpm r24, Z+
+ 996 0092 9491      		lpm r25, Z
+ 997               		
+ 998               	 ;  0 "" 2
+ 999               	.LVL74:
+ 1000               	/* #NOAPP */
+ 1001               	.LBE26:
+ 1002               	.LBB27:
+ 392:quantum/rgblight.c ****           _hue = (range / RGBLED_NUM * i * direction + hue + 360) % 360;
+ 1003               		.loc 1 392 0 discriminator 3
+ 1004 0094 6CE0      		ldi r22,lo8(12)
+ 1005 0096 70E0      		ldi r23,0
+ 1006 0098 0E94 0000 		call __udivmodhi4
+ 1007               	.LVL75:
+ 1008 009c 2603      		mulsu r18,r22
+ 1009 009e 6001      		movw r12,r0
+ 1010 00a0 279F      		mul r18,r23
+ 1011 00a2 D00C      		add r13,r0
+ 1012 00a4 1124      		clr __zero_reg__
+ 1013 00a6 7E01      		movw r14,r28
+ 1014 00a8 88E9      		ldi r24,-104
+ 1015 00aa E81A      		sub r14,r24
+ 1016 00ac 8EEF      		ldi r24,-2
+ 1017 00ae F80A      		sbc r15,r24
+ 1018 00b0 00E0      		ldi r16,lo8(led)
+ 1019 00b2 10E0      		ldi r17,hi8(led)
+ 1020 00b4 88E6      		ldi r24,lo8(104)
+ 1021 00b6 A82E      		mov r10,r24
+ 1022 00b8 BB24      		clr r11
+ 1023 00ba B394      		inc r11
+ 1024               	.LVL76:
+ 1025               	.L60:
+ 392:quantum/rgblight.c ****           _hue = (range / RGBLED_NUM * i * direction + hue + 360) % 360;
+ 1026               		.loc 1 392 0 is_stmt 0 discriminator 2
+ 1027 00bc C701      		movw r24,r14
+ 1028 00be B501      		movw r22,r10
+ 1029 00c0 0E94 0000 		call __udivmodhi4
+ 394:quantum/rgblight.c ****           sethsv(_hue, sat, val, (LED_TYPE *)&led[i]);
+ 1030               		.loc 1 394 0 is_stmt 1 discriminator 2
+ 1031 00c4 9801      		movw r18,r16
+ 1032 00c6 492D      		mov r20,r9
+ 1033 00c8 682D      		mov r22,r8
+ 1034 00ca 0E94 0000 		call sethsv
+ 1035               	.LVL77:
+ 1036 00ce EC0C      		add r14,r12
+ 1037 00d0 FD1C      		adc r15,r13
+ 1038               	.LVL78:
+ 1039 00d2 0D5F      		subi r16,-3
+ 1040 00d4 1F4F      		sbci r17,-1
+ 391:quantum/rgblight.c ****         for (uint8_t i = 0; i < RGBLED_NUM; i++) {
+ 1041               		.loc 1 391 0 discriminator 2
+ 1042 00d6 90E0      		ldi r25,hi8(led+36)
+ 1043 00d8 0030      		cpi r16,lo8(led+36)
+ 1044 00da 1907      		cpc r17,r25
+ 1045 00dc 01F4      		brne .L60
+ 1046               	.LBE27:
+ 396:quantum/rgblight.c ****         rgblight_set();
+ 1047               		.loc 1 396 0
+ 1048 00de 0E94 0000 		call rgblight_set
+ 1049               	.LVL79:
+ 1050               	.L55:
+ 1051               	.LBE25:
+ 399:quantum/rgblight.c ****     rgblight_config.hue = hue;
+ 1052               		.loc 1 399 0
+ 1053 00e2 8091 0000 		lds r24,rgblight_config
+ 1054 00e6 9C2F      		mov r25,r28
+ 1055 00e8 C0FB      		bst r28,0
+ 1056 00ea 87F9      		bld r24,7
+ 1057 00ec 8093 0000 		sts rgblight_config,r24
+ 1058 00f0 9695      		lsr r25
+ 1059 00f2 8091 0000 		lds r24,rgblight_config+1
+ 1060 00f6 8078      		andi r24,lo8(-128)
+ 1061 00f8 892B      		or r24,r25
+ 1062 00fa D0FB      		bst r29,0
+ 1063 00fc 87F9      		bld r24,7
+ 1064 00fe 8093 0000 		sts rgblight_config+1,r24
+ 400:quantum/rgblight.c ****     rgblight_config.sat = sat;
+ 1065               		.loc 1 400 0
+ 1066 0102 8092 0000 		sts rgblight_config+2,r8
+ 401:quantum/rgblight.c ****     rgblight_config.val = val;
+ 1067               		.loc 1 401 0
+ 1068 0106 9092 0000 		sts rgblight_config+3,r9
+ 402:quantum/rgblight.c ****     eeconfig_update_rgblight(rgblight_config.raw);
+ 1069               		.loc 1 402 0
+ 1070 010a 6091 0000 		lds r22,rgblight_config
+ 1071 010e 7091 0000 		lds r23,rgblight_config+1
+ 1072 0112 8091 0000 		lds r24,rgblight_config+2
+ 1073 0116 9091 0000 		lds r25,rgblight_config+3
+ 1074               	/* epilogue start */
+ 405:quantum/rgblight.c **** }
+ 1075               		.loc 1 405 0
+ 1076 011a DF91      		pop r29
+ 1077 011c CF91      		pop r28
+ 1078               	.LVL80:
+ 1079 011e 1F91      		pop r17
+ 1080 0120 0F91      		pop r16
+ 1081 0122 FF90      		pop r15
+ 1082 0124 EF90      		pop r14
+ 1083 0126 DF90      		pop r13
+ 1084 0128 CF90      		pop r12
+ 1085 012a BF90      		pop r11
+ 1086 012c AF90      		pop r10
+ 1087 012e 9F90      		pop r9
+ 1088               	.LVL81:
+ 1089 0130 8F90      		pop r8
+ 1090               	.LVL82:
+ 402:quantum/rgblight.c ****     eeconfig_update_rgblight(rgblight_config.raw);
+ 1091               		.loc 1 402 0
+ 1092 0132 0C94 0000 		jmp eeconfig_update_rgblight
+ 1093               	.LVL83:
+ 1094               	.L52:
+ 1095               	/* epilogue start */
+ 405:quantum/rgblight.c **** }
+ 1096               		.loc 1 405 0
+ 1097 0136 DF91      		pop r29
+ 1098 0138 CF91      		pop r28
+ 1099               	.LVL84:
+ 1100 013a 1F91      		pop r17
+ 1101 013c 0F91      		pop r16
+ 1102 013e FF90      		pop r15
+ 1103 0140 EF90      		pop r14
+ 1104 0142 DF90      		pop r13
+ 1105 0144 CF90      		pop r12
+ 1106 0146 BF90      		pop r11
+ 1107 0148 AF90      		pop r10
+ 1108 014a 9F90      		pop r9
+ 1109               	.LVL85:
+ 1110 014c 8F90      		pop r8
+ 1111               	.LVL86:
+ 1112 014e 0895      		ret
+ 1113               		.cfi_endproc
+ 1114               	.LFE35:
+ 1116               		.section	.text.rgblight_increase_hue,"ax",@progbits
+ 1117               	.global	rgblight_increase_hue
+ 1119               	rgblight_increase_hue:
+ 1120               	.LFB26:
+ 301:quantum/rgblight.c **** void rgblight_increase_hue(void) {
+ 1121               		.loc 1 301 0
+ 1122               		.cfi_startproc
+ 1123               	/* prologue: function */
+ 1124               	/* frame size = 0 */
+ 1125               	/* stack size = 0 */
+ 1126               	.L__stack_usage = 0
+ 1127               	.LVL87:
+ 303:quantum/rgblight.c ****   hue = (rgblight_config.hue+RGBLIGHT_HUE_STEP) % 360;
+ 1128               		.loc 1 303 0
+ 1129 0000 2091 0000 		lds r18,rgblight_config
+ 1130 0004 221F      		rol r18
+ 1131 0006 2227      		clr r18
+ 1132 0008 221F      		rol r18
+ 1133 000a 3091 0000 		lds r19,rgblight_config+1
+ 1134 000e 432F      		mov r20,r19
+ 1135 0010 440F      		lsl r20
+ 1136 0012 842F      		mov r24,r20
+ 1137 0014 822B      		or r24,r18
+ 1138 0016 37FB      		bst r19,7
+ 1139 0018 9927      		clr r25
+ 1140 001a 90F9      		bld r25,0
+ 1141 001c 0896      		adiw r24,8
+ 1142 001e 68E6      		ldi r22,lo8(104)
+ 1143 0020 71E0      		ldi r23,lo8(1)
+ 1144 0022 0E94 0000 		call __divmodhi4
+ 304:quantum/rgblight.c ****   rgblight_sethsv(hue, rgblight_config.sat, rgblight_config.val);
+ 1145               		.loc 1 304 0
+ 1146 0026 4091 0000 		lds r20,rgblight_config+3
+ 1147 002a 6091 0000 		lds r22,rgblight_config+2
+ 1148 002e 0C94 0000 		jmp rgblight_sethsv
+ 1149               	.LVL88:
+ 1150               		.cfi_endproc
+ 1151               	.LFE26:
+ 1153               		.section	.text.rgblight_decrease_hue,"ax",@progbits
+ 1154               	.global	rgblight_decrease_hue
+ 1156               	rgblight_decrease_hue:
+ 1157               	.LFB27:
+ 306:quantum/rgblight.c **** void rgblight_decrease_hue(void) {
+ 1158               		.loc 1 306 0
+ 1159               		.cfi_startproc
+ 1160               	/* prologue: function */
+ 1161               	/* frame size = 0 */
+ 1162               	/* stack size = 0 */
+ 1163               	.L__stack_usage = 0
+ 308:quantum/rgblight.c ****   if (rgblight_config.hue-RGBLIGHT_HUE_STEP < 0) {
+ 1164               		.loc 1 308 0
+ 1165 0000 2091 0000 		lds r18,rgblight_config
+ 1166 0004 221F      		rol r18
+ 1167 0006 2227      		clr r18
+ 1168 0008 221F      		rol r18
+ 1169 000a 3091 0000 		lds r19,rgblight_config+1
+ 1170 000e 432F      		mov r20,r19
+ 1171 0010 440F      		lsl r20
+ 1172 0012 842F      		mov r24,r20
+ 1173 0014 822B      		or r24,r18
+ 1174 0016 37FB      		bst r19,7
+ 1175 0018 9927      		clr r25
+ 1176 001a 90F9      		bld r25,0
+ 1177 001c 8830      		cpi r24,8
+ 1178 001e 9105      		cpc r25,__zero_reg__
+ 1179 0020 04F4      		brge .L64
+ 309:quantum/rgblight.c ****     hue = (rgblight_config.hue + 360 - RGBLIGHT_HUE_STEP) % 360;
+ 1180               		.loc 1 309 0
+ 1181 0022 805A      		subi r24,-96
+ 1182 0024 9E4F      		sbci r25,-2
+ 1183 0026 00C0      		rjmp .L66
+ 1184               	.L64:
+ 311:quantum/rgblight.c ****     hue = (rgblight_config.hue - RGBLIGHT_HUE_STEP) % 360;
+ 1185               		.loc 1 311 0
+ 1186 0028 0897      		sbiw r24,8
+ 1187               	.L66:
+ 1188 002a 68E6      		ldi r22,lo8(104)
+ 1189 002c 71E0      		ldi r23,lo8(1)
+ 1190 002e 0E94 0000 		call __divmodhi4
+ 1191               	.LVL89:
+ 313:quantum/rgblight.c ****   rgblight_sethsv(hue, rgblight_config.sat, rgblight_config.val);
+ 1192               		.loc 1 313 0
+ 1193 0032 4091 0000 		lds r20,rgblight_config+3
+ 1194 0036 6091 0000 		lds r22,rgblight_config+2
+ 1195 003a 0C94 0000 		jmp rgblight_sethsv
+ 1196               	.LVL90:
+ 1197               		.cfi_endproc
+ 1198               	.LFE27:
+ 1200               		.section	.text.rgblight_increase_sat,"ax",@progbits
+ 1201               	.global	rgblight_increase_sat
+ 1203               	rgblight_increase_sat:
+ 1204               	.LFB28:
+ 315:quantum/rgblight.c **** void rgblight_increase_sat(void) {
+ 1205               		.loc 1 315 0
+ 1206               		.cfi_startproc
+ 1207               	/* prologue: function */
+ 1208               	/* frame size = 0 */
+ 1209               	/* stack size = 0 */
+ 1210               	.L__stack_usage = 0
+ 317:quantum/rgblight.c ****   if (rgblight_config.sat + RGBLIGHT_SAT_STEP > 255) {
+ 1211               		.loc 1 317 0
+ 1212 0000 6091 0000 		lds r22,rgblight_config+2
+ 1213 0004 862F      		mov r24,r22
+ 1214 0006 90E0      		ldi r25,0
+ 1215 0008 883F      		cpi r24,-8
+ 1216 000a 9105      		cpc r25,__zero_reg__
+ 1217 000c 04F4      		brge .L69
+ 320:quantum/rgblight.c ****     sat = rgblight_config.sat + RGBLIGHT_SAT_STEP;
+ 1218               		.loc 1 320 0
+ 1219 000e 685F      		subi r22,lo8(-(8))
+ 1220               	.LVL91:
+ 1221 0010 00C0      		rjmp .L68
+ 1222               	.LVL92:
+ 1223               	.L69:
+ 318:quantum/rgblight.c ****     sat = 255;
+ 1224               		.loc 1 318 0
+ 1225 0012 6FEF      		ldi r22,lo8(-1)
+ 1226               	.L68:
+ 1227               	.LVL93:
+ 322:quantum/rgblight.c ****   rgblight_sethsv(rgblight_config.hue, sat, rgblight_config.val);
+ 1228               		.loc 1 322 0
+ 1229 0014 8091 0000 		lds r24,rgblight_config
+ 1230 0018 881F      		rol r24
+ 1231 001a 8827      		clr r24
+ 1232 001c 881F      		rol r24
+ 1233 001e 9091 0000 		lds r25,rgblight_config+1
+ 1234 0022 292F      		mov r18,r25
+ 1235 0024 220F      		lsl r18
+ 1236 0026 97FB      		bst r25,7
+ 1237 0028 9927      		clr r25
+ 1238 002a 90F9      		bld r25,0
+ 1239 002c 4091 0000 		lds r20,rgblight_config+3
+ 1240 0030 822B      		or r24,r18
+ 1241 0032 0C94 0000 		jmp rgblight_sethsv
+ 1242               	.LVL94:
+ 1243               		.cfi_endproc
+ 1244               	.LFE28:
+ 1246               		.section	.text.rgblight_decrease_sat,"ax",@progbits
+ 1247               	.global	rgblight_decrease_sat
+ 1249               	rgblight_decrease_sat:
+ 1250               	.LFB29:
+ 324:quantum/rgblight.c **** void rgblight_decrease_sat(void) {
+ 1251               		.loc 1 324 0
+ 1252               		.cfi_startproc
+ 1253               	/* prologue: function */
+ 1254               	/* frame size = 0 */
+ 1255               	/* stack size = 0 */
+ 1256               	.L__stack_usage = 0
+ 326:quantum/rgblight.c ****   if (rgblight_config.sat - RGBLIGHT_SAT_STEP < 0) {
+ 1257               		.loc 1 326 0
+ 1258 0000 6091 0000 		lds r22,rgblight_config+2
+ 1259 0004 862F      		mov r24,r22
+ 1260 0006 90E0      		ldi r25,0
+ 1261 0008 0897      		sbiw r24,8
+ 1262 000a 04F0      		brlt .L72
+ 329:quantum/rgblight.c ****     sat = rgblight_config.sat - RGBLIGHT_SAT_STEP;
+ 1263               		.loc 1 329 0
+ 1264 000c 6850      		subi r22,lo8(-(-8))
+ 1265               	.LVL95:
+ 1266 000e 00C0      		rjmp .L71
+ 1267               	.LVL96:
+ 1268               	.L72:
+ 327:quantum/rgblight.c ****     sat = 0;
+ 1269               		.loc 1 327 0
+ 1270 0010 60E0      		ldi r22,0
+ 1271               	.L71:
+ 1272               	.LVL97:
+ 331:quantum/rgblight.c ****   rgblight_sethsv(rgblight_config.hue, sat, rgblight_config.val);
+ 1273               		.loc 1 331 0
+ 1274 0012 8091 0000 		lds r24,rgblight_config
+ 1275 0016 881F      		rol r24
+ 1276 0018 8827      		clr r24
+ 1277 001a 881F      		rol r24
+ 1278 001c 9091 0000 		lds r25,rgblight_config+1
+ 1279 0020 292F      		mov r18,r25
+ 1280 0022 220F      		lsl r18
+ 1281 0024 97FB      		bst r25,7
+ 1282 0026 9927      		clr r25
+ 1283 0028 90F9      		bld r25,0
+ 1284 002a 4091 0000 		lds r20,rgblight_config+3
+ 1285 002e 822B      		or r24,r18
+ 1286 0030 0C94 0000 		jmp rgblight_sethsv
+ 1287               	.LVL98:
+ 1288               		.cfi_endproc
+ 1289               	.LFE29:
+ 1291               		.section	.text.rgblight_increase_val,"ax",@progbits
+ 1292               	.global	rgblight_increase_val
+ 1294               	rgblight_increase_val:
+ 1295               	.LFB30:
+ 333:quantum/rgblight.c **** void rgblight_increase_val(void) {
+ 1296               		.loc 1 333 0
+ 1297               		.cfi_startproc
+ 1298               	/* prologue: function */
+ 1299               	/* frame size = 0 */
+ 1300               	/* stack size = 0 */
+ 1301               	.L__stack_usage = 0
+ 335:quantum/rgblight.c ****   if (rgblight_config.val + RGBLIGHT_VAL_STEP > RGBLIGHT_LIMIT_VAL) {
+ 1302               		.loc 1 335 0
+ 1303 0000 4091 0000 		lds r20,rgblight_config+3
+ 1304 0004 842F      		mov r24,r20
+ 1305 0006 90E0      		ldi r25,0
+ 1306 0008 883F      		cpi r24,-8
+ 1307 000a 9105      		cpc r25,__zero_reg__
+ 1308 000c 04F4      		brge .L75
+ 338:quantum/rgblight.c ****     val = rgblight_config.val + RGBLIGHT_VAL_STEP;
+ 1309               		.loc 1 338 0
+ 1310 000e 485F      		subi r20,lo8(-(8))
+ 1311               	.LVL99:
+ 1312 0010 00C0      		rjmp .L74
+ 1313               	.LVL100:
+ 1314               	.L75:
+ 336:quantum/rgblight.c ****     val = RGBLIGHT_LIMIT_VAL;
+ 1315               		.loc 1 336 0
+ 1316 0012 4FEF      		ldi r20,lo8(-1)
+ 1317               	.L74:
+ 1318               	.LVL101:
+ 340:quantum/rgblight.c ****   rgblight_sethsv(rgblight_config.hue, rgblight_config.sat, val);
+ 1319               		.loc 1 340 0
+ 1320 0014 8091 0000 		lds r24,rgblight_config
+ 1321 0018 881F      		rol r24
+ 1322 001a 8827      		clr r24
+ 1323 001c 881F      		rol r24
+ 1324 001e 9091 0000 		lds r25,rgblight_config+1
+ 1325 0022 292F      		mov r18,r25
+ 1326 0024 220F      		lsl r18
+ 1327 0026 97FB      		bst r25,7
+ 1328 0028 9927      		clr r25
+ 1329 002a 90F9      		bld r25,0
+ 1330 002c 6091 0000 		lds r22,rgblight_config+2
+ 1331 0030 822B      		or r24,r18
+ 1332 0032 0C94 0000 		jmp rgblight_sethsv
+ 1333               	.LVL102:
+ 1334               		.cfi_endproc
+ 1335               	.LFE30:
+ 1337               		.section	.text.rgblight_decrease_val,"ax",@progbits
+ 1338               	.global	rgblight_decrease_val
+ 1340               	rgblight_decrease_val:
+ 1341               	.LFB31:
+ 342:quantum/rgblight.c **** void rgblight_decrease_val(void) {
+ 1342               		.loc 1 342 0
+ 1343               		.cfi_startproc
+ 1344               	/* prologue: function */
+ 1345               	/* frame size = 0 */
+ 1346               	/* stack size = 0 */
+ 1347               	.L__stack_usage = 0
+ 344:quantum/rgblight.c ****   if (rgblight_config.val - RGBLIGHT_VAL_STEP < 0) {
+ 1348               		.loc 1 344 0
+ 1349 0000 4091 0000 		lds r20,rgblight_config+3
+ 1350 0004 842F      		mov r24,r20
+ 1351 0006 90E0      		ldi r25,0
+ 1352 0008 0897      		sbiw r24,8
+ 1353 000a 04F0      		brlt .L78
+ 347:quantum/rgblight.c ****     val = rgblight_config.val - RGBLIGHT_VAL_STEP;
+ 1354               		.loc 1 347 0
+ 1355 000c 4850      		subi r20,lo8(-(-8))
+ 1356               	.LVL103:
+ 1357 000e 00C0      		rjmp .L77
+ 1358               	.LVL104:
+ 1359               	.L78:
+ 345:quantum/rgblight.c ****     val = 0;
+ 1360               		.loc 1 345 0
+ 1361 0010 40E0      		ldi r20,0
+ 1362               	.L77:
+ 1363               	.LVL105:
+ 349:quantum/rgblight.c ****   rgblight_sethsv(rgblight_config.hue, rgblight_config.sat, val);
+ 1364               		.loc 1 349 0
+ 1365 0012 8091 0000 		lds r24,rgblight_config
+ 1366 0016 881F      		rol r24
+ 1367 0018 8827      		clr r24
+ 1368 001a 881F      		rol r24
+ 1369 001c 9091 0000 		lds r25,rgblight_config+1
+ 1370 0020 292F      		mov r18,r25
+ 1371 0022 220F      		lsl r18
+ 1372 0024 97FB      		bst r25,7
+ 1373 0026 9927      		clr r25
+ 1374 0028 90F9      		bld r25,0
+ 1375 002a 6091 0000 		lds r22,rgblight_config+2
+ 1376 002e 822B      		or r24,r18
+ 1377 0030 0C94 0000 		jmp rgblight_sethsv
+ 1378               	.LVL106:
+ 1379               		.cfi_endproc
+ 1380               	.LFE31:
+ 1382               		.section	.text.rgblight_mode,"ax",@progbits
+ 1383               	.global	rgblight_mode
+ 1385               	rgblight_mode:
+ 1386               	.LFB20:
+ 221:quantum/rgblight.c **** void rgblight_mode(uint8_t mode) {
+ 1387               		.loc 1 221 0
+ 1388               		.cfi_startproc
+ 1389               	.LVL107:
+ 1390               	/* prologue: function */
+ 1391               	/* frame size = 0 */
+ 1392               	/* stack size = 0 */
+ 1393               	.L__stack_usage = 0
+ 222:quantum/rgblight.c ****   if (!rgblight_config.enable) {
+ 1394               		.loc 1 222 0
+ 1395 0000 9091 0000 		lds r25,rgblight_config
+ 1396 0004 90FF      		sbrs r25,0
+ 1397 0006 00C0      		rjmp .L79
+ 1398 0008 9178      		andi r25,lo8(-127)
+ 225:quantum/rgblight.c ****   if (mode < 1) {
+ 1399               		.loc 1 225 0
+ 1400 000a 8111      		cpse r24,__zero_reg__
+ 1401 000c 00C0      		rjmp .L81
+ 226:quantum/rgblight.c ****     rgblight_config.mode = 1;
+ 1402               		.loc 1 226 0
+ 1403 000e 9260      		ori r25,lo8(2)
+ 1404 0010 00C0      		rjmp .L88
+ 1405               	.L81:
+ 227:quantum/rgblight.c ****   } else if (mode > RGBLIGHT_MODES) {
+ 1406               		.loc 1 227 0
+ 1407 0012 8332      		cpi r24,lo8(35)
+ 1408 0014 00F0      		brlo .L83
+ 228:quantum/rgblight.c ****     rgblight_config.mode = RGBLIGHT_MODES;
+ 1409               		.loc 1 228 0
+ 1410 0016 9464      		ori r25,lo8(68)
+ 1411               	.L88:
+ 1412 0018 9093 0000 		sts rgblight_config,r25
+ 1413 001c 00C0      		rjmp .L82
+ 1414               	.L83:
+ 230:quantum/rgblight.c ****     rgblight_config.mode = mode;
+ 1415               		.loc 1 230 0
+ 1416 001e 8F73      		andi r24,lo8(63)
+ 1417               	.LVL108:
+ 1418 0020 880F      		lsl r24
+ 1419 0022 892B      		or r24,r25
+ 1420 0024 8093 0000 		sts rgblight_config,r24
+ 1421               	.L82:
+ 232:quantum/rgblight.c ****   eeconfig_update_rgblight(rgblight_config.raw);
+ 1422               		.loc 1 232 0
+ 1423 0028 6091 0000 		lds r22,rgblight_config
+ 1424 002c 7091 0000 		lds r23,rgblight_config+1
+ 1425 0030 8091 0000 		lds r24,rgblight_config+2
+ 1426 0034 9091 0000 		lds r25,rgblight_config+3
+ 1427 0038 0E94 0000 		call eeconfig_update_rgblight
+ 1428               	.LVL109:
+ 234:quantum/rgblight.c ****   if (rgblight_config.mode == 1) {
+ 1429               		.loc 1 234 0
+ 1430 003c 8091 0000 		lds r24,rgblight_config
+ 1431 0040 982F      		mov r25,r24
+ 1432 0042 9E77      		andi r25,lo8(126)
+ 1433 0044 9230      		cpi r25,lo8(2)
+ 1434 0046 01F4      		brne .L84
+ 1435               	.L87:
+ 1436               	.LBB34:
+ 1437               	.LBB35:
+ 460:quantum/rgblight.c ****     }
+ 461:quantum/rgblight.c ****     #ifdef RGBW
+ 462:quantum/rgblight.c ****       ws2812_setleds_rgbw(led, RGBLED_NUM);
+ 463:quantum/rgblight.c ****     #else
+ 464:quantum/rgblight.c ****       ws2812_setleds(led, RGBLED_NUM);
+ 465:quantum/rgblight.c ****     #endif
+ 466:quantum/rgblight.c ****   }
+ 467:quantum/rgblight.c **** }
+ 468:quantum/rgblight.c **** #endif
+ 469:quantum/rgblight.c **** 
+ 470:quantum/rgblight.c **** #ifdef RGBLIGHT_ANIMATIONS
+ 471:quantum/rgblight.c **** 
+ 472:quantum/rgblight.c **** // Animation timer -- AVR Timer3
+ 473:quantum/rgblight.c **** void rgblight_timer_init(void) {
+ 474:quantum/rgblight.c ****   // static uint8_t rgblight_timer_is_init = 0;
+ 475:quantum/rgblight.c ****   // if (rgblight_timer_is_init) {
+ 476:quantum/rgblight.c ****   //   return;
+ 477:quantum/rgblight.c ****   // }
+ 478:quantum/rgblight.c ****   // rgblight_timer_is_init = 1;
+ 479:quantum/rgblight.c ****   // /* Timer 3 setup */
+ 480:quantum/rgblight.c ****   // TCCR3B = _BV(WGM32) // CTC mode OCR3A as TOP
+ 481:quantum/rgblight.c ****   //       | _BV(CS30); // Clock selelct: clk/1
+ 482:quantum/rgblight.c ****   // /* Set TOP value */
+ 483:quantum/rgblight.c ****   // uint8_t sreg = SREG;
+ 484:quantum/rgblight.c ****   // cli();
+ 485:quantum/rgblight.c ****   // OCR3AH = (RGBLED_TIMER_TOP >> 8) & 0xff;
+ 486:quantum/rgblight.c ****   // OCR3AL = RGBLED_TIMER_TOP & 0xff;
+ 487:quantum/rgblight.c ****   // SREG = sreg;
+ 488:quantum/rgblight.c **** 
+ 489:quantum/rgblight.c ****   rgblight_timer_enabled = true;
+ 490:quantum/rgblight.c **** }
+ 491:quantum/rgblight.c **** void rgblight_timer_enable(void) {
+ 492:quantum/rgblight.c ****   rgblight_timer_enabled = true;
+ 493:quantum/rgblight.c ****   dprintf("TIMER3 enabled.\n");
+ 494:quantum/rgblight.c **** }
+ 495:quantum/rgblight.c **** void rgblight_timer_disable(void) {
+ 496:quantum/rgblight.c ****   rgblight_timer_enabled = false;
+ 1438               		.loc 1 496 0
+ 1439 0048 1092 0000 		sts rgblight_timer_enabled,__zero_reg__
+ 1440 004c 00C0      		rjmp .L85
+ 1441               	.L84:
+ 1442               	.LBE35:
+ 1443               	.LBE34:
+ 238:quantum/rgblight.c ****   } else if (rgblight_config.mode >= 2 && rgblight_config.mode <= 24) {
+ 1444               		.loc 1 238 0
+ 1445 004e 982F      		mov r25,r24
+ 1446 0050 9695      		lsr r25
+ 1447 0052 9F73      		andi r25,lo8(63)
+ 1448 0054 2EE3      		ldi r18,lo8(62)
+ 1449 0056 290F      		add r18,r25
+ 1450 0058 2F73      		andi r18,lo8(63)
+ 1451 005a 2731      		cpi r18,lo8(23)
+ 1452 005c 00F4      		brsh .L86
+ 1453               	.LBB36:
+ 1454               	.LBB37:
+ 492:quantum/rgblight.c ****   rgblight_timer_enabled = true;
+ 1455               		.loc 1 492 0
+ 1456 005e 91E0      		ldi r25,lo8(1)
+ 1457 0060 9093 0000 		sts rgblight_timer_enabled,r25
+ 1458 0064 00C0      		rjmp .L85
+ 1459               	.L86:
+ 1460               	.LBE37:
+ 1461               	.LBE36:
+ 250:quantum/rgblight.c ****   } else if (rgblight_config.mode >= 25 && rgblight_config.mode <= 34) {
+ 1462               		.loc 1 250 0
+ 1463 0066 995D      		subi r25,lo8(-(39))
+ 1464 0068 9F73      		andi r25,lo8(63)
+ 1465 006a 9A30      		cpi r25,lo8(10)
+ 1466 006c 00F0      		brlo .L87
+ 1467               	.L85:
+ 257:quantum/rgblight.c ****   rgblight_sethsv(rgblight_config.hue, rgblight_config.sat, rgblight_config.val);
+ 1468               		.loc 1 257 0
+ 1469 006e 881F      		rol r24
+ 1470 0070 8827      		clr r24
+ 1471 0072 881F      		rol r24
+ 1472 0074 9091 0000 		lds r25,rgblight_config+1
+ 1473 0078 292F      		mov r18,r25
+ 1474 007a 220F      		lsl r18
+ 1475 007c 97FB      		bst r25,7
+ 1476 007e 9927      		clr r25
+ 1477 0080 90F9      		bld r25,0
+ 1478 0082 4091 0000 		lds r20,rgblight_config+3
+ 1479 0086 6091 0000 		lds r22,rgblight_config+2
+ 1480 008a 822B      		or r24,r18
+ 1481 008c 0C94 0000 		jmp rgblight_sethsv
+ 1482               	.LVL110:
+ 1483               	.L79:
+ 1484 0090 0895      		ret
+ 1485               		.cfi_endproc
+ 1486               	.LFE20:
+ 1488               		.section	.text.rgblight_init,"ax",@progbits
+ 1489               	.global	rgblight_init
+ 1491               	rgblight_init:
+ 1492               	.LFB13:
+ 141:quantum/rgblight.c **** void rgblight_init(void) {
+ 1493               		.loc 1 141 0
+ 1494               		.cfi_startproc
+ 1495               	/* prologue: function */
+ 1496               	/* frame size = 0 */
+ 1497               	/* stack size = 0 */
+ 1498               	.L__stack_usage = 0
+ 142:quantum/rgblight.c ****   debug_enable = 1; // Debug ON!
+ 1499               		.loc 1 142 0
+ 1500 0000 8091 0000 		lds r24,debug_config
+ 1501 0004 8160      		ori r24,lo8(1<<0)
+ 1502 0006 8093 0000 		sts debug_config,r24
+ 144:quantum/rgblight.c ****   rgblight_inited = 1;
+ 1503               		.loc 1 144 0
+ 1504 000a 81E0      		ldi r24,lo8(1)
+ 1505 000c 8093 0000 		sts rgblight_inited,r24
+ 146:quantum/rgblight.c ****   if (!eeconfig_is_enabled()) {
+ 1506               		.loc 1 146 0
+ 1507 0010 0E94 0000 		call eeconfig_is_enabled
+ 1508               	.LVL111:
+ 1509 0014 8111      		cpse r24,__zero_reg__
+ 1510 0016 00C0      		rjmp .L90
+ 148:quantum/rgblight.c ****     eeconfig_init();
+ 1511               		.loc 1 148 0
+ 1512 0018 0E94 0000 		call eeconfig_init
+ 1513               	.LVL112:
+ 149:quantum/rgblight.c ****     eeconfig_update_rgblight_default();
+ 1514               		.loc 1 149 0
+ 1515 001c 0E94 0000 		call eeconfig_update_rgblight_default
+ 1516               	.LVL113:
+ 1517               	.L90:
+ 151:quantum/rgblight.c ****   rgblight_config.raw = eeconfig_read_rgblight();
+ 1518               		.loc 1 151 0
+ 1519 0020 0E94 0000 		call eeconfig_read_rgblight
+ 1520               	.LVL114:
+ 1521 0024 6093 0000 		sts rgblight_config,r22
+ 1522 0028 7093 0000 		sts rgblight_config+1,r23
+ 1523 002c 8093 0000 		sts rgblight_config+2,r24
+ 1524 0030 9093 0000 		sts rgblight_config+3,r25
+ 152:quantum/rgblight.c ****   if (!rgblight_config.mode) {
+ 1525               		.loc 1 152 0
+ 1526 0034 6E77      		andi r22,lo8(126)
+ 1527 0036 01F4      		brne .L91
+ 154:quantum/rgblight.c ****     eeconfig_update_rgblight_default();
+ 1528               		.loc 1 154 0
+ 1529 0038 0E94 0000 		call eeconfig_update_rgblight_default
+ 1530               	.LVL115:
+ 155:quantum/rgblight.c ****     rgblight_config.raw = eeconfig_read_rgblight();
+ 1531               		.loc 1 155 0
+ 1532 003c 0E94 0000 		call eeconfig_read_rgblight
+ 1533               	.LVL116:
+ 1534 0040 6093 0000 		sts rgblight_config,r22
+ 1535 0044 7093 0000 		sts rgblight_config+1,r23
+ 1536 0048 8093 0000 		sts rgblight_config+2,r24
+ 1537 004c 9093 0000 		sts rgblight_config+3,r25
+ 1538               	.L91:
+ 1539               	.LBB40:
+ 1540               	.LBB41:
+ 489:quantum/rgblight.c ****   rgblight_timer_enabled = true;
+ 1541               		.loc 1 489 0
+ 1542 0050 81E0      		ldi r24,lo8(1)
+ 1543 0052 8093 0000 		sts rgblight_timer_enabled,r24
+ 1544               	.LBE41:
+ 1545               	.LBE40:
+ 163:quantum/rgblight.c ****   if (rgblight_config.enable) {
+ 1546               		.loc 1 163 0
+ 1547 0056 8091 0000 		lds r24,rgblight_config
+ 1548 005a 80FF      		sbrs r24,0
+ 1549 005c 00C0      		rjmp .L89
+ 164:quantum/rgblight.c ****     rgblight_mode(rgblight_config.mode);
+ 1550               		.loc 1 164 0
+ 1551 005e 8695      		lsr r24
+ 1552 0060 8F73      		andi r24,lo8(63)
+ 1553 0062 0C94 0000 		jmp rgblight_mode
+ 1554               	.LVL117:
+ 1555               	.L89:
+ 1556 0066 0895      		ret
+ 1557               		.cfi_endproc
+ 1558               	.LFE13:
+ 1560               		.section	.text.rgblight_increase,"ax",@progbits
+ 1561               	.global	rgblight_increase
+ 1563               	rgblight_increase:
+ 1564               	.LFB15:
+ 181:quantum/rgblight.c **** void rgblight_increase(void) {
+ 1565               		.loc 1 181 0
+ 1566               		.cfi_startproc
+ 1567               	/* prologue: function */
+ 1568               	/* frame size = 0 */
+ 1569               	/* stack size = 0 */
+ 1570               	.L__stack_usage = 0
+ 1571               	.LVL118:
+ 183:quantum/rgblight.c ****   if (rgblight_config.mode < RGBLIGHT_MODES) {
+ 1572               		.loc 1 183 0
+ 1573 0000 8091 0000 		lds r24,rgblight_config
+ 1574 0004 8695      		lsr r24
+ 1575 0006 8F73      		andi r24,lo8(63)
+ 1576 0008 282F      		mov r18,r24
+ 1577 000a 30E0      		ldi r19,0
+ 1578 000c 2232      		cpi r18,34
+ 1579 000e 3105      		cpc r19,__zero_reg__
+ 1580 0010 04F4      		brge .L95
+ 184:quantum/rgblight.c ****     mode = rgblight_config.mode + 1;
+ 1581               		.loc 1 184 0
+ 1582 0012 8F5F      		subi r24,lo8(-(1))
+ 1583               	.LVL119:
+ 1584 0014 00C0      		rjmp .L94
+ 1585               	.LVL120:
+ 1586               	.L95:
+ 182:quantum/rgblight.c ****   uint8_t mode = 0;
+ 1587               		.loc 1 182 0
+ 1588 0016 80E0      		ldi r24,0
+ 1589               	.LVL121:
+ 1590               	.L94:
+ 186:quantum/rgblight.c ****   rgblight_mode(mode);
+ 1591               		.loc 1 186 0
+ 1592 0018 0C94 0000 		jmp rgblight_mode
+ 1593               	.LVL122:
+ 1594               		.cfi_endproc
+ 1595               	.LFE15:
+ 1597               		.section	.text.rgblight_decrease,"ax",@progbits
+ 1598               	.global	rgblight_decrease
+ 1600               	rgblight_decrease:
+ 1601               	.LFB16:
+ 188:quantum/rgblight.c **** void rgblight_decrease(void) {
+ 1602               		.loc 1 188 0
+ 1603               		.cfi_startproc
+ 1604               	/* prologue: function */
+ 1605               	/* frame size = 0 */
+ 1606               	/* stack size = 0 */
+ 1607               	.L__stack_usage = 0
+ 1608               	.LVL123:
+ 191:quantum/rgblight.c ****   if (rgblight_config.mode > 1) {
+ 1609               		.loc 1 191 0
+ 1610 0000 8091 0000 		lds r24,rgblight_config
+ 1611 0004 8695      		lsr r24
+ 1612 0006 8F73      		andi r24,lo8(63)
+ 1613 0008 282F      		mov r18,r24
+ 1614 000a 30E0      		ldi r19,0
+ 1615 000c 2230      		cpi r18,2
+ 1616 000e 3105      		cpc r19,__zero_reg__
+ 1617 0010 04F0      		brlt .L98
+ 192:quantum/rgblight.c ****     mode = rgblight_config.mode - 1;
+ 1618               		.loc 1 192 0
+ 1619 0012 8150      		subi r24,lo8(-(-1))
+ 1620               	.LVL124:
+ 1621 0014 00C0      		rjmp .L97
+ 1622               	.LVL125:
+ 1623               	.L98:
+ 189:quantum/rgblight.c ****   uint8_t mode = 0;
+ 1624               		.loc 1 189 0
+ 1625 0016 80E0      		ldi r24,0
+ 1626               	.LVL126:
+ 1627               	.L97:
+ 194:quantum/rgblight.c ****   rgblight_mode(mode);
+ 1628               		.loc 1 194 0
+ 1629 0018 0C94 0000 		jmp rgblight_mode
+ 1630               	.LVL127:
+ 1631               		.cfi_endproc
+ 1632               	.LFE16:
+ 1634               		.section	.text.rgblight_step,"ax",@progbits
+ 1635               	.global	rgblight_step
+ 1637               	rgblight_step:
+ 1638               	.LFB17:
+ 196:quantum/rgblight.c **** void rgblight_step(void) {
+ 1639               		.loc 1 196 0
+ 1640               		.cfi_startproc
+ 1641               	/* prologue: function */
+ 1642               	/* frame size = 0 */
+ 1643               	/* stack size = 0 */
+ 1644               	.L__stack_usage = 0
+ 1645               	.LVL128:
+ 198:quantum/rgblight.c ****   mode = rgblight_config.mode + 1;
+ 1646               		.loc 1 198 0
+ 1647 0000 8091 0000 		lds r24,rgblight_config
+ 1648 0004 8695      		lsr r24
+ 1649 0006 8F73      		andi r24,lo8(63)
+ 1650 0008 8F5F      		subi r24,lo8(-(1))
+ 1651               	.LVL129:
+ 199:quantum/rgblight.c ****   if (mode > RGBLIGHT_MODES) {
+ 1652               		.loc 1 199 0
+ 1653 000a 8332      		cpi r24,lo8(35)
+ 1654 000c 00F0      		brlo .L100
+ 200:quantum/rgblight.c ****     mode = 1;
+ 1655               		.loc 1 200 0
+ 1656 000e 81E0      		ldi r24,lo8(1)
+ 1657               	.LVL130:
+ 1658               	.L100:
+ 202:quantum/rgblight.c ****   rgblight_mode(mode);
+ 1659               		.loc 1 202 0
+ 1660 0010 0C94 0000 		jmp rgblight_mode
+ 1661               	.LVL131:
+ 1662               		.cfi_endproc
+ 1663               	.LFE17:
+ 1665               		.section	.text.rgblight_step_reverse,"ax",@progbits
+ 1666               	.global	rgblight_step_reverse
+ 1668               	rgblight_step_reverse:
+ 1669               	.LFB18:
+ 204:quantum/rgblight.c **** void rgblight_step_reverse(void) {
+ 1670               		.loc 1 204 0
+ 1671               		.cfi_startproc
+ 1672               	/* prologue: function */
+ 1673               	/* frame size = 0 */
+ 1674               	/* stack size = 0 */
+ 1675               	.L__stack_usage = 0
+ 1676               	.LVL132:
+ 206:quantum/rgblight.c ****   mode = rgblight_config.mode - 1;
+ 1677               		.loc 1 206 0
+ 1678 0000 8091 0000 		lds r24,rgblight_config
+ 1679 0004 8695      		lsr r24
+ 1680 0006 8F73      		andi r24,lo8(63)
+ 1681 0008 8150      		subi r24,lo8(-(-1))
+ 1682               	.LVL133:
+ 207:quantum/rgblight.c ****   if (mode < 1) {
+ 1683               		.loc 1 207 0
+ 1684 000a 01F4      		brne .L103
+ 208:quantum/rgblight.c ****     mode = RGBLIGHT_MODES;
+ 1685               		.loc 1 208 0
+ 1686 000c 82E2      		ldi r24,lo8(34)
+ 1687               	.LVL134:
+ 1688               	.L103:
+ 210:quantum/rgblight.c ****   rgblight_mode(mode);
+ 1689               		.loc 1 210 0
+ 1690 000e 0C94 0000 		jmp rgblight_mode
+ 1691               	.LVL135:
+ 1692               		.cfi_endproc
+ 1693               	.LFE18:
+ 1695               		.section	.text.rgblight_enable,"ax",@progbits
+ 1696               	.global	rgblight_enable
+ 1698               	rgblight_enable:
+ 1699               	.LFB22:
+ 270:quantum/rgblight.c **** void rgblight_enable(void) {
+ 1700               		.loc 1 270 0
+ 1701               		.cfi_startproc
+ 1702 0000 CF93      		push r28
+ 1703               	.LCFI29:
+ 1704               		.cfi_def_cfa_offset 3
+ 1705               		.cfi_offset 28, -2
+ 1706 0002 DF93      		push r29
+ 1707               	.LCFI30:
+ 1708               		.cfi_def_cfa_offset 4
+ 1709               		.cfi_offset 29, -3
+ 1710               	/* prologue: function */
+ 1711               	/* frame size = 0 */
+ 1712               	/* stack size = 2 */
+ 1713               	.L__stack_usage = 2
+ 271:quantum/rgblight.c ****   rgblight_config.enable = 1;
+ 1714               		.loc 1 271 0
+ 1715 0004 C0E0      		ldi r28,lo8(rgblight_config)
+ 1716 0006 D0E0      		ldi r29,hi8(rgblight_config)
+ 1717 0008 8881      		ld r24,Y
+ 1718 000a 8160      		ori r24,lo8(1<<0)
+ 1719 000c 8883      		st Y,r24
+ 272:quantum/rgblight.c ****   eeconfig_update_rgblight(rgblight_config.raw);
+ 1720               		.loc 1 272 0
+ 1721 000e 6881      		ld r22,Y
+ 1722 0010 7981      		ldd r23,Y+1
+ 1723 0012 8A81      		ldd r24,Y+2
+ 1724 0014 9B81      		ldd r25,Y+3
+ 1725 0016 0E94 0000 		call eeconfig_update_rgblight
+ 1726               	.LVL136:
+ 274:quantum/rgblight.c ****   rgblight_mode(rgblight_config.mode);
+ 1727               		.loc 1 274 0
+ 1728 001a 8881      		ld r24,Y
+ 1729 001c 8695      		lsr r24
+ 1730 001e 8F73      		andi r24,lo8(63)
+ 1731               	/* epilogue start */
+ 275:quantum/rgblight.c **** }
+ 1732               		.loc 1 275 0
+ 1733 0020 DF91      		pop r29
+ 1734 0022 CF91      		pop r28
+ 274:quantum/rgblight.c ****   rgblight_mode(rgblight_config.mode);
+ 1735               		.loc 1 274 0
+ 1736 0024 0C94 0000 		jmp rgblight_mode
+ 1737               	.LVL137:
+ 1738               		.cfi_endproc
+ 1739               	.LFE22:
+ 1741               		.section	.text.rgblight_setrgb_at,"ax",@progbits
+ 1742               	.global	rgblight_setrgb_at
+ 1744               	rgblight_setrgb_at:
+ 1745               	.LFB40:
+ 430:quantum/rgblight.c **** void rgblight_setrgb_at(uint8_t r, uint8_t g, uint8_t b, uint8_t index) {
+ 1746               		.loc 1 430 0
+ 1747               		.cfi_startproc
+ 1748               	.LVL138:
+ 1749               	/* prologue: function */
+ 1750               	/* frame size = 0 */
+ 1751               	/* stack size = 0 */
+ 1752               	.L__stack_usage = 0
+ 431:quantum/rgblight.c ****   if (!rgblight_config.enable || index >= RGBLED_NUM) { return; }
+ 1753               		.loc 1 431 0
+ 1754 0000 9091 0000 		lds r25,rgblight_config
+ 1755 0004 90FF      		sbrs r25,0
+ 1756 0006 00C0      		rjmp .L106
+ 431:quantum/rgblight.c ****   if (!rgblight_config.enable || index >= RGBLED_NUM) { return; }
+ 1757               		.loc 1 431 0 is_stmt 0 discriminator 2
+ 1758 0008 2C30      		cpi r18,lo8(12)
+ 1759 000a 00F4      		brsh .L106
+ 433:quantum/rgblight.c ****   led[index].r = r;
+ 1760               		.loc 1 433 0 is_stmt 1
+ 1761 000c 30E0      		ldi r19,0
+ 1762 000e F901      		movw r30,r18
+ 1763 0010 EE0F      		lsl r30
+ 1764 0012 FF1F      		rol r31
+ 1765 0014 E20F      		add r30,r18
+ 1766 0016 F31F      		adc r31,r19
+ 1767 0018 E050      		subi r30,lo8(-(led))
+ 1768 001a F040      		sbci r31,hi8(-(led))
+ 1769 001c 8183      		std Z+1,r24
+ 434:quantum/rgblight.c ****   led[index].g = g;
+ 1770               		.loc 1 434 0
+ 1771 001e 6083      		st Z,r22
+ 435:quantum/rgblight.c ****   led[index].b = b;
+ 1772               		.loc 1 435 0
+ 1773 0020 4283      		std Z+2,r20
+ 436:quantum/rgblight.c ****   rgblight_set();
+ 1774               		.loc 1 436 0
+ 1775 0022 0C94 0000 		jmp rgblight_set
+ 1776               	.LVL139:
+ 1777               	.L106:
+ 1778 0026 0895      		ret
+ 1779               		.cfi_endproc
+ 1780               	.LFE40:
+ 1782               		.section	.text.rgblight_sethsv_at,"ax",@progbits
+ 1783               	.global	rgblight_sethsv_at
+ 1785               	rgblight_sethsv_at:
+ 1786               	.LFB41:
+ 439:quantum/rgblight.c **** void rgblight_sethsv_at(uint16_t hue, uint8_t sat, uint8_t val, uint8_t index) {
+ 1787               		.loc 1 439 0
+ 1788               		.cfi_startproc
+ 1789               	.LVL140:
+ 1790 0000 1F93      		push r17
+ 1791               	.LCFI31:
+ 1792               		.cfi_def_cfa_offset 3
+ 1793               		.cfi_offset 17, -2
+ 1794 0002 CF93      		push r28
+ 1795               	.LCFI32:
+ 1796               		.cfi_def_cfa_offset 4
+ 1797               		.cfi_offset 28, -3
+ 1798 0004 DF93      		push r29
+ 1799               	.LCFI33:
+ 1800               		.cfi_def_cfa_offset 5
+ 1801               		.cfi_offset 29, -4
+ 1802 0006 00D0      		rcall .
+ 1803 0008 1F92      		push __zero_reg__
+ 1804               	.LCFI34:
+ 1805               		.cfi_def_cfa_offset 8
+ 1806 000a CDB7      		in r28,__SP_L__
+ 1807 000c DEB7      		in r29,__SP_H__
+ 1808               	.LCFI35:
+ 1809               		.cfi_def_cfa_register 28
+ 1810               	/* prologue: function */
+ 1811               	/* frame size = 3 */
+ 1812               	/* stack size = 6 */
+ 1813               	.L__stack_usage = 6
+ 1814 000e 122F      		mov r17,r18
+ 440:quantum/rgblight.c ****   if (!rgblight_config.enable) { return; }
+ 1815               		.loc 1 440 0
+ 1816 0010 2091 0000 		lds r18,rgblight_config
+ 1817               	.LVL141:
+ 1818 0014 20FF      		sbrs r18,0
+ 1819 0016 00C0      		rjmp .L111
+ 443:quantum/rgblight.c ****   sethsv(hue, sat, val, &tmp_led);
+ 1820               		.loc 1 443 0
+ 1821 0018 9E01      		movw r18,r28
+ 1822 001a 2F5F      		subi r18,-1
+ 1823 001c 3F4F      		sbci r19,-1
+ 1824 001e 0E94 0000 		call sethsv
+ 1825               	.LVL142:
+ 444:quantum/rgblight.c ****   rgblight_setrgb_at(tmp_led.r, tmp_led.g, tmp_led.b, index);
+ 1826               		.loc 1 444 0
+ 1827 0022 212F      		mov r18,r17
+ 1828 0024 4B81      		ldd r20,Y+3
+ 1829 0026 6981      		ldd r22,Y+1
+ 1830 0028 8A81      		ldd r24,Y+2
+ 1831 002a 0E94 0000 		call rgblight_setrgb_at
+ 1832               	.LVL143:
+ 1833               	.L111:
+ 1834               	/* epilogue start */
+ 445:quantum/rgblight.c **** }
+ 1835               		.loc 1 445 0
+ 1836 002e 0F90      		pop __tmp_reg__
+ 1837 0030 0F90      		pop __tmp_reg__
+ 1838 0032 0F90      		pop __tmp_reg__
+ 1839 0034 DF91      		pop r29
+ 1840 0036 CF91      		pop r28
+ 1841 0038 1F91      		pop r17
+ 1842               	.LVL144:
+ 1843 003a 0895      		ret
+ 1844               		.cfi_endproc
+ 1845               	.LFE41:
+ 1847               		.section	.text.rgblight_update_dword,"ax",@progbits
+ 1848               	.global	rgblight_update_dword
+ 1850               	rgblight_update_dword:
+ 1851               	.LFB14:
+ 168:quantum/rgblight.c **** void rgblight_update_dword(uint32_t dword) {
+ 1852               		.loc 1 168 0
+ 1853               		.cfi_startproc
+ 1854               	.LVL145:
+ 1855               	/* prologue: function */
+ 1856               	/* frame size = 0 */
+ 1857               	/* stack size = 0 */
+ 1858               	.L__stack_usage = 0
+ 169:quantum/rgblight.c ****   rgblight_config.raw = dword;
+ 1859               		.loc 1 169 0
+ 1860 0000 6093 0000 		sts rgblight_config,r22
+ 1861 0004 7093 0000 		sts rgblight_config+1,r23
+ 1862 0008 8093 0000 		sts rgblight_config+2,r24
+ 1863 000c 9093 0000 		sts rgblight_config+3,r25
+ 170:quantum/rgblight.c ****   eeconfig_update_rgblight(rgblight_config.raw);
+ 1864               		.loc 1 170 0
+ 1865 0010 0E94 0000 		call eeconfig_update_rgblight
+ 1866               	.LVL146:
+ 171:quantum/rgblight.c ****   if (rgblight_config.enable)
+ 1867               		.loc 1 171 0
+ 1868 0014 8091 0000 		lds r24,rgblight_config
+ 1869 0018 80FF      		sbrs r24,0
+ 1870 001a 00C0      		rjmp .L118
+ 172:quantum/rgblight.c ****     rgblight_mode(rgblight_config.mode);
+ 1871               		.loc 1 172 0
+ 1872 001c 8695      		lsr r24
+ 1873 001e 8F73      		andi r24,lo8(63)
+ 1874 0020 0C94 0000 		jmp rgblight_mode
+ 1875               	.LVL147:
+ 1876               	.L118:
+ 1877               	.LBB44:
+ 1878               	.LBB45:
+ 1879               		.loc 1 496 0
+ 1880 0024 1092 0000 		sts rgblight_timer_enabled,__zero_reg__
+ 1881               	.LBE45:
+ 1882               	.LBE44:
+ 177:quantum/rgblight.c ****       rgblight_set();
+ 1883               		.loc 1 177 0
+ 1884 0028 0C94 0000 		jmp rgblight_set
+ 1885               	.LVL148:
+ 1886               		.cfi_endproc
+ 1887               	.LFE14:
+ 1889               		.section	.text.rgblight_disable,"ax",@progbits
+ 1890               	.global	rgblight_disable
+ 1892               	rgblight_disable:
+ 1893               	.LFB23:
+ 277:quantum/rgblight.c **** void rgblight_disable(void) {
+ 1894               		.loc 1 277 0
+ 1895               		.cfi_startproc
+ 1896               	/* prologue: function */
+ 1897               	/* frame size = 0 */
+ 1898               	/* stack size = 0 */
+ 1899               	.L__stack_usage = 0
+ 278:quantum/rgblight.c ****   rgblight_config.enable = 0;
+ 1900               		.loc 1 278 0
+ 1901 0000 E0E0      		ldi r30,lo8(rgblight_config)
+ 1902 0002 F0E0      		ldi r31,hi8(rgblight_config)
+ 1903 0004 8081      		ld r24,Z
+ 1904 0006 8E7F      		andi r24,lo8(~(1<<0))
+ 1905 0008 8083      		st Z,r24
+ 279:quantum/rgblight.c ****   eeconfig_update_rgblight(rgblight_config.raw);
+ 1906               		.loc 1 279 0
+ 1907 000a 6081      		ld r22,Z
+ 1908 000c 7181      		ldd r23,Z+1
+ 1909 000e 8281      		ldd r24,Z+2
+ 1910 0010 9381      		ldd r25,Z+3
+ 1911 0012 0E94 0000 		call eeconfig_update_rgblight
+ 1912               	.LVL149:
+ 1913               	.LBB50:
+ 1914               	.LBB51:
+ 1915               		.loc 1 496 0
+ 1916 0016 1092 0000 		sts rgblight_timer_enabled,__zero_reg__
+ 1917               	.LVL150:
+ 1918               	.LBE51:
+ 1919               	.LBE50:
+ 1920               	.LBB52:
+ 1921               	.LBB53:
+ 1922               		.file 2 "/usr/lib/avr/include/util/delay.h"
+   1:/usr/lib/avr/include/util/delay.h **** /* Copyright (c) 2002, Marek Michalkiewicz
+   2:/usr/lib/avr/include/util/delay.h ****    Copyright (c) 2004,2005,2007 Joerg Wunsch
+   3:/usr/lib/avr/include/util/delay.h ****    Copyright (c) 2007  Florin-Viorel Petrov
+   4:/usr/lib/avr/include/util/delay.h ****    All rights reserved.
+   5:/usr/lib/avr/include/util/delay.h **** 
+   6:/usr/lib/avr/include/util/delay.h ****    Redistribution and use in source and binary forms, with or without
+   7:/usr/lib/avr/include/util/delay.h ****    modification, are permitted provided that the following conditions are met:
+   8:/usr/lib/avr/include/util/delay.h **** 
+   9:/usr/lib/avr/include/util/delay.h ****    * Redistributions of source code must retain the above copyright
+  10:/usr/lib/avr/include/util/delay.h ****      notice, this list of conditions and the following disclaimer.
+  11:/usr/lib/avr/include/util/delay.h **** 
+  12:/usr/lib/avr/include/util/delay.h ****    * Redistributions in binary form must reproduce the above copyright
+  13:/usr/lib/avr/include/util/delay.h ****      notice, this list of conditions and the following disclaimer in
+  14:/usr/lib/avr/include/util/delay.h ****      the documentation and/or other materials provided with the
+  15:/usr/lib/avr/include/util/delay.h ****      distribution.
+  16:/usr/lib/avr/include/util/delay.h **** 
+  17:/usr/lib/avr/include/util/delay.h ****    * Neither the name of the copyright holders nor the names of
+  18:/usr/lib/avr/include/util/delay.h ****      contributors may be used to endorse or promote products derived
+  19:/usr/lib/avr/include/util/delay.h ****      from this software without specific prior written permission.
+  20:/usr/lib/avr/include/util/delay.h **** 
+  21:/usr/lib/avr/include/util/delay.h ****   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  22:/usr/lib/avr/include/util/delay.h ****   AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  23:/usr/lib/avr/include/util/delay.h ****   IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+  24:/usr/lib/avr/include/util/delay.h ****   ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+  25:/usr/lib/avr/include/util/delay.h ****   LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+  26:/usr/lib/avr/include/util/delay.h ****   CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+  27:/usr/lib/avr/include/util/delay.h ****   SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+  28:/usr/lib/avr/include/util/delay.h ****   INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+  29:/usr/lib/avr/include/util/delay.h ****   CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+  30:/usr/lib/avr/include/util/delay.h ****   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  31:/usr/lib/avr/include/util/delay.h ****   POSSIBILITY OF SUCH DAMAGE. */
+  32:/usr/lib/avr/include/util/delay.h **** 
+  33:/usr/lib/avr/include/util/delay.h **** /* $Id: delay.h.in 2251 2011-09-14 08:20:33Z joerg_wunsch $ */
+  34:/usr/lib/avr/include/util/delay.h **** 
+  35:/usr/lib/avr/include/util/delay.h **** #ifndef _UTIL_DELAY_H_
+  36:/usr/lib/avr/include/util/delay.h **** #define _UTIL_DELAY_H_ 1
+  37:/usr/lib/avr/include/util/delay.h **** 
+  38:/usr/lib/avr/include/util/delay.h **** #ifndef __HAS_DELAY_CYCLES
+  39:/usr/lib/avr/include/util/delay.h **** #define __HAS_DELAY_CYCLES 1
+  40:/usr/lib/avr/include/util/delay.h **** #endif
+  41:/usr/lib/avr/include/util/delay.h **** 
+  42:/usr/lib/avr/include/util/delay.h **** #include <inttypes.h>
+  43:/usr/lib/avr/include/util/delay.h **** #include <util/delay_basic.h>
+  44:/usr/lib/avr/include/util/delay.h **** #include <math.h>
+  45:/usr/lib/avr/include/util/delay.h **** 
+  46:/usr/lib/avr/include/util/delay.h **** /** \file */
+  47:/usr/lib/avr/include/util/delay.h **** /** \defgroup util_delay <util/delay.h>: Convenience functions for busy-wait delay loops
+  48:/usr/lib/avr/include/util/delay.h ****     \code
+  49:/usr/lib/avr/include/util/delay.h ****     #define F_CPU 1000000UL  // 1 MHz
+  50:/usr/lib/avr/include/util/delay.h ****     //#define F_CPU 14.7456E6
+  51:/usr/lib/avr/include/util/delay.h ****     #include <util/delay.h>
+  52:/usr/lib/avr/include/util/delay.h ****     \endcode
+  53:/usr/lib/avr/include/util/delay.h **** 
+  54:/usr/lib/avr/include/util/delay.h ****     \note As an alternative method, it is possible to pass the
+  55:/usr/lib/avr/include/util/delay.h ****     F_CPU macro down to the compiler from the Makefile.
+  56:/usr/lib/avr/include/util/delay.h ****     Obviously, in that case, no \c \#define statement should be
+  57:/usr/lib/avr/include/util/delay.h ****     used.
+  58:/usr/lib/avr/include/util/delay.h **** 
+  59:/usr/lib/avr/include/util/delay.h ****     The functions in this header file are wrappers around the basic
+  60:/usr/lib/avr/include/util/delay.h ****     busy-wait functions from <util/delay_basic.h>.  They are meant as
+  61:/usr/lib/avr/include/util/delay.h ****     convenience functions where actual time values can be specified
+  62:/usr/lib/avr/include/util/delay.h ****     rather than a number of cycles to wait for.  The idea behind is
+  63:/usr/lib/avr/include/util/delay.h ****     that compile-time constant expressions will be eliminated by
+  64:/usr/lib/avr/include/util/delay.h ****     compiler optimization so floating-point expressions can be used
+  65:/usr/lib/avr/include/util/delay.h ****     to calculate the number of delay cycles needed based on the CPU
+  66:/usr/lib/avr/include/util/delay.h ****     frequency passed by the macro F_CPU.
+  67:/usr/lib/avr/include/util/delay.h **** 
+  68:/usr/lib/avr/include/util/delay.h ****     \note In order for these functions to work as intended, compiler
+  69:/usr/lib/avr/include/util/delay.h ****     optimizations <em>must</em> be enabled, and the delay time
+  70:/usr/lib/avr/include/util/delay.h ****     <em>must</em> be an expression that is a known constant at
+  71:/usr/lib/avr/include/util/delay.h ****     compile-time.  If these requirements are not met, the resulting
+  72:/usr/lib/avr/include/util/delay.h ****     delay will be much longer (and basically unpredictable), and
+  73:/usr/lib/avr/include/util/delay.h ****     applications that otherwise do not use floating-point calculations
+  74:/usr/lib/avr/include/util/delay.h ****     will experience severe code bloat by the floating-point library
+  75:/usr/lib/avr/include/util/delay.h ****     routines linked into the application.
+  76:/usr/lib/avr/include/util/delay.h **** 
+  77:/usr/lib/avr/include/util/delay.h ****     The functions available allow the specification of microsecond, and
+  78:/usr/lib/avr/include/util/delay.h ****     millisecond delays directly, using the application-supplied macro
+  79:/usr/lib/avr/include/util/delay.h ****     F_CPU as the CPU clock frequency (in Hertz).
+  80:/usr/lib/avr/include/util/delay.h **** 
+  81:/usr/lib/avr/include/util/delay.h **** */
+  82:/usr/lib/avr/include/util/delay.h **** 
+  83:/usr/lib/avr/include/util/delay.h **** #if !defined(__DOXYGEN__)
+  84:/usr/lib/avr/include/util/delay.h **** static inline void _delay_us(double __us) __attribute__((always_inline));
+  85:/usr/lib/avr/include/util/delay.h **** static inline void _delay_ms(double __ms) __attribute__((always_inline));
+  86:/usr/lib/avr/include/util/delay.h **** #endif
+  87:/usr/lib/avr/include/util/delay.h **** 
+  88:/usr/lib/avr/include/util/delay.h **** #ifndef F_CPU
+  89:/usr/lib/avr/include/util/delay.h **** /* prevent compiler error by supplying a default */
+  90:/usr/lib/avr/include/util/delay.h **** # warning "F_CPU not defined for <util/delay.h>"
+  91:/usr/lib/avr/include/util/delay.h **** # define F_CPU 1000000UL
+  92:/usr/lib/avr/include/util/delay.h **** #endif
+  93:/usr/lib/avr/include/util/delay.h **** 
+  94:/usr/lib/avr/include/util/delay.h **** #ifndef __OPTIMIZE__
+  95:/usr/lib/avr/include/util/delay.h **** # warning "Compiler optimizations disabled; functions from <util/delay.h> won't work as designed"
+  96:/usr/lib/avr/include/util/delay.h **** #endif
+  97:/usr/lib/avr/include/util/delay.h **** 
+  98:/usr/lib/avr/include/util/delay.h **** #if __HAS_DELAY_CYCLES && defined(__OPTIMIZE__) && \
+  99:/usr/lib/avr/include/util/delay.h ****   !defined(__DELAY_BACKWARD_COMPATIBLE__) &&	   \
+ 100:/usr/lib/avr/include/util/delay.h ****   __STDC_HOSTED__
+ 101:/usr/lib/avr/include/util/delay.h **** #  include <math.h>
+ 102:/usr/lib/avr/include/util/delay.h **** #endif
+ 103:/usr/lib/avr/include/util/delay.h **** 
+ 104:/usr/lib/avr/include/util/delay.h **** /**
+ 105:/usr/lib/avr/include/util/delay.h ****    \ingroup util_delay
+ 106:/usr/lib/avr/include/util/delay.h **** 
+ 107:/usr/lib/avr/include/util/delay.h ****    Perform a delay of \c __ms milliseconds, using _delay_loop_2().
+ 108:/usr/lib/avr/include/util/delay.h **** 
+ 109:/usr/lib/avr/include/util/delay.h ****    The macro F_CPU is supposed to be defined to a
+ 110:/usr/lib/avr/include/util/delay.h ****    constant defining the CPU clock frequency (in Hertz).
+ 111:/usr/lib/avr/include/util/delay.h **** 
+ 112:/usr/lib/avr/include/util/delay.h ****    The maximal possible delay is 262.14 ms / F_CPU in MHz.
+ 113:/usr/lib/avr/include/util/delay.h **** 
+ 114:/usr/lib/avr/include/util/delay.h ****    When the user request delay which exceed the maximum possible one,
+ 115:/usr/lib/avr/include/util/delay.h ****    _delay_ms() provides a decreased resolution functionality. In this
+ 116:/usr/lib/avr/include/util/delay.h ****    mode _delay_ms() will work with a resolution of 1/10 ms, providing
+ 117:/usr/lib/avr/include/util/delay.h ****    delays up to 6.5535 seconds (independent from CPU frequency).  The
+ 118:/usr/lib/avr/include/util/delay.h ****    user will not be informed about decreased resolution.
+ 119:/usr/lib/avr/include/util/delay.h **** 
+ 120:/usr/lib/avr/include/util/delay.h ****    If the avr-gcc toolchain has __builtin_avr_delay_cycles(unsigned long)
+ 121:/usr/lib/avr/include/util/delay.h ****    support, maximal possible delay is 4294967.295 ms/ F_CPU in MHz. For
+ 122:/usr/lib/avr/include/util/delay.h ****    values greater than the maximal possible delay, overflows results in
+ 123:/usr/lib/avr/include/util/delay.h ****    no delay i.e., 0ms.
+ 124:/usr/lib/avr/include/util/delay.h **** 
+ 125:/usr/lib/avr/include/util/delay.h ****    Conversion of __us into clock cycles may not always result in integer.
+ 126:/usr/lib/avr/include/util/delay.h ****    By default, the clock cycles rounded up to next integer. This ensures that
+ 127:/usr/lib/avr/include/util/delay.h ****    the user gets atleast __us microseconds of delay.
+ 128:/usr/lib/avr/include/util/delay.h **** 
+ 129:/usr/lib/avr/include/util/delay.h ****    Alternatively, user can define __DELAY_ROUND_DOWN__ and __DELAY_ROUND_CLOSEST__
+ 130:/usr/lib/avr/include/util/delay.h ****    to round down and round to closest integer.
+ 131:/usr/lib/avr/include/util/delay.h **** 
+ 132:/usr/lib/avr/include/util/delay.h ****    Note: The new implementation of _delay_ms(double __ms) with 
+ 133:/usr/lib/avr/include/util/delay.h ****     __builtin_avr_delay_cycles(unsigned long) support is not backward compatible. 
+ 134:/usr/lib/avr/include/util/delay.h ****    User can define __DELAY_BACKWARD_COMPATIBLE__ to get a backward compatible delay.
+ 135:/usr/lib/avr/include/util/delay.h ****    Also, the backward compatible
+ 136:/usr/lib/avr/include/util/delay.h ****    algorithm will be chosen if the code is compiled in a <em>freestanding
+ 137:/usr/lib/avr/include/util/delay.h ****    environment</em> (GCC option \c -ffreestanding), as the math functions
+ 138:/usr/lib/avr/include/util/delay.h ****    required for rounding are not available to the compiler then.
+ 139:/usr/lib/avr/include/util/delay.h **** 
+ 140:/usr/lib/avr/include/util/delay.h ****  */
+ 141:/usr/lib/avr/include/util/delay.h **** void
+ 142:/usr/lib/avr/include/util/delay.h **** _delay_ms(double __ms)
+ 143:/usr/lib/avr/include/util/delay.h **** {
+ 144:/usr/lib/avr/include/util/delay.h **** 	uint16_t __ticks;
+ 145:/usr/lib/avr/include/util/delay.h **** 	double __tmp ; 
+ 146:/usr/lib/avr/include/util/delay.h **** #if __HAS_DELAY_CYCLES && defined(__OPTIMIZE__) && \
+ 147:/usr/lib/avr/include/util/delay.h ****   !defined(__DELAY_BACKWARD_COMPATIBLE__) &&	   \
+ 148:/usr/lib/avr/include/util/delay.h ****   __STDC_HOSTED__
+ 149:/usr/lib/avr/include/util/delay.h **** 	uint32_t __ticks_dc;
+ 150:/usr/lib/avr/include/util/delay.h **** 	extern void __builtin_avr_delay_cycles(unsigned long);
+ 151:/usr/lib/avr/include/util/delay.h **** 	__tmp = ((F_CPU) / 1e3) * __ms;
+ 152:/usr/lib/avr/include/util/delay.h **** 
+ 153:/usr/lib/avr/include/util/delay.h **** 	#if defined(__DELAY_ROUND_DOWN__)
+ 154:/usr/lib/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)fabs(__tmp);
+ 155:/usr/lib/avr/include/util/delay.h **** 
+ 156:/usr/lib/avr/include/util/delay.h **** 	#elif defined(__DELAY_ROUND_CLOSEST__)
+ 157:/usr/lib/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)(fabs(__tmp)+0.5);
+ 158:/usr/lib/avr/include/util/delay.h **** 
+ 159:/usr/lib/avr/include/util/delay.h **** 	#else
+ 160:/usr/lib/avr/include/util/delay.h **** 		//round up by default
+ 161:/usr/lib/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+ 162:/usr/lib/avr/include/util/delay.h **** 	#endif
+ 163:/usr/lib/avr/include/util/delay.h **** 
+ 164:/usr/lib/avr/include/util/delay.h **** 	__builtin_avr_delay_cycles(__ticks_dc);
+ 1923               		.loc 2 164 0
+ 1924 001a 2FEF      		ldi r18,lo8(159999)
+ 1925 001c 80E7      		ldi r24,hi8(159999)
+ 1926 001e 92E0      		ldi r25,hlo8(159999)
+ 1927 0020 2150      		1: subi r18,1
+ 1928 0022 8040      		sbci r24,0
+ 1929 0024 9040      		sbci r25,0
+ 1930 0026 01F4      		brne 1b
+ 1931 0028 00C0      		rjmp .
+ 1932 002a 0000      		nop
+ 1933               	.LBE53:
+ 1934               	.LBE52:
+ 285:quantum/rgblight.c ****   rgblight_set();
+ 1935               		.loc 1 285 0
+ 1936 002c 0C94 0000 		jmp rgblight_set
+ 1937               	.LVL151:
+ 1938               		.cfi_endproc
+ 1939               	.LFE23:
+ 1941               		.section	.text.rgblight_toggle,"ax",@progbits
+ 1942               	.global	rgblight_toggle
+ 1944               	rgblight_toggle:
+ 1945               	.LFB21:
+ 260:quantum/rgblight.c **** void rgblight_toggle(void) {
+ 1946               		.loc 1 260 0
+ 1947               		.cfi_startproc
+ 1948               	/* prologue: function */
+ 1949               	/* frame size = 0 */
+ 1950               	/* stack size = 0 */
+ 1951               	.L__stack_usage = 0
+ 262:quantum/rgblight.c ****   if (rgblight_config.enable) {
+ 1952               		.loc 1 262 0
+ 1953 0000 8091 0000 		lds r24,rgblight_config
+ 1954 0004 80FD      		sbrc r24,0
+ 263:quantum/rgblight.c ****     rgblight_disable();
+ 1955               		.loc 1 263 0
+ 1956 0006 0C94 0000 		jmp rgblight_disable
+ 1957               	.LVL152:
+ 1958               	.L121:
+ 266:quantum/rgblight.c ****     rgblight_enable();
+ 1959               		.loc 1 266 0
+ 1960 000a 0C94 0000 		jmp rgblight_enable
+ 1961               	.LVL153:
+ 1962               		.cfi_endproc
+ 1963               	.LFE21:
+ 1965               		.section	.text.rgblight_timer_init,"ax",@progbits
+ 1966               	.global	rgblight_timer_init
+ 1968               	rgblight_timer_init:
+ 1969               	.LFB43:
+ 473:quantum/rgblight.c **** void rgblight_timer_init(void) {
+ 1970               		.loc 1 473 0
+ 1971               		.cfi_startproc
+ 1972               	/* prologue: function */
+ 1973               	/* frame size = 0 */
+ 1974               	/* stack size = 0 */
+ 1975               	.L__stack_usage = 0
+ 489:quantum/rgblight.c ****   rgblight_timer_enabled = true;
+ 1976               		.loc 1 489 0
+ 1977 0000 81E0      		ldi r24,lo8(1)
+ 1978 0002 8093 0000 		sts rgblight_timer_enabled,r24
+ 1979 0006 0895      		ret
+ 1980               		.cfi_endproc
+ 1981               	.LFE43:
+ 1983               		.section	.text.rgblight_timer_enable,"ax",@progbits
+ 1984               	.global	rgblight_timer_enable
+ 1986               	rgblight_timer_enable:
+ 1987               	.LFB44:
+ 491:quantum/rgblight.c **** void rgblight_timer_enable(void) {
+ 1988               		.loc 1 491 0
+ 1989               		.cfi_startproc
+ 1990               	/* prologue: function */
+ 1991               	/* frame size = 0 */
+ 1992               	/* stack size = 0 */
+ 1993               	.L__stack_usage = 0
+ 492:quantum/rgblight.c ****   rgblight_timer_enabled = true;
+ 1994               		.loc 1 492 0
+ 1995 0000 81E0      		ldi r24,lo8(1)
+ 1996 0002 8093 0000 		sts rgblight_timer_enabled,r24
+ 1997 0006 0895      		ret
+ 1998               		.cfi_endproc
+ 1999               	.LFE44:
+ 2001               		.section	.text.rgblight_timer_disable,"ax",@progbits
+ 2002               	.global	rgblight_timer_disable
+ 2004               	rgblight_timer_disable:
+ 2005               	.LFB45:
+ 495:quantum/rgblight.c **** void rgblight_timer_disable(void) {
+ 2006               		.loc 1 495 0
+ 2007               		.cfi_startproc
+ 2008               	/* prologue: function */
+ 2009               	/* frame size = 0 */
+ 2010               	/* stack size = 0 */
+ 2011               	.L__stack_usage = 0
+ 2012               		.loc 1 496 0
+ 2013 0000 1092 0000 		sts rgblight_timer_enabled,__zero_reg__
+ 2014 0004 0895      		ret
+ 2015               		.cfi_endproc
+ 2016               	.LFE45:
+ 2018               		.section	.text.rgblight_timer_toggle,"ax",@progbits
+ 2019               	.global	rgblight_timer_toggle
+ 2021               	rgblight_timer_toggle:
+ 2022               	.LFB46:
+ 497:quantum/rgblight.c ****   dprintf("TIMER3 disabled.\n");
+ 498:quantum/rgblight.c **** }
+ 499:quantum/rgblight.c **** void rgblight_timer_toggle(void) {
+ 2023               		.loc 1 499 0
+ 2024               		.cfi_startproc
+ 2025               	/* prologue: function */
+ 2026               	/* frame size = 0 */
+ 2027               	/* stack size = 0 */
+ 2028               	.L__stack_usage = 0
+ 500:quantum/rgblight.c ****   rgblight_timer_enabled ^= rgblight_timer_enabled;
+ 2029               		.loc 1 500 0
+ 2030 0000 1092 0000 		sts rgblight_timer_enabled,__zero_reg__
+ 2031 0004 0895      		ret
+ 2032               		.cfi_endproc
+ 2033               	.LFE46:
+ 2035               		.section	.text.rgblight_show_solid_color,"ax",@progbits
+ 2036               	.global	rgblight_show_solid_color
+ 2038               	rgblight_show_solid_color:
+ 2039               	.LFB47:
+ 501:quantum/rgblight.c ****   dprintf("TIMER3 toggled.\n");
+ 502:quantum/rgblight.c **** }
+ 503:quantum/rgblight.c **** 
+ 504:quantum/rgblight.c **** void rgblight_show_solid_color(uint8_t r, uint8_t g, uint8_t b) {
+ 2040               		.loc 1 504 0
+ 2041               		.cfi_startproc
+ 2042               	.LVL154:
+ 2043 0000 1F93      		push r17
+ 2044               	.LCFI36:
+ 2045               		.cfi_def_cfa_offset 3
+ 2046               		.cfi_offset 17, -2
+ 2047 0002 CF93      		push r28
+ 2048               	.LCFI37:
+ 2049               		.cfi_def_cfa_offset 4
+ 2050               		.cfi_offset 28, -3
+ 2051 0004 DF93      		push r29
+ 2052               	.LCFI38:
+ 2053               		.cfi_def_cfa_offset 5
+ 2054               		.cfi_offset 29, -4
+ 2055 0006 00D0      		rcall .
+ 2056               	.LCFI39:
+ 2057               		.cfi_def_cfa_offset 7
+ 2058 0008 CDB7      		in r28,__SP_L__
+ 2059 000a DEB7      		in r29,__SP_H__
+ 2060               	.LCFI40:
+ 2061               		.cfi_def_cfa_register 28
+ 2062               	/* prologue: function */
+ 2063               	/* frame size = 2 */
+ 2064               	/* stack size = 5 */
+ 2065               	.L__stack_usage = 5
+ 2066 000c 182F      		mov r17,r24
+ 505:quantum/rgblight.c ****   rgblight_enable();
+ 2067               		.loc 1 505 0
+ 2068 000e 4A83      		std Y+2,r20
+ 2069 0010 6983      		std Y+1,r22
+ 2070 0012 0E94 0000 		call rgblight_enable
+ 2071               	.LVL155:
+ 506:quantum/rgblight.c ****   rgblight_mode(1);
+ 2072               		.loc 1 506 0
+ 2073 0016 81E0      		ldi r24,lo8(1)
+ 2074 0018 0E94 0000 		call rgblight_mode
+ 2075               	.LVL156:
+ 507:quantum/rgblight.c ****   rgblight_setrgb(r, g, b);
+ 2076               		.loc 1 507 0
+ 2077 001c 4A81      		ldd r20,Y+2
+ 2078 001e 6981      		ldd r22,Y+1
+ 2079 0020 812F      		mov r24,r17
+ 2080               	/* epilogue start */
+ 508:quantum/rgblight.c **** }
+ 2081               		.loc 1 508 0
+ 2082 0022 0F90      		pop __tmp_reg__
+ 2083 0024 0F90      		pop __tmp_reg__
+ 2084 0026 DF91      		pop r29
+ 2085 0028 CF91      		pop r28
+ 2086 002a 1F91      		pop r17
+ 2087               	.LVL157:
+ 507:quantum/rgblight.c ****   rgblight_setrgb(r, g, b);
+ 2088               		.loc 1 507 0
+ 2089 002c 0C94 0000 		jmp rgblight_setrgb
+ 2090               	.LVL158:
+ 2091               		.cfi_endproc
+ 2092               	.LFE47:
+ 2094               	.global	__floatsisf
+ 2095               	.global	__divsf3
+ 2096               	.global	__mulsf3
+ 2097               	.global	__subsf3
+ 2098               	.global	__fixunssfsi
+ 2099               		.section	.text.rgblight_effect_breathing,"ax",@progbits
+ 2100               	.global	rgblight_effect_breathing
+ 2102               	rgblight_effect_breathing:
+ 2103               	.LFB49:
+ 509:quantum/rgblight.c **** 
+ 510:quantum/rgblight.c **** void rgblight_task(void) {
+ 511:quantum/rgblight.c ****   if (rgblight_timer_enabled) {
+ 512:quantum/rgblight.c ****     // mode = 1, static light, do nothing here
+ 513:quantum/rgblight.c ****     if (rgblight_config.mode >= 2 && rgblight_config.mode <= 5) {
+ 514:quantum/rgblight.c ****       // mode = 2 to 5, breathing mode
+ 515:quantum/rgblight.c ****       rgblight_effect_breathing(rgblight_config.mode - 2);
+ 516:quantum/rgblight.c ****     } else if (rgblight_config.mode >= 6 && rgblight_config.mode <= 8) {
+ 517:quantum/rgblight.c ****       // mode = 6 to 8, rainbow mood mod
+ 518:quantum/rgblight.c ****       rgblight_effect_rainbow_mood(rgblight_config.mode - 6);
+ 519:quantum/rgblight.c ****     } else if (rgblight_config.mode >= 9 && rgblight_config.mode <= 14) {
+ 520:quantum/rgblight.c ****       // mode = 9 to 14, rainbow swirl mode
+ 521:quantum/rgblight.c ****       rgblight_effect_rainbow_swirl(rgblight_config.mode - 9);
+ 522:quantum/rgblight.c ****     } else if (rgblight_config.mode >= 15 && rgblight_config.mode <= 20) {
+ 523:quantum/rgblight.c ****       // mode = 15 to 20, snake mode
+ 524:quantum/rgblight.c ****       rgblight_effect_snake(rgblight_config.mode - 15);
+ 525:quantum/rgblight.c ****     } else if (rgblight_config.mode >= 21 && rgblight_config.mode <= 23) {
+ 526:quantum/rgblight.c ****       // mode = 21 to 23, knight mode
+ 527:quantum/rgblight.c ****       rgblight_effect_knight(rgblight_config.mode - 21);
+ 528:quantum/rgblight.c ****     } else if (rgblight_config.mode == 24) {
+ 529:quantum/rgblight.c ****       // mode = 24, christmas mode
+ 530:quantum/rgblight.c ****       rgblight_effect_christmas();
+ 531:quantum/rgblight.c ****     }
+ 532:quantum/rgblight.c ****   }
+ 533:quantum/rgblight.c **** }
+ 534:quantum/rgblight.c **** 
+ 535:quantum/rgblight.c **** // Effects
+ 536:quantum/rgblight.c **** void rgblight_effect_breathing(uint8_t interval) {
+ 2104               		.loc 1 536 0
+ 2105               		.cfi_startproc
+ 2106               	.LVL159:
+ 2107 0000 CF93      		push r28
+ 2108               	.LCFI41:
+ 2109               		.cfi_def_cfa_offset 3
+ 2110               		.cfi_offset 28, -2
+ 2111               	/* prologue: function */
+ 2112               	/* frame size = 0 */
+ 2113               	/* stack size = 1 */
+ 2114               	.L__stack_usage = 1
+ 2115 0002 C82F      		mov r28,r24
+ 537:quantum/rgblight.c ****   static uint8_t pos = 0;
+ 538:quantum/rgblight.c ****   static uint16_t last_timer = 0;
+ 539:quantum/rgblight.c ****   float val;
+ 540:quantum/rgblight.c **** 
+ 541:quantum/rgblight.c ****   if (timer_elapsed(last_timer) < pgm_read_byte(&RGBLED_BREATHING_INTERVALS[interval])) {
+ 2116               		.loc 1 541 0
+ 2117 0004 8091 0000 		lds r24,last_timer.2276
+ 2118 0008 9091 0000 		lds r25,last_timer.2276+1
+ 2119               	.LVL160:
+ 2120 000c 0E94 0000 		call timer_elapsed
+ 2121               	.LVL161:
+ 2122               	.LBB54:
+ 2123 0010 EC2F      		mov r30,r28
+ 2124 0012 F0E0      		ldi r31,0
+ 2125 0014 E050      		subi r30,lo8(-(RGBLED_BREATHING_INTERVALS))
+ 2126 0016 F040      		sbci r31,hi8(-(RGBLED_BREATHING_INTERVALS))
+ 2127               	/* #APP */
+ 2128               	 ;  541 "quantum/rgblight.c" 1
+ 2129 0018 E491      		lpm r30, Z
+ 2130               		
+ 2131               	 ;  0 "" 2
+ 2132               	.LVL162:
+ 2133               	/* #NOAPP */
+ 2134               	.LBE54:
+ 2135 001a F0E0      		ldi r31,0
+ 2136 001c 8E17      		cp r24,r30
+ 2137 001e 9F07      		cpc r25,r31
+ 2138 0020 00F4      		brsh .+2
+ 2139 0022 00C0      		rjmp .L127
+ 542:quantum/rgblight.c ****     return;
+ 543:quantum/rgblight.c ****   }
+ 544:quantum/rgblight.c ****   last_timer = timer_read();
+ 2140               		.loc 1 544 0
+ 2141 0024 0E94 0000 		call timer_read
+ 2142               	.LVL163:
+ 2143 0028 9093 0000 		sts last_timer.2276+1,r25
+ 2144 002c 8093 0000 		sts last_timer.2276,r24
+ 545:quantum/rgblight.c **** 
+ 546:quantum/rgblight.c **** 
+ 547:quantum/rgblight.c ****   // http://sean.voisen.org/blog/2011/10/breathing-led-with-arduino/
+ 548:quantum/rgblight.c ****   val = (exp(sin((pos/255.0)*M_PI)) - RGBLIGHT_EFFECT_BREATHE_CENTER/M_E)*(RGBLIGHT_EFFECT_BREATHE_
+ 2145               		.loc 1 548 0
+ 2146 0030 6091 0000 		lds r22,pos.2275
+ 2147 0034 70E0      		ldi r23,0
+ 2148 0036 80E0      		ldi r24,0
+ 2149 0038 90E0      		ldi r25,0
+ 2150 003a 0E94 0000 		call __floatsisf
+ 2151               	.LVL164:
+ 2152 003e 20E0      		ldi r18,0
+ 2153 0040 30E0      		ldi r19,0
+ 2154 0042 4FE7      		ldi r20,lo8(127)
+ 2155 0044 53E4      		ldi r21,lo8(67)
+ 2156 0046 0E94 0000 		call __divsf3
+ 2157               	.LVL165:
+ 2158 004a 2BED      		ldi r18,lo8(-37)
+ 2159 004c 3FE0      		ldi r19,lo8(15)
+ 2160 004e 49E4      		ldi r20,lo8(73)
+ 2161 0050 50E4      		ldi r21,lo8(64)
+ 2162 0052 0E94 0000 		call __mulsf3
+ 2163               	.LVL166:
+ 2164 0056 0E94 0000 		call sin
+ 2165               	.LVL167:
+ 2166 005a 0E94 0000 		call exp
+ 2167               	.LVL168:
+ 2168 005e 2BE4      		ldi r18,lo8(75)
+ 2169 0060 3AE3      		ldi r19,lo8(58)
+ 2170 0062 4EE2      		ldi r20,lo8(46)
+ 2171 0064 5FE3      		ldi r21,lo8(63)
+ 2172 0066 0E94 0000 		call __subsf3
+ 2173               	.LVL169:
+ 2174 006a 20EF      		ldi r18,lo8(-16)
+ 2175 006c 3BEF      		ldi r19,lo8(-5)
+ 2176 006e 48ED      		ldi r20,lo8(-40)
+ 2177 0070 52E4      		ldi r21,lo8(66)
+ 2178 0072 0E94 0000 		call __mulsf3
+ 2179               	.LVL170:
+ 549:quantum/rgblight.c ****   rgblight_sethsv_noeeprom(rgblight_config.hue, rgblight_config.sat, val);
+ 2180               		.loc 1 549 0
+ 2181 0076 0E94 0000 		call __fixunssfsi
+ 2182               	.LVL171:
+ 2183 007a 462F      		mov r20,r22
+ 2184 007c 8091 0000 		lds r24,rgblight_config
+ 2185 0080 881F      		rol r24
+ 2186 0082 8827      		clr r24
+ 2187 0084 881F      		rol r24
+ 2188 0086 9091 0000 		lds r25,rgblight_config+1
+ 2189 008a 292F      		mov r18,r25
+ 2190 008c 220F      		lsl r18
+ 2191 008e 97FB      		bst r25,7
+ 2192 0090 9927      		clr r25
+ 2193 0092 90F9      		bld r25,0
+ 2194 0094 6091 0000 		lds r22,rgblight_config+2
+ 2195 0098 822B      		or r24,r18
+ 2196 009a 0E94 0000 		call rgblight_sethsv_noeeprom
+ 2197               	.LVL172:
+ 550:quantum/rgblight.c ****   pos = (pos + 1) % 256;
+ 2198               		.loc 1 550 0
+ 2199 009e 8091 0000 		lds r24,pos.2275
+ 2200 00a2 8F5F      		subi r24,lo8(-(1))
+ 2201 00a4 8093 0000 		sts pos.2275,r24
+ 2202               	.L127:
+ 2203               	/* epilogue start */
+ 551:quantum/rgblight.c **** }
+ 2204               		.loc 1 551 0
+ 2205 00a8 CF91      		pop r28
+ 2206               	.LVL173:
+ 2207 00aa 0895      		ret
+ 2208               		.cfi_endproc
+ 2209               	.LFE49:
+ 2211               		.section	.text.rgblight_effect_rainbow_mood,"ax",@progbits
+ 2212               	.global	rgblight_effect_rainbow_mood
+ 2214               	rgblight_effect_rainbow_mood:
+ 2215               	.LFB50:
+ 552:quantum/rgblight.c **** void rgblight_effect_rainbow_mood(uint8_t interval) {
+ 2216               		.loc 1 552 0
+ 2217               		.cfi_startproc
+ 2218               	.LVL174:
+ 2219 0000 CF93      		push r28
+ 2220               	.LCFI42:
+ 2221               		.cfi_def_cfa_offset 3
+ 2222               		.cfi_offset 28, -2
+ 2223               	/* prologue: function */
+ 2224               	/* frame size = 0 */
+ 2225               	/* stack size = 1 */
+ 2226               	.L__stack_usage = 1
+ 2227 0002 C82F      		mov r28,r24
+ 553:quantum/rgblight.c ****   static uint16_t current_hue = 0;
+ 554:quantum/rgblight.c ****   static uint16_t last_timer = 0;
+ 555:quantum/rgblight.c **** 
+ 556:quantum/rgblight.c ****   if (timer_elapsed(last_timer) < pgm_read_byte(&RGBLED_RAINBOW_MOOD_INTERVALS[interval])) {
+ 2228               		.loc 1 556 0
+ 2229 0004 8091 0000 		lds r24,last_timer.2285
+ 2230 0008 9091 0000 		lds r25,last_timer.2285+1
+ 2231               	.LVL175:
+ 2232 000c 0E94 0000 		call timer_elapsed
+ 2233               	.LVL176:
+ 2234               	.LBB55:
+ 2235 0010 EC2F      		mov r30,r28
+ 2236 0012 F0E0      		ldi r31,0
+ 2237 0014 E050      		subi r30,lo8(-(RGBLED_RAINBOW_MOOD_INTERVALS))
+ 2238 0016 F040      		sbci r31,hi8(-(RGBLED_RAINBOW_MOOD_INTERVALS))
+ 2239               	/* #APP */
+ 2240               	 ;  556 "quantum/rgblight.c" 1
+ 2241 0018 E491      		lpm r30, Z
+ 2242               		
+ 2243               	 ;  0 "" 2
+ 2244               	.LVL177:
+ 2245               	/* #NOAPP */
+ 2246               	.LBE55:
+ 2247 001a F0E0      		ldi r31,0
+ 2248 001c 8E17      		cp r24,r30
+ 2249 001e 9F07      		cpc r25,r31
+ 2250 0020 00F0      		brlo .L129
+ 557:quantum/rgblight.c ****     return;
+ 558:quantum/rgblight.c ****   }
+ 559:quantum/rgblight.c ****   last_timer = timer_read();
+ 2251               		.loc 1 559 0
+ 2252 0022 0E94 0000 		call timer_read
+ 2253               	.LVL178:
+ 2254 0026 9093 0000 		sts last_timer.2285+1,r25
+ 2255 002a 8093 0000 		sts last_timer.2285,r24
+ 560:quantum/rgblight.c ****   rgblight_sethsv_noeeprom(current_hue, rgblight_config.sat, rgblight_config.val);
+ 2256               		.loc 1 560 0
+ 2257 002e 4091 0000 		lds r20,rgblight_config+3
+ 2258 0032 6091 0000 		lds r22,rgblight_config+2
+ 2259 0036 8091 0000 		lds r24,current_hue.2284
+ 2260 003a 9091 0000 		lds r25,current_hue.2284+1
+ 2261 003e 0E94 0000 		call rgblight_sethsv_noeeprom
+ 2262               	.LVL179:
+ 561:quantum/rgblight.c ****   current_hue = (current_hue + 1) % 360;
+ 2263               		.loc 1 561 0
+ 2264 0042 8091 0000 		lds r24,current_hue.2284
+ 2265 0046 9091 0000 		lds r25,current_hue.2284+1
+ 2266 004a 0196      		adiw r24,1
+ 2267 004c 68E6      		ldi r22,lo8(104)
+ 2268 004e 71E0      		ldi r23,lo8(1)
+ 2269 0050 0E94 0000 		call __udivmodhi4
+ 2270 0054 9093 0000 		sts current_hue.2284+1,r25
+ 2271 0058 8093 0000 		sts current_hue.2284,r24
+ 2272               	.L129:
+ 2273               	/* epilogue start */
+ 562:quantum/rgblight.c **** }
+ 2274               		.loc 1 562 0
+ 2275 005c CF91      		pop r28
+ 2276               	.LVL180:
+ 2277 005e 0895      		ret
+ 2278               		.cfi_endproc
+ 2279               	.LFE50:
+ 2281               		.section	.text.rgblight_effect_rainbow_swirl,"ax",@progbits
+ 2282               	.global	rgblight_effect_rainbow_swirl
+ 2284               	rgblight_effect_rainbow_swirl:
+ 2285               	.LFB51:
+ 563:quantum/rgblight.c **** void rgblight_effect_rainbow_swirl(uint8_t interval) {
+ 2286               		.loc 1 563 0
+ 2287               		.cfi_startproc
+ 2288               	.LVL181:
+ 2289 0000 DF92      		push r13
+ 2290               	.LCFI43:
+ 2291               		.cfi_def_cfa_offset 3
+ 2292               		.cfi_offset 13, -2
+ 2293 0002 EF92      		push r14
+ 2294               	.LCFI44:
+ 2295               		.cfi_def_cfa_offset 4
+ 2296               		.cfi_offset 14, -3
+ 2297 0004 FF92      		push r15
+ 2298               	.LCFI45:
+ 2299               		.cfi_def_cfa_offset 5
+ 2300               		.cfi_offset 15, -4
+ 2301 0006 0F93      		push r16
+ 2302               	.LCFI46:
+ 2303               		.cfi_def_cfa_offset 6
+ 2304               		.cfi_offset 16, -5
+ 2305 0008 1F93      		push r17
+ 2306               	.LCFI47:
+ 2307               		.cfi_def_cfa_offset 7
+ 2308               		.cfi_offset 17, -6
+ 2309 000a CF93      		push r28
+ 2310               	.LCFI48:
+ 2311               		.cfi_def_cfa_offset 8
+ 2312               		.cfi_offset 28, -7
+ 2313 000c DF93      		push r29
+ 2314               	.LCFI49:
+ 2315               		.cfi_def_cfa_offset 9
+ 2316               		.cfi_offset 29, -8
+ 2317               	/* prologue: function */
+ 2318               	/* frame size = 0 */
+ 2319               	/* stack size = 7 */
+ 2320               	.L__stack_usage = 7
+ 2321 000e D82E      		mov r13,r24
+ 564:quantum/rgblight.c ****   static uint16_t current_hue = 0;
+ 565:quantum/rgblight.c ****   static uint16_t last_timer = 0;
+ 566:quantum/rgblight.c ****   uint16_t hue;
+ 567:quantum/rgblight.c ****   uint8_t i;
+ 568:quantum/rgblight.c ****   if (timer_elapsed(last_timer) < pgm_read_byte(&RGBLED_RAINBOW_SWIRL_INTERVALS[interval / 2])) {
+ 2322               		.loc 1 568 0
+ 2323 0010 8091 0000 		lds r24,last_timer.2293
+ 2324 0014 9091 0000 		lds r25,last_timer.2293+1
+ 2325               	.LVL182:
+ 2326 0018 0E94 0000 		call timer_elapsed
+ 2327               	.LVL183:
+ 2328               	.LBB56:
+ 2329 001c ED2D      		mov r30,r13
+ 2330 001e E695      		lsr r30
+ 2331 0020 F0E0      		ldi r31,0
+ 2332 0022 E050      		subi r30,lo8(-(RGBLED_RAINBOW_SWIRL_INTERVALS))
+ 2333 0024 F040      		sbci r31,hi8(-(RGBLED_RAINBOW_SWIRL_INTERVALS))
+ 2334               	/* #APP */
+ 2335               	 ;  568 "quantum/rgblight.c" 1
+ 2336 0026 E491      		lpm r30, Z
+ 2337               		
+ 2338               	 ;  0 "" 2
+ 2339               	.LVL184:
+ 2340               	/* #NOAPP */
+ 2341               	.LBE56:
+ 2342 0028 F0E0      		ldi r31,0
+ 2343 002a 8E17      		cp r24,r30
+ 2344 002c 9F07      		cpc r25,r31
+ 2345 002e 00F0      		brlo .L131
+ 569:quantum/rgblight.c ****     return;
+ 570:quantum/rgblight.c ****   }
+ 571:quantum/rgblight.c ****   last_timer = timer_read();
+ 2346               		.loc 1 571 0
+ 2347 0030 0E94 0000 		call timer_read
+ 2348               	.LVL185:
+ 2349 0034 9093 0000 		sts last_timer.2293+1,r25
+ 2350 0038 8093 0000 		sts last_timer.2293,r24
+ 2351               	.LVL186:
+ 2352 003c 00E0      		ldi r16,lo8(led)
+ 2353 003e 10E0      		ldi r17,hi8(led)
+ 2354 0040 C0E0      		ldi r28,0
+ 2355 0042 D0E0      		ldi r29,0
+ 572:quantum/rgblight.c ****   for (i = 0; i < RGBLED_NUM; i++) {
+ 573:quantum/rgblight.c ****     hue = (360 / RGBLED_NUM * i + current_hue) % 360;
+ 2356               		.loc 1 573 0
+ 2357 0044 28E6      		ldi r18,lo8(104)
+ 2358 0046 E22E      		mov r14,r18
+ 2359 0048 FF24      		clr r15
+ 2360 004a F394      		inc r15
+ 2361               	.LVL187:
+ 2362               	.L134:
+ 2363               		.loc 1 573 0 is_stmt 0 discriminator 2
+ 2364 004c 8091 0000 		lds r24,current_hue.2292
+ 2365 0050 9091 0000 		lds r25,current_hue.2292+1
+ 2366 0054 8C0F      		add r24,r28
+ 2367 0056 9D1F      		adc r25,r29
+ 2368 0058 B701      		movw r22,r14
+ 2369 005a 0E94 0000 		call __udivmodhi4
+ 574:quantum/rgblight.c ****     sethsv(hue, rgblight_config.sat, rgblight_config.val, (LED_TYPE *)&led[i]);
+ 2370               		.loc 1 574 0 is_stmt 1 discriminator 2
+ 2371 005e 9801      		movw r18,r16
+ 2372 0060 4091 0000 		lds r20,rgblight_config+3
+ 2373 0064 6091 0000 		lds r22,rgblight_config+2
+ 2374 0068 0E94 0000 		call sethsv
+ 2375               	.LVL188:
+ 2376 006c 6E96      		adiw r28,30
+ 2377 006e 0D5F      		subi r16,-3
+ 2378 0070 1F4F      		sbci r17,-1
+ 572:quantum/rgblight.c ****   for (i = 0; i < RGBLED_NUM; i++) {
+ 2379               		.loc 1 572 0 discriminator 2
+ 2380 0072 C836      		cpi r28,104
+ 2381 0074 81E0      		ldi r24,1
+ 2382 0076 D807      		cpc r29,r24
+ 2383 0078 01F4      		brne .L134
+ 575:quantum/rgblight.c ****   }
+ 576:quantum/rgblight.c ****   rgblight_set();
+ 2384               		.loc 1 576 0
+ 2385 007a 0E94 0000 		call rgblight_set
+ 2386               	.LVL189:
+ 2387 007e 2091 0000 		lds r18,current_hue.2292
+ 2388 0082 3091 0000 		lds r19,current_hue.2292+1
+ 577:quantum/rgblight.c **** 
+ 578:quantum/rgblight.c ****   if (interval % 2) {
+ 2389               		.loc 1 578 0
+ 2390 0086 D0FE      		sbrs r13,0
+ 2391 0088 00C0      		rjmp .L135
+ 579:quantum/rgblight.c ****     current_hue = (current_hue + 1) % 360;
+ 2392               		.loc 1 579 0
+ 2393 008a C901      		movw r24,r18
+ 2394 008c 0196      		adiw r24,1
+ 2395 008e BE01      		movw r22,r28
+ 2396 0090 0E94 0000 		call __udivmodhi4
+ 2397 0094 9093 0000 		sts current_hue.2292+1,r25
+ 2398 0098 8093 0000 		sts current_hue.2292,r24
+ 2399 009c 00C0      		rjmp .L131
+ 2400               	.L135:
+ 580:quantum/rgblight.c ****   } else {
+ 581:quantum/rgblight.c ****     if (current_hue - 1 < 0) {
+ 582:quantum/rgblight.c ****       current_hue = 359;
+ 583:quantum/rgblight.c ****     } else {
+ 584:quantum/rgblight.c ****       current_hue = current_hue - 1;
+ 2401               		.loc 1 584 0
+ 2402 009e 2150      		subi r18,1
+ 2403 00a0 3109      		sbc r19,__zero_reg__
+ 2404 00a2 3093 0000 		sts current_hue.2292+1,r19
+ 2405 00a6 2093 0000 		sts current_hue.2292,r18
+ 2406               	.L131:
+ 2407               	/* epilogue start */
+ 585:quantum/rgblight.c ****     }
+ 586:quantum/rgblight.c ****   }
+ 587:quantum/rgblight.c **** }
+ 2408               		.loc 1 587 0
+ 2409 00aa DF91      		pop r29
+ 2410 00ac CF91      		pop r28
+ 2411 00ae 1F91      		pop r17
+ 2412 00b0 0F91      		pop r16
+ 2413 00b2 FF90      		pop r15
+ 2414 00b4 EF90      		pop r14
+ 2415 00b6 DF90      		pop r13
+ 2416               	.LVL190:
+ 2417 00b8 0895      		ret
+ 2418               		.cfi_endproc
+ 2419               	.LFE51:
+ 2421               		.section	.text.rgblight_effect_snake,"ax",@progbits
+ 2422               	.global	rgblight_effect_snake
+ 2424               	rgblight_effect_snake:
+ 2425               	.LFB52:
+ 588:quantum/rgblight.c **** void rgblight_effect_snake(uint8_t interval) {
+ 2426               		.loc 1 588 0
+ 2427               		.cfi_startproc
+ 2428               	.LVL191:
+ 2429 0000 AF92      		push r10
+ 2430               	.LCFI50:
+ 2431               		.cfi_def_cfa_offset 3
+ 2432               		.cfi_offset 10, -2
+ 2433 0002 BF92      		push r11
+ 2434               	.LCFI51:
+ 2435               		.cfi_def_cfa_offset 4
+ 2436               		.cfi_offset 11, -3
+ 2437 0004 CF92      		push r12
+ 2438               	.LCFI52:
+ 2439               		.cfi_def_cfa_offset 5
+ 2440               		.cfi_offset 12, -4
+ 2441 0006 DF92      		push r13
+ 2442               	.LCFI53:
+ 2443               		.cfi_def_cfa_offset 6
+ 2444               		.cfi_offset 13, -5
+ 2445 0008 EF92      		push r14
+ 2446               	.LCFI54:
+ 2447               		.cfi_def_cfa_offset 7
+ 2448               		.cfi_offset 14, -6
+ 2449 000a FF92      		push r15
+ 2450               	.LCFI55:
+ 2451               		.cfi_def_cfa_offset 8
+ 2452               		.cfi_offset 15, -7
+ 2453 000c 0F93      		push r16
+ 2454               	.LCFI56:
+ 2455               		.cfi_def_cfa_offset 9
+ 2456               		.cfi_offset 16, -8
+ 2457 000e 1F93      		push r17
+ 2458               	.LCFI57:
+ 2459               		.cfi_def_cfa_offset 10
+ 2460               		.cfi_offset 17, -9
+ 2461 0010 CF93      		push r28
+ 2462               	.LCFI58:
+ 2463               		.cfi_def_cfa_offset 11
+ 2464               		.cfi_offset 28, -10
+ 2465 0012 DF93      		push r29
+ 2466               	.LCFI59:
+ 2467               		.cfi_def_cfa_offset 12
+ 2468               		.cfi_offset 29, -11
+ 2469               	/* prologue: function */
+ 2470               	/* frame size = 0 */
+ 2471               	/* stack size = 10 */
+ 2472               	.L__stack_usage = 10
+ 2473 0014 C82F      		mov r28,r24
+ 2474               	.LVL192:
+ 589:quantum/rgblight.c ****   static uint8_t pos = 0;
+ 590:quantum/rgblight.c ****   static uint16_t last_timer = 0;
+ 591:quantum/rgblight.c ****   uint8_t i, j;
+ 592:quantum/rgblight.c ****   int8_t k;
+ 593:quantum/rgblight.c ****   int8_t increment = 1;
+ 594:quantum/rgblight.c ****   if (interval % 2) {
+ 2475               		.loc 1 594 0
+ 2476 0016 80FD      		sbrc r24,0
+ 2477 0018 00C0      		rjmp .L147
+ 593:quantum/rgblight.c ****   int8_t increment = 1;
+ 2478               		.loc 1 593 0
+ 2479 001a BB24      		clr r11
+ 2480 001c B394      		inc r11
+ 2481 001e 00C0      		rjmp .L137
+ 2482               	.L147:
+ 595:quantum/rgblight.c ****     increment = -1;
+ 2483               		.loc 1 595 0
+ 2484 0020 BB24      		clr r11
+ 2485 0022 BA94      		dec r11
+ 2486               	.L137:
+ 2487               	.LVL193:
+ 596:quantum/rgblight.c ****   }
+ 597:quantum/rgblight.c ****   if (timer_elapsed(last_timer) < pgm_read_byte(&RGBLED_SNAKE_INTERVALS[interval / 2])) {
+ 2488               		.loc 1 597 0
+ 2489 0024 8091 0000 		lds r24,last_timer.2306
+ 2490 0028 9091 0000 		lds r25,last_timer.2306+1
+ 2491               	.LVL194:
+ 2492 002c 0E94 0000 		call timer_elapsed
+ 2493               	.LVL195:
+ 2494               	.LBB57:
+ 2495 0030 C695      		lsr r28
+ 2496               	.LVL196:
+ 2497 0032 EC2F      		mov r30,r28
+ 2498 0034 F0E0      		ldi r31,0
+ 2499 0036 E050      		subi r30,lo8(-(RGBLED_SNAKE_INTERVALS))
+ 2500 0038 F040      		sbci r31,hi8(-(RGBLED_SNAKE_INTERVALS))
+ 2501               	/* #APP */
+ 2502               	 ;  597 "quantum/rgblight.c" 1
+ 2503 003a E491      		lpm r30, Z
+ 2504               		
+ 2505               	 ;  0 "" 2
+ 2506               	.LVL197:
+ 2507               	/* #NOAPP */
+ 2508               	.LBE57:
+ 2509 003c F0E0      		ldi r31,0
+ 2510 003e 8E17      		cp r24,r30
+ 2511 0040 9F07      		cpc r25,r31
+ 2512 0042 00F4      		brsh .+2
+ 2513 0044 00C0      		rjmp .L136
+ 598:quantum/rgblight.c ****     return;
+ 599:quantum/rgblight.c ****   }
+ 600:quantum/rgblight.c ****   last_timer = timer_read();
+ 2514               		.loc 1 600 0
+ 2515 0046 0E94 0000 		call timer_read
+ 2516               	.LVL198:
+ 2517 004a 9093 0000 		sts last_timer.2306+1,r25
+ 2518 004e 8093 0000 		sts last_timer.2306,r24
+ 2519               	.LVL199:
+ 2520 0052 50E0      		ldi r21,lo8(led)
+ 2521 0054 E52E      		mov r14,r21
+ 2522 0056 50E0      		ldi r21,hi8(led)
+ 2523 0058 F52E      		mov r15,r21
+ 2524 005a 00E0      		ldi r16,lo8(led+2)
+ 2525 005c 10E0      		ldi r17,hi8(led+2)
+ 2526 005e C0E0      		ldi r28,0
+ 2527 0060 D0E0      		ldi r29,0
+ 2528               	.LVL200:
+ 2529               	.L144:
+ 2530 0062 F801      		movw r30,r16
+ 2531 0064 3197      		sbiw r30,1
+ 601:quantum/rgblight.c ****   for (i = 0; i < RGBLED_NUM; i++) {
+ 602:quantum/rgblight.c ****     led[i].r = 0;
+ 2532               		.loc 1 602 0
+ 2533 0066 1082      		st Z,__zero_reg__
+ 603:quantum/rgblight.c ****     led[i].g = 0;
+ 2534               		.loc 1 603 0
+ 2535 0068 F701      		movw r30,r14
+ 2536 006a 1082      		st Z,__zero_reg__
+ 604:quantum/rgblight.c ****     led[i].b = 0;
+ 2537               		.loc 1 604 0
+ 2538 006c F801      		movw r30,r16
+ 2539 006e 1082      		st Z,__zero_reg__
+ 2540               	.LVL201:
+ 2541 0070 44E0      		ldi r20,lo8(4)
+ 2542 0072 C42E      		mov r12,r20
+ 2543 0074 D12C      		mov r13,__zero_reg__
+ 2544 0076 A12C      		mov r10,__zero_reg__
+ 2545               	.LVL202:
+ 2546               	.L142:
+ 605:quantum/rgblight.c ****     for (j = 0; j < RGBLIGHT_EFFECT_SNAKE_LENGTH; j++) {
+ 606:quantum/rgblight.c ****       k = pos + j * increment;
+ 2547               		.loc 1 606 0
+ 2548 0078 8091 0000 		lds r24,pos.2305
+ 2549 007c 8A0D      		add r24,r10
+ 2550               	.LVL203:
+ 607:quantum/rgblight.c ****       if (k < 0) {
+ 2551               		.loc 1 607 0
+ 2552 007e 87FD      		sbrc r24,7
+ 608:quantum/rgblight.c ****         k = k + RGBLED_NUM;
+ 2553               		.loc 1 608 0
+ 2554 0080 845F      		subi r24,lo8(-(12))
+ 2555               	.LVL204:
+ 2556               	.L139:
+ 609:quantum/rgblight.c ****       }
+ 610:quantum/rgblight.c ****       if (i == k) {
+ 2557               		.loc 1 610 0
+ 2558 0082 9927      		clr r25
+ 2559 0084 87FD      		sbrc r24,7
+ 2560 0086 9095      		com r25
+ 2561 0088 C817      		cp r28,r24
+ 2562 008a D907      		cpc r29,r25
+ 2563 008c 01F4      		brne .L140
+ 611:quantum/rgblight.c ****         sethsv(rgblight_config.hue, rgblight_config.sat, (uint8_t)(rgblight_config.val*(RGBLIGHT_EF
+ 2564               		.loc 1 611 0
+ 2565 008e 8091 0000 		lds r24,rgblight_config+3
+ 2566               	.LVL205:
+ 2567 0092 8C9D      		mul r24,r12
+ 2568 0094 A001      		movw r20,r0
+ 2569 0096 8D9D      		mul r24,r13
+ 2570 0098 500D      		add r21,r0
+ 2571 009a 1124      		clr __zero_reg__
+ 2572 009c 5595      		asr r21
+ 2573 009e 4795      		ror r20
+ 2574 00a0 5595      		asr r21
+ 2575 00a2 4795      		ror r20
+ 2576 00a4 8091 0000 		lds r24,rgblight_config
+ 2577 00a8 881F      		rol r24
+ 2578 00aa 8827      		clr r24
+ 2579 00ac 881F      		rol r24
+ 2580 00ae 9091 0000 		lds r25,rgblight_config+1
+ 2581 00b2 592F      		mov r21,r25
+ 2582 00b4 550F      		lsl r21
+ 2583 00b6 97FB      		bst r25,7
+ 2584 00b8 9927      		clr r25
+ 2585 00ba 90F9      		bld r25,0
+ 2586 00bc 9701      		movw r18,r14
+ 2587 00be 6091 0000 		lds r22,rgblight_config+2
+ 2588 00c2 852B      		or r24,r21
+ 2589 00c4 0E94 0000 		call sethsv
+ 2590               	.LVL206:
+ 2591               	.L140:
+ 2592 00c8 AB0C      		add r10,r11
+ 2593 00ca F1E0      		ldi r31,1
+ 2594 00cc CF1A      		sub r12,r31
+ 2595 00ce D108      		sbc r13,__zero_reg__
+ 605:quantum/rgblight.c ****     for (j = 0; j < RGBLIGHT_EFFECT_SNAKE_LENGTH; j++) {
+ 2596               		.loc 1 605 0
+ 2597 00d0 C114      		cp r12,__zero_reg__
+ 2598 00d2 D104      		cpc r13,__zero_reg__
+ 2599 00d4 01F4      		brne .L142
+ 2600               	.LVL207:
+ 2601 00d6 2196      		adiw r28,1
+ 2602               	.LVL208:
+ 2603 00d8 83E0      		ldi r24,3
+ 2604 00da E80E      		add r14,r24
+ 2605 00dc F11C      		adc r15,__zero_reg__
+ 2606 00de 0D5F      		subi r16,-3
+ 2607 00e0 1F4F      		sbci r17,-1
+ 601:quantum/rgblight.c ****   for (i = 0; i < RGBLED_NUM; i++) {
+ 2608               		.loc 1 601 0
+ 2609 00e2 CC30      		cpi r28,12
+ 2610 00e4 D105      		cpc r29,__zero_reg__
+ 2611 00e6 01F0      		breq .+2
+ 2612 00e8 00C0      		rjmp .L144
+ 612:quantum/rgblight.c ****       }
+ 613:quantum/rgblight.c ****     }
+ 614:quantum/rgblight.c ****   }
+ 615:quantum/rgblight.c ****   rgblight_set();
+ 2613               		.loc 1 615 0
+ 2614 00ea 0E94 0000 		call rgblight_set
+ 2615               	.LVL209:
+ 2616 00ee 8091 0000 		lds r24,pos.2305
+ 616:quantum/rgblight.c ****   if (increment == 1) {
+ 2617               		.loc 1 616 0
+ 2618 00f2 91E0      		ldi r25,lo8(1)
+ 2619 00f4 B912      		cpse r11,r25
+ 2620 00f6 00C0      		rjmp .L145
+ 617:quantum/rgblight.c ****     if (pos - 1 < 0) {
+ 2621               		.loc 1 617 0
+ 2622 00f8 8111      		cpse r24,__zero_reg__
+ 2623 00fa 00C0      		rjmp .L146
+ 618:quantum/rgblight.c ****       pos = RGBLED_NUM - 1;
+ 2624               		.loc 1 618 0
+ 2625 00fc 8BE0      		ldi r24,lo8(11)
+ 2626 00fe 00C0      		rjmp .L148
+ 2627               	.L146:
+ 619:quantum/rgblight.c ****     } else {
+ 620:quantum/rgblight.c ****       pos -= 1;
+ 2628               		.loc 1 620 0
+ 2629 0100 8150      		subi r24,lo8(-(-1))
+ 2630 0102 00C0      		rjmp .L148
+ 2631               	.L145:
+ 621:quantum/rgblight.c ****     }
+ 622:quantum/rgblight.c ****   } else {
+ 623:quantum/rgblight.c ****     pos = (pos + 1) % RGBLED_NUM;
+ 2632               		.loc 1 623 0
+ 2633 0104 90E0      		ldi r25,0
+ 2634 0106 0196      		adiw r24,1
+ 2635 0108 BE01      		movw r22,r28
+ 2636 010a 0E94 0000 		call __divmodhi4
+ 2637               	.L148:
+ 2638 010e 8093 0000 		sts pos.2305,r24
+ 2639               	.LVL210:
+ 2640               	.L136:
+ 2641               	/* epilogue start */
+ 624:quantum/rgblight.c ****   }
+ 625:quantum/rgblight.c **** }
+ 2642               		.loc 1 625 0
+ 2643 0112 DF91      		pop r29
+ 2644 0114 CF91      		pop r28
+ 2645 0116 1F91      		pop r17
+ 2646 0118 0F91      		pop r16
+ 2647 011a FF90      		pop r15
+ 2648 011c EF90      		pop r14
+ 2649 011e DF90      		pop r13
+ 2650 0120 CF90      		pop r12
+ 2651 0122 BF90      		pop r11
+ 2652               	.LVL211:
+ 2653 0124 AF90      		pop r10
+ 2654 0126 0895      		ret
+ 2655               		.cfi_endproc
+ 2656               	.LFE52:
+ 2658               		.section	.text.rgblight_effect_knight,"ax",@progbits
+ 2659               	.global	rgblight_effect_knight
+ 2661               	rgblight_effect_knight:
+ 2662               	.LFB53:
+ 626:quantum/rgblight.c **** void rgblight_effect_knight(uint8_t interval) {
+ 2663               		.loc 1 626 0
+ 2664               		.cfi_startproc
+ 2665               	.LVL212:
+ 2666 0000 0F93      		push r16
+ 2667               	.LCFI60:
+ 2668               		.cfi_def_cfa_offset 3
+ 2669               		.cfi_offset 16, -2
+ 2670 0002 1F93      		push r17
+ 2671               	.LCFI61:
+ 2672               		.cfi_def_cfa_offset 4
+ 2673               		.cfi_offset 17, -3
+ 2674 0004 CF93      		push r28
+ 2675               	.LCFI62:
+ 2676               		.cfi_def_cfa_offset 5
+ 2677               		.cfi_offset 28, -4
+ 2678 0006 DF93      		push r29
+ 2679               	.LCFI63:
+ 2680               		.cfi_def_cfa_offset 6
+ 2681               		.cfi_offset 29, -5
+ 2682               	/* prologue: function */
+ 2683               	/* frame size = 0 */
+ 2684               	/* stack size = 4 */
+ 2685               	.L__stack_usage = 4
+ 2686 0008 C82F      		mov r28,r24
+ 627:quantum/rgblight.c ****   static uint16_t last_timer = 0;
+ 628:quantum/rgblight.c ****   if (timer_elapsed(last_timer) < pgm_read_byte(&RGBLED_KNIGHT_INTERVALS[interval])) {
+ 2687               		.loc 1 628 0
+ 2688 000a 8091 0000 		lds r24,last_timer.2323
+ 2689 000e 9091 0000 		lds r25,last_timer.2323+1
+ 2690               	.LVL213:
+ 2691 0012 0E94 0000 		call timer_elapsed
+ 2692               	.LVL214:
+ 2693               	.LBB58:
+ 2694 0016 EC2F      		mov r30,r28
+ 2695 0018 F0E0      		ldi r31,0
+ 2696 001a E050      		subi r30,lo8(-(RGBLED_KNIGHT_INTERVALS))
+ 2697 001c F040      		sbci r31,hi8(-(RGBLED_KNIGHT_INTERVALS))
+ 2698               	/* #APP */
+ 2699               	 ;  628 "quantum/rgblight.c" 1
+ 2700 001e E491      		lpm r30, Z
+ 2701               		
+ 2702               	 ;  0 "" 2
+ 2703               	.LVL215:
+ 2704               	/* #NOAPP */
+ 2705               	.LBE58:
+ 2706 0020 F0E0      		ldi r31,0
+ 2707 0022 8E17      		cp r24,r30
+ 2708 0024 9F07      		cpc r25,r31
+ 2709 0026 00F4      		brsh .+2
+ 2710 0028 00C0      		rjmp .L149
+ 629:quantum/rgblight.c ****     return;
+ 630:quantum/rgblight.c ****   }
+ 631:quantum/rgblight.c ****   last_timer = timer_read();
+ 2711               		.loc 1 631 0
+ 2712 002a 0E94 0000 		call timer_read
+ 2713               	.LVL216:
+ 2714 002e 9093 0000 		sts last_timer.2323+1,r25
+ 2715 0032 8093 0000 		sts last_timer.2323,r24
+ 2716               	.LVL217:
+ 2717 0036 E0E0      		ldi r30,lo8(led+2)
+ 2718 0038 F0E0      		ldi r31,hi8(led+2)
+ 2719               	.LVL218:
+ 2720               	.L153:
+ 2721 003a DF01      		movw r26,r30
+ 2722 003c 1197      		sbiw r26,1
+ 632:quantum/rgblight.c **** 
+ 633:quantum/rgblight.c ****   static int8_t low_bound = 0;
+ 634:quantum/rgblight.c ****   static int8_t high_bound = RGBLIGHT_EFFECT_KNIGHT_LENGTH - 1;
+ 635:quantum/rgblight.c ****   static int8_t increment = 1;
+ 636:quantum/rgblight.c ****   uint8_t i, cur;
+ 637:quantum/rgblight.c **** 
+ 638:quantum/rgblight.c ****   // Set all the LEDs to 0
+ 639:quantum/rgblight.c ****   for (i = 0; i < RGBLED_NUM; i++) {
+ 640:quantum/rgblight.c ****     led[i].r = 0;
+ 2723               		.loc 1 640 0 discriminator 2
+ 2724 003e 1C92      		st X,__zero_reg__
+ 2725 0040 DF01      		movw r26,r30
+ 2726 0042 1297      		sbiw r26,2
+ 641:quantum/rgblight.c ****     led[i].g = 0;
+ 2727               		.loc 1 641 0 discriminator 2
+ 2728 0044 1C92      		st X,__zero_reg__
+ 642:quantum/rgblight.c ****     led[i].b = 0;
+ 2729               		.loc 1 642 0 discriminator 2
+ 2730 0046 1082      		st Z,__zero_reg__
+ 2731 0048 3396      		adiw r30,3
+ 639:quantum/rgblight.c ****   for (i = 0; i < RGBLED_NUM; i++) {
+ 2732               		.loc 1 639 0 discriminator 2
+ 2733 004a 80E0      		ldi r24,hi8(led+38)
+ 2734 004c E030      		cpi r30,lo8(led+38)
+ 2735 004e F807      		cpc r31,r24
+ 2736 0050 01F4      		brne .L153
+ 639:quantum/rgblight.c ****   for (i = 0; i < RGBLED_NUM; i++) {
+ 2737               		.loc 1 639 0 is_stmt 0
+ 2738 0052 C0E0      		ldi r28,0
+ 2739 0054 D0E0      		ldi r29,0
+ 2740               	.LVL219:
+ 643:quantum/rgblight.c ****   }
+ 644:quantum/rgblight.c ****   // Determine which LEDs should be lit up
+ 645:quantum/rgblight.c ****   for (i = 0; i < RGBLIGHT_EFFECT_KNIGHT_LED_NUM; i++) {
+ 646:quantum/rgblight.c ****     cur = (i + RGBLIGHT_EFFECT_KNIGHT_OFFSET) % RGBLED_NUM;
+ 2741               		.loc 1 646 0 is_stmt 1
+ 2742 0056 0CE0      		ldi r16,lo8(12)
+ 2743 0058 10E0      		ldi r17,0
+ 2744               	.L157:
+ 2745               	.LVL220:
+ 2746 005a CE01      		movw r24,r28
+ 2747 005c B801      		movw r22,r16
+ 2748 005e 0E94 0000 		call __divmodhi4
+ 2749               	.LVL221:
+ 647:quantum/rgblight.c **** 
+ 648:quantum/rgblight.c ****     if (i >= low_bound && i <= high_bound) {
+ 2750               		.loc 1 648 0
+ 2751 0062 2091 0000 		lds r18,low_bound.2327
+ 2752 0066 3327      		clr r19
+ 2753 0068 27FD      		sbrc r18,7
+ 2754 006a 3095      		com r19
+ 2755 006c FC01      		movw r30,r24
+ 2756 006e EE0F      		lsl r30
+ 2757 0070 FF1F      		rol r31
+ 2758 0072 C217      		cp r28,r18
+ 2759 0074 D307      		cpc r29,r19
+ 2760 0076 04F0      		brlt .L154
+ 2761               		.loc 1 648 0 is_stmt 0 discriminator 1
+ 2762 0078 2091 0000 		lds r18,high_bound.2328
+ 2763 007c 3327      		clr r19
+ 2764 007e 27FD      		sbrc r18,7
+ 2765 0080 3095      		com r19
+ 2766 0082 2C17      		cp r18,r28
+ 2767 0084 3D07      		cpc r19,r29
+ 2768 0086 04F0      		brlt .L154
+ 649:quantum/rgblight.c ****       sethsv(rgblight_config.hue, rgblight_config.sat, rgblight_config.val, (LED_TYPE *)&led[cur]);
+ 2769               		.loc 1 649 0 is_stmt 1
+ 2770 0088 9F01      		movw r18,r30
+ 2771 008a 280F      		add r18,r24
+ 2772 008c 391F      		adc r19,r25
+ 2773 008e 2050      		subi r18,lo8(-(led))
+ 2774 0090 3040      		sbci r19,hi8(-(led))
+ 2775 0092 8091 0000 		lds r24,rgblight_config
+ 2776               	.LVL222:
+ 2777 0096 881F      		rol r24
+ 2778 0098 8827      		clr r24
+ 2779 009a 881F      		rol r24
+ 2780 009c 9091 0000 		lds r25,rgblight_config+1
+ 2781 00a0 592F      		mov r21,r25
+ 2782 00a2 550F      		lsl r21
+ 2783 00a4 97FB      		bst r25,7
+ 2784 00a6 9927      		clr r25
+ 2785 00a8 90F9      		bld r25,0
+ 2786 00aa 4091 0000 		lds r20,rgblight_config+3
+ 2787 00ae 6091 0000 		lds r22,rgblight_config+2
+ 2788 00b2 852B      		or r24,r21
+ 2789 00b4 0E94 0000 		call sethsv
+ 2790               	.LVL223:
+ 2791 00b8 00C0      		rjmp .L155
+ 2792               	.LVL224:
+ 2793               	.L154:
+ 650:quantum/rgblight.c ****     } else {
+ 651:quantum/rgblight.c ****       led[cur].r = 0;
+ 2794               		.loc 1 651 0
+ 2795 00ba E80F      		add r30,r24
+ 2796 00bc F91F      		adc r31,r25
+ 2797 00be E050      		subi r30,lo8(-(led))
+ 2798 00c0 F040      		sbci r31,hi8(-(led))
+ 2799 00c2 1182      		std Z+1,__zero_reg__
+ 652:quantum/rgblight.c ****       led[cur].g = 0;
+ 2800               		.loc 1 652 0
+ 2801 00c4 1082      		st Z,__zero_reg__
+ 653:quantum/rgblight.c ****       led[cur].b = 0;
+ 2802               		.loc 1 653 0
+ 2803 00c6 1282      		std Z+2,__zero_reg__
+ 2804               	.LVL225:
+ 2805               	.L155:
+ 2806 00c8 2196      		adiw r28,1
+ 2807               	.LVL226:
+ 645:quantum/rgblight.c ****   for (i = 0; i < RGBLIGHT_EFFECT_KNIGHT_LED_NUM; i++) {
+ 2808               		.loc 1 645 0
+ 2809 00ca CC30      		cpi r28,12
+ 2810 00cc D105      		cpc r29,__zero_reg__
+ 2811 00ce 01F4      		brne .L157
+ 654:quantum/rgblight.c ****     }
+ 655:quantum/rgblight.c ****   }
+ 656:quantum/rgblight.c ****   rgblight_set();
+ 2812               		.loc 1 656 0
+ 2813 00d0 0E94 0000 		call rgblight_set
+ 2814               	.LVL227:
+ 657:quantum/rgblight.c **** 
+ 658:quantum/rgblight.c ****   // Move from low_bound to high_bound changing the direction we increment each
+ 659:quantum/rgblight.c ****   // time a boundary is hit.
+ 660:quantum/rgblight.c ****   low_bound += increment;
+ 2815               		.loc 1 660 0
+ 2816 00d4 2091 0000 		lds r18,increment.2329
+ 2817 00d8 8091 0000 		lds r24,low_bound.2327
+ 2818 00dc 820F      		add r24,r18
+ 2819 00de 8093 0000 		sts low_bound.2327,r24
+ 661:quantum/rgblight.c ****   high_bound += increment;
+ 2820               		.loc 1 661 0
+ 2821 00e2 9091 0000 		lds r25,high_bound.2328
+ 2822 00e6 920F      		add r25,r18
+ 2823 00e8 9093 0000 		sts high_bound.2328,r25
+ 662:quantum/rgblight.c **** 
+ 663:quantum/rgblight.c ****   if (high_bound <= 0 || low_bound >= RGBLIGHT_EFFECT_KNIGHT_LED_NUM - 1) {
+ 2824               		.loc 1 663 0
+ 2825 00ec 1916      		cp __zero_reg__,r25
+ 2826 00ee 04F4      		brge .L158
+ 2827               		.loc 1 663 0 is_stmt 0 discriminator 1
+ 2828 00f0 8B30      		cpi r24,lo8(11)
+ 2829 00f2 04F0      		brlt .L149
+ 2830               	.L158:
+ 664:quantum/rgblight.c ****     increment = -increment;
+ 2831               		.loc 1 664 0 is_stmt 1
+ 2832 00f4 2195      		neg r18
+ 2833 00f6 2093 0000 		sts increment.2329,r18
+ 2834               	.LVL228:
+ 2835               	.L149:
+ 2836               	/* epilogue start */
+ 665:quantum/rgblight.c ****   }
+ 666:quantum/rgblight.c **** }
+ 2837               		.loc 1 666 0
+ 2838 00fa DF91      		pop r29
+ 2839 00fc CF91      		pop r28
+ 2840 00fe 1F91      		pop r17
+ 2841 0100 0F91      		pop r16
+ 2842 0102 0895      		ret
+ 2843               		.cfi_endproc
+ 2844               	.LFE53:
+ 2846               		.section	.text.rgblight_effect_christmas,"ax",@progbits
+ 2847               	.global	rgblight_effect_christmas
+ 2849               	rgblight_effect_christmas:
+ 2850               	.LFB54:
+ 667:quantum/rgblight.c **** 
+ 668:quantum/rgblight.c **** 
+ 669:quantum/rgblight.c **** void rgblight_effect_christmas(void) {
+ 2851               		.loc 1 669 0
+ 2852               		.cfi_startproc
+ 2853 0000 EF92      		push r14
+ 2854               	.LCFI64:
+ 2855               		.cfi_def_cfa_offset 3
+ 2856               		.cfi_offset 14, -2
+ 2857 0002 FF92      		push r15
+ 2858               	.LCFI65:
+ 2859               		.cfi_def_cfa_offset 4
+ 2860               		.cfi_offset 15, -3
+ 2861 0004 0F93      		push r16
+ 2862               	.LCFI66:
+ 2863               		.cfi_def_cfa_offset 5
+ 2864               		.cfi_offset 16, -4
+ 2865 0006 1F93      		push r17
+ 2866               	.LCFI67:
+ 2867               		.cfi_def_cfa_offset 6
+ 2868               		.cfi_offset 17, -5
+ 2869 0008 CF93      		push r28
+ 2870               	.LCFI68:
+ 2871               		.cfi_def_cfa_offset 7
+ 2872               		.cfi_offset 28, -6
+ 2873 000a DF93      		push r29
+ 2874               	.LCFI69:
+ 2875               		.cfi_def_cfa_offset 8
+ 2876               		.cfi_offset 29, -7
+ 2877               	/* prologue: function */
+ 2878               	/* frame size = 0 */
+ 2879               	/* stack size = 6 */
+ 2880               	.L__stack_usage = 6
+ 670:quantum/rgblight.c ****   static uint16_t current_offset = 0;
+ 671:quantum/rgblight.c ****   static uint16_t last_timer = 0;
+ 672:quantum/rgblight.c ****   uint16_t hue;
+ 673:quantum/rgblight.c ****   uint8_t i;
+ 674:quantum/rgblight.c ****   if (timer_elapsed(last_timer) < RGBLIGHT_EFFECT_CHRISTMAS_INTERVAL) {
+ 2881               		.loc 1 674 0
+ 2882 000c 8091 0000 		lds r24,last_timer.2342
+ 2883 0010 9091 0000 		lds r25,last_timer.2342+1
+ 2884 0014 0E94 0000 		call timer_elapsed
+ 2885               	.LVL229:
+ 2886 0018 883E      		cpi r24,-24
+ 2887 001a 9340      		sbci r25,3
+ 2888 001c 00F0      		brlo .L160
+ 675:quantum/rgblight.c ****     return;
+ 676:quantum/rgblight.c ****   }
+ 677:quantum/rgblight.c ****   last_timer = timer_read();
+ 2889               		.loc 1 677 0
+ 2890 001e 0E94 0000 		call timer_read
+ 2891               	.LVL230:
+ 2892 0022 9093 0000 		sts last_timer.2342+1,r25
+ 2893 0026 8093 0000 		sts last_timer.2342,r24
+ 678:quantum/rgblight.c ****   current_offset = (current_offset + 1) % 2;
+ 2894               		.loc 1 678 0
+ 2895 002a C091 0000 		lds r28,current_offset.2341
+ 2896 002e D091 0000 		lds r29,current_offset.2341+1
+ 2897 0032 2196      		adiw r28,1
+ 2898 0034 C170      		andi r28,1
+ 2899 0036 DD27      		clr r29
+ 2900 0038 D093 0000 		sts current_offset.2341+1,r29
+ 2901 003c C093 0000 		sts current_offset.2341,r28
+ 2902               	.LVL231:
+ 2903 0040 00E0      		ldi r16,lo8(led)
+ 2904 0042 10E0      		ldi r17,hi8(led)
+ 679:quantum/rgblight.c ****   for (i = 0; i < RGBLED_NUM; i++) {
+ 2905               		.loc 1 679 0
+ 2906 0044 F12C      		mov r15,__zero_reg__
+ 680:quantum/rgblight.c ****     hue = 0 + ((i/RGBLIGHT_EFFECT_CHRISTMAS_STEP + current_offset) % 2) * 120;
+ 2907               		.loc 1 680 0
+ 2908 0046 78E7      		ldi r23,lo8(120)
+ 2909 0048 E72E      		mov r14,r23
+ 2910               	.LVL232:
+ 2911               	.L163:
+ 2912               		.loc 1 680 0 is_stmt 0 discriminator 2
+ 2913 004a 8F2D      		mov r24,r15
+ 2914 004c 8695      		lsr r24
+ 2915               	.LVL233:
+ 2916 004e FE01      		movw r30,r28
+ 2917 0050 E80F      		add r30,r24
+ 2918 0052 F11D      		adc r31,__zero_reg__
+ 2919 0054 CF01      		movw r24,r30
+ 2920               	.LVL234:
+ 2921 0056 8170      		andi r24,1
+ 2922 0058 9927      		clr r25
+ 681:quantum/rgblight.c ****     sethsv(hue, rgblight_config.sat, rgblight_config.val, (LED_TYPE *)&led[i]);
+ 2923               		.loc 1 681 0 is_stmt 1 discriminator 2
+ 2924 005a 9801      		movw r18,r16
+ 2925 005c 4091 0000 		lds r20,rgblight_config+3
+ 2926 0060 6091 0000 		lds r22,rgblight_config+2
+ 2927 0064 FC01      		movw r30,r24
+ 2928 0066 EE9E      		mul r14,r30
+ 2929 0068 C001      		movw r24,r0
+ 2930 006a EF9E      		mul r14,r31
+ 2931 006c 900D      		add r25,r0
+ 2932 006e 1124      		clr __zero_reg__
+ 2933 0070 0E94 0000 		call sethsv
+ 2934               	.LVL235:
+ 679:quantum/rgblight.c ****   for (i = 0; i < RGBLED_NUM; i++) {
+ 2935               		.loc 1 679 0 discriminator 2
+ 2936 0074 F394      		inc r15
+ 2937               	.LVL236:
+ 2938 0076 0D5F      		subi r16,-3
+ 2939 0078 1F4F      		sbci r17,-1
+ 2940 007a FCE0      		ldi r31,lo8(12)
+ 2941 007c FF12      		cpse r15,r31
+ 2942 007e 00C0      		rjmp .L163
+ 2943               	/* epilogue start */
+ 682:quantum/rgblight.c ****   }
+ 683:quantum/rgblight.c ****   rgblight_set();
+ 684:quantum/rgblight.c **** }
+ 2944               		.loc 1 684 0
+ 2945 0080 DF91      		pop r29
+ 2946 0082 CF91      		pop r28
+ 2947               	.LVL237:
+ 2948 0084 1F91      		pop r17
+ 2949 0086 0F91      		pop r16
+ 2950 0088 FF90      		pop r15
+ 2951               	.LVL238:
+ 2952 008a EF90      		pop r14
+ 683:quantum/rgblight.c ****   rgblight_set();
+ 2953               		.loc 1 683 0
+ 2954 008c 0C94 0000 		jmp rgblight_set
+ 2955               	.LVL239:
+ 2956               	.L160:
+ 2957               	/* epilogue start */
+ 2958               		.loc 1 684 0
+ 2959 0090 DF91      		pop r29
+ 2960 0092 CF91      		pop r28
+ 2961 0094 1F91      		pop r17
+ 2962 0096 0F91      		pop r16
+ 2963 0098 FF90      		pop r15
+ 2964 009a EF90      		pop r14
+ 2965 009c 0895      		ret
+ 2966               		.cfi_endproc
+ 2967               	.LFE54:
+ 2969               		.section	.text.rgblight_task,"ax",@progbits
+ 2970               	.global	rgblight_task
+ 2972               	rgblight_task:
+ 2973               	.LFB48:
+ 510:quantum/rgblight.c **** void rgblight_task(void) {
+ 2974               		.loc 1 510 0
+ 2975               		.cfi_startproc
+ 2976               	/* prologue: function */
+ 2977               	/* frame size = 0 */
+ 2978               	/* stack size = 0 */
+ 2979               	.L__stack_usage = 0
+ 511:quantum/rgblight.c ****   if (rgblight_timer_enabled) {
+ 2980               		.loc 1 511 0
+ 2981 0000 8091 0000 		lds r24,rgblight_timer_enabled
+ 2982 0004 8823      		tst r24
+ 2983 0006 01F0      		breq .L164
+ 513:quantum/rgblight.c ****     if (rgblight_config.mode >= 2 && rgblight_config.mode <= 5) {
+ 2984               		.loc 1 513 0
+ 2985 0008 2091 0000 		lds r18,rgblight_config
+ 2986 000c 822F      		mov r24,r18
+ 2987 000e 8695      		lsr r24
+ 2988 0010 8F73      		andi r24,lo8(63)
+ 2989 0012 9EE3      		ldi r25,lo8(62)
+ 2990 0014 980F      		add r25,r24
+ 2991 0016 9F73      		andi r25,lo8(63)
+ 2992 0018 9430      		cpi r25,lo8(4)
+ 2993 001a 00F4      		brsh .L166
+ 515:quantum/rgblight.c ****       rgblight_effect_breathing(rgblight_config.mode - 2);
+ 2994               		.loc 1 515 0
+ 2995 001c 8250      		subi r24,lo8(-(-2))
+ 2996 001e 0C94 0000 		jmp rgblight_effect_breathing
+ 2997               	.LVL240:
+ 2998               	.L166:
+ 516:quantum/rgblight.c ****     } else if (rgblight_config.mode >= 6 && rgblight_config.mode <= 8) {
+ 2999               		.loc 1 516 0
+ 3000 0022 9AE3      		ldi r25,lo8(58)
+ 3001 0024 980F      		add r25,r24
+ 3002 0026 9F73      		andi r25,lo8(63)
+ 3003 0028 9330      		cpi r25,lo8(3)
+ 3004 002a 00F4      		brsh .L167
+ 518:quantum/rgblight.c ****       rgblight_effect_rainbow_mood(rgblight_config.mode - 6);
+ 3005               		.loc 1 518 0
+ 3006 002c 8650      		subi r24,lo8(-(-6))
+ 3007 002e 0C94 0000 		jmp rgblight_effect_rainbow_mood
+ 3008               	.LVL241:
+ 3009               	.L167:
+ 519:quantum/rgblight.c ****     } else if (rgblight_config.mode >= 9 && rgblight_config.mode <= 14) {
+ 3010               		.loc 1 519 0
+ 3011 0032 97E3      		ldi r25,lo8(55)
+ 3012 0034 980F      		add r25,r24
+ 3013 0036 9F73      		andi r25,lo8(63)
+ 3014 0038 9630      		cpi r25,lo8(6)
+ 3015 003a 00F4      		brsh .L168
+ 521:quantum/rgblight.c ****       rgblight_effect_rainbow_swirl(rgblight_config.mode - 9);
+ 3016               		.loc 1 521 0
+ 3017 003c 8950      		subi r24,lo8(-(-9))
+ 3018 003e 0C94 0000 		jmp rgblight_effect_rainbow_swirl
+ 3019               	.LVL242:
+ 3020               	.L168:
+ 522:quantum/rgblight.c ****     } else if (rgblight_config.mode >= 15 && rgblight_config.mode <= 20) {
+ 3021               		.loc 1 522 0
+ 3022 0042 91E3      		ldi r25,lo8(49)
+ 3023 0044 980F      		add r25,r24
+ 3024 0046 9F73      		andi r25,lo8(63)
+ 3025 0048 9630      		cpi r25,lo8(6)
+ 3026 004a 00F4      		brsh .L169
+ 524:quantum/rgblight.c ****       rgblight_effect_snake(rgblight_config.mode - 15);
+ 3027               		.loc 1 524 0
+ 3028 004c 8F50      		subi r24,lo8(-(-15))
+ 3029 004e 0C94 0000 		jmp rgblight_effect_snake
+ 3030               	.LVL243:
+ 3031               	.L169:
+ 525:quantum/rgblight.c ****     } else if (rgblight_config.mode >= 21 && rgblight_config.mode <= 23) {
+ 3032               		.loc 1 525 0
+ 3033 0052 9BE2      		ldi r25,lo8(43)
+ 3034 0054 980F      		add r25,r24
+ 3035 0056 9F73      		andi r25,lo8(63)
+ 3036 0058 9330      		cpi r25,lo8(3)
+ 3037 005a 00F4      		brsh .L170
+ 527:quantum/rgblight.c ****       rgblight_effect_knight(rgblight_config.mode - 21);
+ 3038               		.loc 1 527 0
+ 3039 005c 8551      		subi r24,lo8(-(-21))
+ 3040 005e 0C94 0000 		jmp rgblight_effect_knight
+ 3041               	.LVL244:
+ 3042               	.L170:
+ 528:quantum/rgblight.c ****     } else if (rgblight_config.mode == 24) {
+ 3043               		.loc 1 528 0
+ 3044 0062 2E77      		andi r18,lo8(126)
+ 3045 0064 2033      		cpi r18,lo8(48)
+ 3046 0066 01F4      		brne .L164
+ 530:quantum/rgblight.c ****       rgblight_effect_christmas();
+ 3047               		.loc 1 530 0
+ 3048 0068 0C94 0000 		jmp rgblight_effect_christmas
+ 3049               	.LVL245:
+ 3050               	.L164:
+ 3051 006c 0895      		ret
+ 3052               		.cfi_endproc
+ 3053               	.LFE48:
+ 3055               		.section	.bss.current_offset.2341,"aw",@nobits
+ 3058               	current_offset.2341:
+ 3059 0000 0000      		.zero	2
+ 3060               		.section	.bss.last_timer.2342,"aw",@nobits
+ 3063               	last_timer.2342:
+ 3064 0000 0000      		.zero	2
+ 3065               		.section	.data.increment.2329,"aw",@progbits
+ 3068               	increment.2329:
+ 3069 0000 01        		.byte	1
+ 3070               		.section	.data.high_bound.2328,"aw",@progbits
+ 3073               	high_bound.2328:
+ 3074 0000 02        		.byte	2
+ 3075               		.section	.bss.low_bound.2327,"aw",@nobits
+ 3078               	low_bound.2327:
+ 3079 0000 00        		.zero	1
+ 3080               		.section	.bss.last_timer.2323,"aw",@nobits
+ 3083               	last_timer.2323:
+ 3084 0000 0000      		.zero	2
+ 3085               		.section	.bss.pos.2305,"aw",@nobits
+ 3088               	pos.2305:
+ 3089 0000 00        		.zero	1
+ 3090               		.section	.bss.last_timer.2306,"aw",@nobits
+ 3093               	last_timer.2306:
+ 3094 0000 0000      		.zero	2
+ 3095               		.section	.bss.current_hue.2292,"aw",@nobits
+ 3098               	current_hue.2292:
+ 3099 0000 0000      		.zero	2
+ 3100               		.section	.bss.last_timer.2293,"aw",@nobits
+ 3103               	last_timer.2293:
+ 3104 0000 0000      		.zero	2
+ 3105               		.section	.bss.current_hue.2284,"aw",@nobits
+ 3108               	current_hue.2284:
+ 3109 0000 0000      		.zero	2
+ 3110               		.section	.bss.last_timer.2285,"aw",@nobits
+ 3113               	last_timer.2285:
+ 3114 0000 0000      		.zero	2
+ 3115               		.section	.bss.pos.2275,"aw",@nobits
+ 3118               	pos.2275:
+ 3119 0000 00        		.zero	1
+ 3120               		.section	.bss.last_timer.2276,"aw",@nobits
+ 3123               	last_timer.2276:
+ 3124 0000 0000      		.zero	2
+ 3125               	.global	rgblight_timer_enabled
+ 3126               		.section	.bss.rgblight_timer_enabled,"aw",@nobits
+ 3129               	rgblight_timer_enabled:
+ 3130 0000 00        		.zero	1
+ 3131               	.global	rgblight_inited
+ 3132               		.section	.bss.rgblight_inited,"aw",@nobits
+ 3135               	rgblight_inited:
+ 3136 0000 00        		.zero	1
+ 3137               		.comm	led,36,1
+ 3138               		.comm	inmem_config,5,1
+ 3139               		.comm	rgblight_config,5,1
+ 3140               		.weak	RGBLED_GRADIENT_RANGES
+ 3141               		.section	.progmem.data.RGBLED_GRADIENT_RANGES,"a",@progbits
+ 3144               	RGBLED_GRADIENT_RANGES:
+ 3145 0000 6801      		.word	360
+ 3146 0002 F000      		.word	240
+ 3147 0004 B400      		.word	180
+ 3148 0006 7800      		.word	120
+ 3149 0008 5A00      		.word	90
+ 3150               		.weak	RGBLED_KNIGHT_INTERVALS
+ 3151               		.section	.progmem.data.RGBLED_KNIGHT_INTERVALS,"a",@progbits
+ 3154               	RGBLED_KNIGHT_INTERVALS:
+ 3155 0000 7F        		.byte	127
+ 3156 0001 3F        		.byte	63
+ 3157 0002 1F        		.byte	31
+ 3158               		.weak	RGBLED_SNAKE_INTERVALS
+ 3159               		.section	.progmem.data.RGBLED_SNAKE_INTERVALS,"a",@progbits
+ 3162               	RGBLED_SNAKE_INTERVALS:
+ 3163 0000 64        		.byte	100
+ 3164 0001 32        		.byte	50
+ 3165 0002 14        		.byte	20
+ 3166               		.weak	RGBLED_RAINBOW_SWIRL_INTERVALS
+ 3167               		.section	.progmem.data.RGBLED_RAINBOW_SWIRL_INTERVALS,"a",@progbits
+ 3170               	RGBLED_RAINBOW_SWIRL_INTERVALS:
+ 3171 0000 64        		.byte	100
+ 3172 0001 32        		.byte	50
+ 3173 0002 14        		.byte	20
+ 3174               		.weak	RGBLED_RAINBOW_MOOD_INTERVALS
+ 3175               		.section	.progmem.data.RGBLED_RAINBOW_MOOD_INTERVALS,"a",@progbits
+ 3178               	RGBLED_RAINBOW_MOOD_INTERVALS:
+ 3179 0000 78        		.byte	120
+ 3180 0001 3C        		.byte	60
+ 3181 0002 1E        		.byte	30
+ 3182               		.weak	RGBLED_BREATHING_INTERVALS
+ 3183               		.section	.progmem.data.RGBLED_BREATHING_INTERVALS,"a",@progbits
+ 3186               	RGBLED_BREATHING_INTERVALS:
+ 3187 0000 1E        		.byte	30
+ 3188 0001 14        		.byte	20
+ 3189 0002 0A        		.byte	10
+ 3190 0003 05        		.byte	5
+ 3191               		.text
+ 3192               	.Letext0:
+ 3193               		.file 3 "/usr/lib/avr/include/stdint.h"
+ 3194               		.file 4 "./quantum/rgblight_types.h"
+ 3195               		.file 5 "quantum/rgblight.h"
+ 3196               		.file 6 "./tmk_core/common/debug.h"
+ 3197               		.file 7 "quantum/led_tables.h"
+ 3198               		.file 8 "/usr/lib/avr/include/avr/eeprom.h"
+ 3199               		.file 9 "./drivers/avr/ws2812.h"
+ 3200               		.file 10 "./tmk_core/common/eeconfig.h"
+ 3201               		.file 11 "./tmk_core/common/timer.h"
+ 3202               		.file 12 "/usr/lib/avr/include/math.h"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 rgblight.c
+     /tmp/ccVTaGai.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccVTaGai.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccVTaGai.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccVTaGai.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccVTaGai.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccVTaGai.s:13     .text.sethsv:0000000000000000 sethsv
+     /tmp/ccVTaGai.s:266    .text.setrgb:0000000000000000 setrgb
+     /tmp/ccVTaGai.s:289    .text.eeconfig_read_rgblight:0000000000000000 eeconfig_read_rgblight
+     /tmp/ccVTaGai.s:308    .text.eeconfig_update_rgblight:0000000000000000 eeconfig_update_rgblight
+     /tmp/ccVTaGai.s:330    .text.eeconfig_update_rgblight_default:0000000000000000 eeconfig_update_rgblight_default
+                            *COM*:0000000000000005 rgblight_config
+     /tmp/ccVTaGai.s:365    .text.eeconfig_debug_rgblight:0000000000000000 eeconfig_debug_rgblight
+     /tmp/ccVTaGai.s:380    .text.rgblight_get_mode:0000000000000000 rgblight_get_mode
+     /tmp/ccVTaGai.s:412    .text.increment:0000000000000000 increment
+     /tmp/ccVTaGai.s:449    .text.decrement:0000000000000000 decrement
+     /tmp/ccVTaGai.s:486    .text.rgblight_increase_speed:0000000000000000 rgblight_increase_speed
+     /tmp/ccVTaGai.s:529    .text.rgblight_decrease_speed:0000000000000000 rgblight_decrease_speed
+     /tmp/ccVTaGai.s:577    .text.rgblight_get_hue:0000000000000000 rgblight_get_hue
+     /tmp/ccVTaGai.s:605    .text.rgblight_get_sat:0000000000000000 rgblight_get_sat
+     /tmp/ccVTaGai.s:622    .text.rgblight_get_val:0000000000000000 rgblight_get_val
+     /tmp/ccVTaGai.s:639    .text.rgblight_set:0000000000000000 rgblight_set
+                            *COM*:0000000000000024 led
+     /tmp/ccVTaGai.s:689    .text.rgblight_setrgb:0000000000000000 rgblight_setrgb
+     /tmp/ccVTaGai.s:735    .text.rgblight_sethsv_noeeprom:0000000000000000 rgblight_sethsv_noeeprom
+                            *COM*:0000000000000005 inmem_config
+     /tmp/ccVTaGai.s:856    .text.rgblight_sethsv:0000000000000000 rgblight_sethsv
+     /tmp/ccVTaGai.s:3144   .progmem.data.RGBLED_GRADIENT_RANGES:0000000000000000 RGBLED_GRADIENT_RANGES
+     /tmp/ccVTaGai.s:1119   .text.rgblight_increase_hue:0000000000000000 rgblight_increase_hue
+     /tmp/ccVTaGai.s:1156   .text.rgblight_decrease_hue:0000000000000000 rgblight_decrease_hue
+     /tmp/ccVTaGai.s:1203   .text.rgblight_increase_sat:0000000000000000 rgblight_increase_sat
+     /tmp/ccVTaGai.s:1249   .text.rgblight_decrease_sat:0000000000000000 rgblight_decrease_sat
+     /tmp/ccVTaGai.s:1294   .text.rgblight_increase_val:0000000000000000 rgblight_increase_val
+     /tmp/ccVTaGai.s:1340   .text.rgblight_decrease_val:0000000000000000 rgblight_decrease_val
+     /tmp/ccVTaGai.s:1385   .text.rgblight_mode:0000000000000000 rgblight_mode
+     /tmp/ccVTaGai.s:3129   .bss.rgblight_timer_enabled:0000000000000000 rgblight_timer_enabled
+     /tmp/ccVTaGai.s:1491   .text.rgblight_init:0000000000000000 rgblight_init
+     /tmp/ccVTaGai.s:3135   .bss.rgblight_inited:0000000000000000 rgblight_inited
+     /tmp/ccVTaGai.s:1563   .text.rgblight_increase:0000000000000000 rgblight_increase
+     /tmp/ccVTaGai.s:1600   .text.rgblight_decrease:0000000000000000 rgblight_decrease
+     /tmp/ccVTaGai.s:1637   .text.rgblight_step:0000000000000000 rgblight_step
+     /tmp/ccVTaGai.s:1668   .text.rgblight_step_reverse:0000000000000000 rgblight_step_reverse
+     /tmp/ccVTaGai.s:1698   .text.rgblight_enable:0000000000000000 rgblight_enable
+     /tmp/ccVTaGai.s:1744   .text.rgblight_setrgb_at:0000000000000000 rgblight_setrgb_at
+     /tmp/ccVTaGai.s:1785   .text.rgblight_sethsv_at:0000000000000000 rgblight_sethsv_at
+     /tmp/ccVTaGai.s:1850   .text.rgblight_update_dword:0000000000000000 rgblight_update_dword
+     /tmp/ccVTaGai.s:1892   .text.rgblight_disable:0000000000000000 rgblight_disable
+     /tmp/ccVTaGai.s:1944   .text.rgblight_toggle:0000000000000000 rgblight_toggle
+     /tmp/ccVTaGai.s:1968   .text.rgblight_timer_init:0000000000000000 rgblight_timer_init
+     /tmp/ccVTaGai.s:1986   .text.rgblight_timer_enable:0000000000000000 rgblight_timer_enable
+     /tmp/ccVTaGai.s:2004   .text.rgblight_timer_disable:0000000000000000 rgblight_timer_disable
+     /tmp/ccVTaGai.s:2021   .text.rgblight_timer_toggle:0000000000000000 rgblight_timer_toggle
+     /tmp/ccVTaGai.s:2038   .text.rgblight_show_solid_color:0000000000000000 rgblight_show_solid_color
+     /tmp/ccVTaGai.s:2102   .text.rgblight_effect_breathing:0000000000000000 rgblight_effect_breathing
+     /tmp/ccVTaGai.s:3123   .bss.last_timer.2276:0000000000000000 last_timer.2276
+     /tmp/ccVTaGai.s:3186   .progmem.data.RGBLED_BREATHING_INTERVALS:0000000000000000 RGBLED_BREATHING_INTERVALS
+     /tmp/ccVTaGai.s:3118   .bss.pos.2275:0000000000000000 pos.2275
+     /tmp/ccVTaGai.s:2214   .text.rgblight_effect_rainbow_mood:0000000000000000 rgblight_effect_rainbow_mood
+     /tmp/ccVTaGai.s:3113   .bss.last_timer.2285:0000000000000000 last_timer.2285
+     /tmp/ccVTaGai.s:3178   .progmem.data.RGBLED_RAINBOW_MOOD_INTERVALS:0000000000000000 RGBLED_RAINBOW_MOOD_INTERVALS
+     /tmp/ccVTaGai.s:3108   .bss.current_hue.2284:0000000000000000 current_hue.2284
+     /tmp/ccVTaGai.s:2284   .text.rgblight_effect_rainbow_swirl:0000000000000000 rgblight_effect_rainbow_swirl
+     /tmp/ccVTaGai.s:3103   .bss.last_timer.2293:0000000000000000 last_timer.2293
+     /tmp/ccVTaGai.s:3170   .progmem.data.RGBLED_RAINBOW_SWIRL_INTERVALS:0000000000000000 RGBLED_RAINBOW_SWIRL_INTERVALS
+     /tmp/ccVTaGai.s:3098   .bss.current_hue.2292:0000000000000000 current_hue.2292
+     /tmp/ccVTaGai.s:2424   .text.rgblight_effect_snake:0000000000000000 rgblight_effect_snake
+     /tmp/ccVTaGai.s:3093   .bss.last_timer.2306:0000000000000000 last_timer.2306
+     /tmp/ccVTaGai.s:3162   .progmem.data.RGBLED_SNAKE_INTERVALS:0000000000000000 RGBLED_SNAKE_INTERVALS
+     /tmp/ccVTaGai.s:3088   .bss.pos.2305:0000000000000000 pos.2305
+     /tmp/ccVTaGai.s:2661   .text.rgblight_effect_knight:0000000000000000 rgblight_effect_knight
+     /tmp/ccVTaGai.s:3083   .bss.last_timer.2323:0000000000000000 last_timer.2323
+     /tmp/ccVTaGai.s:3154   .progmem.data.RGBLED_KNIGHT_INTERVALS:0000000000000000 RGBLED_KNIGHT_INTERVALS
+     /tmp/ccVTaGai.s:3078   .bss.low_bound.2327:0000000000000000 low_bound.2327
+     /tmp/ccVTaGai.s:3073   .data.high_bound.2328:0000000000000000 high_bound.2328
+     /tmp/ccVTaGai.s:3068   .data.increment.2329:0000000000000000 increment.2329
+     /tmp/ccVTaGai.s:2849   .text.rgblight_effect_christmas:0000000000000000 rgblight_effect_christmas
+     /tmp/ccVTaGai.s:3063   .bss.last_timer.2342:0000000000000000 last_timer.2342
+     /tmp/ccVTaGai.s:3058   .bss.current_offset.2341:0000000000000000 current_offset.2341
+     /tmp/ccVTaGai.s:2972   .text.rgblight_task:0000000000000000 rgblight_task
+
+UNDEFINED SYMBOLS
+__udivmodhi4
+CIE1931_CURVE
+__eerd_dword_m32u4
+__eeupd_dword_m32u4
+ws2812_setleds
+__divmodhi4
+debug_config
+eeconfig_is_enabled
+eeconfig_init
+__floatsisf
+__divsf3
+__mulsf3
+__subsf3
+__fixunssfsi
+timer_elapsed
+timer_read
+sin
+exp
+__do_copy_data
+__do_clear_bss

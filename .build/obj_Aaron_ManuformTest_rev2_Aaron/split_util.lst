@@ -1,0 +1,515 @@
+   1               		.file	"split_util.c"
+   2               	__SP_H__ = 0x3e
+   3               	__SP_L__ = 0x3d
+   4               	__SREG__ = 0x3f
+   5               	__tmp_reg__ = 0
+   6               	__zero_reg__ = 1
+   7               		.text
+   8               	.Ltext0:
+   9               		.cfi_sections	.debug_frame
+  10               		.section	.text.has_usb,"ax",@progbits
+  11               	.global	has_usb
+  13               	has_usb:
+  14               	.LFB13:
+  15               		.file 1 "keyboards/Aaron/ManuformTest/split_util.c"
+   1:keyboards/Aaron/ManuformTest/split_util.c **** #include <avr/io.h>
+   2:keyboards/Aaron/ManuformTest/split_util.c **** #include <avr/wdt.h>
+   3:keyboards/Aaron/ManuformTest/split_util.c **** #include <avr/power.h>
+   4:keyboards/Aaron/ManuformTest/split_util.c **** #include <avr/interrupt.h>
+   5:keyboards/Aaron/ManuformTest/split_util.c **** #include <util/delay.h>
+   6:keyboards/Aaron/ManuformTest/split_util.c **** #include <avr/eeprom.h>
+   7:keyboards/Aaron/ManuformTest/split_util.c **** #include "split_util.h"
+   8:keyboards/Aaron/ManuformTest/split_util.c **** #include "matrix.h"
+   9:keyboards/Aaron/ManuformTest/split_util.c **** #include "keyboard.h"
+  10:keyboards/Aaron/ManuformTest/split_util.c **** #include "config.h"
+  11:keyboards/Aaron/ManuformTest/split_util.c **** #include "timer.h"
+  12:keyboards/Aaron/ManuformTest/split_util.c **** 
+  13:keyboards/Aaron/ManuformTest/split_util.c **** #ifdef USE_I2C
+  14:keyboards/Aaron/ManuformTest/split_util.c **** #  include "i2c.h"
+  15:keyboards/Aaron/ManuformTest/split_util.c **** #else
+  16:keyboards/Aaron/ManuformTest/split_util.c **** #  include "serial.h"
+  17:keyboards/Aaron/ManuformTest/split_util.c **** #endif
+  18:keyboards/Aaron/ManuformTest/split_util.c **** 
+  19:keyboards/Aaron/ManuformTest/split_util.c **** volatile bool isLeftHand = true;
+  20:keyboards/Aaron/ManuformTest/split_util.c **** 
+  21:keyboards/Aaron/ManuformTest/split_util.c **** static void setup_handedness(void) {
+  22:keyboards/Aaron/ManuformTest/split_util.c ****   #ifdef EE_HANDS
+  23:keyboards/Aaron/ManuformTest/split_util.c ****     isLeftHand = eeprom_read_byte(EECONFIG_HANDEDNESS);
+  24:keyboards/Aaron/ManuformTest/split_util.c ****   #else
+  25:keyboards/Aaron/ManuformTest/split_util.c ****     // I2C_MASTER_RIGHT is deprecated, use MASTER_RIGHT instead, since this works for both serial a
+  26:keyboards/Aaron/ManuformTest/split_util.c ****     #if defined(I2C_MASTER_RIGHT) || defined(MASTER_RIGHT)
+  27:keyboards/Aaron/ManuformTest/split_util.c ****       isLeftHand = !has_usb();
+  28:keyboards/Aaron/ManuformTest/split_util.c ****     #else
+  29:keyboards/Aaron/ManuformTest/split_util.c ****       isLeftHand = has_usb();
+  30:keyboards/Aaron/ManuformTest/split_util.c ****     #endif
+  31:keyboards/Aaron/ManuformTest/split_util.c ****   #endif
+  32:keyboards/Aaron/ManuformTest/split_util.c **** }
+  33:keyboards/Aaron/ManuformTest/split_util.c **** 
+  34:keyboards/Aaron/ManuformTest/split_util.c **** static void keyboard_master_setup(void) {
+  35:keyboards/Aaron/ManuformTest/split_util.c **** #ifdef USE_I2C
+  36:keyboards/Aaron/ManuformTest/split_util.c ****     i2c_master_init();
+  37:keyboards/Aaron/ManuformTest/split_util.c **** #ifdef SSD1306OLED
+  38:keyboards/Aaron/ManuformTest/split_util.c ****     matrix_master_OLED_init ();
+  39:keyboards/Aaron/ManuformTest/split_util.c **** #endif
+  40:keyboards/Aaron/ManuformTest/split_util.c **** #else
+  41:keyboards/Aaron/ManuformTest/split_util.c ****     serial_master_init();
+  42:keyboards/Aaron/ManuformTest/split_util.c **** #endif
+  43:keyboards/Aaron/ManuformTest/split_util.c **** }
+  44:keyboards/Aaron/ManuformTest/split_util.c **** 
+  45:keyboards/Aaron/ManuformTest/split_util.c **** static void keyboard_slave_setup(void) {
+  46:keyboards/Aaron/ManuformTest/split_util.c ****   timer_init();
+  47:keyboards/Aaron/ManuformTest/split_util.c **** #ifdef USE_I2C
+  48:keyboards/Aaron/ManuformTest/split_util.c ****     i2c_slave_init(SLAVE_I2C_ADDRESS);
+  49:keyboards/Aaron/ManuformTest/split_util.c **** #else
+  50:keyboards/Aaron/ManuformTest/split_util.c ****     serial_slave_init();
+  51:keyboards/Aaron/ManuformTest/split_util.c **** #endif
+  52:keyboards/Aaron/ManuformTest/split_util.c **** }
+  53:keyboards/Aaron/ManuformTest/split_util.c **** 
+  54:keyboards/Aaron/ManuformTest/split_util.c **** bool has_usb(void) {
+  16               		.loc 1 54 0
+  17               		.cfi_startproc
+  18               	/* prologue: function */
+  19               	/* frame size = 0 */
+  20               	/* stack size = 0 */
+  21               	.L__stack_usage = 0
+  55:keyboards/Aaron/ManuformTest/split_util.c ****    USBCON |= (1 << OTGPADE); //enables VBUS pad
+  22               		.loc 1 55 0
+  23 0000 E8ED      		ldi r30,lo8(-40)
+  24 0002 F0E0      		ldi r31,0
+  25 0004 8081      		ld r24,Z
+  26 0006 8061      		ori r24,lo8(16)
+  27 0008 8083      		st Z,r24
+  28               	.LVL0:
+  29               	.LBB4:
+  30               	.LBB5:
+  31               		.file 2 "/usr/lib/avr/include/util/delay.h"
+   1:/usr/lib/avr/include/util/delay.h **** /* Copyright (c) 2002, Marek Michalkiewicz
+   2:/usr/lib/avr/include/util/delay.h ****    Copyright (c) 2004,2005,2007 Joerg Wunsch
+   3:/usr/lib/avr/include/util/delay.h ****    Copyright (c) 2007  Florin-Viorel Petrov
+   4:/usr/lib/avr/include/util/delay.h ****    All rights reserved.
+   5:/usr/lib/avr/include/util/delay.h **** 
+   6:/usr/lib/avr/include/util/delay.h ****    Redistribution and use in source and binary forms, with or without
+   7:/usr/lib/avr/include/util/delay.h ****    modification, are permitted provided that the following conditions are met:
+   8:/usr/lib/avr/include/util/delay.h **** 
+   9:/usr/lib/avr/include/util/delay.h ****    * Redistributions of source code must retain the above copyright
+  10:/usr/lib/avr/include/util/delay.h ****      notice, this list of conditions and the following disclaimer.
+  11:/usr/lib/avr/include/util/delay.h **** 
+  12:/usr/lib/avr/include/util/delay.h ****    * Redistributions in binary form must reproduce the above copyright
+  13:/usr/lib/avr/include/util/delay.h ****      notice, this list of conditions and the following disclaimer in
+  14:/usr/lib/avr/include/util/delay.h ****      the documentation and/or other materials provided with the
+  15:/usr/lib/avr/include/util/delay.h ****      distribution.
+  16:/usr/lib/avr/include/util/delay.h **** 
+  17:/usr/lib/avr/include/util/delay.h ****    * Neither the name of the copyright holders nor the names of
+  18:/usr/lib/avr/include/util/delay.h ****      contributors may be used to endorse or promote products derived
+  19:/usr/lib/avr/include/util/delay.h ****      from this software without specific prior written permission.
+  20:/usr/lib/avr/include/util/delay.h **** 
+  21:/usr/lib/avr/include/util/delay.h ****   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  22:/usr/lib/avr/include/util/delay.h ****   AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  23:/usr/lib/avr/include/util/delay.h ****   IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+  24:/usr/lib/avr/include/util/delay.h ****   ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+  25:/usr/lib/avr/include/util/delay.h ****   LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+  26:/usr/lib/avr/include/util/delay.h ****   CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+  27:/usr/lib/avr/include/util/delay.h ****   SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+  28:/usr/lib/avr/include/util/delay.h ****   INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+  29:/usr/lib/avr/include/util/delay.h ****   CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+  30:/usr/lib/avr/include/util/delay.h ****   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  31:/usr/lib/avr/include/util/delay.h ****   POSSIBILITY OF SUCH DAMAGE. */
+  32:/usr/lib/avr/include/util/delay.h **** 
+  33:/usr/lib/avr/include/util/delay.h **** /* $Id: delay.h.in 2251 2011-09-14 08:20:33Z joerg_wunsch $ */
+  34:/usr/lib/avr/include/util/delay.h **** 
+  35:/usr/lib/avr/include/util/delay.h **** #ifndef _UTIL_DELAY_H_
+  36:/usr/lib/avr/include/util/delay.h **** #define _UTIL_DELAY_H_ 1
+  37:/usr/lib/avr/include/util/delay.h **** 
+  38:/usr/lib/avr/include/util/delay.h **** #ifndef __HAS_DELAY_CYCLES
+  39:/usr/lib/avr/include/util/delay.h **** #define __HAS_DELAY_CYCLES 1
+  40:/usr/lib/avr/include/util/delay.h **** #endif
+  41:/usr/lib/avr/include/util/delay.h **** 
+  42:/usr/lib/avr/include/util/delay.h **** #include <inttypes.h>
+  43:/usr/lib/avr/include/util/delay.h **** #include <util/delay_basic.h>
+  44:/usr/lib/avr/include/util/delay.h **** #include <math.h>
+  45:/usr/lib/avr/include/util/delay.h **** 
+  46:/usr/lib/avr/include/util/delay.h **** /** \file */
+  47:/usr/lib/avr/include/util/delay.h **** /** \defgroup util_delay <util/delay.h>: Convenience functions for busy-wait delay loops
+  48:/usr/lib/avr/include/util/delay.h ****     \code
+  49:/usr/lib/avr/include/util/delay.h ****     #define F_CPU 1000000UL  // 1 MHz
+  50:/usr/lib/avr/include/util/delay.h ****     //#define F_CPU 14.7456E6
+  51:/usr/lib/avr/include/util/delay.h ****     #include <util/delay.h>
+  52:/usr/lib/avr/include/util/delay.h ****     \endcode
+  53:/usr/lib/avr/include/util/delay.h **** 
+  54:/usr/lib/avr/include/util/delay.h ****     \note As an alternative method, it is possible to pass the
+  55:/usr/lib/avr/include/util/delay.h ****     F_CPU macro down to the compiler from the Makefile.
+  56:/usr/lib/avr/include/util/delay.h ****     Obviously, in that case, no \c \#define statement should be
+  57:/usr/lib/avr/include/util/delay.h ****     used.
+  58:/usr/lib/avr/include/util/delay.h **** 
+  59:/usr/lib/avr/include/util/delay.h ****     The functions in this header file are wrappers around the basic
+  60:/usr/lib/avr/include/util/delay.h ****     busy-wait functions from <util/delay_basic.h>.  They are meant as
+  61:/usr/lib/avr/include/util/delay.h ****     convenience functions where actual time values can be specified
+  62:/usr/lib/avr/include/util/delay.h ****     rather than a number of cycles to wait for.  The idea behind is
+  63:/usr/lib/avr/include/util/delay.h ****     that compile-time constant expressions will be eliminated by
+  64:/usr/lib/avr/include/util/delay.h ****     compiler optimization so floating-point expressions can be used
+  65:/usr/lib/avr/include/util/delay.h ****     to calculate the number of delay cycles needed based on the CPU
+  66:/usr/lib/avr/include/util/delay.h ****     frequency passed by the macro F_CPU.
+  67:/usr/lib/avr/include/util/delay.h **** 
+  68:/usr/lib/avr/include/util/delay.h ****     \note In order for these functions to work as intended, compiler
+  69:/usr/lib/avr/include/util/delay.h ****     optimizations <em>must</em> be enabled, and the delay time
+  70:/usr/lib/avr/include/util/delay.h ****     <em>must</em> be an expression that is a known constant at
+  71:/usr/lib/avr/include/util/delay.h ****     compile-time.  If these requirements are not met, the resulting
+  72:/usr/lib/avr/include/util/delay.h ****     delay will be much longer (and basically unpredictable), and
+  73:/usr/lib/avr/include/util/delay.h ****     applications that otherwise do not use floating-point calculations
+  74:/usr/lib/avr/include/util/delay.h ****     will experience severe code bloat by the floating-point library
+  75:/usr/lib/avr/include/util/delay.h ****     routines linked into the application.
+  76:/usr/lib/avr/include/util/delay.h **** 
+  77:/usr/lib/avr/include/util/delay.h ****     The functions available allow the specification of microsecond, and
+  78:/usr/lib/avr/include/util/delay.h ****     millisecond delays directly, using the application-supplied macro
+  79:/usr/lib/avr/include/util/delay.h ****     F_CPU as the CPU clock frequency (in Hertz).
+  80:/usr/lib/avr/include/util/delay.h **** 
+  81:/usr/lib/avr/include/util/delay.h **** */
+  82:/usr/lib/avr/include/util/delay.h **** 
+  83:/usr/lib/avr/include/util/delay.h **** #if !defined(__DOXYGEN__)
+  84:/usr/lib/avr/include/util/delay.h **** static inline void _delay_us(double __us) __attribute__((always_inline));
+  85:/usr/lib/avr/include/util/delay.h **** static inline void _delay_ms(double __ms) __attribute__((always_inline));
+  86:/usr/lib/avr/include/util/delay.h **** #endif
+  87:/usr/lib/avr/include/util/delay.h **** 
+  88:/usr/lib/avr/include/util/delay.h **** #ifndef F_CPU
+  89:/usr/lib/avr/include/util/delay.h **** /* prevent compiler error by supplying a default */
+  90:/usr/lib/avr/include/util/delay.h **** # warning "F_CPU not defined for <util/delay.h>"
+  91:/usr/lib/avr/include/util/delay.h **** # define F_CPU 1000000UL
+  92:/usr/lib/avr/include/util/delay.h **** #endif
+  93:/usr/lib/avr/include/util/delay.h **** 
+  94:/usr/lib/avr/include/util/delay.h **** #ifndef __OPTIMIZE__
+  95:/usr/lib/avr/include/util/delay.h **** # warning "Compiler optimizations disabled; functions from <util/delay.h> won't work as designed"
+  96:/usr/lib/avr/include/util/delay.h **** #endif
+  97:/usr/lib/avr/include/util/delay.h **** 
+  98:/usr/lib/avr/include/util/delay.h **** #if __HAS_DELAY_CYCLES && defined(__OPTIMIZE__) && \
+  99:/usr/lib/avr/include/util/delay.h ****   !defined(__DELAY_BACKWARD_COMPATIBLE__) &&	   \
+ 100:/usr/lib/avr/include/util/delay.h ****   __STDC_HOSTED__
+ 101:/usr/lib/avr/include/util/delay.h **** #  include <math.h>
+ 102:/usr/lib/avr/include/util/delay.h **** #endif
+ 103:/usr/lib/avr/include/util/delay.h **** 
+ 104:/usr/lib/avr/include/util/delay.h **** /**
+ 105:/usr/lib/avr/include/util/delay.h ****    \ingroup util_delay
+ 106:/usr/lib/avr/include/util/delay.h **** 
+ 107:/usr/lib/avr/include/util/delay.h ****    Perform a delay of \c __ms milliseconds, using _delay_loop_2().
+ 108:/usr/lib/avr/include/util/delay.h **** 
+ 109:/usr/lib/avr/include/util/delay.h ****    The macro F_CPU is supposed to be defined to a
+ 110:/usr/lib/avr/include/util/delay.h ****    constant defining the CPU clock frequency (in Hertz).
+ 111:/usr/lib/avr/include/util/delay.h **** 
+ 112:/usr/lib/avr/include/util/delay.h ****    The maximal possible delay is 262.14 ms / F_CPU in MHz.
+ 113:/usr/lib/avr/include/util/delay.h **** 
+ 114:/usr/lib/avr/include/util/delay.h ****    When the user request delay which exceed the maximum possible one,
+ 115:/usr/lib/avr/include/util/delay.h ****    _delay_ms() provides a decreased resolution functionality. In this
+ 116:/usr/lib/avr/include/util/delay.h ****    mode _delay_ms() will work with a resolution of 1/10 ms, providing
+ 117:/usr/lib/avr/include/util/delay.h ****    delays up to 6.5535 seconds (independent from CPU frequency).  The
+ 118:/usr/lib/avr/include/util/delay.h ****    user will not be informed about decreased resolution.
+ 119:/usr/lib/avr/include/util/delay.h **** 
+ 120:/usr/lib/avr/include/util/delay.h ****    If the avr-gcc toolchain has __builtin_avr_delay_cycles(unsigned long)
+ 121:/usr/lib/avr/include/util/delay.h ****    support, maximal possible delay is 4294967.295 ms/ F_CPU in MHz. For
+ 122:/usr/lib/avr/include/util/delay.h ****    values greater than the maximal possible delay, overflows results in
+ 123:/usr/lib/avr/include/util/delay.h ****    no delay i.e., 0ms.
+ 124:/usr/lib/avr/include/util/delay.h **** 
+ 125:/usr/lib/avr/include/util/delay.h ****    Conversion of __us into clock cycles may not always result in integer.
+ 126:/usr/lib/avr/include/util/delay.h ****    By default, the clock cycles rounded up to next integer. This ensures that
+ 127:/usr/lib/avr/include/util/delay.h ****    the user gets atleast __us microseconds of delay.
+ 128:/usr/lib/avr/include/util/delay.h **** 
+ 129:/usr/lib/avr/include/util/delay.h ****    Alternatively, user can define __DELAY_ROUND_DOWN__ and __DELAY_ROUND_CLOSEST__
+ 130:/usr/lib/avr/include/util/delay.h ****    to round down and round to closest integer.
+ 131:/usr/lib/avr/include/util/delay.h **** 
+ 132:/usr/lib/avr/include/util/delay.h ****    Note: The new implementation of _delay_ms(double __ms) with 
+ 133:/usr/lib/avr/include/util/delay.h ****     __builtin_avr_delay_cycles(unsigned long) support is not backward compatible. 
+ 134:/usr/lib/avr/include/util/delay.h ****    User can define __DELAY_BACKWARD_COMPATIBLE__ to get a backward compatible delay.
+ 135:/usr/lib/avr/include/util/delay.h ****    Also, the backward compatible
+ 136:/usr/lib/avr/include/util/delay.h ****    algorithm will be chosen if the code is compiled in a <em>freestanding
+ 137:/usr/lib/avr/include/util/delay.h ****    environment</em> (GCC option \c -ffreestanding), as the math functions
+ 138:/usr/lib/avr/include/util/delay.h ****    required for rounding are not available to the compiler then.
+ 139:/usr/lib/avr/include/util/delay.h **** 
+ 140:/usr/lib/avr/include/util/delay.h ****  */
+ 141:/usr/lib/avr/include/util/delay.h **** void
+ 142:/usr/lib/avr/include/util/delay.h **** _delay_ms(double __ms)
+ 143:/usr/lib/avr/include/util/delay.h **** {
+ 144:/usr/lib/avr/include/util/delay.h **** 	uint16_t __ticks;
+ 145:/usr/lib/avr/include/util/delay.h **** 	double __tmp ; 
+ 146:/usr/lib/avr/include/util/delay.h **** #if __HAS_DELAY_CYCLES && defined(__OPTIMIZE__) && \
+ 147:/usr/lib/avr/include/util/delay.h ****   !defined(__DELAY_BACKWARD_COMPATIBLE__) &&	   \
+ 148:/usr/lib/avr/include/util/delay.h ****   __STDC_HOSTED__
+ 149:/usr/lib/avr/include/util/delay.h **** 	uint32_t __ticks_dc;
+ 150:/usr/lib/avr/include/util/delay.h **** 	extern void __builtin_avr_delay_cycles(unsigned long);
+ 151:/usr/lib/avr/include/util/delay.h **** 	__tmp = ((F_CPU) / 1e3) * __ms;
+ 152:/usr/lib/avr/include/util/delay.h **** 
+ 153:/usr/lib/avr/include/util/delay.h **** 	#if defined(__DELAY_ROUND_DOWN__)
+ 154:/usr/lib/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)fabs(__tmp);
+ 155:/usr/lib/avr/include/util/delay.h **** 
+ 156:/usr/lib/avr/include/util/delay.h **** 	#elif defined(__DELAY_ROUND_CLOSEST__)
+ 157:/usr/lib/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)(fabs(__tmp)+0.5);
+ 158:/usr/lib/avr/include/util/delay.h **** 
+ 159:/usr/lib/avr/include/util/delay.h **** 	#else
+ 160:/usr/lib/avr/include/util/delay.h **** 		//round up by default
+ 161:/usr/lib/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+ 162:/usr/lib/avr/include/util/delay.h **** 	#endif
+ 163:/usr/lib/avr/include/util/delay.h **** 
+ 164:/usr/lib/avr/include/util/delay.h **** 	__builtin_avr_delay_cycles(__ticks_dc);
+ 165:/usr/lib/avr/include/util/delay.h **** 
+ 166:/usr/lib/avr/include/util/delay.h **** #else
+ 167:/usr/lib/avr/include/util/delay.h **** 	__tmp = ((F_CPU) / 4e3) * __ms;
+ 168:/usr/lib/avr/include/util/delay.h **** 	if (__tmp < 1.0)
+ 169:/usr/lib/avr/include/util/delay.h **** 		__ticks = 1;
+ 170:/usr/lib/avr/include/util/delay.h **** 	else if (__tmp > 65535)
+ 171:/usr/lib/avr/include/util/delay.h **** 	{
+ 172:/usr/lib/avr/include/util/delay.h **** 		//	__ticks = requested delay in 1/10 ms
+ 173:/usr/lib/avr/include/util/delay.h **** 		__ticks = (uint16_t) (__ms * 10.0);
+ 174:/usr/lib/avr/include/util/delay.h **** 		while(__ticks)
+ 175:/usr/lib/avr/include/util/delay.h **** 		{
+ 176:/usr/lib/avr/include/util/delay.h **** 			// wait 1/10 ms
+ 177:/usr/lib/avr/include/util/delay.h **** 			_delay_loop_2(((F_CPU) / 4e3) / 10);
+ 178:/usr/lib/avr/include/util/delay.h **** 			__ticks --;
+ 179:/usr/lib/avr/include/util/delay.h **** 		}
+ 180:/usr/lib/avr/include/util/delay.h **** 		return;
+ 181:/usr/lib/avr/include/util/delay.h **** 	}
+ 182:/usr/lib/avr/include/util/delay.h **** 	else
+ 183:/usr/lib/avr/include/util/delay.h **** 		__ticks = (uint16_t)__tmp;
+ 184:/usr/lib/avr/include/util/delay.h **** 	_delay_loop_2(__ticks);
+ 185:/usr/lib/avr/include/util/delay.h **** #endif
+ 186:/usr/lib/avr/include/util/delay.h **** }
+ 187:/usr/lib/avr/include/util/delay.h **** 
+ 188:/usr/lib/avr/include/util/delay.h **** /**
+ 189:/usr/lib/avr/include/util/delay.h ****    \ingroup util_delay
+ 190:/usr/lib/avr/include/util/delay.h **** 
+ 191:/usr/lib/avr/include/util/delay.h ****    Perform a delay of \c __us microseconds, using _delay_loop_1().
+ 192:/usr/lib/avr/include/util/delay.h **** 
+ 193:/usr/lib/avr/include/util/delay.h ****    The macro F_CPU is supposed to be defined to a
+ 194:/usr/lib/avr/include/util/delay.h ****    constant defining the CPU clock frequency (in Hertz).
+ 195:/usr/lib/avr/include/util/delay.h **** 
+ 196:/usr/lib/avr/include/util/delay.h ****    The maximal possible delay is 768 us / F_CPU in MHz.
+ 197:/usr/lib/avr/include/util/delay.h **** 
+ 198:/usr/lib/avr/include/util/delay.h ****    If the user requests a delay greater than the maximal possible one,
+ 199:/usr/lib/avr/include/util/delay.h ****    _delay_us() will automatically call _delay_ms() instead.  The user
+ 200:/usr/lib/avr/include/util/delay.h ****    will not be informed about this case.
+ 201:/usr/lib/avr/include/util/delay.h **** 
+ 202:/usr/lib/avr/include/util/delay.h ****    If the avr-gcc toolchain has __builtin_avr_delay_cycles(unsigned long)
+ 203:/usr/lib/avr/include/util/delay.h ****    support, maximal possible delay is 4294967.295 us/ F_CPU in MHz. For
+ 204:/usr/lib/avr/include/util/delay.h ****    values greater than the maximal possible delay, overflow results in
+ 205:/usr/lib/avr/include/util/delay.h ****    no delay i.e., 0us.
+ 206:/usr/lib/avr/include/util/delay.h ****   
+ 207:/usr/lib/avr/include/util/delay.h ****    Conversion of __us into clock cycles may not always result in integer.
+ 208:/usr/lib/avr/include/util/delay.h ****    By default, the clock cycles rounded up to next integer. This ensures that
+ 209:/usr/lib/avr/include/util/delay.h ****    the user gets atleast __us microseconds of delay.
+ 210:/usr/lib/avr/include/util/delay.h **** 
+ 211:/usr/lib/avr/include/util/delay.h ****    Alternatively, user can define __DELAY_ROUND_DOWN__ and __DELAY_ROUND_CLOSEST__
+ 212:/usr/lib/avr/include/util/delay.h ****    to round down and round to closest integer.
+ 213:/usr/lib/avr/include/util/delay.h ****  
+ 214:/usr/lib/avr/include/util/delay.h ****    Note: The new implementation of _delay_us(double __us) with 
+ 215:/usr/lib/avr/include/util/delay.h ****     __builtin_avr_delay_cycles(unsigned long) support is not backward compatible.
+ 216:/usr/lib/avr/include/util/delay.h ****    User can define __DELAY_BACKWARD_COMPATIBLE__ to get a backward compatible delay.
+ 217:/usr/lib/avr/include/util/delay.h ****    Also, the backward compatible
+ 218:/usr/lib/avr/include/util/delay.h ****    algorithm will be chosen if the code is compiled in a <em>freestanding
+ 219:/usr/lib/avr/include/util/delay.h ****    environment</em> (GCC option \c -ffreestanding), as the math functions
+ 220:/usr/lib/avr/include/util/delay.h ****    required for rounding are not available to the compiler then.
+ 221:/usr/lib/avr/include/util/delay.h **** 
+ 222:/usr/lib/avr/include/util/delay.h ****  */
+ 223:/usr/lib/avr/include/util/delay.h **** void
+ 224:/usr/lib/avr/include/util/delay.h **** _delay_us(double __us)
+ 225:/usr/lib/avr/include/util/delay.h **** {
+ 226:/usr/lib/avr/include/util/delay.h **** 	uint8_t __ticks;
+ 227:/usr/lib/avr/include/util/delay.h **** 	double __tmp ; 
+ 228:/usr/lib/avr/include/util/delay.h **** #if __HAS_DELAY_CYCLES && defined(__OPTIMIZE__) && \
+ 229:/usr/lib/avr/include/util/delay.h ****   !defined(__DELAY_BACKWARD_COMPATIBLE__) &&	   \
+ 230:/usr/lib/avr/include/util/delay.h ****   __STDC_HOSTED__
+ 231:/usr/lib/avr/include/util/delay.h **** 	uint32_t __ticks_dc;
+ 232:/usr/lib/avr/include/util/delay.h **** 	extern void __builtin_avr_delay_cycles(unsigned long);
+ 233:/usr/lib/avr/include/util/delay.h **** 	__tmp = ((F_CPU) / 1e6) * __us;
+ 234:/usr/lib/avr/include/util/delay.h **** 
+ 235:/usr/lib/avr/include/util/delay.h **** 	#if defined(__DELAY_ROUND_DOWN__)
+ 236:/usr/lib/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)fabs(__tmp);
+ 237:/usr/lib/avr/include/util/delay.h **** 
+ 238:/usr/lib/avr/include/util/delay.h **** 	#elif defined(__DELAY_ROUND_CLOSEST__)
+ 239:/usr/lib/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)(fabs(__tmp)+0.5);
+ 240:/usr/lib/avr/include/util/delay.h **** 
+ 241:/usr/lib/avr/include/util/delay.h **** 	#else
+ 242:/usr/lib/avr/include/util/delay.h **** 		//round up by default
+ 243:/usr/lib/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+ 244:/usr/lib/avr/include/util/delay.h **** 	#endif
+ 245:/usr/lib/avr/include/util/delay.h **** 
+ 246:/usr/lib/avr/include/util/delay.h **** 	__builtin_avr_delay_cycles(__ticks_dc);
+  32               		.loc 2 246 0
+  33 000a 8AE1      		ldi r24,lo8(26)
+  34 000c 8A95      		1: dec r24
+  35 000e 01F4      		brne 1b
+  36 0010 00C0      		rjmp .
+  37               	.LBE5:
+  38               	.LBE4:
+  56:keyboards/Aaron/ManuformTest/split_util.c ****    _delay_us(5);
+  57:keyboards/Aaron/ManuformTest/split_util.c ****    return (USBSTA & (1<<VBUS));  //checks state of VBUS
+  39               		.loc 1 57 0
+  40 0012 8091 D900 		lds r24,217
+  58:keyboards/Aaron/ManuformTest/split_util.c **** }
+  41               		.loc 1 58 0
+  42 0016 8170      		andi r24,lo8(1)
+  43 0018 0895      		ret
+  44               		.cfi_endproc
+  45               	.LFE13:
+  47               		.section	.text.split_keyboard_setup,"ax",@progbits
+  48               	.global	split_keyboard_setup
+  50               	split_keyboard_setup:
+  51               	.LFB14:
+  59:keyboards/Aaron/ManuformTest/split_util.c **** 
+  60:keyboards/Aaron/ManuformTest/split_util.c **** void split_keyboard_setup(void) {
+  52               		.loc 1 60 0
+  53               		.cfi_startproc
+  54               	/* prologue: function */
+  55               	/* frame size = 0 */
+  56               	/* stack size = 0 */
+  57               	.L__stack_usage = 0
+  58               	.LBB12:
+  59               	.LBB13:
+  23:keyboards/Aaron/ManuformTest/split_util.c ****     isLeftHand = eeprom_read_byte(EECONFIG_HANDEDNESS);
+  60               		.loc 1 23 0
+  61 0000 8EE0      		ldi r24,lo8(14)
+  62 0002 90E0      		ldi r25,0
+  63 0004 0E94 0000 		call __eerd_byte_m32u4
+  64               	.LVL1:
+  65 0008 91E0      		ldi r25,lo8(1)
+  66 000a 8111      		cpse r24,__zero_reg__
+  67 000c 00C0      		rjmp .L3
+  68 000e 90E0      		ldi r25,0
+  69               	.L3:
+  70 0010 9093 0000 		sts isLeftHand,r25
+  71               	.LBE13:
+  72               	.LBE12:
+  61:keyboards/Aaron/ManuformTest/split_util.c ****    setup_handedness();
+  62:keyboards/Aaron/ManuformTest/split_util.c **** 
+  63:keyboards/Aaron/ManuformTest/split_util.c ****    if (has_usb()) {
+  73               		.loc 1 63 0
+  74 0014 0E94 0000 		call has_usb
+  75               	.LVL2:
+  76 0018 8823      		tst r24
+  77 001a 01F0      		breq .L4
+  78               	.LBB14:
+  79               	.LBB15:
+  41:keyboards/Aaron/ManuformTest/split_util.c ****     serial_master_init();
+  80               		.loc 1 41 0
+  81 001c 0E94 0000 		call serial_master_init
+  82               	.LVL3:
+  83 0020 00C0      		rjmp .L5
+  84               	.L4:
+  85               	.LBE15:
+  86               	.LBE14:
+  87               	.LBB16:
+  88               	.LBB17:
+  46:keyboards/Aaron/ManuformTest/split_util.c ****   timer_init();
+  89               		.loc 1 46 0
+  90 0022 0E94 0000 		call timer_init
+  91               	.LVL4:
+  50:keyboards/Aaron/ManuformTest/split_util.c ****     serial_slave_init();
+  92               		.loc 1 50 0
+  93 0026 0E94 0000 		call serial_slave_init
+  94               	.LVL5:
+  95               	.L5:
+  96               	.LBE17:
+  97               	.LBE16:
+  64:keyboards/Aaron/ManuformTest/split_util.c ****       keyboard_master_setup();
+  65:keyboards/Aaron/ManuformTest/split_util.c ****    } else {
+  66:keyboards/Aaron/ManuformTest/split_util.c ****       keyboard_slave_setup();
+  67:keyboards/Aaron/ManuformTest/split_util.c ****    }
+  68:keyboards/Aaron/ManuformTest/split_util.c ****    sei();
+  98               		.loc 1 68 0
+  99               	/* #APP */
+ 100               	 ;  68 "keyboards/Aaron/ManuformTest/split_util.c" 1
+ 101 002a 7894      		sei
+ 102               	 ;  0 "" 2
+ 103               	/* #NOAPP */
+ 104 002c 0895      		ret
+ 105               		.cfi_endproc
+ 106               	.LFE14:
+ 108               		.section	.text.keyboard_slave_loop,"ax",@progbits
+ 109               	.global	keyboard_slave_loop
+ 111               	keyboard_slave_loop:
+ 112               	.LFB15:
+  69:keyboards/Aaron/ManuformTest/split_util.c **** }
+  70:keyboards/Aaron/ManuformTest/split_util.c **** 
+  71:keyboards/Aaron/ManuformTest/split_util.c **** void keyboard_slave_loop(void) {
+ 113               		.loc 1 71 0
+ 114               		.cfi_startproc
+ 115               	/* prologue: function */
+ 116               	/* frame size = 0 */
+ 117               	/* stack size = 0 */
+ 118               	.L__stack_usage = 0
+  72:keyboards/Aaron/ManuformTest/split_util.c ****    matrix_init();
+ 119               		.loc 1 72 0
+ 120 0000 0E94 0000 		call matrix_init
+ 121               	.LVL6:
+ 122               	.L8:
+  73:keyboards/Aaron/ManuformTest/split_util.c **** 
+  74:keyboards/Aaron/ManuformTest/split_util.c ****    while (1) {
+  75:keyboards/Aaron/ManuformTest/split_util.c ****       matrix_slave_scan();
+ 123               		.loc 1 75 0 discriminator 1
+ 124 0004 0E94 0000 		call matrix_slave_scan
+ 125               	.LVL7:
+ 126 0008 00C0      		rjmp .L8
+ 127               		.cfi_endproc
+ 128               	.LFE15:
+ 130               		.section	.text.matrix_setup,"ax",@progbits
+ 131               	.global	matrix_setup
+ 133               	matrix_setup:
+ 134               	.LFB16:
+  76:keyboards/Aaron/ManuformTest/split_util.c ****    }
+  77:keyboards/Aaron/ManuformTest/split_util.c **** }
+  78:keyboards/Aaron/ManuformTest/split_util.c **** 
+  79:keyboards/Aaron/ManuformTest/split_util.c **** // this code runs before the usb and keyboard is initialized
+  80:keyboards/Aaron/ManuformTest/split_util.c **** void matrix_setup(void) {
+ 135               		.loc 1 80 0
+ 136               		.cfi_startproc
+ 137               	/* prologue: function */
+ 138               	/* frame size = 0 */
+ 139               	/* stack size = 0 */
+ 140               	.L__stack_usage = 0
+  81:keyboards/Aaron/ManuformTest/split_util.c ****     split_keyboard_setup();
+ 141               		.loc 1 81 0
+ 142 0000 0E94 0000 		call split_keyboard_setup
+ 143               	.LVL8:
+  82:keyboards/Aaron/ManuformTest/split_util.c **** 
+  83:keyboards/Aaron/ManuformTest/split_util.c ****     if (!has_usb()) {
+ 144               		.loc 1 83 0
+ 145 0004 0E94 0000 		call has_usb
+ 146               	.LVL9:
+ 147 0008 8111      		cpse r24,__zero_reg__
+ 148 000a 00C0      		rjmp .L9
+  84:keyboards/Aaron/ManuformTest/split_util.c ****         keyboard_slave_loop();
+ 149               		.loc 1 84 0
+ 150 000c 0E94 0000 		call keyboard_slave_loop
+ 151               	.LVL10:
+ 152               	.L9:
+ 153 0010 0895      		ret
+ 154               		.cfi_endproc
+ 155               	.LFE16:
+ 157               	.global	isLeftHand
+ 158               		.section	.data.isLeftHand,"aw",@progbits
+ 161               	isLeftHand:
+ 162 0000 01        		.byte	1
+ 163               		.text
+ 164               	.Letext0:
+ 165               		.file 3 "/usr/lib/avr/include/stdint.h"
+ 166               		.file 4 "keyboards/Aaron/ManuformTest/serial.h"
+ 167               		.file 5 "./tmk_core/common/timer.h"
+ 168               		.file 6 "./tmk_core/common/matrix.h"
+ 169               		.file 7 "keyboards/Aaron/ManuformTest/split_util.h"
+ 170               		.file 8 "/usr/lib/avr/include/avr/eeprom.h"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 split_util.c
+     /tmp/ccdzvEIN.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccdzvEIN.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccdzvEIN.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccdzvEIN.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccdzvEIN.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccdzvEIN.s:13     .text.has_usb:0000000000000000 has_usb
+     /tmp/ccdzvEIN.s:50     .text.split_keyboard_setup:0000000000000000 split_keyboard_setup
+     /tmp/ccdzvEIN.s:161    .data.isLeftHand:0000000000000000 isLeftHand
+     /tmp/ccdzvEIN.s:111    .text.keyboard_slave_loop:0000000000000000 keyboard_slave_loop
+     /tmp/ccdzvEIN.s:133    .text.matrix_setup:0000000000000000 matrix_setup
+
+UNDEFINED SYMBOLS
+__eerd_byte_m32u4
+serial_master_init
+timer_init
+serial_slave_init
+matrix_init
+matrix_slave_scan
+__do_copy_data

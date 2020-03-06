@@ -1,0 +1,2504 @@
+   1               		.file	"keymap.c"
+   2               	__SP_H__ = 0x3e
+   3               	__SP_L__ = 0x3d
+   4               	__SREG__ = 0x3f
+   5               	__tmp_reg__ = 0
+   6               	__zero_reg__ = 1
+   7               		.text
+   8               	.Ltext0:
+   9               		.cfi_sections	.debug_frame
+  10               		.section	.text.cmd_commands,"ax",@progbits
+  11               	.global	cmd_commands
+  13               	cmd_commands:
+  14               	.LFB26:
+  15               		.file 1 "keyboards/Aaron/Dactyl/keymaps/default/keymap.c"
+   1:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** #include "Dactyl.h"
+   2:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** #include "action_layer.h"
+   3:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** #include "eeconfig.h"
+   4:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 
+   5:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** extern keymap_config_t keymap_config;
+   6:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** #define _QWERTY 0
+   7:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** #define _COLEMAK 1
+   8:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 
+   9:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** #define _DVORAK 2
+  10:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** #define _LOWER 3
+  11:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** #define _RAISE 4
+  12:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** #define _FN3 5
+  13:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** //#define _FN4 6
+  14:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** #define _ADJUST 16
+  15:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** enum {
+  16:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	TD_CPY_PST = 0,
+  17:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	TD_CMD,
+  18:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	TD_SLSH,
+  19:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	TD_VRDSK
+  20:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** };
+  21:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** enum custom_keycodes {
+  22:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	COLEMAK = SAFE_RANGE,
+  23:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	QWERTY,
+  24:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	DVORAK,
+  25:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	LOWER,
+  26:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	RAISE,
+  27:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	FN3,
+  28:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** //	FN4,
+  29:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	ADJUST,
+  30:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	dance_cln_finished,
+  31:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** };
+  32:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 
+  33:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** #define KC_ KC_TRNS
+  34:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** #define _______ KC_TRNS
+  35:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** #define KC_CAPW LGUI(LSFT(KC_3))        // Capture whole screen
+  36:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** #define KC_CPYW LGUI(LSFT(LCTL(KC_3)))  // Copy whole screen
+  37:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** #define KC_CAPP LGUI(LSFT(KC_4))       // Capture portion of screen
+  38:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** #define KC_CPYP LGUI(LSFT(LCTL(KC_4)))  // Copy portion of screen
+  39:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** #define KC_X0 MT(MOD_LCTL, KC_ESC)
+  40:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** #define KC_LDWN LOWER				//Numpad
+  41:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** #define KC_LUP RAISE
+  42:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** #define KC_TOGUP TG(4)
+  43:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** #define KC_REST RESET
+  44:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** #define KC_X3 LT(_FN3,KC_TAB)		//function layer 4 ie macros when held tab when pressed
+  45:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** #define KC_X4 LT(_ADJUST, KC_ENT) //Shift when held enter when pressed
+  46:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** #define KC_X5 LT(RAISE, KC_P0)  //Raise to functions when held P0 when pressed
+  47:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** #define KC_X6 TD(TD_SLSH)				//slash vs backslash
+  48:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** #define KC_X7 TD(TD_CPY_PST)		//single tap is copy double is paste
+  49:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** #define KC_X8 TD(TD_CMD)			//single tap is cmd double is ipconfig
+  50:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 
+  51:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 
+  52:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** #define KC_X9 RGUI(KC_TAB)	//gui tab to switch desktops
+  53:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** #define KC_X10 TD(TD_VRDSK)
+  54:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 
+  55:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 
+  56:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** #define KC_XLgn M(1)
+  57:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** #define KC_EMAL M(2)
+  58:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** #define KC_WWWX M(3)
+  59:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** #define KC_NTAB M(4)
+  60:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** #define KC_0CA M(6)
+  61:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** #define KC_PASS M(10)
+  62:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** #define KC_IPCF M(11)
+  63:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** #define KC_OP M(12)
+  64:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** #define KC_OC M(13)
+  65:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** #define KC_OD M(14)
+  66:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** #define KC_TCLK M(15)
+  67:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** #define KC_ESCT MT(MOD_LCTL, KC_ESC)
+  68:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** #define KC_GUIT M(0)
+  69:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 
+  70:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
+  71:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** /* Keymap 0: Basic layer
+  72:keyboards/Aaron/Dactyl/keymaps/default/keymap.c ****  *
+  73:keyboards/Aaron/Dactyl/keymaps/default/keymap.c ****  * ,-------------------------------------------.           ,----------------------------------_----
+  74:keyboards/Aaron/Dactyl/keymaps/default/keymap.c ****  * |   =    |   1  |   2  |   3  |   4  |   5  |           |   6  |   7  |   8  |   9  |   0  |   -
+  75:keyboards/Aaron/Dactyl/keymaps/default/keymap.c ****  * |--------+------+------+------+------+------|           |------+------+------+------+------|----
+  76:keyboards/Aaron/Dactyl/keymaps/default/keymap.c ****  * |Tab\FN3 |   Q  |   W  |   F  |   P  |   G  |           |   J  |   L  |   U  |   Y  |   :  |   \
+  77:keyboards/Aaron/Dactyl/keymaps/default/keymap.c ****  * |--------+------+------+------+------+----- |           |------+------+------+------+------|----
+  78:keyboards/Aaron/Dactyl/keymaps/default/keymap.c ****  * | ENT/ADJ|   A  |   R  |   S  |   T  |   D  |           |   H  |   N  |   E  |   I  |   O  | ENT
+  79:keyboards/Aaron/Dactyl/keymaps/default/keymap.c ****  * |--------+------+------+------+------+------|           |------+------+------+------+------|----
+  80:keyboards/Aaron/Dactyl/keymaps/default/keymap.c ****  * | LShift |   Z  |   X  |   C  |   V  |   B  |           |   K  |   M  |   ,  |   .  |  /   |RShi
+  81:keyboards/Aaron/Dactyl/keymaps/default/keymap.c ****  * `--------+------+------+------+------+------'           `-------+------+------+------+------|---
+  82:keyboards/Aaron/Dactyl/keymaps/default/keymap.c ****  * |CTR     |  ALT | GUI  | Left | Right|    1                1   | LEFT | RIGHT|  UP  | DOWN  | ~L
+  83:keyboards/Aaron/Dactyl/keymaps/default/keymap.c ****  * `----------------------------------'                          `---------------------------------
+  84:keyboards/Aaron/Dactyl/keymaps/default/keymap.c ****  *				6	5		4	   3		2				2		 3		4		5		6
+  85:keyboards/Aaron/Dactyl/keymaps/default/keymap.c ****  *                                 ,-------------.       ,-------------.
+  86:keyboards/Aaron/Dactyl/keymaps/default/keymap.c ****  *                                 |   6  |   5  |       | 5    |  6     |
+  87:keyboards/Aaron/Dactyl/keymaps/default/keymap.c ****  *                          ,------|------|------|       |------+--------+------.
+  88:keyboards/Aaron/Dactyl/keymaps/default/keymap.c ****  *                          |   1  |  2    |   4  |       | 4    |        |      |
+  89:keyboards/Aaron/Dactyl/keymaps/default/keymap.c ****  *                          |Backsp|GUI   |------|       |------|    1   |    2 |
+  90:keyboards/Aaron/Dactyl/keymaps/default/keymap.c ****  *                          |  acs |TAB   |   3  |       | 3    |        |      |
+  91:keyboards/Aaron/Dactyl/keymaps/default/keymap.c ****  *                         `--------------------'       `----------------------'
+  92:keyboards/Aaron/Dactyl/keymaps/default/keymap.c ****  */
+  93:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		[_QWERTY] = KC_KEYMAP(
+  94:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	//,----+----+----+----+----+----.    ,----+----+----+----+----+----.
+  95:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		EQL, 1  , 2  , 3  , 4  , 5  ,      6  , 7  , 8  , 9 , 0  ,MINS,
+  96:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	//,----+----+----+----+----+----.    ,----+----+----+----+----+----.
+  97:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		X3 , Q  , W  , E  , R  , T  ,      Y  , U  , I  , O , P  ,BSLS,
+  98:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|
+  99:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		X4 , A  , S  , D  , F  , G  ,      H  , J  , K  , L  ,SCLN,ENT,
+ 100:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|
+ 101:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		LSFT , Z  , X  , C  , V  , B  ,      N  , M  ,COMM,DOT,SLSH,GRV,
+ 102:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|
+ 103:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		ESCT,LALT,LGUI,LEFT,RIGHT,BSPC,    SPC,LEFT,RIGHT,UP ,DOWN,QUOT,
+ 104:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	//`----+----+----+----+----+----'    `----+----+----+----+----+----'
+ 105:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		   ,PGUP,PGDN ,PSCR,GUIT,LDWN,	   ENT,LUP ,DEL ,HOME,END, 
+ 106:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	//`----+----+----+----+----+----'    `----+----+----+----+----+----'
+ 107:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	),
+ 108:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	
+ 109:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 			[_COLEMAK] = KC_KEYMAP(
+ 110:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	//,----+----+----+----+----+----.    ,----+----+----+----+----+----.
+ 111:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		EQL, 1  , 2  , 3  , 4  , 5  ,      6  , 7  , 8  , 9 , 0   ,MINS,
+ 112:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	//,----+----+----+----+----+----.    ,----+----+----+----+----+----.
+ 113:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		X3 , Q  , W  , F  , P  , G  ,      J  , L  , U  , Y  ,SCLN,BSLS,
+ 114:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|
+ 115:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		X4 , A  , R  , S  , T  , D  ,      H  , N  , E  , I  , O  ,ENT,
+ 116:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|
+ 117:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		LSFT, Z  , X  , C  , V  , B  ,     K  , M  ,COMM,DOT ,SLSH,GRV,
+ 118:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|
+ 119:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		ESCT,LALT,LGUI,LEFT,RIGHT,BSPC,    SPC,LEFT,RIGHT,UP ,DOWN,QUOT,
+ 120:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	//`----+----+----+----+----+----'    `----+----+----+----+----+----'
+ 121:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		   ,PGUP,PGDN ,PSCR,GUIT,LDWN,	   ENT,LUP ,DEL ,HOME,END, 
+ 122:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	//`----+----+----+----+----+----'    `----+----+----+----+----+----'
+ 123:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	),
+ 124:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 
+ 125:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	[_DVORAK] = KC_KEYMAP(
+ 126:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	//,----+----+----+----+----+----.    ,----+----+----+----+----+----.
+ 127:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		EQL, 1  , 2  , 3  , 4  , 5  ,      6  , 7  , 8  , 9 , 0  ,MINS,
+ 128:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	//,----+----+----+----+----+----.    ,----+----+----+----+----+----.
+ 129:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		TAB ,QUOT,COMM,DOT , P  , Y  ,      F  , G  , C  , R  , L  ,MINS,
+ 130:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|
+ 131:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		X0 , A  , O  , E  , U  , I  ,      D  , H  , T  , N  , S  ,SLSH,
+ 132:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|
+ 133:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		LSFT,SCLN, Q  , J  , K  , X  ,      B  , M  , W  , V  , Z  , X4 ,
+ 134:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|
+ 135:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		X3 ,LCTL,LALT,LGUI, LDWN ,SPC ,     BSPC, UP ,LEFT,DOWN, UP ,RGHT,
+ 136:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	//`----+----+----+----+----+----'    `----+----+----+----+----+----'
+ 137:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		X3  , 1  , 2  , 3  , 4  , 5  ,      2  , 2  , 2  , 2 , 2  ,MINS
+ 138:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	//`----+----+----+----+----+----'    `----+----+----+----+----+----'
+ 139:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	),
+ 140:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** /*
+ 141:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	[_LOWER] = KC_KEYMAP(
+ 142:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	//,----+----+----+----+----+----.    ,----+----+----+----+----+----.
+ 143:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		ESC , 1  , 2 , 3  , 4  , 5  ,      6  , 7  , 8  , 9  , 0  , EQL ,
+ 144:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|
+ 145:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		DEL ,CAPP,LEFT,RGHT, UP ,LBRC,     RBRC, P4 , P5 , P6 ,PLUS,PIPE,
+ 146:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|
+ 147:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 			,CPYP, UP ,    ,DOWN,LCBR,     RCBR, P1 , P2 , P3 ,MINS,    ,
+ 148:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|
+ 149:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 			,LEFT,DOWN,RIGHT,    ,    ,     DEL ,   , P0 ,PDOT,    ,  NLCK, 
+ 150:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	//`----+----+----+----+----+----'    `----+----+----+----+----+----'
+ 151:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		X0 ,LALT,LGUI, X10, LDWN ,BSPC,     SPC, UP ,QUOT,LEFT, DOWN ,RGHT,
+ 152:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	//`----+----+----+----+----+----'    `----+----+----+----+----+----'
+ 153:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		X3  , 1  ,REST, 3  ,    , 5  ,      6  ,    , 8  , 9 , 0  ,MINS
+ 154:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	//`----+----+----+----+----+----'    `----+----+----+----+----+----'
+ 155:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	),
+ 156:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 
+ 157:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	[_RAISE] = KC_KEYMAP(
+ 158:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	//,----+----+----+----+----+----.    ,----+----+----+----+----+----.
+ 159:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		ESC ,EXLM, AT ,HASH,DLR ,PERC,     CIRC,AMPR,ASTR,LPRN,RPRN,    ,
+ 160:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|
+ 161:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		DEL ,MPRV,MNXT,VOLU,PGUP,UNDS,     EQL ,HOME,    ,    ,    ,BSLS,
+ 162:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|88
+ 163:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		LSFT,MSTP,MPLY,VOLD,PGDN,MINS,     PLUS,END,COMM ,    ,UP ,    ,
+ 164:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|
+ 165:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		,    ,    , X3 ,    ,    ,         ,    ,    ,LEFT,DOWN,RIGHT,    
+ 166:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	//`----+----+----+----+----+----'    `----+----+----+----+----+----'
+ 167:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		X0 ,LALT,LGUI, X10, LDWN ,BSPC,     SPC, UP ,QUOT,LEFT, DOWN ,RGHT,
+ 168:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	//`----+----+----+----+----+----'    `----+----+----+----+----+----'
+ 169:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		X3  , 1  , 2  , 3  ,   , 5  ,      6  ,   , 8  ,REST, 0  ,MINS
+ 170:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	//`----+----+----+----+----+----'    `----+----+----+----+----+----'
+ 171:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	),*/
+ 172:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	
+ 173:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	[_LOWER] = KC_KEYMAP(
+ 174:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	//,----+----+----+----+----+----.    ,----+----+----+----+----+----.
+ 175:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		REST, OP ,OC  , OD ,    ,    ,         ,    ,    ,LBRC,RBRC,  ,
+ 176:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|
+ 177:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		  ,     ,WWWX,EMAL,    ,TCLK,         ,    ,    ,   ,PASS,   ,
+ 178:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|
+ 179:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		   ,0CA ,     ,   ,    ,    ,         ,    , UP ,IPCF,     ,   ,
+ 180:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|
+ 181:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		  ,    ,XLgn,     ,    ,    ,         ,LEFT,DOWN,RIGHT,    ,   ,
+ 182:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|
+ 183:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		REST,    ,    ,    ,    ,   ,         ,    ,    ,    ,    ,REST,
+ 184:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|
+ 185:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 			,  ,    ,    ,    ,LDWN,	   LUP ,LUP ,    ,     ,   , 
+ 186:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	//`----+----+----+----+----+----'    `----+----+----+----+----+----'
+ 187:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	),
+ 188:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	
+ 189:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	
+ 190:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	[_RAISE] = KC_KEYMAP(
+ 191:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	//,----+----+----+----+----+----.    ,----+----+----+----+----+----.
+ 192:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		GRV, 1  , 2  , 3  , 4  , 5  ,      6  , 7  , 8  , 9, 0   ,MINS,
+ 193:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|
+ 194:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		8 , 1  , WWWX, 1  , 1  , 1  ,      NO , 4  , 5  , 6  ,PMNS, NO   , 
+ 195:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|
+ 196:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		8 , 1  , 1  , 1  , 1  , 1  ,       NO , 1   , 2  ,  3 ,PPLS, NO   ,
+ 197:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|
+ 198:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		8 , 1  ,1, 1  , 1  , 1  ,          NO , 0  , 0  , DOT , NO, NO,
+ 199:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|
+ 200:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		REST, 1  , 1  , 1  , 1  ,   ,      NO ,PSLS, PAST, NO , NO  ,REST,
+ 201:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|
+ 202:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 			,   ,    ,    ,    ,LDWN,	   LUP,LUP ,DEL ,    ,    ,    
+ 203:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	//`----+----+----+----+----+----'    `----+----+----+----+----+----'
+ 204:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	),
+ 205:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	
+ 206:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	
+ 207:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	[_FN3] = KC_KEYMAP(
+ 208:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	//,----+----+----+----+----+----.    ,----+----+----+----+----+----.
+ 209:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		F12 , F1 , F2 , F3 , F4 , F5 ,      F6 , F7 , F8 , F9 ,F10 ,F11 ,
+ 210:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|
+ 211:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 			, 3 , 3,  3, 3  , 3  ,         ,    ,    ,    ,    ,    ,
+ 212:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|
+ 213:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 			,    ,UP,    ,    ,    ,         ,    ,    ,    , UP ,    ,
+ 214:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|
+ 215:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 			,LEFT,DOWN,RIGHT,    ,    ,          ,    ,    ,LEFT,DOWN,RIGHT,  
+ 216:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	//`----+----+----+----+----+----'    `----+----+----+----+----+----'
+ 217:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		X0 ,LALT,LGUI, X10, LDWN ,BSPC,     SPC, UP ,QUOT,LEFT, DOWN ,RGHT,
+ 218:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	//`----+----+----+----+----+----'    `----+----+----+----+----+----'
+ 219:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		X3  , 1  , 2  , 3  , 4  , 5  ,      6  , 7  , 8  , 9 , 0  ,MINS
+ 220:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	//`----+----+----+----+----+----'    `----+----+----+----+----+----'
+ 221:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	),
+ 222:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** /*
+ 223:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	[_FN4] = KEYMAP( \
+ 224:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	_______, _______, M(3)   , M(2)     , _______,  M(4)  ,		 _______, _______, _______, _______, ____
+ 225:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	_______, M(6)   , _______, _______  , _______, _______,		 _______, _______, _______, _______, ____
+ 226:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	_______, _______, M(1)   ,TD(TD_CMD), _______, _______,		 _______, _______, _______, _______, KC_U
+ 227:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	M(7)   , M(8)   , M(9)   , _______  , _______, _______,		 _______, _______, _______, KC_LEFT, KC_D
+ 228:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	_______, _______, _______, _______  , _______, _______,		 _______, _______, _______, _______, ____
+ 229:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	_______, _______ , _______, _______  , _______, _______,	 _______, _______, _______, _______, ____
+ 230:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	),*/
+ 231:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 
+ 232:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	/* Adjust (Lower + Raise)
+ 233:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** * ,-----------------------------------------------------------------------------------.
+ 234:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** * |      | Reset|RGB Tg|RGB Md|Hue Up|Hue Dn|Sat Up|Sat Dn|Val Up|Val Dn| RESET|      |
+ 235:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** * |------+------+------+------+------+-------------+------+------+------+------+------|
+ 236:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** * |      |      |      |Aud on|Audoff|AGnorm|AGswap|Qwerty|Colemk|Dvorak|      |      |
+ 237:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** * |------+------+------+------+------+------|------+------+------+------+------+------|
+ 238:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** * |      |      |      |      |      |      |      |      |      |      |      |      |
+ 239:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** * |------+------+------+------+------+------+------+------+------+------+------+------|
+ 240:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** * |      |      |      |      |      |             |      |      |      |      |      |
+ 241:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** * `-----------------------------------------------------------------------------------'
+ 242:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** */
+ 243:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	[_ADJUST] = KEYMAP( \
+ 244:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	_______, COLEMAK, QWERTY, RGB_MOD, RGB_HUD, RGB_HUI, RGB_SAD, RGB_SAI, RGB_VAD, RGB_VAI, RESET  , 
+ 245:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	_______, QWERTY, _______, AU_ON,   AU_OFF,  AG_NORM, AG_SWAP, QWERTY,  COLEMAK, DVORAK,  _______, 
+ 246:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	_______, KC_1   , KC_1   , _______, _______, _______, _______, _______, _______, _______, _______,
+ 247:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	_______, _______, _______, COLEMAK, _______, _______, _______, _______, _______, _______, _______,
+ 248:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	_______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+ 249:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	_______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+ 250:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	)
+ 251:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 
+ 252:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 
+ 253:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** };
+ 254:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 
+ 255:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** #ifdef AUDIO_ENABLE
+ 256:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** float tone_qwerty[][2]     = SONG(QWERTY_SOUND);
+ 257:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** float tone_dvorak[][2]     = SONG(DVORAK_SOUND);
+ 258:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** float tone_colemak[][2]    = SONG(COLEMAK_SOUND);
+ 259:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** #endif
+ 260:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 
+ 261:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** void persistent_default_layer_set(uint16_t default_layer) {
+ 262:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	eeconfig_update_default_layer(default_layer);
+ 263:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	default_layer_set(default_layer);
+ 264:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** }
+ 265:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 
+ 266:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** /*
+ 267:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** void dance_cln_finished(void){
+ 268:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** register_code (KC_LGUI);
+ 269:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** register_code(KC_TAB);
+ 270:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** unregister_code(KC_TAB);
+ 271:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** unregister_code(KC_LGUI); 
+ 272:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** }*/
+ 273:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 
+ 274:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) {
+ 275:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	
+ 276:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	switch (id) {
+ 277:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	case 0:
+ 278:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		if (record->event.pressed) {
+ 279:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 			return MACRO(D(LGUI), T(TAB), U(LGUI), END);
+ 280:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		}
+ 281:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	case 1:
+ 282:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		if (record->event.pressed) {
+ 283:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		//	SEND_STRING("admin"SS_TAP(X_TAB)"1111"SS_TAP(X_ENTER));
+ 284:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		//return false;	break;
+ 285:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 			return MACRO(I(10), T(A), T(D), T(M), T(I), T(N), W(75), T(TAB), T(1), T(1),T(1), T(1), T(ENTER)
+ 286:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		}
+ 287:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	case 2:
+ 288:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		if (record->event.pressed) {
+ 289:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 			SEND_STRING("apaez@gotocos.com");
+ 290:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 			return false;	break;
+ 291:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		}
+ 292:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	case 3:
+ 293:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		if (record->event.pressed) {
+ 294:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 			SEND_STRING("www.support.xerox.com"SS_TAP(X_ENTER));
+ 295:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 						return false;	break;
+ 296:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		}
+ 297:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	case 4:
+ 298:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		if(record->event.pressed) {
+ 299:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 			return MACRO(I(10), D(LCTRL), T(T), T(V), T(ENTER), U(LCTRL), END);
+ 300:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		}
+ 301:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		
+ 302:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	case 5:{
+ 303:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 			return  MACRO_TAP_HOLD_LAYER(record, MACRO(TYPE(KC_X), END), _LOWER);	
+ 304:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		}
+ 305:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	case 6: {
+ 306:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 			if(record->event.pressed) 
+ 307:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 			return MACRO(I(10), T(0), T(C), T(TAB), T(TAB), T(A), T(TAB), END);
+ 308:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		}
+ 309:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	case 10: {
+ 310:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		if(record->event.pressed) {
+ 311:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		SEND_STRING("Mydogc3rri35");
+ 312:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 			return false; break;}
+ 313:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	}		
+ 314:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	case 11: {
+ 315:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		if(record->event.pressed) {
+ 316:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 			SEND_STRING("ipconfig /all");
+ 317:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 					return false; break;}
+ 318:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	}
+ 319:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	case 12: {
+ 320:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	if(record->event.pressed) 
+ 321:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		return MACRO( I(10),T(TAB), T(O), T(P), T(TAB),T(ENTER), T(TAB),T(TAB),T(TAB),T(Z),T(R),T(TAB),T(
+ 322:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	}	
+ 323:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		case 13: {
+ 324:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	if(record->event.pressed) 
+ 325:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		return MACRO( I(10),T(TAB), T(O), T(T), T(TAB),T(ENTER), T(TAB),T(TAB),T(TAB),T(Z),T(R),T(TAB),T(
+ 326:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	}	
+ 327:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		case 14: {
+ 328:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	if(record->event.pressed) 
+ 329:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		return MACRO( I(10),T(TAB), T(I), T(N), T(TAB),T(ENTER), T(TAB),T(TAB),T(TAB),T(I),T(N),T(TAB),T(
+ 330:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	}	
+ 331:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		case 15: {
+ 332:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	if(record->event.pressed) 
+ 333:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		SEND_STRING("ACloughPaez@GSB-Inc"SS_TAP(X_TAB)"Is7f#0n$Z"SS_TAP(X_TAB)SS_TAP(X_ENTER));
+ 334:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		return false; break;
+ 335:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	}	
+ 336:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		break;
+ 337:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	}		
+ 338:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	return MACRO_NONE;
+ 339:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** }
+ 340:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** //return MACRO_NONE;
+ 341:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 
+ 342:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 
+ 343:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** void cmd_commands(qk_tap_dance_state_t *state, void *user_data) {
+  16               		.loc 1 343 0
+  17               		.cfi_startproc
+  18               	.LVL0:
+  19               	/* prologue: function */
+  20               	/* frame size = 0 */
+  21               	/* stack size = 0 */
+  22               	.L__stack_usage = 0
+ 344:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	if (state->count == 1) {
+  23               		.loc 1 344 0
+  24 0000 FC01      		movw r30,r24
+  25 0002 8081      		ld r24,Z
+  26               	.LVL1:
+  27 0004 8130      		cpi r24,lo8(1)
+  28 0006 01F4      		brne .L2
+ 345:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		action_macro_play(MACRO(D(LCTRL), T(C), U(LCTRL),END));
+  29               		.loc 1 345 0
+  30 0008 80E0      		ldi r24,lo8(__m.3219)
+  31 000a 90E0      		ldi r25,hi8(__m.3219)
+  32 000c 00C0      		rjmp .L4
+  33               	.L2:
+ 346:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	}
+ 347:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	else if (state->count ==2){
+  34               		.loc 1 347 0
+  35 000e 8230      		cpi r24,lo8(2)
+  36 0010 01F4      		brne .L3
+ 348:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		action_macro_play(MACRO(D(LCTRL), T(V), U(LCTRL),END));
+  37               		.loc 1 348 0
+  38 0012 80E0      		ldi r24,lo8(__m.3221)
+  39 0014 90E0      		ldi r25,hi8(__m.3221)
+  40 0016 00C0      		rjmp .L4
+  41               	.L3:
+ 349:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	}
+ 350:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	else {
+ 351:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		action_macro_play(MACRO(D(LCTRL), T(A), T(C), U(LCTRL),END));
+  42               		.loc 1 351 0
+  43 0018 80E0      		ldi r24,lo8(__m.3223)
+  44 001a 90E0      		ldi r25,hi8(__m.3223)
+  45               	.L4:
+  46 001c 0C94 0000 		jmp action_macro_play
+  47               	.LVL2:
+  48               		.cfi_endproc
+  49               	.LFE26:
+  51               		.section	.text.cmd,"ax",@progbits
+  52               	.global	cmd
+  54               	cmd:
+  55               	.LFB27:
+ 352:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	}
+ 353:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** }
+ 354:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 
+ 355:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 
+ 356:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** void cmd(qk_tap_dance_state_t *state, void *user_data) {
+  56               		.loc 1 356 0
+  57               		.cfi_startproc
+  58               	.LVL3:
+  59               	/* prologue: function */
+  60               	/* frame size = 0 */
+  61               	/* stack size = 0 */
+  62               	.L__stack_usage = 0
+ 357:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	if(state->count==1){
+  63               		.loc 1 357 0
+  64 0000 FC01      		movw r30,r24
+  65 0002 8081      		ld r24,Z
+  66               	.LVL4:
+  67 0004 8130      		cpi r24,lo8(1)
+  68 0006 01F4      		brne .L7
+ 358:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		action_macro_play(MACRO(D(LGUI), T(R),W(255), U(LGUI),W(255), T(C), T(M), T(D), T(ENTER),END));
+  69               		.loc 1 358 0
+  70 0008 80E0      		ldi r24,lo8(__m.3229)
+  71 000a 90E0      		ldi r25,hi8(__m.3229)
+  72 000c 00C0      		rjmp .L9
+  73               	.L7:
+ 359:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	}
+ 360:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	else if (state->count == 2) {
+  74               		.loc 1 360 0
+  75 000e 8230      		cpi r24,lo8(2)
+  76 0010 01F4      		brne .L8
+ 361:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		action_macro_play(MACRO(D(LGUI), T(R), U(LGUI), T(C), T(M), T(D), T(ENTER),W(255),W(255), T(I), T
+  77               		.loc 1 361 0
+  78 0012 80E0      		ldi r24,lo8(__m.3231)
+  79 0014 90E0      		ldi r25,hi8(__m.3231)
+  80 0016 00C0      		rjmp .L9
+  81               	.L8:
+ 362:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	}
+ 363:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	else{
+ 364:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		action_macro_play(MACRO(D(LGUI), T(R),W(255), U(LGUI),W(255), T(C), T(M), T(D), T(ENTER), W(255),
+  82               		.loc 1 364 0
+  83 0018 80E0      		ldi r24,lo8(__m.3233)
+  84 001a 90E0      		ldi r25,hi8(__m.3233)
+  85               	.L9:
+  86 001c 0C94 0000 		jmp action_macro_play
+  87               	.LVL5:
+  88               		.cfi_endproc
+  89               	.LFE27:
+  91               		.section	.text.VirtualDesktop,"ax",@progbits
+  92               	.global	VirtualDesktop
+  94               	VirtualDesktop:
+  95               	.LFB29:
+ 365:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	}
+ 366:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** }
+ 367:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** void SLSH_BSLSH(qk_tap_dance_state_t *state, void *user_data) {
+ 368:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	if (state->count == 1) {
+ 369:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		register_code (KC_SLSH);
+ 370:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		unregister_code (KC_SLSH);
+ 371:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	}
+ 372:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	else{
+ 373:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		register_code (KC_BSLS);
+ 374:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		unregister_code (KC_BSLS);
+ 375:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	}
+ 376:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** }
+ 377:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** void VirtualDesktop(qk_tap_dance_state_t *state, void *user_data) {
+  96               		.loc 1 377 0
+  97               		.cfi_startproc
+  98               	.LVL6:
+  99               	/* prologue: function */
+ 100               	/* frame size = 0 */
+ 101               	/* stack size = 0 */
+ 102               	.L__stack_usage = 0
+ 378:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	if (state->count == 1) 
+ 103               		.loc 1 378 0
+ 104 0000 FC01      		movw r30,r24
+ 105 0002 8081      		ld r24,Z
+ 106               	.LVL7:
+ 107 0004 8130      		cpi r24,lo8(1)
+ 108 0006 01F4      		brne .L11
+ 379:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		action_macro_play(MACRO(D(LGUI),D(LCTRL),T(LEFT),U(LCTRL),U(LGUI),END));
+ 109               		.loc 1 379 0
+ 110 0008 80E0      		ldi r24,lo8(__m.3243)
+ 111 000a 90E0      		ldi r25,hi8(__m.3243)
+ 112 000c 00C0      		rjmp .L13
+ 113               	.L11:
+ 380:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	else if(state->count==2)
+ 114               		.loc 1 380 0
+ 115 000e 8230      		cpi r24,lo8(2)
+ 116 0010 01F4      		brne .L10
+ 381:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		action_macro_play(MACRO(D(LGUI),D(LCTRL),T(RIGHT),U(LCTRL),U(LGUI),END));
+ 117               		.loc 1 381 0
+ 118 0012 80E0      		ldi r24,lo8(__m.3245)
+ 119 0014 90E0      		ldi r25,hi8(__m.3245)
+ 120               	.L13:
+ 121 0016 0C94 0000 		jmp action_macro_play
+ 122               	.LVL8:
+ 123               	.L10:
+ 124 001a 0895      		ret
+ 125               		.cfi_endproc
+ 126               	.LFE29:
+ 128               		.section	.text.SLSH_BSLSH,"ax",@progbits
+ 129               	.global	SLSH_BSLSH
+ 131               	SLSH_BSLSH:
+ 132               	.LFB28:
+ 367:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** void SLSH_BSLSH(qk_tap_dance_state_t *state, void *user_data) {
+ 133               		.loc 1 367 0
+ 134               		.cfi_startproc
+ 135               	.LVL9:
+ 136               	/* prologue: function */
+ 137               	/* frame size = 0 */
+ 138               	/* stack size = 0 */
+ 139               	.L__stack_usage = 0
+ 368:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	if (state->count == 1) {
+ 140               		.loc 1 368 0
+ 141 0000 FC01      		movw r30,r24
+ 142 0002 8081      		ld r24,Z
+ 143               	.LVL10:
+ 144 0004 8130      		cpi r24,lo8(1)
+ 145 0006 01F4      		brne .L15
+ 369:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		register_code (KC_SLSH);
+ 146               		.loc 1 369 0
+ 147 0008 88E3      		ldi r24,lo8(56)
+ 148 000a 0E94 0000 		call register_code
+ 149               	.LVL11:
+ 370:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		unregister_code (KC_SLSH);
+ 150               		.loc 1 370 0
+ 151 000e 88E3      		ldi r24,lo8(56)
+ 152 0010 00C0      		rjmp .L16
+ 153               	.LVL12:
+ 154               	.L15:
+ 373:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		register_code (KC_BSLS);
+ 155               		.loc 1 373 0
+ 156 0012 81E3      		ldi r24,lo8(49)
+ 157 0014 0E94 0000 		call register_code
+ 158               	.LVL13:
+ 374:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		unregister_code (KC_BSLS);
+ 159               		.loc 1 374 0
+ 160 0018 81E3      		ldi r24,lo8(49)
+ 161               	.L16:
+ 162 001a 0C94 0000 		jmp unregister_code
+ 163               	.LVL14:
+ 164               		.cfi_endproc
+ 165               	.LFE28:
+ 167               		.section	.text.rgblight_toggle,"ax",@progbits
+ 168               		.weak	rgblight_toggle
+ 170               	rgblight_toggle:
+ 171               	.LFB10:
+ 172               		.file 2 "./quantum/rgb.h"
+   1:./quantum/rgb.h **** /* Copyright 2017 Jack Humbert
+   2:./quantum/rgb.h ****  *
+   3:./quantum/rgb.h ****  * This program is free software: you can redistribute it and/or modify
+   4:./quantum/rgb.h ****  * it under the terms of the GNU General Public License as published by
+   5:./quantum/rgb.h ****  * the Free Software Foundation, either version 2 of the License, or
+   6:./quantum/rgb.h ****  * (at your option) any later version.
+   7:./quantum/rgb.h ****  *
+   8:./quantum/rgb.h ****  * This program is distributed in the hope that it will be useful,
+   9:./quantum/rgb.h ****  * but WITHOUT ANY WARRANTY; without even the implied warranty of
+  10:./quantum/rgb.h ****  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  11:./quantum/rgb.h ****  * GNU General Public License for more details.
+  12:./quantum/rgb.h ****  *
+  13:./quantum/rgb.h ****  * You should have received a copy of the GNU General Public License
+  14:./quantum/rgb.h ****  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  15:./quantum/rgb.h ****  */
+  16:./quantum/rgb.h **** 
+  17:./quantum/rgb.h **** #ifndef RGB_H
+  18:./quantum/rgb.h **** #define RGB_H
+  19:./quantum/rgb.h **** 
+  20:./quantum/rgb.h **** __attribute__((weak))
+  21:./quantum/rgb.h **** void rgblight_toggle(void) {};
+ 173               		.loc 2 21 0
+ 174               		.cfi_startproc
+ 175               	/* prologue: function */
+ 176               	/* frame size = 0 */
+ 177               	/* stack size = 0 */
+ 178               	.L__stack_usage = 0
+ 179 0000 0895      		ret
+ 180               		.cfi_endproc
+ 181               	.LFE10:
+ 183               		.section	.text.rgblight_step,"ax",@progbits
+ 184               		.weak	rgblight_step
+ 186               	rgblight_step:
+ 187               	.LFB11:
+  22:./quantum/rgb.h **** 
+  23:./quantum/rgb.h **** __attribute__((weak))
+  24:./quantum/rgb.h **** void rgblight_step(void) {};
+ 188               		.loc 2 24 0
+ 189               		.cfi_startproc
+ 190               	/* prologue: function */
+ 191               	/* frame size = 0 */
+ 192               	/* stack size = 0 */
+ 193               	.L__stack_usage = 0
+ 194 0000 0895      		ret
+ 195               		.cfi_endproc
+ 196               	.LFE11:
+ 198               		.section	.text.rgblight_step_reverse,"ax",@progbits
+ 199               		.weak	rgblight_step_reverse
+ 201               	rgblight_step_reverse:
+ 202               	.LFB12:
+  25:./quantum/rgb.h **** 
+  26:./quantum/rgb.h **** __attribute__((weak))
+  27:./quantum/rgb.h **** void rgblight_step_reverse(void) {};
+ 203               		.loc 2 27 0
+ 204               		.cfi_startproc
+ 205               	/* prologue: function */
+ 206               	/* frame size = 0 */
+ 207               	/* stack size = 0 */
+ 208               	.L__stack_usage = 0
+ 209 0000 0895      		ret
+ 210               		.cfi_endproc
+ 211               	.LFE12:
+ 213               		.section	.text.rgblight_increase_hue,"ax",@progbits
+ 214               		.weak	rgblight_increase_hue
+ 216               	rgblight_increase_hue:
+ 217               	.LFB13:
+  28:./quantum/rgb.h **** 
+  29:./quantum/rgb.h **** __attribute__((weak))
+  30:./quantum/rgb.h **** void rgblight_increase_hue(void) {};
+ 218               		.loc 2 30 0
+ 219               		.cfi_startproc
+ 220               	/* prologue: function */
+ 221               	/* frame size = 0 */
+ 222               	/* stack size = 0 */
+ 223               	.L__stack_usage = 0
+ 224 0000 0895      		ret
+ 225               		.cfi_endproc
+ 226               	.LFE13:
+ 228               		.section	.text.rgblight_decrease_hue,"ax",@progbits
+ 229               		.weak	rgblight_decrease_hue
+ 231               	rgblight_decrease_hue:
+ 232               	.LFB14:
+  31:./quantum/rgb.h **** 
+  32:./quantum/rgb.h **** __attribute__((weak))
+  33:./quantum/rgb.h **** void rgblight_decrease_hue(void) {};
+ 233               		.loc 2 33 0
+ 234               		.cfi_startproc
+ 235               	/* prologue: function */
+ 236               	/* frame size = 0 */
+ 237               	/* stack size = 0 */
+ 238               	.L__stack_usage = 0
+ 239 0000 0895      		ret
+ 240               		.cfi_endproc
+ 241               	.LFE14:
+ 243               		.section	.text.rgblight_increase_sat,"ax",@progbits
+ 244               		.weak	rgblight_increase_sat
+ 246               	rgblight_increase_sat:
+ 247               	.LFB15:
+  34:./quantum/rgb.h **** 
+  35:./quantum/rgb.h **** __attribute__((weak))
+  36:./quantum/rgb.h **** void rgblight_increase_sat(void) {};
+ 248               		.loc 2 36 0
+ 249               		.cfi_startproc
+ 250               	/* prologue: function */
+ 251               	/* frame size = 0 */
+ 252               	/* stack size = 0 */
+ 253               	.L__stack_usage = 0
+ 254 0000 0895      		ret
+ 255               		.cfi_endproc
+ 256               	.LFE15:
+ 258               		.section	.text.rgblight_decrease_sat,"ax",@progbits
+ 259               		.weak	rgblight_decrease_sat
+ 261               	rgblight_decrease_sat:
+ 262               	.LFB16:
+  37:./quantum/rgb.h **** 
+  38:./quantum/rgb.h **** __attribute__((weak))
+  39:./quantum/rgb.h **** void rgblight_decrease_sat(void) {};
+ 263               		.loc 2 39 0
+ 264               		.cfi_startproc
+ 265               	/* prologue: function */
+ 266               	/* frame size = 0 */
+ 267               	/* stack size = 0 */
+ 268               	.L__stack_usage = 0
+ 269 0000 0895      		ret
+ 270               		.cfi_endproc
+ 271               	.LFE16:
+ 273               		.section	.text.rgblight_increase_val,"ax",@progbits
+ 274               		.weak	rgblight_increase_val
+ 276               	rgblight_increase_val:
+ 277               	.LFB17:
+  40:./quantum/rgb.h **** 
+  41:./quantum/rgb.h **** __attribute__((weak))
+  42:./quantum/rgb.h **** void rgblight_increase_val(void) {};
+ 278               		.loc 2 42 0
+ 279               		.cfi_startproc
+ 280               	/* prologue: function */
+ 281               	/* frame size = 0 */
+ 282               	/* stack size = 0 */
+ 283               	.L__stack_usage = 0
+ 284 0000 0895      		ret
+ 285               		.cfi_endproc
+ 286               	.LFE17:
+ 288               		.section	.text.rgblight_decrease_val,"ax",@progbits
+ 289               		.weak	rgblight_decrease_val
+ 291               	rgblight_decrease_val:
+ 292               	.LFB18:
+  43:./quantum/rgb.h **** 
+  44:./quantum/rgb.h **** __attribute__((weak))
+  45:./quantum/rgb.h **** void rgblight_decrease_val(void) {};
+ 293               		.loc 2 45 0
+ 294               		.cfi_startproc
+ 295               	/* prologue: function */
+ 296               	/* frame size = 0 */
+ 297               	/* stack size = 0 */
+ 298               	.L__stack_usage = 0
+ 299 0000 0895      		ret
+ 300               		.cfi_endproc
+ 301               	.LFE18:
+ 303               		.section	.text.rgblight_increase_speed,"ax",@progbits
+ 304               		.weak	rgblight_increase_speed
+ 306               	rgblight_increase_speed:
+ 307               	.LFB19:
+  46:./quantum/rgb.h **** 
+  47:./quantum/rgb.h **** __attribute__((weak))
+  48:./quantum/rgb.h **** void rgblight_increase_speed(void) {};
+ 308               		.loc 2 48 0
+ 309               		.cfi_startproc
+ 310               	/* prologue: function */
+ 311               	/* frame size = 0 */
+ 312               	/* stack size = 0 */
+ 313               	.L__stack_usage = 0
+ 314 0000 0895      		ret
+ 315               		.cfi_endproc
+ 316               	.LFE19:
+ 318               		.section	.text.rgblight_decrease_speed,"ax",@progbits
+ 319               		.weak	rgblight_decrease_speed
+ 321               	rgblight_decrease_speed:
+ 322               	.LFB20:
+  49:./quantum/rgb.h **** 
+  50:./quantum/rgb.h **** __attribute__((weak))
+  51:./quantum/rgb.h **** void rgblight_decrease_speed(void) {};
+ 323               		.loc 2 51 0
+ 324               		.cfi_startproc
+ 325               	/* prologue: function */
+ 326               	/* frame size = 0 */
+ 327               	/* stack size = 0 */
+ 328               	.L__stack_usage = 0
+ 329 0000 0895      		ret
+ 330               		.cfi_endproc
+ 331               	.LFE20:
+ 333               		.section	.text.persistent_default_layer_set,"ax",@progbits
+ 334               	.global	persistent_default_layer_set
+ 336               	persistent_default_layer_set:
+ 337               	.LFB24:
+ 261:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** void persistent_default_layer_set(uint16_t default_layer) {
+ 338               		.loc 1 261 0
+ 339               		.cfi_startproc
+ 340               	.LVL15:
+ 261:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** void persistent_default_layer_set(uint16_t default_layer) {
+ 341               		.loc 1 261 0
+ 342 0000 CF93      		push r28
+ 343               	.LCFI0:
+ 344               		.cfi_def_cfa_offset 3
+ 345               		.cfi_offset 28, -2
+ 346 0002 DF93      		push r29
+ 347               	.LCFI1:
+ 348               		.cfi_def_cfa_offset 4
+ 349               		.cfi_offset 29, -3
+ 350               	/* prologue: function */
+ 351               	/* frame size = 0 */
+ 352               	/* stack size = 2 */
+ 353               	.L__stack_usage = 2
+ 354 0004 EC01      		movw r28,r24
+ 262:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	eeconfig_update_default_layer(default_layer);
+ 355               		.loc 1 262 0
+ 356 0006 0E94 0000 		call eeconfig_update_default_layer
+ 357               	.LVL16:
+ 263:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	default_layer_set(default_layer);
+ 358               		.loc 1 263 0
+ 359 000a BE01      		movw r22,r28
+ 360 000c 80E0      		ldi r24,0
+ 361 000e 90E0      		ldi r25,0
+ 362               	/* epilogue start */
+ 264:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** }
+ 363               		.loc 1 264 0
+ 364 0010 DF91      		pop r29
+ 365 0012 CF91      		pop r28
+ 366               	.LVL17:
+ 263:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	default_layer_set(default_layer);
+ 367               		.loc 1 263 0
+ 368 0014 0C94 0000 		jmp default_layer_set
+ 369               	.LVL18:
+ 370               		.cfi_endproc
+ 371               	.LFE24:
+ 373               		.section	.text.action_get_macro,"ax",@progbits
+ 374               	.global	action_get_macro
+ 376               	action_get_macro:
+ 377               	.LFB25:
+ 274:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) {
+ 378               		.loc 1 274 0
+ 379               		.cfi_startproc
+ 380               	.LVL19:
+ 381               	/* prologue: function */
+ 382               	/* frame size = 0 */
+ 383               	/* stack size = 0 */
+ 384               	.L__stack_usage = 0
+ 385 0000 DC01      		movw r26,r24
+ 276:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	switch (id) {
+ 386               		.loc 1 276 0
+ 387 0002 462F      		mov r20,r22
+ 388               	.LVL20:
+ 389 0004 50E0      		ldi r21,0
+ 390 0006 4031      		cpi r20,16
+ 391 0008 5105      		cpc r21,__zero_reg__
+ 392 000a 00F0      		brlo .+2
+ 393 000c 00C0      		rjmp .L58
+ 394 000e 4050      		subi r20,lo8(-(gs(.L32)))
+ 395 0010 5040      		sbci r21,hi8(-(gs(.L32)))
+ 396 0012 FA01      		movw r30,r20
+ 397 0014 0C94 0000 		jmp __tablejump2__
+ 398               		.section	.progmem.gcc_sw_table.action_get_macro,"a",@progbits
+ 399               		.p2align	1
+ 400               	.L32:
+ 401 0000 0000      		.word gs(.L31)
+ 402 0002 0000      		.word gs(.L33)
+ 403 0004 0000      		.word gs(.L34)
+ 404 0006 0000      		.word gs(.L35)
+ 405 0008 0000      		.word gs(.L36)
+ 406 000a 0000      		.word gs(.L37)
+ 407 000c 0000      		.word gs(.L38)
+ 408 000e 0000      		.word gs(.L58)
+ 409 0010 0000      		.word gs(.L58)
+ 410 0012 0000      		.word gs(.L58)
+ 411 0014 0000      		.word gs(.L39)
+ 412 0016 0000      		.word gs(.L40)
+ 413 0018 0000      		.word gs(.L41)
+ 414 001a 0000      		.word gs(.L42)
+ 415 001c 0000      		.word gs(.L43)
+ 416 001e 0000      		.word gs(.L44)
+ 417               		.section	.text.action_get_macro
+ 418               	.L31:
+ 278:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		if (record->event.pressed) {
+ 419               		.loc 1 278 0
+ 420 0018 1296      		adiw r26,2
+ 421 001a 8C91      		ld r24,X
+ 422 001c 1297      		sbiw r26,2
+ 423               	.LVL21:
+ 424 001e 8111      		cpse r24,__zero_reg__
+ 425 0020 00C0      		rjmp .L49
+ 426               	.L33:
+ 282:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		if (record->event.pressed) {
+ 427               		.loc 1 282 0
+ 428 0022 1296      		adiw r26,2
+ 429 0024 8C91      		ld r24,X
+ 430 0026 1297      		sbiw r26,2
+ 431 0028 8111      		cpse r24,__zero_reg__
+ 432 002a 00C0      		rjmp .L50
+ 433               	.L34:
+ 288:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		if (record->event.pressed) {
+ 434               		.loc 1 288 0
+ 435 002c 1296      		adiw r26,2
+ 436 002e 8C91      		ld r24,X
+ 437 0030 1297      		sbiw r26,2
+ 438 0032 8823      		tst r24
+ 439 0034 01F0      		breq .L35
+ 289:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 			SEND_STRING("apaez@gotocos.com");
+ 440               		.loc 1 289 0
+ 441 0036 80E0      		ldi r24,lo8(__c.3181)
+ 442 0038 90E0      		ldi r25,hi8(__c.3181)
+ 443 003a 00C0      		rjmp .L77
+ 444               	.L35:
+ 293:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		if (record->event.pressed) {
+ 445               		.loc 1 293 0
+ 446 003c 1296      		adiw r26,2
+ 447 003e 8C91      		ld r24,X
+ 448 0040 1297      		sbiw r26,2
+ 449 0042 8823      		tst r24
+ 450 0044 01F0      		breq .L36
+ 294:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 			SEND_STRING("www.support.xerox.com"SS_TAP(X_ENTER));
+ 451               		.loc 1 294 0
+ 452 0046 80E0      		ldi r24,lo8(__c.3184)
+ 453 0048 90E0      		ldi r25,hi8(__c.3184)
+ 454 004a 00C0      		rjmp .L77
+ 455               	.L36:
+ 298:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		if(record->event.pressed) {
+ 456               		.loc 1 298 0
+ 457 004c 1296      		adiw r26,2
+ 458 004e 8C91      		ld r24,X
+ 459 0050 1297      		sbiw r26,2
+ 460 0052 8111      		cpse r24,__zero_reg__
+ 461 0054 00C0      		rjmp .L51
+ 462               	.L37:
+ 303:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 			return  MACRO_TAP_HOLD_LAYER(record, MACRO(TYPE(KC_X), END), _LOWER);	
+ 463               		.loc 1 303 0
+ 464 0056 1296      		adiw r26,2
+ 465 0058 9C91      		ld r25,X
+ 466 005a 1297      		sbiw r26,2
+ 467 005c 1596      		adiw r26,5
+ 468 005e 8C91      		ld r24,X
+ 469 0060 9923      		tst r25
+ 470 0062 01F0      		breq .L45
+ 303:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 			return  MACRO_TAP_HOLD_LAYER(record, MACRO(TYPE(KC_X), END), _LOWER);	
+ 471               		.loc 1 303 0 is_stmt 0 discriminator 1
+ 472 0064 982F      		mov r25,r24
+ 473 0066 9295      		swap r25
+ 474 0068 9F70      		andi r25,lo8(15)
+ 475 006a 01F0      		breq .L46
+ 303:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 			return  MACRO_TAP_HOLD_LAYER(record, MACRO(TYPE(KC_X), END), _LOWER);	
+ 476               		.loc 1 303 0 discriminator 4
+ 477 006c 80FF      		sbrs r24,0
+ 478 006e 00C0      		rjmp .L58
+ 479               	.L46:
+ 480               	.LBB2:
+ 303:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 			return  MACRO_TAP_HOLD_LAYER(record, MACRO(TYPE(KC_X), END), _LOWER);	
+ 481               		.loc 1 303 0 discriminator 3
+ 482 0070 83E0      		ldi r24,lo8(3)
+ 483 0072 0E94 0000 		call layer_on
+ 484               	.LVL22:
+ 485 0076 00C0      		rjmp .L58
+ 486               	.LVL23:
+ 487               	.L45:
+ 488               	.LBE2:
+ 303:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 			return  MACRO_TAP_HOLD_LAYER(record, MACRO(TYPE(KC_X), END), _LOWER);	
+ 489               		.loc 1 303 0 discriminator 2
+ 490 0078 982F      		mov r25,r24
+ 491 007a 9295      		swap r25
+ 492 007c 9F70      		andi r25,lo8(15)
+ 493 007e 01F0      		breq .L47
+ 303:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 			return  MACRO_TAP_HOLD_LAYER(record, MACRO(TYPE(KC_X), END), _LOWER);	
+ 494               		.loc 1 303 0 discriminator 6
+ 495 0080 80FF      		sbrs r24,0
+ 496 0082 00C0      		rjmp .L53
+ 497               	.L47:
+ 498               	.LBB3:
+ 303:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 			return  MACRO_TAP_HOLD_LAYER(record, MACRO(TYPE(KC_X), END), _LOWER);	
+ 499               		.loc 1 303 0 discriminator 7
+ 500 0084 83E0      		ldi r24,lo8(3)
+ 501 0086 0E94 0000 		call layer_off
+ 502               	.LVL24:
+ 503 008a 00C0      		rjmp .L58
+ 504               	.LVL25:
+ 505               	.L38:
+ 506               	.LBE3:
+ 306:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 			if(record->event.pressed) 
+ 507               		.loc 1 306 0 is_stmt 1
+ 508 008c 1296      		adiw r26,2
+ 509 008e 8C91      		ld r24,X
+ 510 0090 1297      		sbiw r26,2
+ 511               	.LVL26:
+ 512 0092 8111      		cpse r24,__zero_reg__
+ 513 0094 00C0      		rjmp .L54
+ 514               	.L39:
+ 310:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		if(record->event.pressed) {
+ 515               		.loc 1 310 0
+ 516 0096 1296      		adiw r26,2
+ 517 0098 8C91      		ld r24,X
+ 518 009a 1297      		sbiw r26,2
+ 519 009c 8823      		tst r24
+ 520 009e 01F0      		breq .L40
+ 311:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		SEND_STRING("Mydogc3rri35");
+ 521               		.loc 1 311 0
+ 522 00a0 80E0      		ldi r24,lo8(__c.3198)
+ 523 00a2 90E0      		ldi r25,hi8(__c.3198)
+ 524 00a4 00C0      		rjmp .L77
+ 525               	.L40:
+ 315:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		if(record->event.pressed) {
+ 526               		.loc 1 315 0
+ 527 00a6 1296      		adiw r26,2
+ 528 00a8 8C91      		ld r24,X
+ 529 00aa 1297      		sbiw r26,2
+ 530 00ac 8823      		tst r24
+ 531 00ae 01F0      		breq .L41
+ 316:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 			SEND_STRING("ipconfig /all");
+ 532               		.loc 1 316 0
+ 533 00b0 80E0      		ldi r24,lo8(__c.3201)
+ 534 00b2 90E0      		ldi r25,hi8(__c.3201)
+ 535 00b4 00C0      		rjmp .L77
+ 536               	.L41:
+ 320:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	if(record->event.pressed) 
+ 537               		.loc 1 320 0
+ 538 00b6 1296      		adiw r26,2
+ 539 00b8 8C91      		ld r24,X
+ 540 00ba 1297      		sbiw r26,2
+ 541 00bc 8111      		cpse r24,__zero_reg__
+ 542 00be 00C0      		rjmp .L55
+ 543               	.L42:
+ 324:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	if(record->event.pressed) 
+ 544               		.loc 1 324 0
+ 545 00c0 1296      		adiw r26,2
+ 546 00c2 8C91      		ld r24,X
+ 547 00c4 1297      		sbiw r26,2
+ 548 00c6 8111      		cpse r24,__zero_reg__
+ 549 00c8 00C0      		rjmp .L56
+ 550               	.L43:
+ 328:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	if(record->event.pressed) 
+ 551               		.loc 1 328 0
+ 552 00ca 1296      		adiw r26,2
+ 553 00cc 8C91      		ld r24,X
+ 554 00ce 1297      		sbiw r26,2
+ 555 00d0 8111      		cpse r24,__zero_reg__
+ 556 00d2 00C0      		rjmp .L57
+ 557               	.L44:
+ 332:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	if(record->event.pressed) 
+ 558               		.loc 1 332 0
+ 559 00d4 1296      		adiw r26,2
+ 560 00d6 8C91      		ld r24,X
+ 561 00d8 8823      		tst r24
+ 562 00da 01F0      		breq .L58
+ 333:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		SEND_STRING("ACloughPaez@GSB-Inc"SS_TAP(X_TAB)"Is7f#0n$Z"SS_TAP(X_TAB)SS_TAP(X_ENTER));
+ 563               		.loc 1 333 0
+ 564 00dc 80E0      		ldi r24,lo8(__c.3213)
+ 565 00de 90E0      		ldi r25,hi8(__c.3213)
+ 566               	.L77:
+ 567 00e0 0E94 0000 		call send_string_P
+ 568               	.LVL27:
+ 569 00e4 00C0      		rjmp .L58
+ 570               	.LVL28:
+ 571               	.L49:
+ 279:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 			return MACRO(D(LGUI), T(TAB), U(LGUI), END);
+ 572               		.loc 1 279 0
+ 573 00e6 80E0      		ldi r24,lo8(__m.3175)
+ 574 00e8 90E0      		ldi r25,hi8(__m.3175)
+ 575 00ea 0895      		ret
+ 576               	.L50:
+ 285:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 			return MACRO(I(10), T(A), T(D), T(M), T(I), T(N), W(75), T(TAB), T(1), T(1),T(1), T(1), T(ENTER)
+ 577               		.loc 1 285 0
+ 578 00ec 80E0      		ldi r24,lo8(__m.3178)
+ 579 00ee 90E0      		ldi r25,hi8(__m.3178)
+ 580 00f0 0895      		ret
+ 581               	.L51:
+ 299:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 			return MACRO(I(10), D(LCTRL), T(T), T(V), T(ENTER), U(LCTRL), END);
+ 582               		.loc 1 299 0
+ 583 00f2 80E0      		ldi r24,lo8(__m.3187)
+ 584 00f4 90E0      		ldi r25,hi8(__m.3187)
+ 585 00f6 0895      		ret
+ 586               	.L53:
+ 303:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 			return  MACRO_TAP_HOLD_LAYER(record, MACRO(TYPE(KC_X), END), _LOWER);	
+ 587               		.loc 1 303 0
+ 588 00f8 80E0      		ldi r24,lo8(__m.3191)
+ 589 00fa 90E0      		ldi r25,hi8(__m.3191)
+ 590 00fc 0895      		ret
+ 591               	.L54:
+ 307:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 			return MACRO(I(10), T(0), T(C), T(TAB), T(TAB), T(A), T(TAB), END);
+ 592               		.loc 1 307 0
+ 593 00fe 80E0      		ldi r24,lo8(__m.3195)
+ 594 0100 90E0      		ldi r25,hi8(__m.3195)
+ 595 0102 0895      		ret
+ 596               	.L55:
+ 321:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		return MACRO( I(10),T(TAB), T(O), T(P), T(TAB),T(ENTER), T(TAB),T(TAB),T(TAB),T(Z),T(R),T(TAB),T(
+ 597               		.loc 1 321 0
+ 598 0104 80E0      		ldi r24,lo8(__m.3204)
+ 599 0106 90E0      		ldi r25,hi8(__m.3204)
+ 600 0108 0895      		ret
+ 601               	.L56:
+ 325:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		return MACRO( I(10),T(TAB), T(O), T(T), T(TAB),T(ENTER), T(TAB),T(TAB),T(TAB),T(Z),T(R),T(TAB),T(
+ 602               		.loc 1 325 0
+ 603 010a 80E0      		ldi r24,lo8(__m.3207)
+ 604 010c 90E0      		ldi r25,hi8(__m.3207)
+ 605 010e 0895      		ret
+ 606               	.L57:
+ 329:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		return MACRO( I(10),T(TAB), T(I), T(N), T(TAB),T(ENTER), T(TAB),T(TAB),T(TAB),T(I),T(N),T(TAB),T(
+ 607               		.loc 1 329 0
+ 608 0110 80E0      		ldi r24,lo8(__m.3210)
+ 609 0112 90E0      		ldi r25,hi8(__m.3210)
+ 610 0114 0895      		ret
+ 611               	.LVL29:
+ 612               	.L58:
+ 303:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 			return  MACRO_TAP_HOLD_LAYER(record, MACRO(TYPE(KC_X), END), _LOWER);	
+ 613               		.loc 1 303 0
+ 614 0116 80E0      		ldi r24,0
+ 615 0118 90E0      		ldi r25,0
+ 339:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** }
+ 616               		.loc 1 339 0
+ 617 011a 0895      		ret
+ 618               		.cfi_endproc
+ 619               	.LFE25:
+ 621               		.section	.text.matrix_init_user,"ax",@progbits
+ 622               	.global	matrix_init_user
+ 624               	matrix_init_user:
+ 625               	.LFB30:
+ 382:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** }
+ 383:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	
+ 384:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** qk_tap_dance_action_t tap_dance_actions[] = {
+ 385:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	
+ 386:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	//Tap once for Esc, twice for Caps Lock
+ 387:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	[TD_CPY_PST] = ACTION_TAP_DANCE_FN(cmd_commands),
+ 388:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	[TD_SLSH]= ACTION_TAP_DANCE_FN(SLSH_BSLSH),
+ 389:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	[TD_CMD]=ACTION_TAP_DANCE_FN(cmd),
+ 390:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	[TD_VRDSK]=ACTION_TAP_DANCE_FN(VirtualDesktop)
+ 391:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** };
+ 392:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 
+ 393:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** void matrix_init_user(void) {
+ 626               		.loc 1 393 0
+ 627               		.cfi_startproc
+ 628               	/* prologue: function */
+ 629               	/* frame size = 0 */
+ 630               	/* stack size = 0 */
+ 631               	.L__stack_usage = 0
+ 632 0000 0895      		ret
+ 633               		.cfi_endproc
+ 634               	.LFE30:
+ 636               		.section	.text.matrix_scan_user,"ax",@progbits
+ 637               	.global	matrix_scan_user
+ 639               	matrix_scan_user:
+ 640               	.LFB31:
+ 394:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** }
+ 395:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 
+ 396:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** void matrix_scan_user(void) {
+ 641               		.loc 1 396 0
+ 642               		.cfi_startproc
+ 643               	/* prologue: function */
+ 644               	/* frame size = 0 */
+ 645               	/* stack size = 0 */
+ 646               	.L__stack_usage = 0
+ 647 0000 0895      		ret
+ 648               		.cfi_endproc
+ 649               	.LFE31:
+ 651               		.section	.text.process_record_user,"ax",@progbits
+ 652               	.global	process_record_user
+ 654               	process_record_user:
+ 655               	.LFB32:
+ 397:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	
+ 398:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	
+ 399:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** }
+ 400:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+ 656               		.loc 1 400 0
+ 657               		.cfi_startproc
+ 658               	.LVL30:
+ 659               		.loc 1 400 0
+ 660 0000 CF93      		push r28
+ 661               	.LCFI2:
+ 662               		.cfi_def_cfa_offset 3
+ 663               		.cfi_offset 28, -2
+ 664               	/* prologue: function */
+ 665               	/* frame size = 0 */
+ 666               	/* stack size = 1 */
+ 667               	.L__stack_usage = 1
+ 668 0002 FB01      		movw r30,r22
+ 401:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	switch (keycode) {
+ 669               		.loc 1 401 0
+ 670 0004 8C3D      		cpi r24,-36
+ 671 0006 2CE5      		ldi r18,92
+ 672 0008 9207      		cpc r25,r18
+ 673 000a 01F0      		breq .L82
+ 674 000c 00F4      		brsh .L83
+ 675 000e 8A3D      		cpi r24,-38
+ 676 0010 2CE5      		ldi r18,92
+ 677 0012 9207      		cpc r25,r18
+ 678 0014 01F0      		breq .L84
+ 679 0016 8B3D      		cpi r24,-37
+ 680 0018 9C45      		sbci r25,92
+ 681 001a 01F0      		breq .L85
+ 682 001c 00C0      		rjmp .L92
+ 683               	.L83:
+ 684 001e 8E3D      		cpi r24,-34
+ 685 0020 2CE5      		ldi r18,92
+ 686 0022 9207      		cpc r25,r18
+ 687 0024 01F0      		breq .L86
+ 688 0026 00F0      		brlo .L87
+ 689 0028 803E      		cpi r24,-32
+ 690 002a 9C45      		sbci r25,92
+ 691 002c 01F0      		breq .L88
+ 692 002e 00C0      		rjmp .L92
+ 693               	.L85:
+ 402:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	case QWERTY:
+ 403:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		if (record->event.pressed) {
+ 694               		.loc 1 403 0
+ 695 0030 C281      		ldd r28,Z+2
+ 696 0032 CC23      		tst r28
+ 697 0034 01F0      		breq .L81
+ 404:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 			#ifdef AUDIO_ENABLE
+ 405:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 			PLAY_NOTE_ARRAY(tone_qwerty, false, 0);
+ 406:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 			#endif
+ 407:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 			persistent_default_layer_set(1UL<<_QWERTY);
+ 698               		.loc 1 407 0
+ 699 0036 81E0      		ldi r24,lo8(1)
+ 700 0038 90E0      		ldi r25,0
+ 701               	.LVL31:
+ 702 003a 00C0      		rjmp .L103
+ 703               	.LVL32:
+ 704               	.L84:
+ 408:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		}
+ 409:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		return false;
+ 410:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		break;
+ 411:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	case COLEMAK:
+ 412:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		if (record->event.pressed) {
+ 705               		.loc 1 412 0
+ 706 003c C281      		ldd r28,Z+2
+ 707 003e CC23      		tst r28
+ 708 0040 01F0      		breq .L81
+ 413:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 			#ifdef AUDIO_ENABLE
+ 414:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 			PLAY_NOTE_ARRAY(tone_colemak, false, 0);
+ 415:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 			#endif
+ 416:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 			persistent_default_layer_set(1UL<<_COLEMAK);
+ 709               		.loc 1 416 0
+ 710 0042 82E0      		ldi r24,lo8(2)
+ 711 0044 90E0      		ldi r25,0
+ 712               	.LVL33:
+ 713               	.L103:
+ 714 0046 0E94 0000 		call persistent_default_layer_set
+ 715               	.LVL34:
+ 716 004a 00C0      		rjmp .L102
+ 717               	.LVL35:
+ 718               	.L82:
+ 417:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		}
+ 418:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		return false;
+ 419:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		break;
+ 420:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	case DVORAK:
+ 421:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		if (record->event.pressed) {
+ 719               		.loc 1 421 0
+ 720 004c C281      		ldd r28,Z+2
+ 721 004e CC23      		tst r28
+ 722 0050 01F0      		breq .L81
+ 422:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 			#ifdef AUDIO_ENABLE
+ 423:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 			PLAY_NOTE_ARRAY(tone_dvorak, false, 0);
+ 424:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 			#endif
+ 425:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 			persistent_default_layer_set(1UL<<_DVORAK);
+ 723               		.loc 1 425 0
+ 724 0052 84E0      		ldi r24,lo8(4)
+ 725 0054 90E0      		ldi r25,0
+ 726               	.LVL36:
+ 727 0056 00C0      		rjmp .L103
+ 728               	.LVL37:
+ 729               	.L87:
+ 426:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		}
+ 427:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		return false;
+ 428:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		break;
+ 429:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	case LOWER:
+ 430:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		if (record->event.pressed) {
+ 730               		.loc 1 430 0
+ 731 0058 C281      		ldd r28,Z+2
+ 431:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 			layer_on(_LOWER);
+ 732               		.loc 1 431 0
+ 733 005a 83E0      		ldi r24,lo8(3)
+ 734               	.LVL38:
+ 735 005c 00C0      		rjmp .L106
+ 736               	.LVL39:
+ 737               	.L86:
+ 432:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 			update_tri_layer(_LOWER, _RAISE, _ADJUST);
+ 433:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		} else {
+ 434:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 			layer_off(_LOWER);
+ 435:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 			update_tri_layer(_LOWER, _RAISE, _ADJUST);
+ 436:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		}
+ 437:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		return false;
+ 438:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		break;
+ 439:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	case RAISE:
+ 440:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		if (record->event.pressed) {
+ 738               		.loc 1 440 0
+ 739 005e C281      		ldd r28,Z+2
+ 441:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 			layer_on(_RAISE);
+ 740               		.loc 1 441 0
+ 741 0060 84E0      		ldi r24,lo8(4)
+ 742               	.LVL40:
+ 743               	.L106:
+ 440:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		if (record->event.pressed) {
+ 744               		.loc 1 440 0
+ 745 0062 CC23      		tst r28
+ 746 0064 01F0      		breq .L90
+ 747               		.loc 1 441 0
+ 748 0066 0E94 0000 		call layer_on
+ 749               	.LVL41:
+ 442:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 			update_tri_layer(_LOWER, _RAISE, _ADJUST);
+ 750               		.loc 1 442 0
+ 751 006a 40E1      		ldi r20,lo8(16)
+ 752 006c 64E0      		ldi r22,lo8(4)
+ 753 006e 83E0      		ldi r24,lo8(3)
+ 754 0070 0E94 0000 		call update_tri_layer
+ 755               	.LVL42:
+ 756 0074 00C0      		rjmp .L102
+ 757               	.LVL43:
+ 758               	.L90:
+ 443:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		} else {
+ 444:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 			layer_off(_RAISE);
+ 759               		.loc 1 444 0
+ 760 0076 0E94 0000 		call layer_off
+ 761               	.LVL44:
+ 445:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 			update_tri_layer(_LOWER, _RAISE, _ADJUST);
+ 762               		.loc 1 445 0
+ 763 007a 40E1      		ldi r20,lo8(16)
+ 764 007c 64E0      		ldi r22,lo8(4)
+ 765 007e 83E0      		ldi r24,lo8(3)
+ 766 0080 0E94 0000 		call update_tri_layer
+ 767               	.LVL45:
+ 768 0084 00C0      		rjmp .L81
+ 769               	.LVL46:
+ 770               	.L88:
+ 446:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		}
+ 447:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		return false;
+ 448:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		break;
+ 449:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	case ADJUST:
+ 450:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		if (record->event.pressed) {
+ 771               		.loc 1 450 0
+ 772 0086 C281      		ldd r28,Z+2
+ 451:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 			layer_on(_ADJUST);
+ 773               		.loc 1 451 0
+ 774 0088 80E1      		ldi r24,lo8(16)
+ 775               	.LVL47:
+ 450:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		if (record->event.pressed) {
+ 776               		.loc 1 450 0
+ 777 008a CC23      		tst r28
+ 778 008c 01F0      		breq .L91
+ 779               		.loc 1 451 0
+ 780 008e 0E94 0000 		call layer_on
+ 781               	.LVL48:
+ 782               	.L102:
+ 452:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		} else {
+ 453:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 			layer_off(_ADJUST);
+ 454:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		}
+ 455:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		return false;
+ 783               		.loc 1 455 0
+ 784 0092 C0E0      		ldi r28,0
+ 785 0094 00C0      		rjmp .L81
+ 786               	.LVL49:
+ 787               	.L91:
+ 453:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 			layer_off(_ADJUST);
+ 788               		.loc 1 453 0
+ 789 0096 0E94 0000 		call layer_off
+ 790               	.LVL50:
+ 791 009a 00C0      		rjmp .L81
+ 792               	.LVL51:
+ 793               	.L92:
+ 456:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 		break;
+ 457:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	}
+ 458:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** 	return true;
+ 794               		.loc 1 458 0
+ 795 009c C1E0      		ldi r28,lo8(1)
+ 796               	.LVL52:
+ 797               	.L81:
+ 459:keyboards/Aaron/Dactyl/keymaps/default/keymap.c **** }
+ 798               		.loc 1 459 0
+ 799 009e 8C2F      		mov r24,r28
+ 800               	/* epilogue start */
+ 801 00a0 CF91      		pop r28
+ 802 00a2 0895      		ret
+ 803               		.cfi_endproc
+ 804               	.LFE32:
+ 806               		.section	.progmem.data.__m.3245,"a",@progbits
+ 809               	__m.3245:
+ 810 0000 01        		.byte	1
+ 811 0001 E3        		.byte	-29
+ 812 0002 01        		.byte	1
+ 813 0003 E0        		.byte	-32
+ 814 0004 01        		.byte	1
+ 815 0005 4F        		.byte	79
+ 816 0006 02        		.byte	2
+ 817 0007 4F        		.byte	79
+ 818 0008 02        		.byte	2
+ 819 0009 E0        		.byte	-32
+ 820 000a 02        		.byte	2
+ 821 000b E3        		.byte	-29
+ 822 000c 00        		.byte	0
+ 823               		.section	.progmem.data.__m.3243,"a",@progbits
+ 826               	__m.3243:
+ 827 0000 01        		.byte	1
+ 828 0001 E3        		.byte	-29
+ 829 0002 01        		.byte	1
+ 830 0003 E0        		.byte	-32
+ 831 0004 01        		.byte	1
+ 832 0005 50        		.byte	80
+ 833 0006 02        		.byte	2
+ 834 0007 50        		.byte	80
+ 835 0008 02        		.byte	2
+ 836 0009 E0        		.byte	-32
+ 837 000a 02        		.byte	2
+ 838 000b E3        		.byte	-29
+ 839 000c 00        		.byte	0
+ 840               		.section	.progmem.data.__m.3233,"a",@progbits
+ 843               	__m.3233:
+ 844 0000 01        		.byte	1
+ 845 0001 E3        		.byte	-29
+ 846 0002 01        		.byte	1
+ 847 0003 15        		.byte	21
+ 848 0004 02        		.byte	2
+ 849 0005 15        		.byte	21
+ 850 0006 74        		.byte	116
+ 851 0007 FF        		.byte	-1
+ 852 0008 02        		.byte	2
+ 853 0009 E3        		.byte	-29
+ 854 000a 74        		.byte	116
+ 855 000b FF        		.byte	-1
+ 856 000c 01        		.byte	1
+ 857 000d 06        		.byte	6
+ 858 000e 02        		.byte	2
+ 859 000f 06        		.byte	6
+ 860 0010 01        		.byte	1
+ 861 0011 10        		.byte	16
+ 862 0012 02        		.byte	2
+ 863 0013 10        		.byte	16
+ 864 0014 01        		.byte	1
+ 865 0015 07        		.byte	7
+ 866 0016 02        		.byte	2
+ 867 0017 07        		.byte	7
+ 868 0018 01        		.byte	1
+ 869 0019 28        		.byte	40
+ 870 001a 02        		.byte	2
+ 871 001b 28        		.byte	40
+ 872 001c 74        		.byte	116
+ 873 001d FF        		.byte	-1
+ 874 001e 01        		.byte	1
+ 875 001f 13        		.byte	19
+ 876 0020 02        		.byte	2
+ 877 0021 13        		.byte	19
+ 878 0022 01        		.byte	1
+ 879 0023 0C        		.byte	12
+ 880 0024 02        		.byte	2
+ 881 0025 0C        		.byte	12
+ 882 0026 01        		.byte	1
+ 883 0027 11        		.byte	17
+ 884 0028 02        		.byte	2
+ 885 0029 11        		.byte	17
+ 886 002a 01        		.byte	1
+ 887 002b 0A        		.byte	10
+ 888 002c 02        		.byte	2
+ 889 002d 0A        		.byte	10
+ 890 002e 01        		.byte	1
+ 891 002f 2C        		.byte	44
+ 892 0030 02        		.byte	2
+ 893 0031 2C        		.byte	44
+ 894 0032 01        		.byte	1
+ 895 0033 E0        		.byte	-32
+ 896 0034 01        		.byte	1
+ 897 0035 19        		.byte	25
+ 898 0036 02        		.byte	2
+ 899 0037 19        		.byte	25
+ 900 0038 02        		.byte	2
+ 901 0039 E0        		.byte	-32
+ 902 003a 00        		.byte	0
+ 903               		.section	.progmem.data.__m.3231,"a",@progbits
+ 906               	__m.3231:
+ 907 0000 01        		.byte	1
+ 908 0001 E3        		.byte	-29
+ 909 0002 01        		.byte	1
+ 910 0003 15        		.byte	21
+ 911 0004 02        		.byte	2
+ 912 0005 15        		.byte	21
+ 913 0006 02        		.byte	2
+ 914 0007 E3        		.byte	-29
+ 915 0008 01        		.byte	1
+ 916 0009 06        		.byte	6
+ 917 000a 02        		.byte	2
+ 918 000b 06        		.byte	6
+ 919 000c 01        		.byte	1
+ 920 000d 10        		.byte	16
+ 921 000e 02        		.byte	2
+ 922 000f 10        		.byte	16
+ 923 0010 01        		.byte	1
+ 924 0011 07        		.byte	7
+ 925 0012 02        		.byte	2
+ 926 0013 07        		.byte	7
+ 927 0014 01        		.byte	1
+ 928 0015 28        		.byte	40
+ 929 0016 02        		.byte	2
+ 930 0017 28        		.byte	40
+ 931 0018 74        		.byte	116
+ 932 0019 FF        		.byte	-1
+ 933 001a 74        		.byte	116
+ 934 001b FF        		.byte	-1
+ 935 001c 01        		.byte	1
+ 936 001d 0C        		.byte	12
+ 937 001e 02        		.byte	2
+ 938 001f 0C        		.byte	12
+ 939 0020 01        		.byte	1
+ 940 0021 13        		.byte	19
+ 941 0022 02        		.byte	2
+ 942 0023 13        		.byte	19
+ 943 0024 01        		.byte	1
+ 944 0025 06        		.byte	6
+ 945 0026 02        		.byte	2
+ 946 0027 06        		.byte	6
+ 947 0028 01        		.byte	1
+ 948 0029 12        		.byte	18
+ 949 002a 02        		.byte	2
+ 950 002b 12        		.byte	18
+ 951 002c 01        		.byte	1
+ 952 002d 11        		.byte	17
+ 953 002e 02        		.byte	2
+ 954 002f 11        		.byte	17
+ 955 0030 01        		.byte	1
+ 956 0031 09        		.byte	9
+ 957 0032 02        		.byte	2
+ 958 0033 09        		.byte	9
+ 959 0034 01        		.byte	1
+ 960 0035 0C        		.byte	12
+ 961 0036 02        		.byte	2
+ 962 0037 0C        		.byte	12
+ 963 0038 01        		.byte	1
+ 964 0039 0A        		.byte	10
+ 965 003a 02        		.byte	2
+ 966 003b 0A        		.byte	10
+ 967 003c 01        		.byte	1
+ 968 003d 2C        		.byte	44
+ 969 003e 02        		.byte	2
+ 970 003f 2C        		.byte	44
+ 971 0040 01        		.byte	1
+ 972 0041 38        		.byte	56
+ 973 0042 02        		.byte	2
+ 974 0043 38        		.byte	56
+ 975 0044 01        		.byte	1
+ 976 0045 04        		.byte	4
+ 977 0046 02        		.byte	2
+ 978 0047 04        		.byte	4
+ 979 0048 01        		.byte	1
+ 980 0049 0F        		.byte	15
+ 981 004a 02        		.byte	2
+ 982 004b 0F        		.byte	15
+ 983 004c 01        		.byte	1
+ 984 004d 0F        		.byte	15
+ 985 004e 02        		.byte	2
+ 986 004f 0F        		.byte	15
+ 987 0050 01        		.byte	1
+ 988 0051 28        		.byte	40
+ 989 0052 02        		.byte	2
+ 990 0053 28        		.byte	40
+ 991 0054 00        		.byte	0
+ 992               		.section	.progmem.data.__m.3229,"a",@progbits
+ 995               	__m.3229:
+ 996 0000 01        		.byte	1
+ 997 0001 E3        		.byte	-29
+ 998 0002 01        		.byte	1
+ 999 0003 15        		.byte	21
+ 1000 0004 02        		.byte	2
+ 1001 0005 15        		.byte	21
+ 1002 0006 74        		.byte	116
+ 1003 0007 FF        		.byte	-1
+ 1004 0008 02        		.byte	2
+ 1005 0009 E3        		.byte	-29
+ 1006 000a 74        		.byte	116
+ 1007 000b FF        		.byte	-1
+ 1008 000c 01        		.byte	1
+ 1009 000d 06        		.byte	6
+ 1010 000e 02        		.byte	2
+ 1011 000f 06        		.byte	6
+ 1012 0010 01        		.byte	1
+ 1013 0011 10        		.byte	16
+ 1014 0012 02        		.byte	2
+ 1015 0013 10        		.byte	16
+ 1016 0014 01        		.byte	1
+ 1017 0015 07        		.byte	7
+ 1018 0016 02        		.byte	2
+ 1019 0017 07        		.byte	7
+ 1020 0018 01        		.byte	1
+ 1021 0019 28        		.byte	40
+ 1022 001a 02        		.byte	2
+ 1023 001b 28        		.byte	40
+ 1024 001c 00        		.byte	0
+ 1025               		.section	.progmem.data.__m.3223,"a",@progbits
+ 1028               	__m.3223:
+ 1029 0000 01        		.byte	1
+ 1030 0001 E0        		.byte	-32
+ 1031 0002 01        		.byte	1
+ 1032 0003 04        		.byte	4
+ 1033 0004 02        		.byte	2
+ 1034 0005 04        		.byte	4
+ 1035 0006 01        		.byte	1
+ 1036 0007 06        		.byte	6
+ 1037 0008 02        		.byte	2
+ 1038 0009 06        		.byte	6
+ 1039 000a 02        		.byte	2
+ 1040 000b E0        		.byte	-32
+ 1041 000c 00        		.byte	0
+ 1042               		.section	.progmem.data.__m.3221,"a",@progbits
+ 1045               	__m.3221:
+ 1046 0000 01        		.byte	1
+ 1047 0001 E0        		.byte	-32
+ 1048 0002 01        		.byte	1
+ 1049 0003 19        		.byte	25
+ 1050 0004 02        		.byte	2
+ 1051 0005 19        		.byte	25
+ 1052 0006 02        		.byte	2
+ 1053 0007 E0        		.byte	-32
+ 1054 0008 00        		.byte	0
+ 1055               		.section	.progmem.data.__m.3219,"a",@progbits
+ 1058               	__m.3219:
+ 1059 0000 01        		.byte	1
+ 1060 0001 E0        		.byte	-32
+ 1061 0002 01        		.byte	1
+ 1062 0003 06        		.byte	6
+ 1063 0004 02        		.byte	2
+ 1064 0005 06        		.byte	6
+ 1065 0006 02        		.byte	2
+ 1066 0007 E0        		.byte	-32
+ 1067 0008 00        		.byte	0
+ 1068               		.section	.progmem.data.__c.3213,"a",@progbits
+ 1071               	__c.3213:
+ 1072 0000 4143 6C6F 		.string	"ACloughPaez@GSB-Inc\001+Is7f#0n$Z\001+\001("
+ 1072      7567 6850 
+ 1072      6165 7A40 
+ 1072      4753 422D 
+ 1072      496E 6301 
+ 1073               		.section	.progmem.data.__m.3210,"a",@progbits
+ 1076               	__m.3210:
+ 1077 0000 75        		.byte	117
+ 1078 0001 0A        		.byte	10
+ 1079 0002 01        		.byte	1
+ 1080 0003 2B        		.byte	43
+ 1081 0004 02        		.byte	2
+ 1082 0005 2B        		.byte	43
+ 1083 0006 01        		.byte	1
+ 1084 0007 0C        		.byte	12
+ 1085 0008 02        		.byte	2
+ 1086 0009 0C        		.byte	12
+ 1087 000a 01        		.byte	1
+ 1088 000b 11        		.byte	17
+ 1089 000c 02        		.byte	2
+ 1090 000d 11        		.byte	17
+ 1091 000e 01        		.byte	1
+ 1092 000f 2B        		.byte	43
+ 1093 0010 02        		.byte	2
+ 1094 0011 2B        		.byte	43
+ 1095 0012 01        		.byte	1
+ 1096 0013 28        		.byte	40
+ 1097 0014 02        		.byte	2
+ 1098 0015 28        		.byte	40
+ 1099 0016 01        		.byte	1
+ 1100 0017 2B        		.byte	43
+ 1101 0018 02        		.byte	2
+ 1102 0019 2B        		.byte	43
+ 1103 001a 01        		.byte	1
+ 1104 001b 2B        		.byte	43
+ 1105 001c 02        		.byte	2
+ 1106 001d 2B        		.byte	43
+ 1107 001e 01        		.byte	1
+ 1108 001f 2B        		.byte	43
+ 1109 0020 02        		.byte	2
+ 1110 0021 2B        		.byte	43
+ 1111 0022 01        		.byte	1
+ 1112 0023 0C        		.byte	12
+ 1113 0024 02        		.byte	2
+ 1114 0025 0C        		.byte	12
+ 1115 0026 01        		.byte	1
+ 1116 0027 11        		.byte	17
+ 1117 0028 02        		.byte	2
+ 1118 0029 11        		.byte	17
+ 1119 002a 01        		.byte	1
+ 1120 002b 2B        		.byte	43
+ 1121 002c 02        		.byte	2
+ 1122 002d 2B        		.byte	43
+ 1123 002e 01        		.byte	1
+ 1124 002f 28        		.byte	40
+ 1125 0030 02        		.byte	2
+ 1126 0031 28        		.byte	40
+ 1127 0032 00        		.byte	0
+ 1128               		.section	.progmem.data.__m.3207,"a",@progbits
+ 1131               	__m.3207:
+ 1132 0000 75        		.byte	117
+ 1133 0001 0A        		.byte	10
+ 1134 0002 01        		.byte	1
+ 1135 0003 2B        		.byte	43
+ 1136 0004 02        		.byte	2
+ 1137 0005 2B        		.byte	43
+ 1138 0006 01        		.byte	1
+ 1139 0007 12        		.byte	18
+ 1140 0008 02        		.byte	2
+ 1141 0009 12        		.byte	18
+ 1142 000a 01        		.byte	1
+ 1143 000b 17        		.byte	23
+ 1144 000c 02        		.byte	2
+ 1145 000d 17        		.byte	23
+ 1146 000e 01        		.byte	1
+ 1147 000f 2B        		.byte	43
+ 1148 0010 02        		.byte	2
+ 1149 0011 2B        		.byte	43
+ 1150 0012 01        		.byte	1
+ 1151 0013 28        		.byte	40
+ 1152 0014 02        		.byte	2
+ 1153 0015 28        		.byte	40
+ 1154 0016 01        		.byte	1
+ 1155 0017 2B        		.byte	43
+ 1156 0018 02        		.byte	2
+ 1157 0019 2B        		.byte	43
+ 1158 001a 01        		.byte	1
+ 1159 001b 2B        		.byte	43
+ 1160 001c 02        		.byte	2
+ 1161 001d 2B        		.byte	43
+ 1162 001e 01        		.byte	1
+ 1163 001f 2B        		.byte	43
+ 1164 0020 02        		.byte	2
+ 1165 0021 2B        		.byte	43
+ 1166 0022 01        		.byte	1
+ 1167 0023 1D        		.byte	29
+ 1168 0024 02        		.byte	2
+ 1169 0025 1D        		.byte	29
+ 1170 0026 01        		.byte	1
+ 1171 0027 15        		.byte	21
+ 1172 0028 02        		.byte	2
+ 1173 0029 15        		.byte	21
+ 1174 002a 01        		.byte	1
+ 1175 002b 2B        		.byte	43
+ 1176 002c 02        		.byte	2
+ 1177 002d 2B        		.byte	43
+ 1178 002e 01        		.byte	1
+ 1179 002f 28        		.byte	40
+ 1180 0030 02        		.byte	2
+ 1181 0031 28        		.byte	40
+ 1182 0032 00        		.byte	0
+ 1183               		.section	.progmem.data.__m.3204,"a",@progbits
+ 1186               	__m.3204:
+ 1187 0000 75        		.byte	117
+ 1188 0001 0A        		.byte	10
+ 1189 0002 01        		.byte	1
+ 1190 0003 2B        		.byte	43
+ 1191 0004 02        		.byte	2
+ 1192 0005 2B        		.byte	43
+ 1193 0006 01        		.byte	1
+ 1194 0007 12        		.byte	18
+ 1195 0008 02        		.byte	2
+ 1196 0009 12        		.byte	18
+ 1197 000a 01        		.byte	1
+ 1198 000b 13        		.byte	19
+ 1199 000c 02        		.byte	2
+ 1200 000d 13        		.byte	19
+ 1201 000e 01        		.byte	1
+ 1202 000f 2B        		.byte	43
+ 1203 0010 02        		.byte	2
+ 1204 0011 2B        		.byte	43
+ 1205 0012 01        		.byte	1
+ 1206 0013 28        		.byte	40
+ 1207 0014 02        		.byte	2
+ 1208 0015 28        		.byte	40
+ 1209 0016 01        		.byte	1
+ 1210 0017 2B        		.byte	43
+ 1211 0018 02        		.byte	2
+ 1212 0019 2B        		.byte	43
+ 1213 001a 01        		.byte	1
+ 1214 001b 2B        		.byte	43
+ 1215 001c 02        		.byte	2
+ 1216 001d 2B        		.byte	43
+ 1217 001e 01        		.byte	1
+ 1218 001f 2B        		.byte	43
+ 1219 0020 02        		.byte	2
+ 1220 0021 2B        		.byte	43
+ 1221 0022 01        		.byte	1
+ 1222 0023 1D        		.byte	29
+ 1223 0024 02        		.byte	2
+ 1224 0025 1D        		.byte	29
+ 1225 0026 01        		.byte	1
+ 1226 0027 15        		.byte	21
+ 1227 0028 02        		.byte	2
+ 1228 0029 15        		.byte	21
+ 1229 002a 01        		.byte	1
+ 1230 002b 2B        		.byte	43
+ 1231 002c 02        		.byte	2
+ 1232 002d 2B        		.byte	43
+ 1233 002e 01        		.byte	1
+ 1234 002f 28        		.byte	40
+ 1235 0030 02        		.byte	2
+ 1236 0031 28        		.byte	40
+ 1237 0032 00        		.byte	0
+ 1238               		.section	.progmem.data.__c.3201,"a",@progbits
+ 1241               	__c.3201:
+ 1242 0000 6970 636F 		.string	"ipconfig /all"
+ 1242      6E66 6967 
+ 1242      202F 616C 
+ 1242      6C00 
+ 1243               		.section	.progmem.data.__c.3198,"a",@progbits
+ 1246               	__c.3198:
+ 1247 0000 4D79 646F 		.string	"Mydogc3rri35"
+ 1247      6763 3372 
+ 1247      7269 3335 
+ 1247      00
+ 1248               		.section	.progmem.data.__m.3195,"a",@progbits
+ 1251               	__m.3195:
+ 1252 0000 75        		.byte	117
+ 1253 0001 0A        		.byte	10
+ 1254 0002 01        		.byte	1
+ 1255 0003 27        		.byte	39
+ 1256 0004 02        		.byte	2
+ 1257 0005 27        		.byte	39
+ 1258 0006 01        		.byte	1
+ 1259 0007 06        		.byte	6
+ 1260 0008 02        		.byte	2
+ 1261 0009 06        		.byte	6
+ 1262 000a 01        		.byte	1
+ 1263 000b 2B        		.byte	43
+ 1264 000c 02        		.byte	2
+ 1265 000d 2B        		.byte	43
+ 1266 000e 01        		.byte	1
+ 1267 000f 2B        		.byte	43
+ 1268 0010 02        		.byte	2
+ 1269 0011 2B        		.byte	43
+ 1270 0012 01        		.byte	1
+ 1271 0013 04        		.byte	4
+ 1272 0014 02        		.byte	2
+ 1273 0015 04        		.byte	4
+ 1274 0016 01        		.byte	1
+ 1275 0017 2B        		.byte	43
+ 1276 0018 02        		.byte	2
+ 1277 0019 2B        		.byte	43
+ 1278 001a 00        		.byte	0
+ 1279               		.section	.progmem.data.__m.3191,"a",@progbits
+ 1282               	__m.3191:
+ 1283 0000 01        		.byte	1
+ 1284 0001 1B        		.byte	27
+ 1285 0002 02        		.byte	2
+ 1286 0003 1B        		.byte	27
+ 1287 0004 00        		.byte	0
+ 1288               		.section	.progmem.data.__m.3187,"a",@progbits
+ 1291               	__m.3187:
+ 1292 0000 75        		.byte	117
+ 1293 0001 0A        		.byte	10
+ 1294 0002 01        		.byte	1
+ 1295 0003 E0        		.byte	-32
+ 1296 0004 01        		.byte	1
+ 1297 0005 17        		.byte	23
+ 1298 0006 02        		.byte	2
+ 1299 0007 17        		.byte	23
+ 1300 0008 01        		.byte	1
+ 1301 0009 19        		.byte	25
+ 1302 000a 02        		.byte	2
+ 1303 000b 19        		.byte	25
+ 1304 000c 01        		.byte	1
+ 1305 000d 28        		.byte	40
+ 1306 000e 02        		.byte	2
+ 1307 000f 28        		.byte	40
+ 1308 0010 02        		.byte	2
+ 1309 0011 E0        		.byte	-32
+ 1310 0012 00        		.byte	0
+ 1311               		.section	.progmem.data.__c.3184,"a",@progbits
+ 1314               	__c.3184:
+ 1315 0000 7777 772E 		.string	"www.support.xerox.com\001("
+ 1315      7375 7070 
+ 1315      6F72 742E 
+ 1315      7865 726F 
+ 1315      782E 636F 
+ 1316               		.section	.progmem.data.__c.3181,"a",@progbits
+ 1319               	__c.3181:
+ 1320 0000 6170 6165 		.string	"apaez@gotocos.com"
+ 1320      7A40 676F 
+ 1320      746F 636F 
+ 1320      732E 636F 
+ 1320      6D00 
+ 1321               		.section	.progmem.data.__m.3178,"a",@progbits
+ 1324               	__m.3178:
+ 1325 0000 75        		.byte	117
+ 1326 0001 0A        		.byte	10
+ 1327 0002 01        		.byte	1
+ 1328 0003 04        		.byte	4
+ 1329 0004 02        		.byte	2
+ 1330 0005 04        		.byte	4
+ 1331 0006 01        		.byte	1
+ 1332 0007 07        		.byte	7
+ 1333 0008 02        		.byte	2
+ 1334 0009 07        		.byte	7
+ 1335 000a 01        		.byte	1
+ 1336 000b 10        		.byte	16
+ 1337 000c 02        		.byte	2
+ 1338 000d 10        		.byte	16
+ 1339 000e 01        		.byte	1
+ 1340 000f 0C        		.byte	12
+ 1341 0010 02        		.byte	2
+ 1342 0011 0C        		.byte	12
+ 1343 0012 01        		.byte	1
+ 1344 0013 11        		.byte	17
+ 1345 0014 02        		.byte	2
+ 1346 0015 11        		.byte	17
+ 1347 0016 74        		.byte	116
+ 1348 0017 4B        		.byte	75
+ 1349 0018 01        		.byte	1
+ 1350 0019 2B        		.byte	43
+ 1351 001a 02        		.byte	2
+ 1352 001b 2B        		.byte	43
+ 1353 001c 01        		.byte	1
+ 1354 001d 1E        		.byte	30
+ 1355 001e 02        		.byte	2
+ 1356 001f 1E        		.byte	30
+ 1357 0020 01        		.byte	1
+ 1358 0021 1E        		.byte	30
+ 1359 0022 02        		.byte	2
+ 1360 0023 1E        		.byte	30
+ 1361 0024 01        		.byte	1
+ 1362 0025 1E        		.byte	30
+ 1363 0026 02        		.byte	2
+ 1364 0027 1E        		.byte	30
+ 1365 0028 01        		.byte	1
+ 1366 0029 1E        		.byte	30
+ 1367 002a 02        		.byte	2
+ 1368 002b 1E        		.byte	30
+ 1369 002c 01        		.byte	1
+ 1370 002d 28        		.byte	40
+ 1371 002e 02        		.byte	2
+ 1372 002f 28        		.byte	40
+ 1373 0030 00        		.byte	0
+ 1374               		.section	.progmem.data.__m.3175,"a",@progbits
+ 1377               	__m.3175:
+ 1378 0000 01        		.byte	1
+ 1379 0001 E3        		.byte	-29
+ 1380 0002 01        		.byte	1
+ 1381 0003 2B        		.byte	43
+ 1382 0004 02        		.byte	2
+ 1383 0005 2B        		.byte	43
+ 1384 0006 02        		.byte	2
+ 1385 0007 E3        		.byte	-29
+ 1386 0008 00        		.byte	0
+ 1387               	.global	tap_dance_actions
+ 1388               		.section	.data.tap_dance_actions,"aw",@progbits
+ 1391               	tap_dance_actions:
+ 1392 0000 0000      		.word	0
+ 1393 0002 0000      		.word	gs(cmd_commands)
+ 1394 0004 0000      		.word	0
+ 1395 0006 0000 0000 		.zero	12
+ 1395      0000 0000 
+ 1395      0000 0000 
+ 1396 0012 0000      		.word	0
+ 1397 0014 0000      		.word	0
+ 1398 0016 0000      		.word	gs(cmd)
+ 1399 0018 0000      		.word	0
+ 1400 001a 0000 0000 		.zero	12
+ 1400      0000 0000 
+ 1400      0000 0000 
+ 1401 0026 0000      		.word	0
+ 1402 0028 0000      		.word	0
+ 1403 002a 0000      		.word	gs(SLSH_BSLSH)
+ 1404 002c 0000      		.word	0
+ 1405 002e 0000 0000 		.zero	12
+ 1405      0000 0000 
+ 1405      0000 0000 
+ 1406 003a 0000      		.word	0
+ 1407 003c 0000      		.word	0
+ 1408 003e 0000      		.word	gs(VirtualDesktop)
+ 1409 0040 0000      		.word	0
+ 1410 0042 0000 0000 		.zero	12
+ 1410      0000 0000 
+ 1410      0000 0000 
+ 1411 004e 0000      		.word	0
+ 1412               	.global	keymaps
+ 1413               		.section	.progmem.data.keymaps,"a",@progbits
+ 1416               	keymaps:
+ 1417 0000 2E00      		.word	46
+ 1418 0002 1E00      		.word	30
+ 1419 0004 1F00      		.word	31
+ 1420 0006 2000      		.word	32
+ 1421 0008 2100      		.word	33
+ 1422 000a 2200      		.word	34
+ 1423 000c 2B45      		.word	17707
+ 1424 000e 1400      		.word	20
+ 1425 0010 1A00      		.word	26
+ 1426 0012 0800      		.word	8
+ 1427 0014 1500      		.word	21
+ 1428 0016 1700      		.word	23
+ 1429 0018 2840      		.word	16424
+ 1430 001a 0400      		.word	4
+ 1431 001c 1600      		.word	22
+ 1432 001e 0700      		.word	7
+ 1433 0020 0900      		.word	9
+ 1434 0022 0A00      		.word	10
+ 1435 0024 E100      		.word	225
+ 1436 0026 1D00      		.word	29
+ 1437 0028 1B00      		.word	27
+ 1438 002a 0600      		.word	6
+ 1439 002c 1900      		.word	25
+ 1440 002e 0500      		.word	5
+ 1441 0030 2961      		.word	24873
+ 1442 0032 E200      		.word	226
+ 1443 0034 E300      		.word	227
+ 1444 0036 5000      		.word	80
+ 1445 0038 4F00      		.word	79
+ 1446 003a 2A00      		.word	42
+ 1447 003c 0100      		.word	1
+ 1448 003e 4B00      		.word	75
+ 1449 0040 4E00      		.word	78
+ 1450 0042 4600      		.word	70
+ 1451 0044 0030      		.word	12288
+ 1452 0046 DD5C      		.word	23773
+ 1453 0048 2D00      		.word	45
+ 1454 004a 2700      		.word	39
+ 1455 004c 2600      		.word	38
+ 1456 004e 2500      		.word	37
+ 1457 0050 2400      		.word	36
+ 1458 0052 2300      		.word	35
+ 1459 0054 3100      		.word	49
+ 1460 0056 1300      		.word	19
+ 1461 0058 1200      		.word	18
+ 1462 005a 0C00      		.word	12
+ 1463 005c 1800      		.word	24
+ 1464 005e 1C00      		.word	28
+ 1465 0060 2800      		.word	40
+ 1466 0062 3300      		.word	51
+ 1467 0064 0F00      		.word	15
+ 1468 0066 0E00      		.word	14
+ 1469 0068 0D00      		.word	13
+ 1470 006a 0B00      		.word	11
+ 1471 006c 3500      		.word	53
+ 1472 006e 3800      		.word	56
+ 1473 0070 3700      		.word	55
+ 1474 0072 3600      		.word	54
+ 1475 0074 1000      		.word	16
+ 1476 0076 1100      		.word	17
+ 1477 0078 3400      		.word	52
+ 1478 007a 5100      		.word	81
+ 1479 007c 5200      		.word	82
+ 1480 007e 4F00      		.word	79
+ 1481 0080 5000      		.word	80
+ 1482 0082 2C00      		.word	44
+ 1483 0084 0100      		.word	1
+ 1484 0086 4D00      		.word	77
+ 1485 0088 4A00      		.word	74
+ 1486 008a 4C00      		.word	76
+ 1487 008c DE5C      		.word	23774
+ 1488 008e 2800      		.word	40
+ 1489 0090 2E00      		.word	46
+ 1490 0092 1E00      		.word	30
+ 1491 0094 1F00      		.word	31
+ 1492 0096 2000      		.word	32
+ 1493 0098 2100      		.word	33
+ 1494 009a 2200      		.word	34
+ 1495 009c 2B45      		.word	17707
+ 1496 009e 1400      		.word	20
+ 1497 00a0 1A00      		.word	26
+ 1498 00a2 0900      		.word	9
+ 1499 00a4 1300      		.word	19
+ 1500 00a6 0A00      		.word	10
+ 1501 00a8 2840      		.word	16424
+ 1502 00aa 0400      		.word	4
+ 1503 00ac 1500      		.word	21
+ 1504 00ae 1600      		.word	22
+ 1505 00b0 1700      		.word	23
+ 1506 00b2 0700      		.word	7
+ 1507 00b4 E100      		.word	225
+ 1508 00b6 1D00      		.word	29
+ 1509 00b8 1B00      		.word	27
+ 1510 00ba 0600      		.word	6
+ 1511 00bc 1900      		.word	25
+ 1512 00be 0500      		.word	5
+ 1513 00c0 2961      		.word	24873
+ 1514 00c2 E200      		.word	226
+ 1515 00c4 E300      		.word	227
+ 1516 00c6 5000      		.word	80
+ 1517 00c8 4F00      		.word	79
+ 1518 00ca 2A00      		.word	42
+ 1519 00cc 0100      		.word	1
+ 1520 00ce 4B00      		.word	75
+ 1521 00d0 4E00      		.word	78
+ 1522 00d2 4600      		.word	70
+ 1523 00d4 0030      		.word	12288
+ 1524 00d6 DD5C      		.word	23773
+ 1525 00d8 2D00      		.word	45
+ 1526 00da 2700      		.word	39
+ 1527 00dc 2600      		.word	38
+ 1528 00de 2500      		.word	37
+ 1529 00e0 2400      		.word	36
+ 1530 00e2 2300      		.word	35
+ 1531 00e4 3100      		.word	49
+ 1532 00e6 3300      		.word	51
+ 1533 00e8 1C00      		.word	28
+ 1534 00ea 1800      		.word	24
+ 1535 00ec 0F00      		.word	15
+ 1536 00ee 0D00      		.word	13
+ 1537 00f0 2800      		.word	40
+ 1538 00f2 1200      		.word	18
+ 1539 00f4 0C00      		.word	12
+ 1540 00f6 0800      		.word	8
+ 1541 00f8 1100      		.word	17
+ 1542 00fa 0B00      		.word	11
+ 1543 00fc 3500      		.word	53
+ 1544 00fe 3800      		.word	56
+ 1545 0100 3700      		.word	55
+ 1546 0102 3600      		.word	54
+ 1547 0104 1000      		.word	16
+ 1548 0106 0E00      		.word	14
+ 1549 0108 3400      		.word	52
+ 1550 010a 5100      		.word	81
+ 1551 010c 5200      		.word	82
+ 1552 010e 4F00      		.word	79
+ 1553 0110 5000      		.word	80
+ 1554 0112 2C00      		.word	44
+ 1555 0114 0100      		.word	1
+ 1556 0116 4D00      		.word	77
+ 1557 0118 4A00      		.word	74
+ 1558 011a 4C00      		.word	76
+ 1559 011c DE5C      		.word	23774
+ 1560 011e 2800      		.word	40
+ 1561 0120 2E00      		.word	46
+ 1562 0122 1E00      		.word	30
+ 1563 0124 1F00      		.word	31
+ 1564 0126 2000      		.word	32
+ 1565 0128 2100      		.word	33
+ 1566 012a 2200      		.word	34
+ 1567 012c 2B00      		.word	43
+ 1568 012e 3400      		.word	52
+ 1569 0130 3600      		.word	54
+ 1570 0132 3700      		.word	55
+ 1571 0134 1300      		.word	19
+ 1572 0136 1C00      		.word	28
+ 1573 0138 2961      		.word	24873
+ 1574 013a 0400      		.word	4
+ 1575 013c 1200      		.word	18
+ 1576 013e 0800      		.word	8
+ 1577 0140 1800      		.word	24
+ 1578 0142 0C00      		.word	12
+ 1579 0144 E100      		.word	225
+ 1580 0146 3300      		.word	51
+ 1581 0148 1400      		.word	20
+ 1582 014a 0D00      		.word	13
+ 1583 014c 0E00      		.word	14
+ 1584 014e 1B00      		.word	27
+ 1585 0150 2B45      		.word	17707
+ 1586 0152 E000      		.word	224
+ 1587 0154 E200      		.word	226
+ 1588 0156 E300      		.word	227
+ 1589 0158 DD5C      		.word	23773
+ 1590 015a 2C00      		.word	44
+ 1591 015c 2B45      		.word	17707
+ 1592 015e 1E00      		.word	30
+ 1593 0160 1F00      		.word	31
+ 1594 0162 2000      		.word	32
+ 1595 0164 2100      		.word	33
+ 1596 0166 2200      		.word	34
+ 1597 0168 2D00      		.word	45
+ 1598 016a 2700      		.word	39
+ 1599 016c 2600      		.word	38
+ 1600 016e 2500      		.word	37
+ 1601 0170 2400      		.word	36
+ 1602 0172 2300      		.word	35
+ 1603 0174 2D00      		.word	45
+ 1604 0176 0F00      		.word	15
+ 1605 0178 1500      		.word	21
+ 1606 017a 0600      		.word	6
+ 1607 017c 0A00      		.word	10
+ 1608 017e 0900      		.word	9
+ 1609 0180 3800      		.word	56
+ 1610 0182 1600      		.word	22
+ 1611 0184 1100      		.word	17
+ 1612 0186 1700      		.word	23
+ 1613 0188 0B00      		.word	11
+ 1614 018a 0700      		.word	7
+ 1615 018c 2840      		.word	16424
+ 1616 018e 1D00      		.word	29
+ 1617 0190 1900      		.word	25
+ 1618 0192 1A00      		.word	26
+ 1619 0194 1000      		.word	16
+ 1620 0196 0500      		.word	5
+ 1621 0198 4F00      		.word	79
+ 1622 019a 5200      		.word	82
+ 1623 019c 5100      		.word	81
+ 1624 019e 5000      		.word	80
+ 1625 01a0 5200      		.word	82
+ 1626 01a2 2A00      		.word	42
+ 1627 01a4 2D00      		.word	45
+ 1628 01a6 1F00      		.word	31
+ 1629 01a8 1F00      		.word	31
+ 1630 01aa 1F00      		.word	31
+ 1631 01ac 1F00      		.word	31
+ 1632 01ae 1F00      		.word	31
+ 1633 01b0 005C      		.word	23552
+ 1634 01b2 0C30      		.word	12300
+ 1635 01b4 0D30      		.word	12301
+ 1636 01b6 0E30      		.word	12302
+ 1637 01b8 0100      		.word	1
+ 1638 01ba 0100      		.word	1
+ 1639 01bc 0100      		.word	1
+ 1640 01be 0100      		.word	1
+ 1641 01c0 0330      		.word	12291
+ 1642 01c2 0230      		.word	12290
+ 1643 01c4 0100      		.word	1
+ 1644 01c6 0F30      		.word	12303
+ 1645 01c8 0100      		.word	1
+ 1646 01ca 0630      		.word	12294
+ 1647 01cc 0100      		.word	1
+ 1648 01ce 0100      		.word	1
+ 1649 01d0 0100      		.word	1
+ 1650 01d2 0100      		.word	1
+ 1651 01d4 0100      		.word	1
+ 1652 01d6 0100      		.word	1
+ 1653 01d8 0130      		.word	12289
+ 1654 01da 0100      		.word	1
+ 1655 01dc 0100      		.word	1
+ 1656 01de 0100      		.word	1
+ 1657 01e0 005C      		.word	23552
+ 1658 01e2 0100      		.word	1
+ 1659 01e4 0100      		.word	1
+ 1660 01e6 0100      		.word	1
+ 1661 01e8 0100      		.word	1
+ 1662 01ea 0100      		.word	1
+ 1663 01ec 0100      		.word	1
+ 1664 01ee 0100      		.word	1
+ 1665 01f0 0100      		.word	1
+ 1666 01f2 0100      		.word	1
+ 1667 01f4 0100      		.word	1
+ 1668 01f6 DD5C      		.word	23773
+ 1669 01f8 0100      		.word	1
+ 1670 01fa 3000      		.word	48
+ 1671 01fc 2F00      		.word	47
+ 1672 01fe 0100      		.word	1
+ 1673 0200 0100      		.word	1
+ 1674 0202 0100      		.word	1
+ 1675 0204 0100      		.word	1
+ 1676 0206 0A30      		.word	12298
+ 1677 0208 0100      		.word	1
+ 1678 020a 0100      		.word	1
+ 1679 020c 0100      		.word	1
+ 1680 020e 0100      		.word	1
+ 1681 0210 0100      		.word	1
+ 1682 0212 0100      		.word	1
+ 1683 0214 0B30      		.word	12299
+ 1684 0216 5200      		.word	82
+ 1685 0218 0100      		.word	1
+ 1686 021a 0100      		.word	1
+ 1687 021c 0100      		.word	1
+ 1688 021e 0100      		.word	1
+ 1689 0220 4F00      		.word	79
+ 1690 0222 5100      		.word	81
+ 1691 0224 5000      		.word	80
+ 1692 0226 0100      		.word	1
+ 1693 0228 005C      		.word	23552
+ 1694 022a 0100      		.word	1
+ 1695 022c 0100      		.word	1
+ 1696 022e 0100      		.word	1
+ 1697 0230 0100      		.word	1
+ 1698 0232 0100      		.word	1
+ 1699 0234 0100      		.word	1
+ 1700 0236 0100      		.word	1
+ 1701 0238 0100      		.word	1
+ 1702 023a 0100      		.word	1
+ 1703 023c DE5C      		.word	23774
+ 1704 023e DE5C      		.word	23774
+ 1705 0240 3500      		.word	53
+ 1706 0242 1E00      		.word	30
+ 1707 0244 1F00      		.word	31
+ 1708 0246 2000      		.word	32
+ 1709 0248 2100      		.word	33
+ 1710 024a 2200      		.word	34
+ 1711 024c 2500      		.word	37
+ 1712 024e 1E00      		.word	30
+ 1713 0250 0330      		.word	12291
+ 1714 0252 1E00      		.word	30
+ 1715 0254 1E00      		.word	30
+ 1716 0256 1E00      		.word	30
+ 1717 0258 2500      		.word	37
+ 1718 025a 1E00      		.word	30
+ 1719 025c 1E00      		.word	30
+ 1720 025e 1E00      		.word	30
+ 1721 0260 1E00      		.word	30
+ 1722 0262 1E00      		.word	30
+ 1723 0264 2500      		.word	37
+ 1724 0266 1E00      		.word	30
+ 1725 0268 1E00      		.word	30
+ 1726 026a 1E00      		.word	30
+ 1727 026c 1E00      		.word	30
+ 1728 026e 1E00      		.word	30
+ 1729 0270 005C      		.word	23552
+ 1730 0272 1E00      		.word	30
+ 1731 0274 1E00      		.word	30
+ 1732 0276 1E00      		.word	30
+ 1733 0278 1E00      		.word	30
+ 1734 027a 0100      		.word	1
+ 1735 027c 0100      		.word	1
+ 1736 027e 0100      		.word	1
+ 1737 0280 0100      		.word	1
+ 1738 0282 0100      		.word	1
+ 1739 0284 0100      		.word	1
+ 1740 0286 DD5C      		.word	23773
+ 1741 0288 2D00      		.word	45
+ 1742 028a 2700      		.word	39
+ 1743 028c 2600      		.word	38
+ 1744 028e 2500      		.word	37
+ 1745 0290 2400      		.word	36
+ 1746 0292 2300      		.word	35
+ 1747 0294 0000      		.word	0
+ 1748 0296 5600      		.word	86
+ 1749 0298 2300      		.word	35
+ 1750 029a 2200      		.word	34
+ 1751 029c 2100      		.word	33
+ 1752 029e 0000      		.word	0
+ 1753 02a0 0000      		.word	0
+ 1754 02a2 5700      		.word	87
+ 1755 02a4 2000      		.word	32
+ 1756 02a6 1F00      		.word	31
+ 1757 02a8 1E00      		.word	30
+ 1758 02aa 0000      		.word	0
+ 1759 02ac 0000      		.word	0
+ 1760 02ae 0000      		.word	0
+ 1761 02b0 3700      		.word	55
+ 1762 02b2 2700      		.word	39
+ 1763 02b4 2700      		.word	39
+ 1764 02b6 0000      		.word	0
+ 1765 02b8 005C      		.word	23552
+ 1766 02ba 0000      		.word	0
+ 1767 02bc 0000      		.word	0
+ 1768 02be 5500      		.word	85
+ 1769 02c0 5400      		.word	84
+ 1770 02c2 0000      		.word	0
+ 1771 02c4 0100      		.word	1
+ 1772 02c6 0100      		.word	1
+ 1773 02c8 0100      		.word	1
+ 1774 02ca 4C00      		.word	76
+ 1775 02cc DE5C      		.word	23774
+ 1776 02ce DE5C      		.word	23774
+ 1777 02d0 4500      		.word	69
+ 1778 02d2 3A00      		.word	58
+ 1779 02d4 3B00      		.word	59
+ 1780 02d6 3C00      		.word	60
+ 1781 02d8 3D00      		.word	61
+ 1782 02da 3E00      		.word	62
+ 1783 02dc 0100      		.word	1
+ 1784 02de 2000      		.word	32
+ 1785 02e0 2000      		.word	32
+ 1786 02e2 2000      		.word	32
+ 1787 02e4 2000      		.word	32
+ 1788 02e6 2000      		.word	32
+ 1789 02e8 0100      		.word	1
+ 1790 02ea 0100      		.word	1
+ 1791 02ec 5200      		.word	82
+ 1792 02ee 0100      		.word	1
+ 1793 02f0 0100      		.word	1
+ 1794 02f2 0100      		.word	1
+ 1795 02f4 0100      		.word	1
+ 1796 02f6 5000      		.word	80
+ 1797 02f8 5100      		.word	81
+ 1798 02fa 4F00      		.word	79
+ 1799 02fc 0100      		.word	1
+ 1800 02fe 0100      		.word	1
+ 1801 0300 2961      		.word	24873
+ 1802 0302 E200      		.word	226
+ 1803 0304 E300      		.word	227
+ 1804 0306 0357      		.word	22275
+ 1805 0308 DD5C      		.word	23773
+ 1806 030a 2A00      		.word	42
+ 1807 030c 2B45      		.word	17707
+ 1808 030e 1E00      		.word	30
+ 1809 0310 1F00      		.word	31
+ 1810 0312 2000      		.word	32
+ 1811 0314 2100      		.word	33
+ 1812 0316 2200      		.word	34
+ 1813 0318 4400      		.word	68
+ 1814 031a 4300      		.word	67
+ 1815 031c 4200      		.word	66
+ 1816 031e 4100      		.word	65
+ 1817 0320 4000      		.word	64
+ 1818 0322 3F00      		.word	63
+ 1819 0324 0100      		.word	1
+ 1820 0326 0100      		.word	1
+ 1821 0328 0100      		.word	1
+ 1822 032a 0100      		.word	1
+ 1823 032c 0100      		.word	1
+ 1824 032e 0100      		.word	1
+ 1825 0330 0100      		.word	1
+ 1826 0332 5200      		.word	82
+ 1827 0334 0100      		.word	1
+ 1828 0336 0100      		.word	1
+ 1829 0338 0100      		.word	1
+ 1830 033a 0100      		.word	1
+ 1831 033c 4F00      		.word	79
+ 1832 033e 5100      		.word	81
+ 1833 0340 5000      		.word	80
+ 1834 0342 0100      		.word	1
+ 1835 0344 0100      		.word	1
+ 1836 0346 0100      		.word	1
+ 1837 0348 4F00      		.word	79
+ 1838 034a 5100      		.word	81
+ 1839 034c 5000      		.word	80
+ 1840 034e 3400      		.word	52
+ 1841 0350 5200      		.word	82
+ 1842 0352 2C00      		.word	44
+ 1843 0354 2D00      		.word	45
+ 1844 0356 2700      		.word	39
+ 1845 0358 2600      		.word	38
+ 1846 035a 2500      		.word	37
+ 1847 035c 2400      		.word	36
+ 1848 035e 2300      		.word	35
+ 1849 0360 0000 0000 		.zero	1440
+ 1849      0000 0000 
+ 1849      0000 0000 
+ 1849      0000 0000 
+ 1849      0000 0000 
+ 1850 0900 0100      		.word	1
+ 1851 0902 DA5C      		.word	23770
+ 1852 0904 DB5C      		.word	23771
+ 1853 0906 C15C      		.word	23745
+ 1854 0908 C45C      		.word	23748
+ 1855 090a C35C      		.word	23747
+ 1856 090c 0100      		.word	1
+ 1857 090e DB5C      		.word	23771
+ 1858 0910 0100      		.word	1
+ 1859 0912 1D5C      		.word	23581
+ 1860 0914 1E5C      		.word	23582
+ 1861 0916 135C      		.word	23571
+ 1862 0918 0100      		.word	1
+ 1863 091a 1E00      		.word	30
+ 1864 091c 1E00      		.word	30
+ 1865 091e 0100      		.word	1
+ 1866 0920 0100      		.word	1
+ 1867 0922 0100      		.word	1
+ 1868 0924 0100      		.word	1
+ 1869 0926 0100      		.word	1
+ 1870 0928 0100      		.word	1
+ 1871 092a DA5C      		.word	23770
+ 1872 092c 0100      		.word	1
+ 1873 092e 0100      		.word	1
+ 1874 0930 0100      		.word	1
+ 1875 0932 0100      		.word	1
+ 1876 0934 0100      		.word	1
+ 1877 0936 0100      		.word	1
+ 1878 0938 0100      		.word	1
+ 1879 093a 0100      		.word	1
+ 1880 093c 0100      		.word	1
+ 1881 093e 0100      		.word	1
+ 1882 0940 0100      		.word	1
+ 1883 0942 0100      		.word	1
+ 1884 0944 0100      		.word	1
+ 1885 0946 0100      		.word	1
+ 1886 0948 0100      		.word	1
+ 1887 094a 005C      		.word	23552
+ 1888 094c C75C      		.word	23751
+ 1889 094e C85C      		.word	23752
+ 1890 0950 C55C      		.word	23749
+ 1891 0952 C65C      		.word	23750
+ 1892 0954 0100      		.word	1
+ 1893 0956 0100      		.word	1
+ 1894 0958 DC5C      		.word	23772
+ 1895 095a DA5C      		.word	23770
+ 1896 095c DB5C      		.word	23771
+ 1897 095e 0A5C      		.word	23562
+ 1898 0960 0100      		.word	1
+ 1899 0962 0100      		.word	1
+ 1900 0964 0100      		.word	1
+ 1901 0966 0100      		.word	1
+ 1902 0968 0100      		.word	1
+ 1903 096a 0100      		.word	1
+ 1904 096c 0100      		.word	1
+ 1905 096e 0100      		.word	1
+ 1906 0970 0100      		.word	1
+ 1907 0972 0100      		.word	1
+ 1908 0974 0100      		.word	1
+ 1909 0976 0100      		.word	1
+ 1910 0978 0100      		.word	1
+ 1911 097a 0100      		.word	1
+ 1912 097c 0100      		.word	1
+ 1913 097e 0100      		.word	1
+ 1914 0980 0100      		.word	1
+ 1915 0982 0100      		.word	1
+ 1916 0984 0100      		.word	1
+ 1917 0986 0100      		.word	1
+ 1918 0988 0100      		.word	1
+ 1919 098a 0100      		.word	1
+ 1920 098c 0100      		.word	1
+ 1921 098e 0100      		.word	1
+ 1922               		.text
+ 1923               	.Letext0:
+ 1924               		.file 3 "/usr/lib/avr/include/stdint.h"
+ 1925               		.file 4 "./tmk_core/common/keyboard.h"
+ 1926               		.file 5 "./tmk_core/common/keycode.h"
+ 1927               		.file 6 "./tmk_core/common/action_code.h"
+ 1928               		.file 7 "./tmk_core/common/action_macro.h"
+ 1929               		.file 8 "./tmk_core/common/action.h"
+ 1930               		.file 9 "./tmk_core/common/report.h"
+ 1931               		.file 10 "./quantum/quantum_keycodes.h"
+ 1932               		.file 11 "./quantum/process_keycode/process_tap_dance.h"
+ 1933               		.file 12 "./tmk_core/common/action_util.h"
+ 1934               		.file 13 "./tmk_core/common/eeconfig.h"
+ 1935               		.file 14 "./tmk_core/common/action_layer.h"
+ 1936               		.file 15 "./quantum/quantum.h"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 keymap.c
+     /tmp/ccA55xQ4.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccA55xQ4.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccA55xQ4.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccA55xQ4.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccA55xQ4.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccA55xQ4.s:13     .text.cmd_commands:0000000000000000 cmd_commands
+     /tmp/ccA55xQ4.s:1058   .progmem.data.__m.3219:0000000000000000 __m.3219
+     /tmp/ccA55xQ4.s:1045   .progmem.data.__m.3221:0000000000000000 __m.3221
+     /tmp/ccA55xQ4.s:1028   .progmem.data.__m.3223:0000000000000000 __m.3223
+     /tmp/ccA55xQ4.s:54     .text.cmd:0000000000000000 cmd
+     /tmp/ccA55xQ4.s:995    .progmem.data.__m.3229:0000000000000000 __m.3229
+     /tmp/ccA55xQ4.s:906    .progmem.data.__m.3231:0000000000000000 __m.3231
+     /tmp/ccA55xQ4.s:843    .progmem.data.__m.3233:0000000000000000 __m.3233
+     /tmp/ccA55xQ4.s:94     .text.VirtualDesktop:0000000000000000 VirtualDesktop
+     /tmp/ccA55xQ4.s:826    .progmem.data.__m.3243:0000000000000000 __m.3243
+     /tmp/ccA55xQ4.s:809    .progmem.data.__m.3245:0000000000000000 __m.3245
+     /tmp/ccA55xQ4.s:131    .text.SLSH_BSLSH:0000000000000000 SLSH_BSLSH
+     /tmp/ccA55xQ4.s:170    .text.rgblight_toggle:0000000000000000 rgblight_toggle
+     /tmp/ccA55xQ4.s:186    .text.rgblight_step:0000000000000000 rgblight_step
+     /tmp/ccA55xQ4.s:201    .text.rgblight_step_reverse:0000000000000000 rgblight_step_reverse
+     /tmp/ccA55xQ4.s:216    .text.rgblight_increase_hue:0000000000000000 rgblight_increase_hue
+     /tmp/ccA55xQ4.s:231    .text.rgblight_decrease_hue:0000000000000000 rgblight_decrease_hue
+     /tmp/ccA55xQ4.s:246    .text.rgblight_increase_sat:0000000000000000 rgblight_increase_sat
+     /tmp/ccA55xQ4.s:261    .text.rgblight_decrease_sat:0000000000000000 rgblight_decrease_sat
+     /tmp/ccA55xQ4.s:276    .text.rgblight_increase_val:0000000000000000 rgblight_increase_val
+     /tmp/ccA55xQ4.s:291    .text.rgblight_decrease_val:0000000000000000 rgblight_decrease_val
+     /tmp/ccA55xQ4.s:306    .text.rgblight_increase_speed:0000000000000000 rgblight_increase_speed
+     /tmp/ccA55xQ4.s:321    .text.rgblight_decrease_speed:0000000000000000 rgblight_decrease_speed
+     /tmp/ccA55xQ4.s:336    .text.persistent_default_layer_set:0000000000000000 persistent_default_layer_set
+     /tmp/ccA55xQ4.s:376    .text.action_get_macro:0000000000000000 action_get_macro
+     /tmp/ccA55xQ4.s:1319   .progmem.data.__c.3181:0000000000000000 __c.3181
+     /tmp/ccA55xQ4.s:1314   .progmem.data.__c.3184:0000000000000000 __c.3184
+     /tmp/ccA55xQ4.s:1246   .progmem.data.__c.3198:0000000000000000 __c.3198
+     /tmp/ccA55xQ4.s:1241   .progmem.data.__c.3201:0000000000000000 __c.3201
+     /tmp/ccA55xQ4.s:1071   .progmem.data.__c.3213:0000000000000000 __c.3213
+     /tmp/ccA55xQ4.s:1377   .progmem.data.__m.3175:0000000000000000 __m.3175
+     /tmp/ccA55xQ4.s:1324   .progmem.data.__m.3178:0000000000000000 __m.3178
+     /tmp/ccA55xQ4.s:1291   .progmem.data.__m.3187:0000000000000000 __m.3187
+     /tmp/ccA55xQ4.s:1282   .progmem.data.__m.3191:0000000000000000 __m.3191
+     /tmp/ccA55xQ4.s:1251   .progmem.data.__m.3195:0000000000000000 __m.3195
+     /tmp/ccA55xQ4.s:1186   .progmem.data.__m.3204:0000000000000000 __m.3204
+     /tmp/ccA55xQ4.s:1131   .progmem.data.__m.3207:0000000000000000 __m.3207
+     /tmp/ccA55xQ4.s:1076   .progmem.data.__m.3210:0000000000000000 __m.3210
+     /tmp/ccA55xQ4.s:624    .text.matrix_init_user:0000000000000000 matrix_init_user
+     /tmp/ccA55xQ4.s:639    .text.matrix_scan_user:0000000000000000 matrix_scan_user
+     /tmp/ccA55xQ4.s:654    .text.process_record_user:0000000000000000 process_record_user
+     /tmp/ccA55xQ4.s:1391   .data.tap_dance_actions:0000000000000000 tap_dance_actions
+     /tmp/ccA55xQ4.s:1416   .progmem.data.keymaps:0000000000000000 keymaps
+
+UNDEFINED SYMBOLS
+action_macro_play
+register_code
+unregister_code
+eeconfig_update_default_layer
+default_layer_set
+__tablejump2__
+layer_on
+layer_off
+send_string_P
+update_tri_layer
+__do_copy_data

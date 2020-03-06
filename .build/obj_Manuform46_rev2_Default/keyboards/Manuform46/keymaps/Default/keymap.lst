@@ -1,0 +1,2619 @@
+   1               		.file	"keymap.c"
+   2               	__SP_H__ = 0x3e
+   3               	__SP_L__ = 0x3d
+   4               	__SREG__ = 0x3f
+   5               	__tmp_reg__ = 0
+   6               	__zero_reg__ = 1
+   7               		.text
+   8               	.Ltext0:
+   9               		.cfi_sections	.debug_frame
+  10               		.section	.text.cmd_commands,"ax",@progbits
+  11               	.global	cmd_commands
+  13               	cmd_commands:
+  14               	.LVL0:
+  15               	.LFB30:
+  16               		.file 1 "keyboards/Manuform46/keymaps/Default/keymap.c"
+   1:keyboards/Manuform46/keymaps/Default/keymap.c **** #include "Manuform.h"
+   2:keyboards/Manuform46/keymaps/Default/keymap.c **** #include "action_layer.h"
+   3:keyboards/Manuform46/keymaps/Default/keymap.c **** #include "eeconfig.h"
+   4:keyboards/Manuform46/keymaps/Default/keymap.c **** 
+   5:keyboards/Manuform46/keymaps/Default/keymap.c **** extern keymap_config_t keymap_config;
+   6:keyboards/Manuform46/keymaps/Default/keymap.c **** #define _QWERTY 0
+   7:keyboards/Manuform46/keymaps/Default/keymap.c **** #define _COLEMAK 1
+   8:keyboards/Manuform46/keymaps/Default/keymap.c **** #define _DVORAK 2
+   9:keyboards/Manuform46/keymaps/Default/keymap.c **** #define _LOWER 3
+  10:keyboards/Manuform46/keymaps/Default/keymap.c **** #define _RAISE 4
+  11:keyboards/Manuform46/keymaps/Default/keymap.c **** #define _FN3 5
+  12:keyboards/Manuform46/keymaps/Default/keymap.c **** //#define _FN4 6
+  13:keyboards/Manuform46/keymaps/Default/keymap.c **** #define _ADJUST 16
+  14:keyboards/Manuform46/keymaps/Default/keymap.c **** enum {
+  15:keyboards/Manuform46/keymaps/Default/keymap.c **** 	TD_CPY_PST = 0,
+  16:keyboards/Manuform46/keymaps/Default/keymap.c **** 	TD_CMD,
+  17:keyboards/Manuform46/keymaps/Default/keymap.c **** 	TD_SLSH,
+  18:keyboards/Manuform46/keymaps/Default/keymap.c **** 	TD_VRDSK
+  19:keyboards/Manuform46/keymaps/Default/keymap.c **** };
+  20:keyboards/Manuform46/keymaps/Default/keymap.c **** enum custom_keycodes {
+  21:keyboards/Manuform46/keymaps/Default/keymap.c **** 	QWERTY = SAFE_RANGE,
+  22:keyboards/Manuform46/keymaps/Default/keymap.c **** 	COLEMAK,
+  23:keyboards/Manuform46/keymaps/Default/keymap.c **** 	DVORAK,
+  24:keyboards/Manuform46/keymaps/Default/keymap.c **** 	LOWER,
+  25:keyboards/Manuform46/keymaps/Default/keymap.c **** 	RAISE,
+  26:keyboards/Manuform46/keymaps/Default/keymap.c **** 	FN3,
+  27:keyboards/Manuform46/keymaps/Default/keymap.c **** //	FN4,
+  28:keyboards/Manuform46/keymaps/Default/keymap.c **** 	ADJUST,
+  29:keyboards/Manuform46/keymaps/Default/keymap.c **** 	dance_cln_finished,
+  30:keyboards/Manuform46/keymaps/Default/keymap.c **** };
+  31:keyboards/Manuform46/keymaps/Default/keymap.c **** 
+  32:keyboards/Manuform46/keymaps/Default/keymap.c **** #define KC_ KC_TRNS
+  33:keyboards/Manuform46/keymaps/Default/keymap.c **** #define _______ KC_TRNS
+  34:keyboards/Manuform46/keymaps/Default/keymap.c **** #define KC_CAPW LGUI(LSFT(KC_3))        // Capture whole screen
+  35:keyboards/Manuform46/keymaps/Default/keymap.c **** #define KC_CPYW LGUI(LSFT(LCTL(KC_3)))  // Copy whole screen
+  36:keyboards/Manuform46/keymaps/Default/keymap.c **** #define KC_CAPP LGUI(LSFT(KC_4))       // Capture portion of screen
+  37:keyboards/Manuform46/keymaps/Default/keymap.c **** #define KC_CPYP LGUI(LSFT(LCTL(KC_4)))  // Copy portion of screen
+  38:keyboards/Manuform46/keymaps/Default/keymap.c **** #define KC_X0 MT(MOD_LCTL, KC_ESC)
+  39:keyboards/Manuform46/keymaps/Default/keymap.c **** #define KC_LDWN LOWER				//Numpad
+  40:keyboards/Manuform46/keymaps/Default/keymap.c **** #define KC_LUP RAISE
+  41:keyboards/Manuform46/keymaps/Default/keymap.c **** #define KC_TOGUP TG(4)
+  42:keyboards/Manuform46/keymaps/Default/keymap.c **** #define KC_REST RESET
+  43:keyboards/Manuform46/keymaps/Default/keymap.c **** #define KC_X3 LT(_FN3,KC_TAB)		//function layer 4 ie macros when held tab when pressed
+  44:keyboards/Manuform46/keymaps/Default/keymap.c **** #define KC_X4 LT(_ADJUST, KC_ENT) //Shift when held enter when pressed
+  45:keyboards/Manuform46/keymaps/Default/keymap.c **** #define KC_X5 LT(RAISE, KC_P0)  //Raise to functions when held P0 when pressed
+  46:keyboards/Manuform46/keymaps/Default/keymap.c **** #define KC_X6 TD(TD_SLSH)				//slash vs backslash
+  47:keyboards/Manuform46/keymaps/Default/keymap.c **** #define KC_X7 TD(TD_CPY_PST)		//single tap is copy double is paste
+  48:keyboards/Manuform46/keymaps/Default/keymap.c **** #define KC_X8 TD(TD_CMD)			//single tap is cmd double is ipconfig
+  49:keyboards/Manuform46/keymaps/Default/keymap.c **** 
+  50:keyboards/Manuform46/keymaps/Default/keymap.c **** 
+  51:keyboards/Manuform46/keymaps/Default/keymap.c **** #define KC_X9 RGUI(KC_TAB)	//gui tab to switch desktops
+  52:keyboards/Manuform46/keymaps/Default/keymap.c **** #define KC_X10 TD(TD_VRDSK)
+  53:keyboards/Manuform46/keymaps/Default/keymap.c **** 
+  54:keyboards/Manuform46/keymaps/Default/keymap.c **** 
+  55:keyboards/Manuform46/keymaps/Default/keymap.c **** #define KC_XLgn M(1)
+  56:keyboards/Manuform46/keymaps/Default/keymap.c **** #define KC_EMAL M(2)
+  57:keyboards/Manuform46/keymaps/Default/keymap.c **** #define KC_WWWX M(3)
+  58:keyboards/Manuform46/keymaps/Default/keymap.c **** #define KC_NTAB M(4)
+  59:keyboards/Manuform46/keymaps/Default/keymap.c **** #define KC_0CA M(6)
+  60:keyboards/Manuform46/keymaps/Default/keymap.c **** #define KC_PASS M(10)
+  61:keyboards/Manuform46/keymaps/Default/keymap.c **** #define KC_IPCF M(11)
+  62:keyboards/Manuform46/keymaps/Default/keymap.c **** #define KC_CMD M(16)
+  63:keyboards/Manuform46/keymaps/Default/keymap.c **** #define KC_OP M(12)
+  64:keyboards/Manuform46/keymaps/Default/keymap.c **** #define KC_OC M(13)
+  65:keyboards/Manuform46/keymaps/Default/keymap.c **** #define KC_OD M(14)
+  66:keyboards/Manuform46/keymaps/Default/keymap.c **** #define KC_TCLK M(15)
+  67:keyboards/Manuform46/keymaps/Default/keymap.c **** #define KC_ESCT MT(MOD_LCTL, KC_ESC)
+  68:keyboards/Manuform46/keymaps/Default/keymap.c **** #define KC_GUIT M(0)
+  69:keyboards/Manuform46/keymaps/Default/keymap.c **** 
+  70:keyboards/Manuform46/keymaps/Default/keymap.c **** const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
+  71:keyboards/Manuform46/keymaps/Default/keymap.c **** /* Keymap 0: Basic layer
+  72:keyboards/Manuform46/keymaps/Default/keymap.c ****  *
+  73:keyboards/Manuform46/keymaps/Default/keymap.c ****  * ,-------------------------------------------.         		  ,----------------------------------_--
+  74:keyboards/Manuform46/keymaps/Default/keymap.c ****  * |   =    |   1  |   2  |   3  |   4  |   5  |       		 	   |   6  |   7  |   8  |   9  |   0  | 
+  75:keyboards/Manuform46/keymaps/Default/keymap.c ****  * |--------+------+------+------+------+------|				   |------+------+------+------+------|--------
+  76:keyboards/Manuform46/keymaps/Default/keymap.c ****  * |Tab\FN3 |   Q  |   W  |   F  |   P  |   G  |    		       |   J  |   L  |   U  |   Y  |   :  |  
+  77:keyboards/Manuform46/keymaps/Default/keymap.c ****  * |--------+------+------+------+------+----- |    		       |------+------+------+------+------|--
+  78:keyboards/Manuform46/keymaps/Default/keymap.c ****  * | ENT/ADJ|   A  |   R  |   S  |   T  |   D  |    			   |   H  |   N  |   E  |   I  |   O  | ENTE
+  79:keyboards/Manuform46/keymaps/Default/keymap.c ****  * |--------+------+------+------+------+------|      		       |------+------+------+------+------|
+  80:keyboards/Manuform46/keymaps/Default/keymap.c ****  * | LShift |   Z  |   X  |   C  |   V  |   B  |      		       |   K  |   M  |   ,  |   .  |  /   |
+  81:keyboards/Manuform46/keymaps/Default/keymap.c ****  * `--------+------+------+------+------+------'      		       `-------+------+------+------+------
+  82:keyboards/Manuform46/keymaps/Default/keymap.c ****  * |CTR     |  ALT | GUI  | Left | Right|      |				   |      |      | LEFT | RIGHT |
+  83:keyboards/Manuform46/keymaps/Default/keymap.c ****  * `--------------------------------------------'       		    -------------------------------------
+  84:keyboards/Manuform46/keymaps/Default/keymap.c ****  
+  85:keyboards/Manuform46/keymaps/Default/keymap.c ****  *                 				|Backsp| L2   |	  		   			|Enter| Space| 
+  86:keyboards/Manuform46/keymaps/Default/keymap.c ****  *				   -----------------------------		    -----------------------------
+  87:keyboards/Manuform46/keymaps/Default/keymap.c ****  *                					 |      | TopR|		| TopL | SCRN  |
+  88:keyboards/Manuform46/keymaps/Default/keymap.c ****  *				   ------------------------------		    -----------------------------
+  89:keyboards/Manuform46/keymaps/Default/keymap.c ****  *								 	 |PGUP  |BotomR|	|BotttomL|END|
+  90:keyboards/Manuform46/keymaps/Default/keymap.c ****  Think of the thumb cluster as being flattened out.  For the right hand you rotate the 4 key thumb 
+  91:keyboards/Manuform46/keymaps/Default/keymap.c ****  This will then match up better with the above
+  92:keyboards/Manuform46/keymaps/Default/keymap.c ****  
+  93:keyboards/Manuform46/keymaps/Default/keymap.c ****  
+  94:keyboards/Manuform46/keymaps/Default/keymap.c **** 
+  95:keyboards/Manuform46/keymaps/Default/keymap.c ****  
+  96:keyboards/Manuform46/keymaps/Default/keymap.c ****   */	
+  97:keyboards/Manuform46/keymaps/Default/keymap.c **** 			[_QWERTY] = KC_KEYMAP(
+  98:keyboards/Manuform46/keymaps/Default/keymap.c **** 
+  99:keyboards/Manuform46/keymaps/Default/keymap.c **** 	//,----+----+----+----+----+----.    ,----+----+----+----+----+----.
+ 100:keyboards/Manuform46/keymaps/Default/keymap.c **** 		X3 , Q  , W  , E  , R  , T  ,      Y  , U  , I  , O , P  ,BSLS,
+ 101:keyboards/Manuform46/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|
+ 102:keyboards/Manuform46/keymaps/Default/keymap.c **** 		X4 , A  , S  , D  , F  , G  ,      H  , J  , K  , L  ,SCLN,ENT,
+ 103:keyboards/Manuform46/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|
+ 104:keyboards/Manuform46/keymaps/Default/keymap.c **** 		REST , Z  , X  , C  , V  , B  ,      N  , M  ,COMM,DOT,SLSH,REST,
+ 105:keyboards/Manuform46/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|
+ 106:keyboards/Manuform46/keymaps/Default/keymap.c **** 	//`----+----+----+----+----+----'    `----+----+----+----+----+----'
+ 107:keyboards/Manuform46/keymaps/Default/keymap.c **** 				 LEFT,RIGHT,		    					UP  ,DOWN,
+ 108:keyboards/Manuform46/keymaps/Default/keymap.c **** 	//`----+----+----+----+----+----'   		 ----+----+----+----+----+----'
+ 109:keyboards/Manuform46/keymaps/Default/keymap.c **** 							BSPC,LDWN,			  ENT , SPC,
+ 110:keyboards/Manuform46/keymaps/Default/keymap.c **** 	//						   |----------|  |----------|						
+ 111:keyboards/Manuform46/keymaps/Default/keymap.c **** 								GUIT, PSCR,   HOME,DEL,
+ 112:keyboards/Manuform46/keymaps/Default/keymap.c **** 	//						   |----,----,|  |----.-----|
+ 113:keyboards/Manuform46/keymaps/Default/keymap.c **** 								ESCT, GRV,	  END , LUP 
+ 114:keyboards/Manuform46/keymaps/Default/keymap.c **** 	),
+ 115:keyboards/Manuform46/keymaps/Default/keymap.c **** 	
+ 116:keyboards/Manuform46/keymaps/Default/keymap.c **** 			[_COLEMAK] = KC_KEYMAP(
+ 117:keyboards/Manuform46/keymaps/Default/keymap.c **** 	//,----+----+----+----+----+----. 		   ,----+----+----+----+----+----.
+ 118:keyboards/Manuform46/keymaps/Default/keymap.c **** 		X3 , Q  , W  , F  , P  , G  , 		     J  , L  , U  , Y  ,SCLN,BSLS,
+ 119:keyboards/Manuform46/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|		    |----+----+----+----+----+----|
+ 120:keyboards/Manuform46/keymaps/Default/keymap.c **** 		X4 , A  , R  , S  , T  , D  ,		      H  , N  , E  , I  , O  ,ENT,
+ 121:keyboards/Manuform46/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|		    |----+----+----+----+----+----|
+ 122:keyboards/Manuform46/keymaps/Default/keymap.c **** 		LSFT, Z  , X  , C  , V  , B  		,     K  , M  ,COMM,DOT ,SLSH,GRV,
+ 123:keyboards/Manuform46/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|		    |----+----+----+----+----+----|
+ 124:keyboards/Manuform46/keymaps/Default/keymap.c **** 				 LEFT,RIGHT,		    					UP  ,DOWN,
+ 125:keyboards/Manuform46/keymaps/Default/keymap.c **** 	//`----+----+----+----+----+----'   		 ----+----+----+----+----+----'
+ 126:keyboards/Manuform46/keymaps/Default/keymap.c **** 							BSPC,LDWN,			  ENT , SPC,
+ 127:keyboards/Manuform46/keymaps/Default/keymap.c **** 	//						   |----------|  |----------|						
+ 128:keyboards/Manuform46/keymaps/Default/keymap.c **** 								GUIT, PSCR,   HOME,DEL,
+ 129:keyboards/Manuform46/keymaps/Default/keymap.c **** 	//						   |----,----,|  |----.-----|
+ 130:keyboards/Manuform46/keymaps/Default/keymap.c **** 								ESCT, GRV,	  END , LUP 
+ 131:keyboards/Manuform46/keymaps/Default/keymap.c **** 	),
+ 132:keyboards/Manuform46/keymaps/Default/keymap.c **** 	
+ 133:keyboards/Manuform46/keymaps/Default/keymap.c **** 
+ 134:keyboards/Manuform46/keymaps/Default/keymap.c **** 
+ 135:keyboards/Manuform46/keymaps/Default/keymap.c **** 	[_DVORAK] = KC_KEYMAP(
+ 136:keyboards/Manuform46/keymaps/Default/keymap.c **** 	//,----+----+----+----+----+----.    ,----+----+----+----+----+----.
+ 137:keyboards/Manuform46/keymaps/Default/keymap.c **** 	//,----+----+----+----+----+----.    ,----+----+----+----+----+----.
+ 138:keyboards/Manuform46/keymaps/Default/keymap.c **** 		TAB ,QUOT,COMM,DOT , P  , Y  ,      F  , G  , C  , R  , L  ,MINS,
+ 139:keyboards/Manuform46/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|
+ 140:keyboards/Manuform46/keymaps/Default/keymap.c **** 		X0 , A  , O  , E  , U  , I  ,      D  , H  , T  , N  , S  ,SLSH,
+ 141:keyboards/Manuform46/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|
+ 142:keyboards/Manuform46/keymaps/Default/keymap.c **** 		LSFT,SCLN, Q  , J  , K  , X  ,      B  , M  , W  , V  , Z  , X4 ,
+ 143:keyboards/Manuform46/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|
+ 144:keyboards/Manuform46/keymaps/Default/keymap.c **** 				 LEFT,RIGHT,		    					UP  ,DOWN,
+ 145:keyboards/Manuform46/keymaps/Default/keymap.c **** 	//`----+----+----+----+----+----'   		 ----+----+----+----+----+----'
+ 146:keyboards/Manuform46/keymaps/Default/keymap.c **** 							BSPC,LDWN,			  ENT , SPC,
+ 147:keyboards/Manuform46/keymaps/Default/keymap.c **** 	//						   |----------|  |----------|						
+ 148:keyboards/Manuform46/keymaps/Default/keymap.c **** 								GUIT, PSCR,   HOME,DEL,
+ 149:keyboards/Manuform46/keymaps/Default/keymap.c **** 	//						   |----,----,|  |----.-----|
+ 150:keyboards/Manuform46/keymaps/Default/keymap.c **** 								ESCT, GRV,	  END , LUP 
+ 151:keyboards/Manuform46/keymaps/Default/keymap.c **** 	),
+ 152:keyboards/Manuform46/keymaps/Default/keymap.c **** /*
+ 153:keyboards/Manuform46/keymaps/Default/keymap.c **** 	[_LOWER] = KC_KEYMAP(
+ 154:keyboards/Manuform46/keymaps/Default/keymap.c **** 	//,----+----+----+----+----+----.    ,----+----+----+----+----+----.
+ 155:keyboards/Manuform46/keymaps/Default/keymap.c **** 		ESC , 1  , 2 , 3  , 4  , 5  ,      6  , 7  , 8  , 9  , 0  , EQL ,
+ 156:keyboards/Manuform46/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|
+ 157:keyboards/Manuform46/keymaps/Default/keymap.c **** 		DEL ,CAPP,LEFT,RGHT, UP ,LBRC,     RBRC, P4 , P5 , P6 ,PLUS,PIPE,
+ 158:keyboards/Manuform46/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|
+ 159:keyboards/Manuform46/keymaps/Default/keymap.c **** 			,CPYP, UP ,    ,DOWN,LCBR,     RCBR, P1 , P2 , P3 ,MINS,    ,
+ 160:keyboards/Manuform46/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|
+ 161:keyboards/Manuform46/keymaps/Default/keymap.c **** 			,LEFT,DOWN,RIGHT,    ,    ,     DEL ,   , P0 ,PDOT,    ,  NLCK, 
+ 162:keyboards/Manuform46/keymaps/Default/keymap.c **** 	//`----+----+----+----+----+----'    `----+----+----+----+----+----'
+ 163:keyboards/Manuform46/keymaps/Default/keymap.c **** 		X0 ,LALT,LGUI, X10, LDWN ,BSPC,     SPC, UP ,QUOT,LEFT, DOWN ,RGHT,
+ 164:keyboards/Manuform46/keymaps/Default/keymap.c **** 	//`----+----+----+----+----+----'    `----+----+----+----+----+----'
+ 165:keyboards/Manuform46/keymaps/Default/keymap.c **** 		X3  , 1  ,REST, 3  ,    , 5  ,      6  ,    , 8  , 9 , 0  ,MINS
+ 166:keyboards/Manuform46/keymaps/Default/keymap.c **** 	//`----+----+----+----+----+----'    `----+----+----+----+----+----'
+ 167:keyboards/Manuform46/keymaps/Default/keymap.c **** 	),
+ 168:keyboards/Manuform46/keymaps/Default/keymap.c **** 
+ 169:keyboards/Manuform46/keymaps/Default/keymap.c **** 	[_RAISE] = KC_KEYMAP(
+ 170:keyboards/Manuform46/keymaps/Default/keymap.c **** 	//,----+----+----+----+----+----.    ,----+----+----+----+----+----.
+ 171:keyboards/Manuform46/keymaps/Default/keymap.c **** 		ESC ,EXLM, AT ,HASH,DLR ,PERC,     CIRC,AMPR,ASTR,LPRN,RPRN,    ,
+ 172:keyboards/Manuform46/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|
+ 173:keyboards/Manuform46/keymaps/Default/keymap.c **** 		DEL ,MPRV,MNXT,VOLU,PGUP,UNDS,     EQL ,HOME,    ,    ,    ,BSLS,
+ 174:keyboards/Manuform46/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|88
+ 175:keyboards/Manuform46/keymaps/Default/keymap.c **** 		LSFT,MSTP,MPLY,VOLD,PGDN,MINS,     PLUS,END,COMM ,    ,UP ,    ,
+ 176:keyboards/Manuform46/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|
+ 177:keyboards/Manuform46/keymaps/Default/keymap.c **** 		,    ,    , X3 ,    ,    ,         ,    ,    ,LEFT,DOWN,RIGHT,    
+ 178:keyboards/Manuform46/keymaps/Default/keymap.c **** 	//`----+----+----+----+----+----'    `----+----+----+----+----+----'
+ 179:keyboards/Manuform46/keymaps/Default/keymap.c **** 		X0 ,LALT,LGUI, X10, LDWN ,BSPC,     SPC, UP ,QUOT,LEFT, DOWN ,RGHT,
+ 180:keyboards/Manuform46/keymaps/Default/keymap.c **** 	//`----+----+----+----+----+----'    `----+----+----+----+----+----'
+ 181:keyboards/Manuform46/keymaps/Default/keymap.c **** 		X3  , 1  , 2  , 3  ,   , 5  ,      6  ,   , 8  ,REST, 0  ,MINS
+ 182:keyboards/Manuform46/keymaps/Default/keymap.c **** 	//`----+----+----+----+----+----'    `----+----+----+----+----+----'
+ 183:keyboards/Manuform46/keymaps/Default/keymap.c **** 	),*/
+ 184:keyboards/Manuform46/keymaps/Default/keymap.c **** 	
+ 185:keyboards/Manuform46/keymaps/Default/keymap.c **** 	[_LOWER] = KC_KEYMAP(
+ 186:keyboards/Manuform46/keymaps/Default/keymap.c **** 	//,----+----+----+----+----+----.    ,----+----+----+----+----+----.
+ 187:keyboards/Manuform46/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|
+ 188:keyboards/Manuform46/keymaps/Default/keymap.c **** 		  ,     ,WWWX,EMAL,    ,TCLK,         ,    ,    ,CMD ,PASS,   ,
+ 189:keyboards/Manuform46/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|
+ 190:keyboards/Manuform46/keymaps/Default/keymap.c **** 		   ,0CA ,     ,   ,    ,    ,         ,    , UP ,IPCF,     ,   ,
+ 191:keyboards/Manuform46/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|
+ 192:keyboards/Manuform46/keymaps/Default/keymap.c **** 		  ,    ,XLgn,     ,    ,    ,         ,LEFT,DOWN,RIGHT,    ,   ,
+ 193:keyboards/Manuform46/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|
+ 194:keyboards/Manuform46/keymaps/Default/keymap.c **** 				 LEFT,RIGHT,		    					UP  ,DOWN,
+ 195:keyboards/Manuform46/keymaps/Default/keymap.c **** 	//`----+----+----+----+----+----'   		 ----+----+----+----+----+----'
+ 196:keyboards/Manuform46/keymaps/Default/keymap.c **** 							BSPC,LDWN,			  ENT , SPC,
+ 197:keyboards/Manuform46/keymaps/Default/keymap.c **** 	//						   |----------|  |----------|						
+ 198:keyboards/Manuform46/keymaps/Default/keymap.c **** 								GUIT, PSCR,   HOME,DEL,
+ 199:keyboards/Manuform46/keymaps/Default/keymap.c **** 	//						   |----,----,|  |----.-----|
+ 200:keyboards/Manuform46/keymaps/Default/keymap.c **** 								ESCT, GRV,	  END , LUP 
+ 201:keyboards/Manuform46/keymaps/Default/keymap.c **** 	),
+ 202:keyboards/Manuform46/keymaps/Default/keymap.c **** 
+ 203:keyboards/Manuform46/keymaps/Default/keymap.c **** 	
+ 204:keyboards/Manuform46/keymaps/Default/keymap.c **** 	[_RAISE] = KC_KEYMAP(
+ 205:keyboards/Manuform46/keymaps/Default/keymap.c **** 	//,----+----+----+----+----+----.    ,----+----+----+----+----+----.
+ 206:keyboards/Manuform46/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|
+ 207:keyboards/Manuform46/keymaps/Default/keymap.c **** 		8 , 1  , WWWX, 1  , 1  , 1  ,      NO , 4  , 5  , 6  ,PMNS, NO   , 
+ 208:keyboards/Manuform46/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|
+ 209:keyboards/Manuform46/keymaps/Default/keymap.c **** 		8 , 1  , 1  , 1  , 1  , 1  ,       NO , 1   , 2  ,  3 ,PPLS, NO   ,
+ 210:keyboards/Manuform46/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|
+ 211:keyboards/Manuform46/keymaps/Default/keymap.c **** 		8 , 1  ,1, 1  , 1  , 1  ,          NO , 0  , 0  , DOT , NO, NO,
+ 212:keyboards/Manuform46/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|
+ 213:keyboards/Manuform46/keymaps/Default/keymap.c **** 				 LEFT,RIGHT,		    					UP  ,DOWN,
+ 214:keyboards/Manuform46/keymaps/Default/keymap.c **** 	//`----+----+----+----+----+----'   		 ----+----+----+----+----+----'
+ 215:keyboards/Manuform46/keymaps/Default/keymap.c **** 							BSPC,LDWN,			  ENT , SPC,
+ 216:keyboards/Manuform46/keymaps/Default/keymap.c **** 	//						   |----------|  |----------|						
+ 217:keyboards/Manuform46/keymaps/Default/keymap.c **** 								GUIT, PSCR,   HOME,DEL,
+ 218:keyboards/Manuform46/keymaps/Default/keymap.c **** 	//						   |----,----,|  |----.-----|
+ 219:keyboards/Manuform46/keymaps/Default/keymap.c **** 								ESCT, GRV,	  END , LUP  
+ 220:keyboards/Manuform46/keymaps/Default/keymap.c **** 	),
+ 221:keyboards/Manuform46/keymaps/Default/keymap.c **** 	
+ 222:keyboards/Manuform46/keymaps/Default/keymap.c **** 	
+ 223:keyboards/Manuform46/keymaps/Default/keymap.c **** 	[_FN3] = KC_KEYMAP(
+ 224:keyboards/Manuform46/keymaps/Default/keymap.c **** 	//,----+----+----+----+----+----.    ,----+----+----+----+----+----.
+ 225:keyboards/Manuform46/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|
+ 226:keyboards/Manuform46/keymaps/Default/keymap.c **** 			, 3 , 3,  3, 3  , 3  ,         ,    ,    ,    ,    ,    ,
+ 227:keyboards/Manuform46/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|
+ 228:keyboards/Manuform46/keymaps/Default/keymap.c **** 			,    ,UP,    ,    ,    ,         ,    ,    ,    , UP ,    ,
+ 229:keyboards/Manuform46/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|
+ 230:keyboards/Manuform46/keymaps/Default/keymap.c **** 		X0 ,LALT,LGUI, X10, LDWN ,BSPC,     SPC, UP ,QUOT,LEFT, DOWN ,RGHT,
+ 231:keyboards/Manuform46/keymaps/Default/keymap.c **** 	//`----+----+----+----+----+----'    `----+----+----+----+----+----'
+ 232:keyboards/Manuform46/keymaps/Default/keymap.c **** 				 LEFT,RIGHT,		    					UP  ,DOWN,
+ 233:keyboards/Manuform46/keymaps/Default/keymap.c **** 	//`----+----+----+----+----+----'   		 ----+----+----+----+----+----'
+ 234:keyboards/Manuform46/keymaps/Default/keymap.c **** 							BSPC,LDWN,			  ENT , SPC,
+ 235:keyboards/Manuform46/keymaps/Default/keymap.c **** 	//						   |----------|  |----------|						
+ 236:keyboards/Manuform46/keymaps/Default/keymap.c **** 								GUIT, PSCR,   HOME,DEL,
+ 237:keyboards/Manuform46/keymaps/Default/keymap.c **** 	//						   |----,----,|  |----.-----|
+ 238:keyboards/Manuform46/keymaps/Default/keymap.c **** 								ESCT, GRV,	  END , LUP 
+ 239:keyboards/Manuform46/keymaps/Default/keymap.c **** 	),
+ 240:keyboards/Manuform46/keymaps/Default/keymap.c **** /*
+ 241:keyboards/Manuform46/keymaps/Default/keymap.c **** 	[_FN4] = KEYMAP( \
+ 242:keyboards/Manuform46/keymaps/Default/keymap.c **** 	_______, _______, M(3)   , M(2)     , _______,  M(4)  ,		 _______, _______, _______, _______, ____
+ 243:keyboards/Manuform46/keymaps/Default/keymap.c **** 	_______, M(6)   , _______, _______  , _______, _______,		 _______, _______, _______, _______, ____
+ 244:keyboards/Manuform46/keymaps/Default/keymap.c **** 	_______, _______, M(1)   ,TD(TD_CMD), _______, _______,		 _______, _______, _______, _______, KC_U
+ 245:keyboards/Manuform46/keymaps/Default/keymap.c **** 	M(7)   , M(8)   , M(9)   , _______  , _______, _______,		 _______, _______, _______, KC_LEFT, KC_D
+ 246:keyboards/Manuform46/keymaps/Default/keymap.c **** 	_______, _______, _______, _______  , _______, _______,		 _______, _______, _______, _______, ____
+ 247:keyboards/Manuform46/keymaps/Default/keymap.c **** 	_______, _______ , _______, _______  , _______, _______,	 _______, _______, _______, _______, ____
+ 248:keyboards/Manuform46/keymaps/Default/keymap.c **** 	),*/
+ 249:keyboards/Manuform46/keymaps/Default/keymap.c **** 
+ 250:keyboards/Manuform46/keymaps/Default/keymap.c **** 	/* Adjust (Lower + Raise)
+ 251:keyboards/Manuform46/keymaps/Default/keymap.c **** * ,-----------------------------------------------------------------------------------.
+ 252:keyboards/Manuform46/keymaps/Default/keymap.c **** * |      | Reset|RGB Tg|RGB Md|Hue Up|Hue Dn|Sat Up|Sat Dn|Val Up|Val Dn| RESET|      |
+ 253:keyboards/Manuform46/keymaps/Default/keymap.c **** * |------+------+------+------+------+-------------+------+------+------+------+------|
+ 254:keyboards/Manuform46/keymaps/Default/keymap.c **** * |      |      |      |Aud on|Audoff|AGnorm|AGswap|Qwerty|Colemk|Dvorak|      |      |
+ 255:keyboards/Manuform46/keymaps/Default/keymap.c **** * |------+------+------+------+------+------|------+------+------+------+------+------|
+ 256:keyboards/Manuform46/keymaps/Default/keymap.c **** * |      |      |      |      |      |      |      |      |      |      |      |      |
+ 257:keyboards/Manuform46/keymaps/Default/keymap.c **** * |------+------+------+------+------+------+------+------+------+------+------+------|
+ 258:keyboards/Manuform46/keymaps/Default/keymap.c **** * |      |      |      |      |      |             |      |      |      |      |      |
+ 259:keyboards/Manuform46/keymaps/Default/keymap.c **** * `-----------------------------------------------------------------------------------'
+ 260:keyboards/Manuform46/keymaps/Default/keymap.c **** */
+ 261:keyboards/Manuform46/keymaps/Default/keymap.c **** 	[_ADJUST] = KEYMAP( \
+ 262:keyboards/Manuform46/keymaps/Default/keymap.c **** 	_______, COLEMAK, QWERTY, RGB_MOD, RGB_HUD, RGB_HUI, RGB_SAD, RGB_SAI, RGB_VAD, RGB_VAI, RESET  , 
+ 263:keyboards/Manuform46/keymaps/Default/keymap.c **** 	_______, QWERTY, _______, AU_ON,   AU_OFF,  AG_NORM, AG_SWAP, QWERTY,  COLEMAK, DVORAK,  DEBUG, __
+ 264:keyboards/Manuform46/keymaps/Default/keymap.c **** 	_______, KC_1   , KC_1   , _______, _______, _______, _______, _______, _______, _______, _______,
+ 265:keyboards/Manuform46/keymaps/Default/keymap.c **** 	_______, _______, _______, COLEMAK, _______, _______, _______, _______, \
+ 266:keyboards/Manuform46/keymaps/Default/keymap.c **** 	_______, _______, _______, _______, _______, _______, _______, _______ \
+ 267:keyboards/Manuform46/keymaps/Default/keymap.c **** 	)
+ 268:keyboards/Manuform46/keymaps/Default/keymap.c **** 
+ 269:keyboards/Manuform46/keymaps/Default/keymap.c **** 
+ 270:keyboards/Manuform46/keymaps/Default/keymap.c **** };
+ 271:keyboards/Manuform46/keymaps/Default/keymap.c **** 
+ 272:keyboards/Manuform46/keymaps/Default/keymap.c **** #ifdef AUDIO_ENABLE
+ 273:keyboards/Manuform46/keymaps/Default/keymap.c **** float tone_qwerty[][2]     = SONG(QWERTY_SOUND);
+ 274:keyboards/Manuform46/keymaps/Default/keymap.c **** float tone_dvorak[][2]     = SONG(DVORAK_SOUND);
+ 275:keyboards/Manuform46/keymaps/Default/keymap.c **** float tone_colemak[][2]    = SONG(COLEMAK_SOUND);
+ 276:keyboards/Manuform46/keymaps/Default/keymap.c **** #endif
+ 277:keyboards/Manuform46/keymaps/Default/keymap.c **** 
+ 278:keyboards/Manuform46/keymaps/Default/keymap.c **** void persistent_default_layer_set(uint16_t default_layer) {
+ 279:keyboards/Manuform46/keymaps/Default/keymap.c **** 	eeconfig_update_default_layer(default_layer);
+ 280:keyboards/Manuform46/keymaps/Default/keymap.c **** 	default_layer_set(default_layer);
+ 281:keyboards/Manuform46/keymaps/Default/keymap.c **** }
+ 282:keyboards/Manuform46/keymaps/Default/keymap.c **** 
+ 283:keyboards/Manuform46/keymaps/Default/keymap.c **** /*
+ 284:keyboards/Manuform46/keymaps/Default/keymap.c **** void dance_cln_finished(void){
+ 285:keyboards/Manuform46/keymaps/Default/keymap.c **** register_code (KC_LGUI);
+ 286:keyboards/Manuform46/keymaps/Default/keymap.c **** register_code(KC_TAB);
+ 287:keyboards/Manuform46/keymaps/Default/keymap.c **** unregister_code(KC_TAB);
+ 288:keyboards/Manuform46/keymaps/Default/keymap.c **** unregister_code(KC_LGUI); 
+ 289:keyboards/Manuform46/keymaps/Default/keymap.c **** }*/
+ 290:keyboards/Manuform46/keymaps/Default/keymap.c **** 
+ 291:keyboards/Manuform46/keymaps/Default/keymap.c **** const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) {
+ 292:keyboards/Manuform46/keymaps/Default/keymap.c **** 	
+ 293:keyboards/Manuform46/keymaps/Default/keymap.c **** 	switch (id) {
+ 294:keyboards/Manuform46/keymaps/Default/keymap.c **** 	case 0:
+ 295:keyboards/Manuform46/keymaps/Default/keymap.c **** 		if (record->event.pressed) {
+ 296:keyboards/Manuform46/keymaps/Default/keymap.c **** 			return MACRO(D(LGUI), T(TAB), U(LGUI), END);
+ 297:keyboards/Manuform46/keymaps/Default/keymap.c **** 		}
+ 298:keyboards/Manuform46/keymaps/Default/keymap.c **** 	case 1:
+ 299:keyboards/Manuform46/keymaps/Default/keymap.c **** 		if (record->event.pressed) {
+ 300:keyboards/Manuform46/keymaps/Default/keymap.c **** 			SEND_STRING("admin"SS_TAP(X_TAB)"1111"SS_TAP(X_ENTER));
+ 301:keyboards/Manuform46/keymaps/Default/keymap.c **** 		return false;	break;
+ 302:keyboards/Manuform46/keymaps/Default/keymap.c **** 		//	return MACRO(I(10), T(A), T(D), T(M), T(I), T(N), T(TAB), T(1), T(1),T(1), T(1), T(ENTER), END
+ 303:keyboards/Manuform46/keymaps/Default/keymap.c **** 		}
+ 304:keyboards/Manuform46/keymaps/Default/keymap.c **** 	case 2:
+ 305:keyboards/Manuform46/keymaps/Default/keymap.c **** 		if (record->event.pressed) {
+ 306:keyboards/Manuform46/keymaps/Default/keymap.c **** 			SEND_STRING("apaez@gotocos.com");
+ 307:keyboards/Manuform46/keymaps/Default/keymap.c **** 			return false;	break;
+ 308:keyboards/Manuform46/keymaps/Default/keymap.c **** 		}
+ 309:keyboards/Manuform46/keymaps/Default/keymap.c **** 	case 3:
+ 310:keyboards/Manuform46/keymaps/Default/keymap.c **** 		if (record->event.pressed) {
+ 311:keyboards/Manuform46/keymaps/Default/keymap.c **** 			SEND_STRING("www.support.xerox.com"SS_TAP(X_ENTER));
+ 312:keyboards/Manuform46/keymaps/Default/keymap.c **** 						return false;	break;
+ 313:keyboards/Manuform46/keymaps/Default/keymap.c **** 		}
+ 314:keyboards/Manuform46/keymaps/Default/keymap.c **** 	case 4:
+ 315:keyboards/Manuform46/keymaps/Default/keymap.c **** 		if(record->event.pressed) {
+ 316:keyboards/Manuform46/keymaps/Default/keymap.c **** 			return MACRO(I(10), D(LCTRL), T(T), T(V), T(ENTER), U(LCTRL), END);
+ 317:keyboards/Manuform46/keymaps/Default/keymap.c **** 		}
+ 318:keyboards/Manuform46/keymaps/Default/keymap.c **** 		
+ 319:keyboards/Manuform46/keymaps/Default/keymap.c **** 	case 5:{
+ 320:keyboards/Manuform46/keymaps/Default/keymap.c **** 			return  MACRO_TAP_HOLD_LAYER(record, MACRO(TYPE(KC_X), END), _LOWER);	
+ 321:keyboards/Manuform46/keymaps/Default/keymap.c **** 		}
+ 322:keyboards/Manuform46/keymaps/Default/keymap.c **** 	case 6: {
+ 323:keyboards/Manuform46/keymaps/Default/keymap.c **** 			if(record->event.pressed) 
+ 324:keyboards/Manuform46/keymaps/Default/keymap.c **** 			return MACRO(I(10), T(0), T(C), T(TAB), T(TAB), T(A), T(TAB), END);
+ 325:keyboards/Manuform46/keymaps/Default/keymap.c **** 		}
+ 326:keyboards/Manuform46/keymaps/Default/keymap.c **** 	case 10: {
+ 327:keyboards/Manuform46/keymaps/Default/keymap.c **** 		if(record->event.pressed) {
+ 328:keyboards/Manuform46/keymaps/Default/keymap.c **** 		SEND_STRING("ts");
+ 329:keyboards/Manuform46/keymaps/Default/keymap.c **** 			return false; break;}
+ 330:keyboards/Manuform46/keymaps/Default/keymap.c **** 	}		
+ 331:keyboards/Manuform46/keymaps/Default/keymap.c **** 	case 11: {
+ 332:keyboards/Manuform46/keymaps/Default/keymap.c **** 		if(record->event.pressed) {
+ 333:keyboards/Manuform46/keymaps/Default/keymap.c **** 			SEND_STRING("ipconfig /all");
+ 334:keyboards/Manuform46/keymaps/Default/keymap.c **** 					return false; break;}
+ 335:keyboards/Manuform46/keymaps/Default/keymap.c **** 	}
+ 336:keyboards/Manuform46/keymaps/Default/keymap.c **** 	case 12: {
+ 337:keyboards/Manuform46/keymaps/Default/keymap.c **** 	if(record->event.pressed) 
+ 338:keyboards/Manuform46/keymaps/Default/keymap.c **** 		return MACRO( I(10),T(TAB), T(O), T(P), T(TAB),T(ENTER), T(TAB),T(TAB),T(TAB),T(Z),T(R),T(TAB),T(
+ 339:keyboards/Manuform46/keymaps/Default/keymap.c **** 	}	
+ 340:keyboards/Manuform46/keymaps/Default/keymap.c **** 		case 13: {
+ 341:keyboards/Manuform46/keymaps/Default/keymap.c **** 	if(record->event.pressed) 
+ 342:keyboards/Manuform46/keymaps/Default/keymap.c **** 		return MACRO( I(10),T(TAB), T(O), T(T), T(TAB),T(ENTER), T(TAB),T(TAB),T(TAB),T(Z),T(R),T(TAB),T(
+ 343:keyboards/Manuform46/keymaps/Default/keymap.c **** 	}	
+ 344:keyboards/Manuform46/keymaps/Default/keymap.c **** 		case 14: {
+ 345:keyboards/Manuform46/keymaps/Default/keymap.c **** 	if(record->event.pressed) 
+ 346:keyboards/Manuform46/keymaps/Default/keymap.c **** 		return MACRO( I(10),T(TAB), T(I), T(N), T(TAB),T(ENTER), T(TAB),T(TAB),T(TAB),T(I),T(N),T(TAB),T(
+ 347:keyboards/Manuform46/keymaps/Default/keymap.c **** 	}	
+ 348:keyboards/Manuform46/keymaps/Default/keymap.c **** 		case 15: {
+ 349:keyboards/Manuform46/keymaps/Default/keymap.c **** 	if(record->event.pressed) 
+ 350:keyboards/Manuform46/keymaps/Default/keymap.c **** 		SEND_STRING("AC"SS_TAP(X_ENTER));
+ 351:keyboards/Manuform46/keymaps/Default/keymap.c **** 		return false; break;
+ 352:keyboards/Manuform46/keymaps/Default/keymap.c **** 	}
+ 353:keyboards/Manuform46/keymaps/Default/keymap.c **** 		case 16: {
+ 354:keyboards/Manuform46/keymaps/Default/keymap.c **** 	if(record->event.pressed) {
+ 355:keyboards/Manuform46/keymaps/Default/keymap.c **** 	MACRO(T(LGUI), W(50));}
+ 356:keyboards/Manuform46/keymaps/Default/keymap.c **** 	else{
+ 357:keyboards/Manuform46/keymaps/Default/keymap.c **** 	SEND_STRING("cmd"SS_TAP(X_ENTER));}
+ 358:keyboards/Manuform46/keymaps/Default/keymap.c **** 		return false; break;
+ 359:keyboards/Manuform46/keymaps/Default/keymap.c **** 	}
+ 360:keyboards/Manuform46/keymaps/Default/keymap.c **** 		break;
+ 361:keyboards/Manuform46/keymaps/Default/keymap.c **** 	}		
+ 362:keyboards/Manuform46/keymaps/Default/keymap.c **** 	return MACRO_NONE;
+ 363:keyboards/Manuform46/keymaps/Default/keymap.c **** }
+ 364:keyboards/Manuform46/keymaps/Default/keymap.c **** //return MACRO_NONE;
+ 365:keyboards/Manuform46/keymaps/Default/keymap.c **** 
+ 366:keyboards/Manuform46/keymaps/Default/keymap.c **** 
+ 367:keyboards/Manuform46/keymaps/Default/keymap.c **** void cmd_commands(qk_tap_dance_state_t *state, void *user_data) {
+  17               		.loc 1 367 65 view -0
+  18               		.cfi_startproc
+  19               	/* prologue: function */
+  20               	/* frame size = 0 */
+  21               	/* stack size = 0 */
+  22               	.L__stack_usage = 0
+ 368:keyboards/Manuform46/keymaps/Default/keymap.c **** 	if (state->count == 1) {
+  23               		.loc 1 368 2 view .LVU1
+  24               		.loc 1 368 11 is_stmt 0 view .LVU2
+  25 0000 FC01      		movw r30,r24
+  26 0002 8081      		ld r24,Z
+  27               	.LVL1:
+  28               		.loc 1 368 5 view .LVU3
+  29 0004 8130      		cpi r24,lo8(1)
+  30 0006 01F4      		brne .L2
+ 369:keyboards/Manuform46/keymaps/Default/keymap.c **** 		action_macro_play(MACRO(D(LCTRL), T(C), U(LCTRL),END));
+  31               		.loc 1 369 3 is_stmt 1 view .LVU4
+  32               	.LBB2:
+  33               		.loc 1 369 21 view .LVU5
+  34               		.loc 1 369 21 view .LVU6
+  35               	.LBE2:
+  36               		.loc 1 369 3 is_stmt 0 view .LVU7
+  37 0008 80E0      		ldi r24,lo8(__m.3324)
+  38 000a 90E0      		ldi r25,hi8(__m.3324)
+  39               	.L4:
+ 370:keyboards/Manuform46/keymaps/Default/keymap.c **** 	}
+ 371:keyboards/Manuform46/keymaps/Default/keymap.c **** 	else if (state->count ==2){
+ 372:keyboards/Manuform46/keymaps/Default/keymap.c **** 		action_macro_play(MACRO(D(LCTRL), T(V), U(LCTRL),END));
+ 373:keyboards/Manuform46/keymaps/Default/keymap.c **** 	}
+ 374:keyboards/Manuform46/keymaps/Default/keymap.c **** 	else {
+ 375:keyboards/Manuform46/keymaps/Default/keymap.c **** 		action_macro_play(MACRO(D(LCTRL), T(A), T(C), U(LCTRL),END));
+  40               		.loc 1 375 3 view .LVU8
+  41 000c 0C94 0000 		jmp action_macro_play
+  42               	.LVL2:
+  43               	.L2:
+ 371:keyboards/Manuform46/keymaps/Default/keymap.c **** 		action_macro_play(MACRO(D(LCTRL), T(V), U(LCTRL),END));
+  44               		.loc 1 371 7 is_stmt 1 view .LVU9
+ 371:keyboards/Manuform46/keymaps/Default/keymap.c **** 		action_macro_play(MACRO(D(LCTRL), T(V), U(LCTRL),END));
+  45               		.loc 1 371 10 is_stmt 0 view .LVU10
+  46 0010 8230      		cpi r24,lo8(2)
+  47 0012 01F4      		brne .L3
+ 372:keyboards/Manuform46/keymaps/Default/keymap.c **** 	}
+  48               		.loc 1 372 3 is_stmt 1 view .LVU11
+  49               	.LBB3:
+ 372:keyboards/Manuform46/keymaps/Default/keymap.c **** 	}
+  50               		.loc 1 372 21 view .LVU12
+ 372:keyboards/Manuform46/keymaps/Default/keymap.c **** 	}
+  51               		.loc 1 372 21 view .LVU13
+  52               	.LBE3:
+ 372:keyboards/Manuform46/keymaps/Default/keymap.c **** 	}
+  53               		.loc 1 372 3 is_stmt 0 view .LVU14
+  54 0014 80E0      		ldi r24,lo8(__m.3326)
+  55 0016 90E0      		ldi r25,hi8(__m.3326)
+  56 0018 00C0      		rjmp .L4
+  57               	.L3:
+  58               		.loc 1 375 3 is_stmt 1 view .LVU15
+  59               	.LBB4:
+  60               		.loc 1 375 21 view .LVU16
+  61               		.loc 1 375 21 view .LVU17
+  62               	.LBE4:
+  63               		.loc 1 375 3 is_stmt 0 view .LVU18
+  64 001a 80E0      		ldi r24,lo8(__m.3328)
+  65 001c 90E0      		ldi r25,hi8(__m.3328)
+  66 001e 00C0      		rjmp .L4
+  67               		.cfi_endproc
+  68               	.LFE30:
+  70               		.section	.text.cmd,"ax",@progbits
+  71               	.global	cmd
+  73               	cmd:
+  74               	.LVL3:
+  75               	.LFB31:
+ 376:keyboards/Manuform46/keymaps/Default/keymap.c **** 	}
+ 377:keyboards/Manuform46/keymaps/Default/keymap.c **** }
+ 378:keyboards/Manuform46/keymaps/Default/keymap.c **** 
+ 379:keyboards/Manuform46/keymaps/Default/keymap.c **** 
+ 380:keyboards/Manuform46/keymaps/Default/keymap.c **** void cmd(qk_tap_dance_state_t *state, void *user_data) {
+  76               		.loc 1 380 56 is_stmt 1 view -0
+  77               		.cfi_startproc
+  78               	/* prologue: function */
+  79               	/* frame size = 0 */
+  80               	/* stack size = 0 */
+  81               	.L__stack_usage = 0
+ 381:keyboards/Manuform46/keymaps/Default/keymap.c **** 	if(state->count==1){
+  82               		.loc 1 381 2 view .LVU20
+  83               		.loc 1 381 10 is_stmt 0 view .LVU21
+  84 0000 FC01      		movw r30,r24
+  85 0002 8081      		ld r24,Z
+  86               	.LVL4:
+  87               		.loc 1 381 4 view .LVU22
+  88 0004 8130      		cpi r24,lo8(1)
+  89 0006 01F4      		brne .L6
+ 382:keyboards/Manuform46/keymaps/Default/keymap.c **** 		action_macro_play(MACRO(D(LGUI), T(R),W(255), U(LGUI),W(255), T(C), T(M), T(D), T(ENTER),END));
+  90               		.loc 1 382 3 is_stmt 1 view .LVU23
+  91               	.LBB5:
+  92               		.loc 1 382 21 view .LVU24
+  93               		.loc 1 382 21 view .LVU25
+  94               	.LBE5:
+  95               		.loc 1 382 3 is_stmt 0 view .LVU26
+  96 0008 80E0      		ldi r24,lo8(__m.3334)
+  97 000a 90E0      		ldi r25,hi8(__m.3334)
+  98               	.L8:
+ 383:keyboards/Manuform46/keymaps/Default/keymap.c **** 	}
+ 384:keyboards/Manuform46/keymaps/Default/keymap.c **** 	else if (state->count == 2) {
+ 385:keyboards/Manuform46/keymaps/Default/keymap.c **** 		action_macro_play(MACRO(D(LGUI), T(R), U(LGUI), T(C), T(M), T(D), T(ENTER),W(255),W(255), T(I), T
+ 386:keyboards/Manuform46/keymaps/Default/keymap.c **** 	}
+ 387:keyboards/Manuform46/keymaps/Default/keymap.c **** 	else{
+ 388:keyboards/Manuform46/keymaps/Default/keymap.c **** 		action_macro_play(MACRO(D(LGUI), T(R),W(255), U(LGUI),W(255), T(C), T(M), T(D), T(ENTER), W(255),
+  99               		.loc 1 388 3 view .LVU27
+ 100 000c 0C94 0000 		jmp action_macro_play
+ 101               	.LVL5:
+ 102               	.L6:
+ 384:keyboards/Manuform46/keymaps/Default/keymap.c **** 		action_macro_play(MACRO(D(LGUI), T(R), U(LGUI), T(C), T(M), T(D), T(ENTER),W(255),W(255), T(I), T
+ 103               		.loc 1 384 7 is_stmt 1 view .LVU28
+ 384:keyboards/Manuform46/keymaps/Default/keymap.c **** 		action_macro_play(MACRO(D(LGUI), T(R), U(LGUI), T(C), T(M), T(D), T(ENTER),W(255),W(255), T(I), T
+ 104               		.loc 1 384 10 is_stmt 0 view .LVU29
+ 105 0010 8230      		cpi r24,lo8(2)
+ 106 0012 01F4      		brne .L7
+ 385:keyboards/Manuform46/keymaps/Default/keymap.c **** 	}
+ 107               		.loc 1 385 3 is_stmt 1 view .LVU30
+ 108               	.LBB6:
+ 385:keyboards/Manuform46/keymaps/Default/keymap.c **** 	}
+ 109               		.loc 1 385 21 view .LVU31
+ 385:keyboards/Manuform46/keymaps/Default/keymap.c **** 	}
+ 110               		.loc 1 385 21 view .LVU32
+ 111               	.LBE6:
+ 385:keyboards/Manuform46/keymaps/Default/keymap.c **** 	}
+ 112               		.loc 1 385 3 is_stmt 0 view .LVU33
+ 113 0014 80E0      		ldi r24,lo8(__m.3336)
+ 114 0016 90E0      		ldi r25,hi8(__m.3336)
+ 115 0018 00C0      		rjmp .L8
+ 116               	.L7:
+ 117               		.loc 1 388 3 is_stmt 1 view .LVU34
+ 118               	.LBB7:
+ 119               		.loc 1 388 21 view .LVU35
+ 120               		.loc 1 388 21 view .LVU36
+ 121               	.LBE7:
+ 122               		.loc 1 388 3 is_stmt 0 view .LVU37
+ 123 001a 80E0      		ldi r24,lo8(__m.3338)
+ 124 001c 90E0      		ldi r25,hi8(__m.3338)
+ 125 001e 00C0      		rjmp .L8
+ 126               		.cfi_endproc
+ 127               	.LFE31:
+ 129               		.section	.text.VirtualDesktop,"ax",@progbits
+ 130               	.global	VirtualDesktop
+ 132               	VirtualDesktop:
+ 133               	.LVL6:
+ 134               	.LFB33:
+ 389:keyboards/Manuform46/keymaps/Default/keymap.c **** 	}
+ 390:keyboards/Manuform46/keymaps/Default/keymap.c **** }
+ 391:keyboards/Manuform46/keymaps/Default/keymap.c **** void SLSH_BSLSH(qk_tap_dance_state_t *state, void *user_data) {
+ 392:keyboards/Manuform46/keymaps/Default/keymap.c **** 	if (state->count == 1) {
+ 393:keyboards/Manuform46/keymaps/Default/keymap.c **** 		register_code (KC_SLSH);
+ 394:keyboards/Manuform46/keymaps/Default/keymap.c **** 		unregister_code (KC_SLSH);
+ 395:keyboards/Manuform46/keymaps/Default/keymap.c **** 	}
+ 396:keyboards/Manuform46/keymaps/Default/keymap.c **** 	else{
+ 397:keyboards/Manuform46/keymaps/Default/keymap.c **** 		register_code (KC_BSLS);
+ 398:keyboards/Manuform46/keymaps/Default/keymap.c **** 		unregister_code (KC_BSLS);
+ 399:keyboards/Manuform46/keymaps/Default/keymap.c **** 	}
+ 400:keyboards/Manuform46/keymaps/Default/keymap.c **** }
+ 401:keyboards/Manuform46/keymaps/Default/keymap.c **** void VirtualDesktop(qk_tap_dance_state_t *state, void *user_data) {
+ 135               		.loc 1 401 67 is_stmt 1 view -0
+ 136               		.cfi_startproc
+ 137               	/* prologue: function */
+ 138               	/* frame size = 0 */
+ 139               	/* stack size = 0 */
+ 140               	.L__stack_usage = 0
+ 402:keyboards/Manuform46/keymaps/Default/keymap.c **** 	if (state->count == 1) 
+ 141               		.loc 1 402 2 view .LVU39
+ 142               		.loc 1 402 11 is_stmt 0 view .LVU40
+ 143 0000 FC01      		movw r30,r24
+ 144 0002 8081      		ld r24,Z
+ 145               	.LVL7:
+ 146               		.loc 1 402 5 view .LVU41
+ 147 0004 8130      		cpi r24,lo8(1)
+ 148 0006 01F4      		brne .L10
+ 403:keyboards/Manuform46/keymaps/Default/keymap.c **** 		action_macro_play(MACRO(D(LGUI),D(LCTRL),T(LEFT),U(LCTRL),U(LGUI),END));
+ 149               		.loc 1 403 3 is_stmt 1 view .LVU42
+ 150               	.LBB8:
+ 151               		.loc 1 403 21 view .LVU43
+ 152               		.loc 1 403 21 view .LVU44
+ 153               	.LBE8:
+ 154               		.loc 1 403 3 is_stmt 0 view .LVU45
+ 155 0008 80E0      		ldi r24,lo8(__m.3348)
+ 156 000a 90E0      		ldi r25,hi8(__m.3348)
+ 157               	.L12:
+ 404:keyboards/Manuform46/keymaps/Default/keymap.c **** 	else if(state->count==2)
+ 405:keyboards/Manuform46/keymaps/Default/keymap.c **** 		action_macro_play(MACRO(D(LGUI),D(LCTRL),T(RIGHT),U(LCTRL),U(LGUI),END));
+ 158               		.loc 1 405 3 view .LVU46
+ 159 000c 0C94 0000 		jmp action_macro_play
+ 160               	.LVL8:
+ 161               	.L10:
+ 404:keyboards/Manuform46/keymaps/Default/keymap.c **** 	else if(state->count==2)
+ 162               		.loc 1 404 7 is_stmt 1 view .LVU47
+ 404:keyboards/Manuform46/keymaps/Default/keymap.c **** 	else if(state->count==2)
+ 163               		.loc 1 404 9 is_stmt 0 view .LVU48
+ 164 0010 8230      		cpi r24,lo8(2)
+ 165 0012 01F4      		brne .L9
+ 166               		.loc 1 405 3 is_stmt 1 view .LVU49
+ 167               	.LBB9:
+ 168               		.loc 1 405 21 view .LVU50
+ 169               		.loc 1 405 21 view .LVU51
+ 170               	.LBE9:
+ 171               		.loc 1 405 3 is_stmt 0 view .LVU52
+ 172 0014 80E0      		ldi r24,lo8(__m.3350)
+ 173 0016 90E0      		ldi r25,hi8(__m.3350)
+ 174 0018 00C0      		rjmp .L12
+ 175               	.L9:
+ 176               	/* epilogue start */
+ 406:keyboards/Manuform46/keymaps/Default/keymap.c **** }
+ 177               		.loc 1 406 1 view .LVU53
+ 178 001a 0895      		ret
+ 179               		.cfi_endproc
+ 180               	.LFE33:
+ 182               		.section	.text.SLSH_BSLSH,"ax",@progbits
+ 183               	.global	SLSH_BSLSH
+ 185               	SLSH_BSLSH:
+ 186               	.LVL9:
+ 187               	.LFB32:
+ 391:keyboards/Manuform46/keymaps/Default/keymap.c **** 	if (state->count == 1) {
+ 188               		.loc 1 391 63 is_stmt 1 view -0
+ 189               		.cfi_startproc
+ 190               	/* prologue: function */
+ 191               	/* frame size = 0 */
+ 192               	/* stack size = 0 */
+ 193               	.L__stack_usage = 0
+ 392:keyboards/Manuform46/keymaps/Default/keymap.c **** 		register_code (KC_SLSH);
+ 194               		.loc 1 392 2 view .LVU55
+ 392:keyboards/Manuform46/keymaps/Default/keymap.c **** 		register_code (KC_SLSH);
+ 195               		.loc 1 392 5 is_stmt 0 view .LVU56
+ 196 0000 FC01      		movw r30,r24
+ 197 0002 8081      		ld r24,Z
+ 198               	.LVL10:
+ 392:keyboards/Manuform46/keymaps/Default/keymap.c **** 		register_code (KC_SLSH);
+ 199               		.loc 1 392 5 view .LVU57
+ 200 0004 8130      		cpi r24,lo8(1)
+ 201 0006 01F4      		brne .L14
+ 393:keyboards/Manuform46/keymaps/Default/keymap.c **** 		unregister_code (KC_SLSH);
+ 202               		.loc 1 393 3 is_stmt 1 view .LVU58
+ 203 0008 88E3      		ldi r24,lo8(56)
+ 204 000a 0E94 0000 		call register_code
+ 205               	.LVL11:
+ 394:keyboards/Manuform46/keymaps/Default/keymap.c **** 	}
+ 206               		.loc 1 394 3 view .LVU59
+ 207 000e 88E3      		ldi r24,lo8(56)
+ 208               	.L15:
+ 398:keyboards/Manuform46/keymaps/Default/keymap.c **** 	}
+ 209               		.loc 1 398 3 is_stmt 0 view .LVU60
+ 210 0010 0C94 0000 		jmp unregister_code
+ 211               	.LVL12:
+ 212               	.L14:
+ 397:keyboards/Manuform46/keymaps/Default/keymap.c **** 		unregister_code (KC_BSLS);
+ 213               		.loc 1 397 3 is_stmt 1 view .LVU61
+ 214 0014 81E3      		ldi r24,lo8(49)
+ 215 0016 0E94 0000 		call register_code
+ 216               	.LVL13:
+ 398:keyboards/Manuform46/keymaps/Default/keymap.c **** 	}
+ 217               		.loc 1 398 3 view .LVU62
+ 218 001a 81E3      		ldi r24,lo8(49)
+ 219 001c 00C0      		rjmp .L15
+ 220               		.cfi_endproc
+ 221               	.LFE32:
+ 223               		.section	.text.rgblight_toggle,"ax",@progbits
+ 224               		.weak	rgblight_toggle
+ 226               	rgblight_toggle:
+ 227               	.LFB10:
+ 228               		.file 2 "./quantum/rgb.h"
+   1:./quantum/rgb.h **** /* Copyright 2017 Jack Humbert
+   2:./quantum/rgb.h ****  *
+   3:./quantum/rgb.h ****  * This program is free software: you can redistribute it and/or modify
+   4:./quantum/rgb.h ****  * it under the terms of the GNU General Public License as published by
+   5:./quantum/rgb.h ****  * the Free Software Foundation, either version 2 of the License, or
+   6:./quantum/rgb.h ****  * (at your option) any later version.
+   7:./quantum/rgb.h ****  *
+   8:./quantum/rgb.h ****  * This program is distributed in the hope that it will be useful,
+   9:./quantum/rgb.h ****  * but WITHOUT ANY WARRANTY; without even the implied warranty of
+  10:./quantum/rgb.h ****  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  11:./quantum/rgb.h ****  * GNU General Public License for more details.
+  12:./quantum/rgb.h ****  *
+  13:./quantum/rgb.h ****  * You should have received a copy of the GNU General Public License
+  14:./quantum/rgb.h ****  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  15:./quantum/rgb.h ****  */
+  16:./quantum/rgb.h **** 
+  17:./quantum/rgb.h **** #ifndef RGB_H
+  18:./quantum/rgb.h **** #define RGB_H
+  19:./quantum/rgb.h **** 
+  20:./quantum/rgb.h **** __attribute__((weak))
+  21:./quantum/rgb.h **** void rgblight_toggle(void) {};
+ 229               		.loc 2 21 28 view -0
+ 230               		.cfi_startproc
+ 231               	/* prologue: function */
+ 232               	/* frame size = 0 */
+ 233               	/* stack size = 0 */
+ 234               	.L__stack_usage = 0
+ 235               		.loc 2 21 29 view .LVU64
+ 236               	/* epilogue start */
+ 237               		.loc 2 21 1 is_stmt 0 view .LVU65
+ 238 0000 0895      		ret
+ 239               		.cfi_endproc
+ 240               	.LFE10:
+ 242               		.section	.text.rgblight_step,"ax",@progbits
+ 243               		.weak	rgblight_step
+ 245               	rgblight_step:
+ 246               	.LFB40:
+ 247               		.cfi_startproc
+ 248               	/* prologue: function */
+ 249               	/* frame size = 0 */
+ 250               	/* stack size = 0 */
+ 251               	.L__stack_usage = 0
+ 252               	/* epilogue start */
+ 253 0000 0895      		ret
+ 254               		.cfi_endproc
+ 255               	.LFE40:
+ 257               		.section	.text.rgblight_step_reverse,"ax",@progbits
+ 258               		.weak	rgblight_step_reverse
+ 260               	rgblight_step_reverse:
+ 261               	.LFB42:
+ 262               		.cfi_startproc
+ 263               	/* prologue: function */
+ 264               	/* frame size = 0 */
+ 265               	/* stack size = 0 */
+ 266               	.L__stack_usage = 0
+ 267               	/* epilogue start */
+ 268 0000 0895      		ret
+ 269               		.cfi_endproc
+ 270               	.LFE42:
+ 272               		.section	.text.rgblight_increase_hue,"ax",@progbits
+ 273               		.weak	rgblight_increase_hue
+ 275               	rgblight_increase_hue:
+ 276               	.LFB44:
+ 277               		.cfi_startproc
+ 278               	/* prologue: function */
+ 279               	/* frame size = 0 */
+ 280               	/* stack size = 0 */
+ 281               	.L__stack_usage = 0
+ 282               	/* epilogue start */
+ 283 0000 0895      		ret
+ 284               		.cfi_endproc
+ 285               	.LFE44:
+ 287               		.section	.text.rgblight_decrease_hue,"ax",@progbits
+ 288               		.weak	rgblight_decrease_hue
+ 290               	rgblight_decrease_hue:
+ 291               	.LFB46:
+ 292               		.cfi_startproc
+ 293               	/* prologue: function */
+ 294               	/* frame size = 0 */
+ 295               	/* stack size = 0 */
+ 296               	.L__stack_usage = 0
+ 297               	/* epilogue start */
+ 298 0000 0895      		ret
+ 299               		.cfi_endproc
+ 300               	.LFE46:
+ 302               		.section	.text.rgblight_increase_sat,"ax",@progbits
+ 303               		.weak	rgblight_increase_sat
+ 305               	rgblight_increase_sat:
+ 306               	.LFB48:
+ 307               		.cfi_startproc
+ 308               	/* prologue: function */
+ 309               	/* frame size = 0 */
+ 310               	/* stack size = 0 */
+ 311               	.L__stack_usage = 0
+ 312               	/* epilogue start */
+ 313 0000 0895      		ret
+ 314               		.cfi_endproc
+ 315               	.LFE48:
+ 317               		.section	.text.rgblight_decrease_sat,"ax",@progbits
+ 318               		.weak	rgblight_decrease_sat
+ 320               	rgblight_decrease_sat:
+ 321               	.LFB50:
+ 322               		.cfi_startproc
+ 323               	/* prologue: function */
+ 324               	/* frame size = 0 */
+ 325               	/* stack size = 0 */
+ 326               	.L__stack_usage = 0
+ 327               	/* epilogue start */
+ 328 0000 0895      		ret
+ 329               		.cfi_endproc
+ 330               	.LFE50:
+ 332               		.section	.text.rgblight_increase_val,"ax",@progbits
+ 333               		.weak	rgblight_increase_val
+ 335               	rgblight_increase_val:
+ 336               	.LFB52:
+ 337               		.cfi_startproc
+ 338               	/* prologue: function */
+ 339               	/* frame size = 0 */
+ 340               	/* stack size = 0 */
+ 341               	.L__stack_usage = 0
+ 342               	/* epilogue start */
+ 343 0000 0895      		ret
+ 344               		.cfi_endproc
+ 345               	.LFE52:
+ 347               		.section	.text.rgblight_decrease_val,"ax",@progbits
+ 348               		.weak	rgblight_decrease_val
+ 350               	rgblight_decrease_val:
+ 351               	.LFB54:
+ 352               		.cfi_startproc
+ 353               	/* prologue: function */
+ 354               	/* frame size = 0 */
+ 355               	/* stack size = 0 */
+ 356               	.L__stack_usage = 0
+ 357               	/* epilogue start */
+ 358 0000 0895      		ret
+ 359               		.cfi_endproc
+ 360               	.LFE54:
+ 362               		.section	.text.rgblight_increase_speed,"ax",@progbits
+ 363               		.weak	rgblight_increase_speed
+ 365               	rgblight_increase_speed:
+ 366               	.LFB56:
+ 367               		.cfi_startproc
+ 368               	/* prologue: function */
+ 369               	/* frame size = 0 */
+ 370               	/* stack size = 0 */
+ 371               	.L__stack_usage = 0
+ 372               	/* epilogue start */
+ 373 0000 0895      		ret
+ 374               		.cfi_endproc
+ 375               	.LFE56:
+ 377               		.section	.text.rgblight_decrease_speed,"ax",@progbits
+ 378               		.weak	rgblight_decrease_speed
+ 380               	rgblight_decrease_speed:
+ 381               	.LFB58:
+ 382               		.cfi_startproc
+ 383               	/* prologue: function */
+ 384               	/* frame size = 0 */
+ 385               	/* stack size = 0 */
+ 386               	.L__stack_usage = 0
+ 387               	/* epilogue start */
+ 388 0000 0895      		ret
+ 389               		.cfi_endproc
+ 390               	.LFE58:
+ 392               		.section	.text.persistent_default_layer_set,"ax",@progbits
+ 393               	.global	persistent_default_layer_set
+ 395               	persistent_default_layer_set:
+ 396               	.LVL14:
+ 397               	.LFB28:
+ 278:keyboards/Manuform46/keymaps/Default/keymap.c **** 	eeconfig_update_default_layer(default_layer);
+ 398               		.loc 1 278 59 is_stmt 1 view -0
+ 399               		.cfi_startproc
+ 278:keyboards/Manuform46/keymaps/Default/keymap.c **** 	eeconfig_update_default_layer(default_layer);
+ 400               		.loc 1 278 59 is_stmt 0 view .LVU67
+ 401 0000 CF93      		push r28
+ 402               	.LCFI0:
+ 403               		.cfi_def_cfa_offset 3
+ 404               		.cfi_offset 28, -2
+ 405 0002 DF93      		push r29
+ 406               	.LCFI1:
+ 407               		.cfi_def_cfa_offset 4
+ 408               		.cfi_offset 29, -3
+ 409               	/* prologue: function */
+ 410               	/* frame size = 0 */
+ 411               	/* stack size = 2 */
+ 412               	.L__stack_usage = 2
+ 413 0004 EC01      		movw r28,r24
+ 279:keyboards/Manuform46/keymaps/Default/keymap.c **** 	default_layer_set(default_layer);
+ 414               		.loc 1 279 2 is_stmt 1 view .LVU68
+ 415 0006 0E94 0000 		call eeconfig_update_default_layer
+ 416               	.LVL15:
+ 280:keyboards/Manuform46/keymaps/Default/keymap.c **** }
+ 417               		.loc 1 280 2 view .LVU69
+ 418 000a BE01      		movw r22,r28
+ 419 000c 90E0      		ldi r25,0
+ 420 000e 80E0      		ldi r24,0
+ 421               	/* epilogue start */
+ 281:keyboards/Manuform46/keymaps/Default/keymap.c **** 
+ 422               		.loc 1 281 1 is_stmt 0 view .LVU70
+ 423 0010 DF91      		pop r29
+ 424 0012 CF91      		pop r28
+ 425               	.LVL16:
+ 280:keyboards/Manuform46/keymaps/Default/keymap.c **** }
+ 426               		.loc 1 280 2 view .LVU71
+ 427 0014 0C94 0000 		jmp default_layer_set
+ 428               	.LVL17:
+ 280:keyboards/Manuform46/keymaps/Default/keymap.c **** }
+ 429               		.loc 1 280 2 view .LVU72
+ 430               		.cfi_endproc
+ 431               	.LFE28:
+ 433               		.section	.text.action_get_macro,"ax",@progbits
+ 434               	.global	action_get_macro
+ 436               	action_get_macro:
+ 437               	.LVL18:
+ 438               	.LFB29:
+ 291:keyboards/Manuform46/keymaps/Default/keymap.c **** 	
+ 439               		.loc 1 291 79 is_stmt 1 view -0
+ 440               		.cfi_startproc
+ 441               	/* prologue: function */
+ 442               	/* frame size = 0 */
+ 443               	/* stack size = 0 */
+ 444               	.L__stack_usage = 0
+ 291:keyboards/Manuform46/keymaps/Default/keymap.c **** 	
+ 445               		.loc 1 291 79 is_stmt 0 view .LVU74
+ 446 0000 DC01      		movw r26,r24
+ 293:keyboards/Manuform46/keymaps/Default/keymap.c **** 	case 0:
+ 447               		.loc 1 293 2 is_stmt 1 view .LVU75
+ 448 0002 6131      		cpi r22,lo8(17)
+ 449 0004 00F4      		brsh .L58
+ 450 0006 E62F      		mov r30,r22
+ 451 0008 F0E0      		ldi r31,0
+ 452 000a E050      		subi r30,lo8(-(gs(.L31)))
+ 453 000c F040      		sbci r31,hi8(-(gs(.L31)))
+ 454 000e 0C94 0000 		jmp __tablejump2__
+ 455               		.section	.jumptables.gcc.action_get_macro,"a",@progbits
+ 456               		.p2align	1
+ 457               	.L31:
+ 458 0000 0000      		.word gs(.L44)
+ 459 0002 0000      		.word gs(.L43)
+ 460 0004 0000      		.word gs(.L42)
+ 461 0006 0000      		.word gs(.L41)
+ 462 0008 0000      		.word gs(.L40)
+ 463 000a 0000      		.word gs(.L39)
+ 464 000c 0000      		.word gs(.L38)
+ 465 000e 0000      		.word gs(.L58)
+ 466 0010 0000      		.word gs(.L58)
+ 467 0012 0000      		.word gs(.L58)
+ 468 0014 0000      		.word gs(.L37)
+ 469 0016 0000      		.word gs(.L36)
+ 470 0018 0000      		.word gs(.L35)
+ 471 001a 0000      		.word gs(.L34)
+ 472 001c 0000      		.word gs(.L33)
+ 473 001e 0000      		.word gs(.L32)
+ 474 0020 0000      		.word gs(.L30)
+ 475               		.section	.text.action_get_macro
+ 476               	.L44:
+ 295:keyboards/Manuform46/keymaps/Default/keymap.c **** 			return MACRO(D(LGUI), T(TAB), U(LGUI), END);
+ 477               		.loc 1 295 3 view .LVU76
+ 295:keyboards/Manuform46/keymaps/Default/keymap.c **** 			return MACRO(D(LGUI), T(TAB), U(LGUI), END);
+ 478               		.loc 1 295 6 is_stmt 0 view .LVU77
+ 479 0012 1296      		adiw r26,2
+ 480 0014 8C91      		ld r24,X
+ 481 0016 1297      		sbiw r26,2
+ 482               	.LVL19:
+ 295:keyboards/Manuform46/keymaps/Default/keymap.c **** 			return MACRO(D(LGUI), T(TAB), U(LGUI), END);
+ 483               		.loc 1 295 6 view .LVU78
+ 484 0018 8111      		cpse r24,__zero_reg__
+ 485 001a 00C0      		rjmp .L49
+ 486               	.L43:
+ 299:keyboards/Manuform46/keymaps/Default/keymap.c **** 			SEND_STRING("admin"SS_TAP(X_TAB)"1111"SS_TAP(X_ENTER));
+ 487               		.loc 1 299 3 is_stmt 1 view .LVU79
+ 299:keyboards/Manuform46/keymaps/Default/keymap.c **** 			SEND_STRING("admin"SS_TAP(X_TAB)"1111"SS_TAP(X_ENTER));
+ 488               		.loc 1 299 6 is_stmt 0 view .LVU80
+ 489 001c 1296      		adiw r26,2
+ 490 001e 8C91      		ld r24,X
+ 491 0020 1297      		sbiw r26,2
+ 492 0022 8823      		tst r24
+ 493 0024 01F0      		breq .L42
+ 300:keyboards/Manuform46/keymaps/Default/keymap.c **** 		return false;	break;
+ 494               		.loc 1 300 4 is_stmt 1 view .LVU81
+ 495               	.LBB10:
+ 300:keyboards/Manuform46/keymaps/Default/keymap.c **** 		return false;	break;
+ 496               		.loc 1 300 4 view .LVU82
+ 300:keyboards/Manuform46/keymaps/Default/keymap.c **** 		return false;	break;
+ 497               		.loc 1 300 4 view .LVU83
+ 498               	.LBE10:
+ 499 0026 80E0      		ldi r24,lo8(__c.3278)
+ 500 0028 90E0      		ldi r25,hi8(__c.3278)
+ 501               	.L80:
+ 306:keyboards/Manuform46/keymaps/Default/keymap.c **** 			return false;	break;
+ 502               		.loc 1 306 4 is_stmt 0 view .LVU84
+ 503 002a 0E94 0000 		call send_string_P
+ 504               	.LVL20:
+ 307:keyboards/Manuform46/keymaps/Default/keymap.c **** 		}
+ 505               		.loc 1 307 4 is_stmt 1 view .LVU85
+ 506               	.L58:
+ 320:keyboards/Manuform46/keymaps/Default/keymap.c **** 		}
+ 507               		.loc 1 320 12 is_stmt 0 view .LVU86
+ 508 002e 90E0      		ldi r25,0
+ 509 0030 80E0      		ldi r24,0
+ 510               	/* epilogue start */
+ 363:keyboards/Manuform46/keymaps/Default/keymap.c **** //return MACRO_NONE;
+ 511               		.loc 1 363 1 view .LVU87
+ 512 0032 0895      		ret
+ 513               	.LVL21:
+ 514               	.L42:
+ 301:keyboards/Manuform46/keymaps/Default/keymap.c **** 		//	return MACRO(I(10), T(A), T(D), T(M), T(I), T(N), T(TAB), T(1), T(1),T(1), T(1), T(ENTER), END
+ 515               		.loc 1 301 17 is_stmt 1 view .LVU88
+ 305:keyboards/Manuform46/keymaps/Default/keymap.c **** 			SEND_STRING("apaez@gotocos.com");
+ 516               		.loc 1 305 3 view .LVU89
+ 305:keyboards/Manuform46/keymaps/Default/keymap.c **** 			SEND_STRING("apaez@gotocos.com");
+ 517               		.loc 1 305 6 is_stmt 0 view .LVU90
+ 518 0034 1296      		adiw r26,2
+ 519 0036 8C91      		ld r24,X
+ 520 0038 1297      		sbiw r26,2
+ 521 003a 8823      		tst r24
+ 522 003c 01F0      		breq .L41
+ 306:keyboards/Manuform46/keymaps/Default/keymap.c **** 			return false;	break;
+ 523               		.loc 1 306 4 is_stmt 1 view .LVU91
+ 524               	.LBB11:
+ 306:keyboards/Manuform46/keymaps/Default/keymap.c **** 			return false;	break;
+ 525               		.loc 1 306 4 view .LVU92
+ 306:keyboards/Manuform46/keymaps/Default/keymap.c **** 			return false;	break;
+ 526               		.loc 1 306 4 view .LVU93
+ 527               	.LBE11:
+ 528 003e 80E0      		ldi r24,lo8(__c.3281)
+ 529 0040 90E0      		ldi r25,hi8(__c.3281)
+ 530 0042 00C0      		rjmp .L80
+ 531               	.L41:
+ 307:keyboards/Manuform46/keymaps/Default/keymap.c **** 		}
+ 532               		.loc 1 307 18 view .LVU94
+ 310:keyboards/Manuform46/keymaps/Default/keymap.c **** 			SEND_STRING("www.support.xerox.com"SS_TAP(X_ENTER));
+ 533               		.loc 1 310 3 view .LVU95
+ 310:keyboards/Manuform46/keymaps/Default/keymap.c **** 			SEND_STRING("www.support.xerox.com"SS_TAP(X_ENTER));
+ 534               		.loc 1 310 6 is_stmt 0 view .LVU96
+ 535 0044 1296      		adiw r26,2
+ 536 0046 8C91      		ld r24,X
+ 537 0048 1297      		sbiw r26,2
+ 538 004a 8823      		tst r24
+ 539 004c 01F0      		breq .L40
+ 311:keyboards/Manuform46/keymaps/Default/keymap.c **** 						return false;	break;
+ 540               		.loc 1 311 4 is_stmt 1 view .LVU97
+ 541               	.LBB12:
+ 311:keyboards/Manuform46/keymaps/Default/keymap.c **** 						return false;	break;
+ 542               		.loc 1 311 4 view .LVU98
+ 311:keyboards/Manuform46/keymaps/Default/keymap.c **** 						return false;	break;
+ 543               		.loc 1 311 4 view .LVU99
+ 544               	.LBE12:
+ 545 004e 80E0      		ldi r24,lo8(__c.3284)
+ 546 0050 90E0      		ldi r25,hi8(__c.3284)
+ 547 0052 00C0      		rjmp .L80
+ 548               	.L40:
+ 312:keyboards/Manuform46/keymaps/Default/keymap.c **** 		}
+ 549               		.loc 1 312 21 view .LVU100
+ 315:keyboards/Manuform46/keymaps/Default/keymap.c **** 			return MACRO(I(10), D(LCTRL), T(T), T(V), T(ENTER), U(LCTRL), END);
+ 550               		.loc 1 315 3 view .LVU101
+ 315:keyboards/Manuform46/keymaps/Default/keymap.c **** 			return MACRO(I(10), D(LCTRL), T(T), T(V), T(ENTER), U(LCTRL), END);
+ 551               		.loc 1 315 5 is_stmt 0 view .LVU102
+ 552 0054 1296      		adiw r26,2
+ 553 0056 8C91      		ld r24,X
+ 554 0058 1297      		sbiw r26,2
+ 555 005a 8111      		cpse r24,__zero_reg__
+ 556 005c 00C0      		rjmp .L50
+ 557               	.L39:
+ 320:keyboards/Manuform46/keymaps/Default/keymap.c **** 		}
+ 558               		.loc 1 320 4 is_stmt 1 view .LVU103
+ 559 005e 1596      		adiw r26,5
+ 560 0060 8C91      		ld r24,X
+ 561 0062 1597      		sbiw r26,5
+ 562 0064 982F      		mov r25,r24
+ 563 0066 907F      		andi r25,lo8(-16)
+ 320:keyboards/Manuform46/keymaps/Default/keymap.c **** 		}
+ 564               		.loc 1 320 12 is_stmt 0 view .LVU104
+ 565 0068 1296      		adiw r26,2
+ 566 006a 2C91      		ld r18,X
+ 567 006c 2223      		tst r18
+ 568 006e 01F0      		breq .L45
+ 320:keyboards/Manuform46/keymaps/Default/keymap.c **** 		}
+ 569               		.loc 1 320 12 discriminator 1 view .LVU105
+ 570 0070 9923      		tst r25
+ 571 0072 01F0      		breq .L46
+ 320:keyboards/Manuform46/keymaps/Default/keymap.c **** 		}
+ 572               		.loc 1 320 12 discriminator 4 view .LVU106
+ 573 0074 80FF      		sbrs r24,0
+ 574 0076 00C0      		rjmp .L58
+ 575               	.L46:
+ 576               	.LBB13:
+ 320:keyboards/Manuform46/keymaps/Default/keymap.c **** 		}
+ 577               		.loc 1 320 12 is_stmt 1 discriminator 5 view .LVU107
+ 578 0078 83E0      		ldi r24,lo8(3)
+ 579 007a 0E94 0000 		call layer_on
+ 580               	.LVL22:
+ 320:keyboards/Manuform46/keymaps/Default/keymap.c **** 		}
+ 581               		.loc 1 320 12 discriminator 5 view .LVU108
+ 582 007e 00C0      		rjmp .L58
+ 583               	.LVL23:
+ 584               	.L45:
+ 320:keyboards/Manuform46/keymaps/Default/keymap.c **** 		}
+ 585               		.loc 1 320 12 is_stmt 0 discriminator 5 view .LVU109
+ 586               	.LBE13:
+ 320:keyboards/Manuform46/keymaps/Default/keymap.c **** 		}
+ 587               		.loc 1 320 12 discriminator 2 view .LVU110
+ 588 0080 9923      		tst r25
+ 589 0082 01F0      		breq .L47
+ 320:keyboards/Manuform46/keymaps/Default/keymap.c **** 		}
+ 590               		.loc 1 320 12 discriminator 10 view .LVU111
+ 591 0084 80FF      		sbrs r24,0
+ 592 0086 00C0      		rjmp .L52
+ 593               	.L47:
+ 594               	.LBB14:
+ 320:keyboards/Manuform46/keymaps/Default/keymap.c **** 		}
+ 595               		.loc 1 320 12 is_stmt 1 discriminator 13 view .LVU112
+ 596 0088 83E0      		ldi r24,lo8(3)
+ 597 008a 0E94 0000 		call layer_off
+ 598               	.LVL24:
+ 320:keyboards/Manuform46/keymaps/Default/keymap.c **** 		}
+ 599               		.loc 1 320 12 discriminator 13 view .LVU113
+ 600 008e 00C0      		rjmp .L58
+ 601               	.LVL25:
+ 602               	.L38:
+ 320:keyboards/Manuform46/keymaps/Default/keymap.c **** 		}
+ 603               		.loc 1 320 12 is_stmt 0 discriminator 13 view .LVU114
+ 604               	.LBE14:
+ 323:keyboards/Manuform46/keymaps/Default/keymap.c **** 			return MACRO(I(10), T(0), T(C), T(TAB), T(TAB), T(A), T(TAB), END);
+ 605               		.loc 1 323 4 is_stmt 1 view .LVU115
+ 323:keyboards/Manuform46/keymaps/Default/keymap.c **** 			return MACRO(I(10), T(0), T(C), T(TAB), T(TAB), T(A), T(TAB), END);
+ 606               		.loc 1 323 6 is_stmt 0 view .LVU116
+ 607 0090 1296      		adiw r26,2
+ 608 0092 8C91      		ld r24,X
+ 609 0094 1297      		sbiw r26,2
+ 610               	.LVL26:
+ 323:keyboards/Manuform46/keymaps/Default/keymap.c **** 			return MACRO(I(10), T(0), T(C), T(TAB), T(TAB), T(A), T(TAB), END);
+ 611               		.loc 1 323 6 view .LVU117
+ 612 0096 8111      		cpse r24,__zero_reg__
+ 613 0098 00C0      		rjmp .L53
+ 614               	.L37:
+ 327:keyboards/Manuform46/keymaps/Default/keymap.c **** 		SEND_STRING("ts");
+ 615               		.loc 1 327 3 is_stmt 1 view .LVU118
+ 327:keyboards/Manuform46/keymaps/Default/keymap.c **** 		SEND_STRING("ts");
+ 616               		.loc 1 327 5 is_stmt 0 view .LVU119
+ 617 009a 1296      		adiw r26,2
+ 618 009c 8C91      		ld r24,X
+ 619 009e 1297      		sbiw r26,2
+ 620 00a0 8823      		tst r24
+ 621 00a2 01F0      		breq .L36
+ 328:keyboards/Manuform46/keymaps/Default/keymap.c **** 			return false; break;}
+ 622               		.loc 1 328 3 is_stmt 1 view .LVU120
+ 623               	.LBB15:
+ 328:keyboards/Manuform46/keymaps/Default/keymap.c **** 			return false; break;}
+ 624               		.loc 1 328 3 view .LVU121
+ 328:keyboards/Manuform46/keymaps/Default/keymap.c **** 			return false; break;}
+ 625               		.loc 1 328 3 view .LVU122
+ 626               	.LBE15:
+ 627 00a4 80E0      		ldi r24,lo8(__c.3298)
+ 628 00a6 90E0      		ldi r25,hi8(__c.3298)
+ 629 00a8 00C0      		rjmp .L80
+ 630               	.L36:
+ 329:keyboards/Manuform46/keymaps/Default/keymap.c **** 	}		
+ 631               		.loc 1 329 18 view .LVU123
+ 332:keyboards/Manuform46/keymaps/Default/keymap.c **** 			SEND_STRING("ipconfig /all");
+ 632               		.loc 1 332 3 view .LVU124
+ 332:keyboards/Manuform46/keymaps/Default/keymap.c **** 			SEND_STRING("ipconfig /all");
+ 633               		.loc 1 332 5 is_stmt 0 view .LVU125
+ 634 00aa 1296      		adiw r26,2
+ 635 00ac 8C91      		ld r24,X
+ 636 00ae 1297      		sbiw r26,2
+ 637 00b0 8823      		tst r24
+ 638 00b2 01F0      		breq .L35
+ 333:keyboards/Manuform46/keymaps/Default/keymap.c **** 					return false; break;}
+ 639               		.loc 1 333 4 is_stmt 1 view .LVU126
+ 640               	.LBB16:
+ 333:keyboards/Manuform46/keymaps/Default/keymap.c **** 					return false; break;}
+ 641               		.loc 1 333 4 view .LVU127
+ 333:keyboards/Manuform46/keymaps/Default/keymap.c **** 					return false; break;}
+ 642               		.loc 1 333 4 view .LVU128
+ 643               	.LBE16:
+ 644 00b4 80E0      		ldi r24,lo8(__c.3301)
+ 645 00b6 90E0      		ldi r25,hi8(__c.3301)
+ 646 00b8 00C0      		rjmp .L80
+ 647               	.L35:
+ 334:keyboards/Manuform46/keymaps/Default/keymap.c **** 	}
+ 648               		.loc 1 334 20 view .LVU129
+ 337:keyboards/Manuform46/keymaps/Default/keymap.c **** 		return MACRO( I(10),T(TAB), T(O), T(P), T(TAB),T(ENTER), T(TAB),T(TAB),T(TAB),T(Z),T(R),T(TAB),T(
+ 649               		.loc 1 337 2 view .LVU130
+ 337:keyboards/Manuform46/keymaps/Default/keymap.c **** 		return MACRO( I(10),T(TAB), T(O), T(P), T(TAB),T(ENTER), T(TAB),T(TAB),T(TAB),T(Z),T(R),T(TAB),T(
+ 650               		.loc 1 337 4 is_stmt 0 view .LVU131
+ 651 00ba 1296      		adiw r26,2
+ 652 00bc 8C91      		ld r24,X
+ 653 00be 1297      		sbiw r26,2
+ 654 00c0 8111      		cpse r24,__zero_reg__
+ 655 00c2 00C0      		rjmp .L54
+ 656               	.L34:
+ 341:keyboards/Manuform46/keymaps/Default/keymap.c **** 		return MACRO( I(10),T(TAB), T(O), T(T), T(TAB),T(ENTER), T(TAB),T(TAB),T(TAB),T(Z),T(R),T(TAB),T(
+ 657               		.loc 1 341 2 is_stmt 1 view .LVU132
+ 341:keyboards/Manuform46/keymaps/Default/keymap.c **** 		return MACRO( I(10),T(TAB), T(O), T(T), T(TAB),T(ENTER), T(TAB),T(TAB),T(TAB),T(Z),T(R),T(TAB),T(
+ 658               		.loc 1 341 4 is_stmt 0 view .LVU133
+ 659 00c4 1296      		adiw r26,2
+ 660 00c6 8C91      		ld r24,X
+ 661 00c8 1297      		sbiw r26,2
+ 662 00ca 8111      		cpse r24,__zero_reg__
+ 663 00cc 00C0      		rjmp .L55
+ 664               	.L33:
+ 345:keyboards/Manuform46/keymaps/Default/keymap.c **** 		return MACRO( I(10),T(TAB), T(I), T(N), T(TAB),T(ENTER), T(TAB),T(TAB),T(TAB),T(I),T(N),T(TAB),T(
+ 665               		.loc 1 345 2 is_stmt 1 view .LVU134
+ 345:keyboards/Manuform46/keymaps/Default/keymap.c **** 		return MACRO( I(10),T(TAB), T(I), T(N), T(TAB),T(ENTER), T(TAB),T(TAB),T(TAB),T(I),T(N),T(TAB),T(
+ 666               		.loc 1 345 4 is_stmt 0 view .LVU135
+ 667 00ce 1296      		adiw r26,2
+ 668 00d0 8C91      		ld r24,X
+ 669 00d2 1297      		sbiw r26,2
+ 670 00d4 8111      		cpse r24,__zero_reg__
+ 671 00d6 00C0      		rjmp .L56
+ 672               	.L32:
+ 349:keyboards/Manuform46/keymaps/Default/keymap.c **** 		SEND_STRING("AC"SS_TAP(X_ENTER));
+ 673               		.loc 1 349 2 is_stmt 1 view .LVU136
+ 349:keyboards/Manuform46/keymaps/Default/keymap.c **** 		SEND_STRING("AC"SS_TAP(X_ENTER));
+ 674               		.loc 1 349 4 is_stmt 0 view .LVU137
+ 675 00d8 1296      		adiw r26,2
+ 676 00da 8C91      		ld r24,X
+ 677 00dc 8823      		tst r24
+ 678 00de 01F4      		brne .+2
+ 679 00e0 00C0      		rjmp .L58
+ 350:keyboards/Manuform46/keymaps/Default/keymap.c **** 		return false; break;
+ 680               		.loc 1 350 3 is_stmt 1 view .LVU138
+ 681               	.LBB17:
+ 350:keyboards/Manuform46/keymaps/Default/keymap.c **** 		return false; break;
+ 682               		.loc 1 350 3 view .LVU139
+ 350:keyboards/Manuform46/keymaps/Default/keymap.c **** 		return false; break;
+ 683               		.loc 1 350 3 view .LVU140
+ 684               	.LBE17:
+ 685 00e2 80E0      		ldi r24,lo8(__c.3313)
+ 686 00e4 90E0      		ldi r25,hi8(__c.3313)
+ 687 00e6 00C0      		rjmp .L80
+ 688               	.LVL27:
+ 689               	.L30:
+ 351:keyboards/Manuform46/keymaps/Default/keymap.c **** 	}
+ 690               		.loc 1 351 17 view .LVU141
+ 354:keyboards/Manuform46/keymaps/Default/keymap.c **** 	MACRO(T(LGUI), W(50));}
+ 691               		.loc 1 354 2 view .LVU142
+ 354:keyboards/Manuform46/keymaps/Default/keymap.c **** 	MACRO(T(LGUI), W(50));}
+ 692               		.loc 1 354 4 is_stmt 0 view .LVU143
+ 693 00e8 1296      		adiw r26,2
+ 694 00ea 8C91      		ld r24,X
+ 695               	.LVL28:
+ 354:keyboards/Manuform46/keymaps/Default/keymap.c **** 	MACRO(T(LGUI), W(50));}
+ 696               		.loc 1 354 4 view .LVU144
+ 697 00ec 8111      		cpse r24,__zero_reg__
+ 698 00ee 00C0      		rjmp .L58
+ 357:keyboards/Manuform46/keymaps/Default/keymap.c **** 		return false; break;
+ 699               		.loc 1 357 2 is_stmt 1 view .LVU145
+ 700               	.LBB18:
+ 357:keyboards/Manuform46/keymaps/Default/keymap.c **** 		return false; break;
+ 701               		.loc 1 357 2 view .LVU146
+ 357:keyboards/Manuform46/keymaps/Default/keymap.c **** 		return false; break;
+ 702               		.loc 1 357 2 view .LVU147
+ 703               	.LBE18:
+ 704 00f0 80E0      		ldi r24,lo8(__c.3318)
+ 705 00f2 90E0      		ldi r25,hi8(__c.3318)
+ 706 00f4 00C0      		rjmp .L80
+ 707               	.L49:
+ 296:keyboards/Manuform46/keymaps/Default/keymap.c **** 		}
+ 708               		.loc 1 296 11 is_stmt 0 view .LVU148
+ 709 00f6 80E0      		ldi r24,lo8(__m.3275)
+ 710 00f8 90E0      		ldi r25,hi8(__m.3275)
+ 711 00fa 0895      		ret
+ 712               	.L50:
+ 316:keyboards/Manuform46/keymaps/Default/keymap.c **** 		}
+ 713               		.loc 1 316 11 view .LVU149
+ 714 00fc 80E0      		ldi r24,lo8(__m.3287)
+ 715 00fe 90E0      		ldi r25,hi8(__m.3287)
+ 716 0100 0895      		ret
+ 717               	.L52:
+ 320:keyboards/Manuform46/keymaps/Default/keymap.c **** 		}
+ 718               		.loc 1 320 12 view .LVU150
+ 719 0102 80E0      		ldi r24,lo8(__m.3291)
+ 720 0104 90E0      		ldi r25,hi8(__m.3291)
+ 721 0106 0895      		ret
+ 722               	.L53:
+ 324:keyboards/Manuform46/keymaps/Default/keymap.c **** 		}
+ 723               		.loc 1 324 11 view .LVU151
+ 724 0108 80E0      		ldi r24,lo8(__m.3295)
+ 725 010a 90E0      		ldi r25,hi8(__m.3295)
+ 726 010c 0895      		ret
+ 727               	.L54:
+ 338:keyboards/Manuform46/keymaps/Default/keymap.c **** 	}	
+ 728               		.loc 1 338 10 view .LVU152
+ 729 010e 80E0      		ldi r24,lo8(__m.3304)
+ 730 0110 90E0      		ldi r25,hi8(__m.3304)
+ 731 0112 0895      		ret
+ 732               	.L55:
+ 342:keyboards/Manuform46/keymaps/Default/keymap.c **** 	}	
+ 733               		.loc 1 342 10 view .LVU153
+ 734 0114 80E0      		ldi r24,lo8(__m.3307)
+ 735 0116 90E0      		ldi r25,hi8(__m.3307)
+ 736 0118 0895      		ret
+ 737               	.L56:
+ 346:keyboards/Manuform46/keymaps/Default/keymap.c **** 	}	
+ 738               		.loc 1 346 10 view .LVU154
+ 739 011a 80E0      		ldi r24,lo8(__m.3310)
+ 740 011c 90E0      		ldi r25,hi8(__m.3310)
+ 741 011e 0895      		ret
+ 742               		.cfi_endproc
+ 743               	.LFE29:
+ 745               		.section	.text.matrix_init_user,"ax",@progbits
+ 746               	.global	matrix_init_user
+ 748               	matrix_init_user:
+ 749               	.LFB34:
+ 407:keyboards/Manuform46/keymaps/Default/keymap.c **** 	
+ 408:keyboards/Manuform46/keymaps/Default/keymap.c **** qk_tap_dance_action_t tap_dance_actions[] = {
+ 409:keyboards/Manuform46/keymaps/Default/keymap.c **** 	
+ 410:keyboards/Manuform46/keymaps/Default/keymap.c **** 	//Tap once for Esc, twice for Caps Lock
+ 411:keyboards/Manuform46/keymaps/Default/keymap.c **** 	[TD_CPY_PST] = ACTION_TAP_DANCE_FN(cmd_commands),
+ 412:keyboards/Manuform46/keymaps/Default/keymap.c **** 	[TD_SLSH]= ACTION_TAP_DANCE_FN(SLSH_BSLSH),
+ 413:keyboards/Manuform46/keymaps/Default/keymap.c **** 	[TD_CMD]=ACTION_TAP_DANCE_FN(cmd),
+ 414:keyboards/Manuform46/keymaps/Default/keymap.c **** 	[TD_VRDSK]=ACTION_TAP_DANCE_FN(VirtualDesktop)
+ 415:keyboards/Manuform46/keymaps/Default/keymap.c **** };
+ 416:keyboards/Manuform46/keymaps/Default/keymap.c **** 
+ 417:keyboards/Manuform46/keymaps/Default/keymap.c **** void matrix_init_user(void) {
+ 750               		.loc 1 417 29 is_stmt 1 view -0
+ 751               		.cfi_startproc
+ 752               	/* prologue: function */
+ 753               	/* frame size = 0 */
+ 754               	/* stack size = 0 */
+ 755               	.L__stack_usage = 0
+ 418:keyboards/Manuform46/keymaps/Default/keymap.c **** }
+ 756               		.loc 1 418 1 view .LVU156
+ 757               	/* epilogue start */
+ 758 0000 0895      		ret
+ 759               		.cfi_endproc
+ 760               	.LFE34:
+ 762               		.section	.text.matrix_scan_user,"ax",@progbits
+ 763               	.global	matrix_scan_user
+ 765               	matrix_scan_user:
+ 766               	.LFB38:
+ 767               		.cfi_startproc
+ 768               	/* prologue: function */
+ 769               	/* frame size = 0 */
+ 770               	/* stack size = 0 */
+ 771               	.L__stack_usage = 0
+ 772               	/* epilogue start */
+ 773 0000 0895      		ret
+ 774               		.cfi_endproc
+ 775               	.LFE38:
+ 777               		.section	.text.process_record_user,"ax",@progbits
+ 778               	.global	process_record_user
+ 780               	process_record_user:
+ 781               	.LVL29:
+ 782               	.LFB36:
+ 419:keyboards/Manuform46/keymaps/Default/keymap.c **** 
+ 420:keyboards/Manuform46/keymaps/Default/keymap.c **** void matrix_scan_user(void) {
+ 421:keyboards/Manuform46/keymaps/Default/keymap.c **** 	
+ 422:keyboards/Manuform46/keymaps/Default/keymap.c **** 	
+ 423:keyboards/Manuform46/keymaps/Default/keymap.c **** }
+ 424:keyboards/Manuform46/keymaps/Default/keymap.c **** bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+ 783               		.loc 1 424 65 view -0
+ 784               		.cfi_startproc
+ 785               		.loc 1 424 65 is_stmt 0 view .LVU158
+ 786 0000 CF93      		push r28
+ 787               	.LCFI2:
+ 788               		.cfi_def_cfa_offset 3
+ 789               		.cfi_offset 28, -2
+ 790               	/* prologue: function */
+ 791               	/* frame size = 0 */
+ 792               	/* stack size = 1 */
+ 793               	.L__stack_usage = 1
+ 794 0002 FB01      		movw r30,r22
+ 425:keyboards/Manuform46/keymaps/Default/keymap.c **** 	switch (keycode) {
+ 795               		.loc 1 425 2 is_stmt 1 view .LVU159
+ 796 0004 8C3D      		cpi r24,-36
+ 797 0006 2CE5      		ldi r18,92
+ 798 0008 9207      		cpc r25,r18
+ 799 000a 01F0      		breq .L84
+ 800 000c 00F4      		brsh .L85
+ 801 000e 8A3D      		cpi r24,-38
+ 802 0010 2CE5      		ldi r18,92
+ 803 0012 9207      		cpc r25,r18
+ 804 0014 01F0      		breq .L86
+ 805 0016 8B3D      		cpi r24,-37
+ 806 0018 9C45      		sbci r25,92
+ 807 001a 01F0      		breq .L87
+ 808               	.L104:
+ 426:keyboards/Manuform46/keymaps/Default/keymap.c **** 		case COLEMAK:
+ 427:keyboards/Manuform46/keymaps/Default/keymap.c **** 		if (record->event.pressed) {
+ 428:keyboards/Manuform46/keymaps/Default/keymap.c **** 			#ifdef AUDIO_ENABLE
+ 429:keyboards/Manuform46/keymaps/Default/keymap.c **** 			PLAY_NOTE_ARRAY(tone_colemak, false, 0);
+ 430:keyboards/Manuform46/keymaps/Default/keymap.c **** 			#endif
+ 431:keyboards/Manuform46/keymaps/Default/keymap.c **** 			persistent_default_layer_set(1UL<<_COLEMAK);
+ 432:keyboards/Manuform46/keymaps/Default/keymap.c **** 		}
+ 433:keyboards/Manuform46/keymaps/Default/keymap.c **** 		return false;
+ 434:keyboards/Manuform46/keymaps/Default/keymap.c **** 		break;
+ 435:keyboards/Manuform46/keymaps/Default/keymap.c **** 	case QWERTY:
+ 436:keyboards/Manuform46/keymaps/Default/keymap.c **** 		if (record->event.pressed) {
+ 437:keyboards/Manuform46/keymaps/Default/keymap.c **** 			#ifdef AUDIO_ENABLE
+ 438:keyboards/Manuform46/keymaps/Default/keymap.c **** 			PLAY_NOTE_ARRAY(tone_qwerty, false, 0);
+ 439:keyboards/Manuform46/keymaps/Default/keymap.c **** 			#endif
+ 440:keyboards/Manuform46/keymaps/Default/keymap.c **** 			persistent_default_layer_set(1UL<<_QWERTY);
+ 441:keyboards/Manuform46/keymaps/Default/keymap.c **** 		}
+ 442:keyboards/Manuform46/keymaps/Default/keymap.c **** 		return false;
+ 443:keyboards/Manuform46/keymaps/Default/keymap.c **** 		break;
+ 444:keyboards/Manuform46/keymaps/Default/keymap.c **** 	case DVORAK:
+ 445:keyboards/Manuform46/keymaps/Default/keymap.c **** 		if (record->event.pressed) {
+ 446:keyboards/Manuform46/keymaps/Default/keymap.c **** 			#ifdef AUDIO_ENABLE
+ 447:keyboards/Manuform46/keymaps/Default/keymap.c **** 			PLAY_NOTE_ARRAY(tone_dvorak, false, 0);
+ 448:keyboards/Manuform46/keymaps/Default/keymap.c **** 			#endif
+ 449:keyboards/Manuform46/keymaps/Default/keymap.c **** 			persistent_default_layer_set(1UL<<_DVORAK);
+ 450:keyboards/Manuform46/keymaps/Default/keymap.c **** 		}
+ 451:keyboards/Manuform46/keymaps/Default/keymap.c **** 		return false;
+ 452:keyboards/Manuform46/keymaps/Default/keymap.c **** 		break;
+ 453:keyboards/Manuform46/keymaps/Default/keymap.c **** 	case LOWER:
+ 454:keyboards/Manuform46/keymaps/Default/keymap.c **** 		if (record->event.pressed) {
+ 455:keyboards/Manuform46/keymaps/Default/keymap.c **** 			layer_on(_LOWER);
+ 456:keyboards/Manuform46/keymaps/Default/keymap.c **** 			update_tri_layer(_LOWER, _RAISE, _ADJUST);
+ 457:keyboards/Manuform46/keymaps/Default/keymap.c **** 		} else {
+ 458:keyboards/Manuform46/keymaps/Default/keymap.c **** 			layer_off(_LOWER);
+ 459:keyboards/Manuform46/keymaps/Default/keymap.c **** 			update_tri_layer(_LOWER, _RAISE, _ADJUST);
+ 460:keyboards/Manuform46/keymaps/Default/keymap.c **** 		}
+ 461:keyboards/Manuform46/keymaps/Default/keymap.c **** 		return false;
+ 462:keyboards/Manuform46/keymaps/Default/keymap.c **** 		break;
+ 463:keyboards/Manuform46/keymaps/Default/keymap.c **** 	case RAISE:
+ 464:keyboards/Manuform46/keymaps/Default/keymap.c **** 		if (record->event.pressed) {
+ 465:keyboards/Manuform46/keymaps/Default/keymap.c **** 			layer_on(_RAISE);
+ 466:keyboards/Manuform46/keymaps/Default/keymap.c **** 			update_tri_layer(_LOWER, _RAISE, _ADJUST);
+ 467:keyboards/Manuform46/keymaps/Default/keymap.c **** 		} else {
+ 468:keyboards/Manuform46/keymaps/Default/keymap.c **** 			layer_off(_RAISE);
+ 469:keyboards/Manuform46/keymaps/Default/keymap.c **** 			update_tri_layer(_LOWER, _RAISE, _ADJUST);
+ 470:keyboards/Manuform46/keymaps/Default/keymap.c **** 		}
+ 471:keyboards/Manuform46/keymaps/Default/keymap.c **** 		return false;
+ 472:keyboards/Manuform46/keymaps/Default/keymap.c **** 		break;
+ 473:keyboards/Manuform46/keymaps/Default/keymap.c **** 	case ADJUST:
+ 474:keyboards/Manuform46/keymaps/Default/keymap.c **** 		if (record->event.pressed) {
+ 475:keyboards/Manuform46/keymaps/Default/keymap.c **** 			layer_on(_ADJUST);
+ 476:keyboards/Manuform46/keymaps/Default/keymap.c **** 		} else {
+ 477:keyboards/Manuform46/keymaps/Default/keymap.c **** 			layer_off(_ADJUST);
+ 478:keyboards/Manuform46/keymaps/Default/keymap.c **** 		}
+ 479:keyboards/Manuform46/keymaps/Default/keymap.c **** 		return false;
+ 480:keyboards/Manuform46/keymaps/Default/keymap.c **** 		break;
+ 481:keyboards/Manuform46/keymaps/Default/keymap.c **** 	}
+ 482:keyboards/Manuform46/keymaps/Default/keymap.c **** 	return true;
+ 809               		.loc 1 482 9 is_stmt 0 view .LVU160
+ 810 001c C1E0      		ldi r28,lo8(1)
+ 811               	.LVL30:
+ 812               	.L83:
+ 483:keyboards/Manuform46/keymaps/Default/keymap.c **** }
+ 813               		.loc 1 483 1 view .LVU161
+ 814 001e 8C2F      		mov r24,r28
+ 815               	/* epilogue start */
+ 816 0020 CF91      		pop r28
+ 817 0022 0895      		ret
+ 818               	.LVL31:
+ 819               	.L85:
+ 425:keyboards/Manuform46/keymaps/Default/keymap.c **** 	switch (keycode) {
+ 820               		.loc 1 425 2 view .LVU162
+ 821 0024 8E3D      		cpi r24,-34
+ 822 0026 2CE5      		ldi r18,92
+ 823 0028 9207      		cpc r25,r18
+ 824 002a 01F0      		breq .L89
+ 825 002c 00F0      		brlo .L90
+ 826 002e 803E      		cpi r24,-32
+ 827 0030 9C45      		sbci r25,92
+ 828 0032 01F4      		brne .L104
+ 472:keyboards/Manuform46/keymaps/Default/keymap.c **** 	case ADJUST:
+ 829               		.loc 1 472 3 is_stmt 1 view .LVU163
+ 474:keyboards/Manuform46/keymaps/Default/keymap.c **** 			layer_on(_ADJUST);
+ 830               		.loc 1 474 3 view .LVU164
+ 474:keyboards/Manuform46/keymaps/Default/keymap.c **** 			layer_on(_ADJUST);
+ 831               		.loc 1 474 20 is_stmt 0 view .LVU165
+ 832 0034 C281      		ldd r28,Z+2
+ 475:keyboards/Manuform46/keymaps/Default/keymap.c **** 		} else {
+ 833               		.loc 1 475 4 view .LVU166
+ 834 0036 80E1      		ldi r24,lo8(16)
+ 835               	.LVL32:
+ 474:keyboards/Manuform46/keymaps/Default/keymap.c **** 			layer_on(_ADJUST);
+ 836               		.loc 1 474 6 view .LVU167
+ 837 0038 CC23      		tst r28
+ 838 003a 01F0      		breq .L94
+ 475:keyboards/Manuform46/keymaps/Default/keymap.c **** 		} else {
+ 839               		.loc 1 475 4 is_stmt 1 view .LVU168
+ 840 003c 0E94 0000 		call layer_on
+ 841               	.LVL33:
+ 475:keyboards/Manuform46/keymaps/Default/keymap.c **** 		} else {
+ 842               		.loc 1 475 4 is_stmt 0 view .LVU169
+ 843 0040 00C0      		rjmp .L105
+ 844               	.LVL34:
+ 845               	.L87:
+ 427:keyboards/Manuform46/keymaps/Default/keymap.c **** 			#ifdef AUDIO_ENABLE
+ 846               		.loc 1 427 3 is_stmt 1 view .LVU170
+ 427:keyboards/Manuform46/keymaps/Default/keymap.c **** 			#ifdef AUDIO_ENABLE
+ 847               		.loc 1 427 20 is_stmt 0 view .LVU171
+ 848 0042 C281      		ldd r28,Z+2
+ 431:keyboards/Manuform46/keymaps/Default/keymap.c **** 		}
+ 849               		.loc 1 431 4 view .LVU172
+ 850 0044 82E0      		ldi r24,lo8(2)
+ 851 0046 90E0      		ldi r25,0
+ 852               	.LVL35:
+ 427:keyboards/Manuform46/keymaps/Default/keymap.c **** 			#ifdef AUDIO_ENABLE
+ 853               		.loc 1 427 6 view .LVU173
+ 854 0048 CC23      		tst r28
+ 855 004a 01F0      		breq .L83
+ 856               	.L106:
+ 449:keyboards/Manuform46/keymaps/Default/keymap.c **** 		}
+ 857               		.loc 1 449 4 view .LVU174
+ 858 004c 0E94 0000 		call persistent_default_layer_set
+ 859               	.LVL36:
+ 860               	.L105:
+ 479:keyboards/Manuform46/keymaps/Default/keymap.c **** 		break;
+ 861               		.loc 1 479 10 view .LVU175
+ 862 0050 C0E0      		ldi r28,0
+ 863 0052 00C0      		rjmp .L83
+ 864               	.LVL37:
+ 865               	.L86:
+ 434:keyboards/Manuform46/keymaps/Default/keymap.c **** 	case QWERTY:
+ 866               		.loc 1 434 3 is_stmt 1 view .LVU176
+ 436:keyboards/Manuform46/keymaps/Default/keymap.c **** 			#ifdef AUDIO_ENABLE
+ 867               		.loc 1 436 3 view .LVU177
+ 436:keyboards/Manuform46/keymaps/Default/keymap.c **** 			#ifdef AUDIO_ENABLE
+ 868               		.loc 1 436 20 is_stmt 0 view .LVU178
+ 869 0054 C281      		ldd r28,Z+2
+ 440:keyboards/Manuform46/keymaps/Default/keymap.c **** 		}
+ 870               		.loc 1 440 4 view .LVU179
+ 871 0056 81E0      		ldi r24,lo8(1)
+ 872 0058 90E0      		ldi r25,0
+ 873               	.LVL38:
+ 436:keyboards/Manuform46/keymaps/Default/keymap.c **** 			#ifdef AUDIO_ENABLE
+ 874               		.loc 1 436 6 view .LVU180
+ 875 005a CC23      		tst r28
+ 876 005c 01F0      		breq .L83
+ 877 005e 00C0      		rjmp .L106
+ 878               	.LVL39:
+ 879               	.L84:
+ 443:keyboards/Manuform46/keymaps/Default/keymap.c **** 	case DVORAK:
+ 880               		.loc 1 443 3 is_stmt 1 view .LVU181
+ 445:keyboards/Manuform46/keymaps/Default/keymap.c **** 			#ifdef AUDIO_ENABLE
+ 881               		.loc 1 445 3 view .LVU182
+ 445:keyboards/Manuform46/keymaps/Default/keymap.c **** 			#ifdef AUDIO_ENABLE
+ 882               		.loc 1 445 20 is_stmt 0 view .LVU183
+ 883 0060 C281      		ldd r28,Z+2
+ 445:keyboards/Manuform46/keymaps/Default/keymap.c **** 			#ifdef AUDIO_ENABLE
+ 884               		.loc 1 445 6 view .LVU184
+ 885 0062 CC23      		tst r28
+ 886 0064 01F0      		breq .L83
+ 449:keyboards/Manuform46/keymaps/Default/keymap.c **** 		}
+ 887               		.loc 1 449 4 is_stmt 1 view .LVU185
+ 888 0066 84E0      		ldi r24,lo8(4)
+ 889 0068 90E0      		ldi r25,0
+ 890               	.LVL40:
+ 449:keyboards/Manuform46/keymaps/Default/keymap.c **** 		}
+ 891               		.loc 1 449 4 is_stmt 0 view .LVU186
+ 892 006a 00C0      		rjmp .L106
+ 893               	.LVL41:
+ 894               	.L90:
+ 452:keyboards/Manuform46/keymaps/Default/keymap.c **** 	case LOWER:
+ 895               		.loc 1 452 3 is_stmt 1 view .LVU187
+ 454:keyboards/Manuform46/keymaps/Default/keymap.c **** 			layer_on(_LOWER);
+ 896               		.loc 1 454 3 view .LVU188
+ 454:keyboards/Manuform46/keymaps/Default/keymap.c **** 			layer_on(_LOWER);
+ 897               		.loc 1 454 20 is_stmt 0 view .LVU189
+ 898 006c C281      		ldd r28,Z+2
+ 455:keyboards/Manuform46/keymaps/Default/keymap.c **** 			update_tri_layer(_LOWER, _RAISE, _ADJUST);
+ 899               		.loc 1 455 4 view .LVU190
+ 900 006e 83E0      		ldi r24,lo8(3)
+ 901               	.LVL42:
+ 902               	.L109:
+ 464:keyboards/Manuform46/keymaps/Default/keymap.c **** 			layer_on(_RAISE);
+ 903               		.loc 1 464 6 view .LVU191
+ 904 0070 CC23      		tst r28
+ 905 0072 01F0      		breq .L93
+ 465:keyboards/Manuform46/keymaps/Default/keymap.c **** 			update_tri_layer(_LOWER, _RAISE, _ADJUST);
+ 906               		.loc 1 465 4 is_stmt 1 view .LVU192
+ 907 0074 0E94 0000 		call layer_on
+ 908               	.LVL43:
+ 466:keyboards/Manuform46/keymaps/Default/keymap.c **** 		} else {
+ 909               		.loc 1 466 4 view .LVU193
+ 910 0078 40E1      		ldi r20,lo8(16)
+ 911 007a 64E0      		ldi r22,lo8(4)
+ 912 007c 83E0      		ldi r24,lo8(3)
+ 913 007e 0E94 0000 		call update_tri_layer
+ 914               	.LVL44:
+ 915 0082 00C0      		rjmp .L105
+ 916               	.LVL45:
+ 917               	.L89:
+ 462:keyboards/Manuform46/keymaps/Default/keymap.c **** 	case RAISE:
+ 918               		.loc 1 462 3 view .LVU194
+ 464:keyboards/Manuform46/keymaps/Default/keymap.c **** 			layer_on(_RAISE);
+ 919               		.loc 1 464 3 view .LVU195
+ 464:keyboards/Manuform46/keymaps/Default/keymap.c **** 			layer_on(_RAISE);
+ 920               		.loc 1 464 20 is_stmt 0 view .LVU196
+ 921 0084 C281      		ldd r28,Z+2
+ 465:keyboards/Manuform46/keymaps/Default/keymap.c **** 			update_tri_layer(_LOWER, _RAISE, _ADJUST);
+ 922               		.loc 1 465 4 view .LVU197
+ 923 0086 84E0      		ldi r24,lo8(4)
+ 924               	.LVL46:
+ 465:keyboards/Manuform46/keymaps/Default/keymap.c **** 			update_tri_layer(_LOWER, _RAISE, _ADJUST);
+ 925               		.loc 1 465 4 view .LVU198
+ 926 0088 00C0      		rjmp .L109
+ 927               	.L93:
+ 468:keyboards/Manuform46/keymaps/Default/keymap.c **** 			update_tri_layer(_LOWER, _RAISE, _ADJUST);
+ 928               		.loc 1 468 4 is_stmt 1 view .LVU199
+ 929 008a 0E94 0000 		call layer_off
+ 930               	.LVL47:
+ 469:keyboards/Manuform46/keymaps/Default/keymap.c **** 		}
+ 931               		.loc 1 469 4 view .LVU200
+ 932 008e 40E1      		ldi r20,lo8(16)
+ 933 0090 64E0      		ldi r22,lo8(4)
+ 934 0092 83E0      		ldi r24,lo8(3)
+ 935 0094 0E94 0000 		call update_tri_layer
+ 936               	.LVL48:
+ 937 0098 00C0      		rjmp .L83
+ 938               	.LVL49:
+ 939               	.L94:
+ 477:keyboards/Manuform46/keymaps/Default/keymap.c **** 		}
+ 940               		.loc 1 477 4 view .LVU201
+ 941 009a 0E94 0000 		call layer_off
+ 942               	.LVL50:
+ 477:keyboards/Manuform46/keymaps/Default/keymap.c **** 		}
+ 943               		.loc 1 477 4 is_stmt 0 view .LVU202
+ 944 009e 00C0      		rjmp .L83
+ 945               		.cfi_endproc
+ 946               	.LFE36:
+ 948               		.section	.progmem.data.__m.3350,"a"
+ 951               	__m.3350:
+ 952 0000 01        		.byte	1
+ 953 0001 E3        		.byte	-29
+ 954 0002 01        		.byte	1
+ 955 0003 E0        		.byte	-32
+ 956 0004 01        		.byte	1
+ 957 0005 4F        		.byte	79
+ 958 0006 02        		.byte	2
+ 959 0007 4F        		.byte	79
+ 960 0008 02        		.byte	2
+ 961 0009 E0        		.byte	-32
+ 962 000a 02        		.byte	2
+ 963 000b E3        		.byte	-29
+ 964 000c 00        		.byte	0
+ 965               		.section	.progmem.data.__m.3348,"a"
+ 968               	__m.3348:
+ 969 0000 01        		.byte	1
+ 970 0001 E3        		.byte	-29
+ 971 0002 01        		.byte	1
+ 972 0003 E0        		.byte	-32
+ 973 0004 01        		.byte	1
+ 974 0005 50        		.byte	80
+ 975 0006 02        		.byte	2
+ 976 0007 50        		.byte	80
+ 977 0008 02        		.byte	2
+ 978 0009 E0        		.byte	-32
+ 979 000a 02        		.byte	2
+ 980 000b E3        		.byte	-29
+ 981 000c 00        		.byte	0
+ 982               		.section	.progmem.data.__m.3338,"a"
+ 985               	__m.3338:
+ 986 0000 01        		.byte	1
+ 987 0001 E3        		.byte	-29
+ 988 0002 01        		.byte	1
+ 989 0003 15        		.byte	21
+ 990 0004 02        		.byte	2
+ 991 0005 15        		.byte	21
+ 992 0006 74        		.byte	116
+ 993 0007 FF        		.byte	-1
+ 994 0008 02        		.byte	2
+ 995 0009 E3        		.byte	-29
+ 996 000a 74        		.byte	116
+ 997 000b FF        		.byte	-1
+ 998 000c 01        		.byte	1
+ 999 000d 06        		.byte	6
+ 1000 000e 02        		.byte	2
+ 1001 000f 06        		.byte	6
+ 1002 0010 01        		.byte	1
+ 1003 0011 10        		.byte	16
+ 1004 0012 02        		.byte	2
+ 1005 0013 10        		.byte	16
+ 1006 0014 01        		.byte	1
+ 1007 0015 07        		.byte	7
+ 1008 0016 02        		.byte	2
+ 1009 0017 07        		.byte	7
+ 1010 0018 01        		.byte	1
+ 1011 0019 28        		.byte	40
+ 1012 001a 02        		.byte	2
+ 1013 001b 28        		.byte	40
+ 1014 001c 74        		.byte	116
+ 1015 001d FF        		.byte	-1
+ 1016 001e 01        		.byte	1
+ 1017 001f 13        		.byte	19
+ 1018 0020 02        		.byte	2
+ 1019 0021 13        		.byte	19
+ 1020 0022 01        		.byte	1
+ 1021 0023 0C        		.byte	12
+ 1022 0024 02        		.byte	2
+ 1023 0025 0C        		.byte	12
+ 1024 0026 01        		.byte	1
+ 1025 0027 11        		.byte	17
+ 1026 0028 02        		.byte	2
+ 1027 0029 11        		.byte	17
+ 1028 002a 01        		.byte	1
+ 1029 002b 0A        		.byte	10
+ 1030 002c 02        		.byte	2
+ 1031 002d 0A        		.byte	10
+ 1032 002e 01        		.byte	1
+ 1033 002f 2C        		.byte	44
+ 1034 0030 02        		.byte	2
+ 1035 0031 2C        		.byte	44
+ 1036 0032 01        		.byte	1
+ 1037 0033 E0        		.byte	-32
+ 1038 0034 01        		.byte	1
+ 1039 0035 19        		.byte	25
+ 1040 0036 02        		.byte	2
+ 1041 0037 19        		.byte	25
+ 1042 0038 02        		.byte	2
+ 1043 0039 E0        		.byte	-32
+ 1044 003a 00        		.byte	0
+ 1045               		.section	.progmem.data.__m.3336,"a"
+ 1048               	__m.3336:
+ 1049 0000 01        		.byte	1
+ 1050 0001 E3        		.byte	-29
+ 1051 0002 01        		.byte	1
+ 1052 0003 15        		.byte	21
+ 1053 0004 02        		.byte	2
+ 1054 0005 15        		.byte	21
+ 1055 0006 02        		.byte	2
+ 1056 0007 E3        		.byte	-29
+ 1057 0008 01        		.byte	1
+ 1058 0009 06        		.byte	6
+ 1059 000a 02        		.byte	2
+ 1060 000b 06        		.byte	6
+ 1061 000c 01        		.byte	1
+ 1062 000d 10        		.byte	16
+ 1063 000e 02        		.byte	2
+ 1064 000f 10        		.byte	16
+ 1065 0010 01        		.byte	1
+ 1066 0011 07        		.byte	7
+ 1067 0012 02        		.byte	2
+ 1068 0013 07        		.byte	7
+ 1069 0014 01        		.byte	1
+ 1070 0015 28        		.byte	40
+ 1071 0016 02        		.byte	2
+ 1072 0017 28        		.byte	40
+ 1073 0018 74        		.byte	116
+ 1074 0019 FF        		.byte	-1
+ 1075 001a 74        		.byte	116
+ 1076 001b FF        		.byte	-1
+ 1077 001c 01        		.byte	1
+ 1078 001d 0C        		.byte	12
+ 1079 001e 02        		.byte	2
+ 1080 001f 0C        		.byte	12
+ 1081 0020 01        		.byte	1
+ 1082 0021 13        		.byte	19
+ 1083 0022 02        		.byte	2
+ 1084 0023 13        		.byte	19
+ 1085 0024 01        		.byte	1
+ 1086 0025 06        		.byte	6
+ 1087 0026 02        		.byte	2
+ 1088 0027 06        		.byte	6
+ 1089 0028 01        		.byte	1
+ 1090 0029 12        		.byte	18
+ 1091 002a 02        		.byte	2
+ 1092 002b 12        		.byte	18
+ 1093 002c 01        		.byte	1
+ 1094 002d 11        		.byte	17
+ 1095 002e 02        		.byte	2
+ 1096 002f 11        		.byte	17
+ 1097 0030 01        		.byte	1
+ 1098 0031 09        		.byte	9
+ 1099 0032 02        		.byte	2
+ 1100 0033 09        		.byte	9
+ 1101 0034 01        		.byte	1
+ 1102 0035 0C        		.byte	12
+ 1103 0036 02        		.byte	2
+ 1104 0037 0C        		.byte	12
+ 1105 0038 01        		.byte	1
+ 1106 0039 0A        		.byte	10
+ 1107 003a 02        		.byte	2
+ 1108 003b 0A        		.byte	10
+ 1109 003c 01        		.byte	1
+ 1110 003d 2C        		.byte	44
+ 1111 003e 02        		.byte	2
+ 1112 003f 2C        		.byte	44
+ 1113 0040 01        		.byte	1
+ 1114 0041 38        		.byte	56
+ 1115 0042 02        		.byte	2
+ 1116 0043 38        		.byte	56
+ 1117 0044 01        		.byte	1
+ 1118 0045 04        		.byte	4
+ 1119 0046 02        		.byte	2
+ 1120 0047 04        		.byte	4
+ 1121 0048 01        		.byte	1
+ 1122 0049 0F        		.byte	15
+ 1123 004a 02        		.byte	2
+ 1124 004b 0F        		.byte	15
+ 1125 004c 01        		.byte	1
+ 1126 004d 0F        		.byte	15
+ 1127 004e 02        		.byte	2
+ 1128 004f 0F        		.byte	15
+ 1129 0050 01        		.byte	1
+ 1130 0051 28        		.byte	40
+ 1131 0052 02        		.byte	2
+ 1132 0053 28        		.byte	40
+ 1133 0054 00        		.byte	0
+ 1134               		.section	.progmem.data.__m.3334,"a"
+ 1137               	__m.3334:
+ 1138 0000 01        		.byte	1
+ 1139 0001 E3        		.byte	-29
+ 1140 0002 01        		.byte	1
+ 1141 0003 15        		.byte	21
+ 1142 0004 02        		.byte	2
+ 1143 0005 15        		.byte	21
+ 1144 0006 74        		.byte	116
+ 1145 0007 FF        		.byte	-1
+ 1146 0008 02        		.byte	2
+ 1147 0009 E3        		.byte	-29
+ 1148 000a 74        		.byte	116
+ 1149 000b FF        		.byte	-1
+ 1150 000c 01        		.byte	1
+ 1151 000d 06        		.byte	6
+ 1152 000e 02        		.byte	2
+ 1153 000f 06        		.byte	6
+ 1154 0010 01        		.byte	1
+ 1155 0011 10        		.byte	16
+ 1156 0012 02        		.byte	2
+ 1157 0013 10        		.byte	16
+ 1158 0014 01        		.byte	1
+ 1159 0015 07        		.byte	7
+ 1160 0016 02        		.byte	2
+ 1161 0017 07        		.byte	7
+ 1162 0018 01        		.byte	1
+ 1163 0019 28        		.byte	40
+ 1164 001a 02        		.byte	2
+ 1165 001b 28        		.byte	40
+ 1166 001c 00        		.byte	0
+ 1167               		.section	.progmem.data.__m.3328,"a"
+ 1170               	__m.3328:
+ 1171 0000 01        		.byte	1
+ 1172 0001 E0        		.byte	-32
+ 1173 0002 01        		.byte	1
+ 1174 0003 04        		.byte	4
+ 1175 0004 02        		.byte	2
+ 1176 0005 04        		.byte	4
+ 1177 0006 01        		.byte	1
+ 1178 0007 06        		.byte	6
+ 1179 0008 02        		.byte	2
+ 1180 0009 06        		.byte	6
+ 1181 000a 02        		.byte	2
+ 1182 000b E0        		.byte	-32
+ 1183 000c 00        		.byte	0
+ 1184               		.section	.progmem.data.__m.3326,"a"
+ 1187               	__m.3326:
+ 1188 0000 01        		.byte	1
+ 1189 0001 E0        		.byte	-32
+ 1190 0002 01        		.byte	1
+ 1191 0003 19        		.byte	25
+ 1192 0004 02        		.byte	2
+ 1193 0005 19        		.byte	25
+ 1194 0006 02        		.byte	2
+ 1195 0007 E0        		.byte	-32
+ 1196 0008 00        		.byte	0
+ 1197               		.section	.progmem.data.__m.3324,"a"
+ 1200               	__m.3324:
+ 1201 0000 01        		.byte	1
+ 1202 0001 E0        		.byte	-32
+ 1203 0002 01        		.byte	1
+ 1204 0003 06        		.byte	6
+ 1205 0004 02        		.byte	2
+ 1206 0005 06        		.byte	6
+ 1207 0006 02        		.byte	2
+ 1208 0007 E0        		.byte	-32
+ 1209 0008 00        		.byte	0
+ 1210               		.section	.progmem.data.__c.3318,"a"
+ 1213               	__c.3318:
+ 1214 0000 636D 6401 		.string	"cmd\001("
+ 1214      2800 
+ 1215               		.section	.progmem.data.__c.3313,"a"
+ 1218               	__c.3313:
+ 1219 0000 4143 0128 		.string	"AC\001("
+ 1219      00
+ 1220               		.section	.progmem.data.__m.3310,"a"
+ 1223               	__m.3310:
+ 1224 0000 75        		.byte	117
+ 1225 0001 0A        		.byte	10
+ 1226 0002 01        		.byte	1
+ 1227 0003 2B        		.byte	43
+ 1228 0004 02        		.byte	2
+ 1229 0005 2B        		.byte	43
+ 1230 0006 01        		.byte	1
+ 1231 0007 0C        		.byte	12
+ 1232 0008 02        		.byte	2
+ 1233 0009 0C        		.byte	12
+ 1234 000a 01        		.byte	1
+ 1235 000b 11        		.byte	17
+ 1236 000c 02        		.byte	2
+ 1237 000d 11        		.byte	17
+ 1238 000e 01        		.byte	1
+ 1239 000f 2B        		.byte	43
+ 1240 0010 02        		.byte	2
+ 1241 0011 2B        		.byte	43
+ 1242 0012 01        		.byte	1
+ 1243 0013 28        		.byte	40
+ 1244 0014 02        		.byte	2
+ 1245 0015 28        		.byte	40
+ 1246 0016 01        		.byte	1
+ 1247 0017 2B        		.byte	43
+ 1248 0018 02        		.byte	2
+ 1249 0019 2B        		.byte	43
+ 1250 001a 01        		.byte	1
+ 1251 001b 2B        		.byte	43
+ 1252 001c 02        		.byte	2
+ 1253 001d 2B        		.byte	43
+ 1254 001e 01        		.byte	1
+ 1255 001f 2B        		.byte	43
+ 1256 0020 02        		.byte	2
+ 1257 0021 2B        		.byte	43
+ 1258 0022 01        		.byte	1
+ 1259 0023 0C        		.byte	12
+ 1260 0024 02        		.byte	2
+ 1261 0025 0C        		.byte	12
+ 1262 0026 01        		.byte	1
+ 1263 0027 11        		.byte	17
+ 1264 0028 02        		.byte	2
+ 1265 0029 11        		.byte	17
+ 1266 002a 01        		.byte	1
+ 1267 002b 2B        		.byte	43
+ 1268 002c 02        		.byte	2
+ 1269 002d 2B        		.byte	43
+ 1270 002e 01        		.byte	1
+ 1271 002f 28        		.byte	40
+ 1272 0030 02        		.byte	2
+ 1273 0031 28        		.byte	40
+ 1274 0032 00        		.byte	0
+ 1275               		.section	.progmem.data.__m.3307,"a"
+ 1278               	__m.3307:
+ 1279 0000 75        		.byte	117
+ 1280 0001 0A        		.byte	10
+ 1281 0002 01        		.byte	1
+ 1282 0003 2B        		.byte	43
+ 1283 0004 02        		.byte	2
+ 1284 0005 2B        		.byte	43
+ 1285 0006 01        		.byte	1
+ 1286 0007 12        		.byte	18
+ 1287 0008 02        		.byte	2
+ 1288 0009 12        		.byte	18
+ 1289 000a 01        		.byte	1
+ 1290 000b 17        		.byte	23
+ 1291 000c 02        		.byte	2
+ 1292 000d 17        		.byte	23
+ 1293 000e 01        		.byte	1
+ 1294 000f 2B        		.byte	43
+ 1295 0010 02        		.byte	2
+ 1296 0011 2B        		.byte	43
+ 1297 0012 01        		.byte	1
+ 1298 0013 28        		.byte	40
+ 1299 0014 02        		.byte	2
+ 1300 0015 28        		.byte	40
+ 1301 0016 01        		.byte	1
+ 1302 0017 2B        		.byte	43
+ 1303 0018 02        		.byte	2
+ 1304 0019 2B        		.byte	43
+ 1305 001a 01        		.byte	1
+ 1306 001b 2B        		.byte	43
+ 1307 001c 02        		.byte	2
+ 1308 001d 2B        		.byte	43
+ 1309 001e 01        		.byte	1
+ 1310 001f 2B        		.byte	43
+ 1311 0020 02        		.byte	2
+ 1312 0021 2B        		.byte	43
+ 1313 0022 01        		.byte	1
+ 1314 0023 1D        		.byte	29
+ 1315 0024 02        		.byte	2
+ 1316 0025 1D        		.byte	29
+ 1317 0026 01        		.byte	1
+ 1318 0027 15        		.byte	21
+ 1319 0028 02        		.byte	2
+ 1320 0029 15        		.byte	21
+ 1321 002a 01        		.byte	1
+ 1322 002b 2B        		.byte	43
+ 1323 002c 02        		.byte	2
+ 1324 002d 2B        		.byte	43
+ 1325 002e 01        		.byte	1
+ 1326 002f 28        		.byte	40
+ 1327 0030 02        		.byte	2
+ 1328 0031 28        		.byte	40
+ 1329 0032 00        		.byte	0
+ 1330               		.section	.progmem.data.__m.3304,"a"
+ 1333               	__m.3304:
+ 1334 0000 75        		.byte	117
+ 1335 0001 0A        		.byte	10
+ 1336 0002 01        		.byte	1
+ 1337 0003 2B        		.byte	43
+ 1338 0004 02        		.byte	2
+ 1339 0005 2B        		.byte	43
+ 1340 0006 01        		.byte	1
+ 1341 0007 12        		.byte	18
+ 1342 0008 02        		.byte	2
+ 1343 0009 12        		.byte	18
+ 1344 000a 01        		.byte	1
+ 1345 000b 13        		.byte	19
+ 1346 000c 02        		.byte	2
+ 1347 000d 13        		.byte	19
+ 1348 000e 01        		.byte	1
+ 1349 000f 2B        		.byte	43
+ 1350 0010 02        		.byte	2
+ 1351 0011 2B        		.byte	43
+ 1352 0012 01        		.byte	1
+ 1353 0013 28        		.byte	40
+ 1354 0014 02        		.byte	2
+ 1355 0015 28        		.byte	40
+ 1356 0016 01        		.byte	1
+ 1357 0017 2B        		.byte	43
+ 1358 0018 02        		.byte	2
+ 1359 0019 2B        		.byte	43
+ 1360 001a 01        		.byte	1
+ 1361 001b 2B        		.byte	43
+ 1362 001c 02        		.byte	2
+ 1363 001d 2B        		.byte	43
+ 1364 001e 01        		.byte	1
+ 1365 001f 2B        		.byte	43
+ 1366 0020 02        		.byte	2
+ 1367 0021 2B        		.byte	43
+ 1368 0022 01        		.byte	1
+ 1369 0023 1D        		.byte	29
+ 1370 0024 02        		.byte	2
+ 1371 0025 1D        		.byte	29
+ 1372 0026 01        		.byte	1
+ 1373 0027 15        		.byte	21
+ 1374 0028 02        		.byte	2
+ 1375 0029 15        		.byte	21
+ 1376 002a 01        		.byte	1
+ 1377 002b 2B        		.byte	43
+ 1378 002c 02        		.byte	2
+ 1379 002d 2B        		.byte	43
+ 1380 002e 01        		.byte	1
+ 1381 002f 28        		.byte	40
+ 1382 0030 02        		.byte	2
+ 1383 0031 28        		.byte	40
+ 1384 0032 00        		.byte	0
+ 1385               		.section	.progmem.data.__c.3301,"a"
+ 1388               	__c.3301:
+ 1389 0000 6970 636F 		.string	"ipconfig /all"
+ 1389      6E66 6967 
+ 1389      202F 616C 
+ 1389      6C00 
+ 1390               		.section	.progmem.data.__c.3298,"a"
+ 1393               	__c.3298:
+ 1394 0000 7473 00   		.string	"ts"
+ 1395               		.section	.progmem.data.__m.3295,"a"
+ 1398               	__m.3295:
+ 1399 0000 75        		.byte	117
+ 1400 0001 0A        		.byte	10
+ 1401 0002 01        		.byte	1
+ 1402 0003 27        		.byte	39
+ 1403 0004 02        		.byte	2
+ 1404 0005 27        		.byte	39
+ 1405 0006 01        		.byte	1
+ 1406 0007 06        		.byte	6
+ 1407 0008 02        		.byte	2
+ 1408 0009 06        		.byte	6
+ 1409 000a 01        		.byte	1
+ 1410 000b 2B        		.byte	43
+ 1411 000c 02        		.byte	2
+ 1412 000d 2B        		.byte	43
+ 1413 000e 01        		.byte	1
+ 1414 000f 2B        		.byte	43
+ 1415 0010 02        		.byte	2
+ 1416 0011 2B        		.byte	43
+ 1417 0012 01        		.byte	1
+ 1418 0013 04        		.byte	4
+ 1419 0014 02        		.byte	2
+ 1420 0015 04        		.byte	4
+ 1421 0016 01        		.byte	1
+ 1422 0017 2B        		.byte	43
+ 1423 0018 02        		.byte	2
+ 1424 0019 2B        		.byte	43
+ 1425 001a 00        		.byte	0
+ 1426               		.section	.progmem.data.__m.3291,"a"
+ 1429               	__m.3291:
+ 1430 0000 01        		.byte	1
+ 1431 0001 1B        		.byte	27
+ 1432 0002 02        		.byte	2
+ 1433 0003 1B        		.byte	27
+ 1434 0004 00        		.byte	0
+ 1435               		.section	.progmem.data.__m.3287,"a"
+ 1438               	__m.3287:
+ 1439 0000 75        		.byte	117
+ 1440 0001 0A        		.byte	10
+ 1441 0002 01        		.byte	1
+ 1442 0003 E0        		.byte	-32
+ 1443 0004 01        		.byte	1
+ 1444 0005 17        		.byte	23
+ 1445 0006 02        		.byte	2
+ 1446 0007 17        		.byte	23
+ 1447 0008 01        		.byte	1
+ 1448 0009 19        		.byte	25
+ 1449 000a 02        		.byte	2
+ 1450 000b 19        		.byte	25
+ 1451 000c 01        		.byte	1
+ 1452 000d 28        		.byte	40
+ 1453 000e 02        		.byte	2
+ 1454 000f 28        		.byte	40
+ 1455 0010 02        		.byte	2
+ 1456 0011 E0        		.byte	-32
+ 1457 0012 00        		.byte	0
+ 1458               		.section	.progmem.data.__c.3284,"a"
+ 1461               	__c.3284:
+ 1462 0000 7777 772E 		.string	"www.support.xerox.com\001("
+ 1462      7375 7070 
+ 1462      6F72 742E 
+ 1462      7865 726F 
+ 1462      782E 636F 
+ 1463               		.section	.progmem.data.__c.3281,"a"
+ 1466               	__c.3281:
+ 1467 0000 6170 6165 		.string	"apaez@gotocos.com"
+ 1467      7A40 676F 
+ 1467      746F 636F 
+ 1467      732E 636F 
+ 1467      6D00 
+ 1468               		.section	.progmem.data.__c.3278,"a"
+ 1471               	__c.3278:
+ 1472 0000 6164 6D69 		.string	"admin\001+1111\001("
+ 1472      6E01 2B31 
+ 1472      3131 3101 
+ 1472      2800 
+ 1473               		.section	.progmem.data.__m.3275,"a"
+ 1476               	__m.3275:
+ 1477 0000 01        		.byte	1
+ 1478 0001 E3        		.byte	-29
+ 1479 0002 01        		.byte	1
+ 1480 0003 2B        		.byte	43
+ 1481 0004 02        		.byte	2
+ 1482 0005 2B        		.byte	43
+ 1483 0006 02        		.byte	2
+ 1484 0007 E3        		.byte	-29
+ 1485 0008 00        		.byte	0
+ 1486               	.global	tap_dance_actions
+ 1487               		.section	.data.tap_dance_actions,"aw"
+ 1490               	tap_dance_actions:
+ 1491 0000 0000      		.word	0
+ 1492 0002 0000      		.word	gs(cmd_commands)
+ 1493 0004 0000      		.word	0
+ 1494 0006 0000 0000 		.zero	12
+ 1494      0000 0000 
+ 1494      0000 0000 
+ 1495 0012 0000      		.word	0
+ 1496 0014 0000      		.word	0
+ 1497 0016 0000      		.word	gs(cmd)
+ 1498 0018 0000      		.word	0
+ 1499 001a 0000 0000 		.zero	12
+ 1499      0000 0000 
+ 1499      0000 0000 
+ 1500 0026 0000      		.word	0
+ 1501 0028 0000      		.word	0
+ 1502 002a 0000      		.word	gs(SLSH_BSLSH)
+ 1503 002c 0000      		.word	0
+ 1504 002e 0000 0000 		.zero	12
+ 1504      0000 0000 
+ 1504      0000 0000 
+ 1505 003a 0000      		.word	0
+ 1506 003c 0000      		.word	0
+ 1507 003e 0000      		.word	gs(VirtualDesktop)
+ 1508 0040 0000      		.word	0
+ 1509 0042 0000 0000 		.zero	12
+ 1509      0000 0000 
+ 1509      0000 0000 
+ 1510 004e 0000      		.word	0
+ 1511               	.global	keymaps
+ 1512               		.section	.progmem.data.keymaps,"a"
+ 1515               	keymaps:
+ 1516 0000 2B45      		.word	17707
+ 1517 0002 1400      		.word	20
+ 1518 0004 1A00      		.word	26
+ 1519 0006 0800      		.word	8
+ 1520 0008 1500      		.word	21
+ 1521 000a 1700      		.word	23
+ 1522 000c 2840      		.word	16424
+ 1523 000e 0400      		.word	4
+ 1524 0010 1600      		.word	22
+ 1525 0012 0700      		.word	7
+ 1526 0014 0900      		.word	9
+ 1527 0016 0A00      		.word	10
+ 1528 0018 005C      		.word	23552
+ 1529 001a 1D00      		.word	29
+ 1530 001c 1B00      		.word	27
+ 1531 001e 0600      		.word	6
+ 1532 0020 1900      		.word	25
+ 1533 0022 0500      		.word	5
+ 1534 0024 0000      		.word	0
+ 1535 0026 0000      		.word	0
+ 1536 0028 5000      		.word	80
+ 1537 002a 4F00      		.word	79
+ 1538 002c 2A00      		.word	42
+ 1539 002e DD5C      		.word	23773
+ 1540 0030 0000      		.word	0
+ 1541 0032 0000      		.word	0
+ 1542 0034 3500      		.word	53
+ 1543 0036 4600      		.word	70
+ 1544 0038 2961      		.word	24873
+ 1545 003a 0030      		.word	12288
+ 1546 003c 3100      		.word	49
+ 1547 003e 1300      		.word	19
+ 1548 0040 1200      		.word	18
+ 1549 0042 0C00      		.word	12
+ 1550 0044 1800      		.word	24
+ 1551 0046 1C00      		.word	28
+ 1552 0048 2800      		.word	40
+ 1553 004a 3300      		.word	51
+ 1554 004c 0F00      		.word	15
+ 1555 004e 0E00      		.word	14
+ 1556 0050 0D00      		.word	13
+ 1557 0052 0B00      		.word	11
+ 1558 0054 005C      		.word	23552
+ 1559 0056 3800      		.word	56
+ 1560 0058 3700      		.word	55
+ 1561 005a 3600      		.word	54
+ 1562 005c 1000      		.word	16
+ 1563 005e 1100      		.word	17
+ 1564 0060 0000      		.word	0
+ 1565 0062 0000      		.word	0
+ 1566 0064 5100      		.word	81
+ 1567 0066 5200      		.word	82
+ 1568 0068 2C00      		.word	44
+ 1569 006a 2800      		.word	40
+ 1570 006c 0000      		.word	0
+ 1571 006e 0000      		.word	0
+ 1572 0070 4D00      		.word	77
+ 1573 0072 4A00      		.word	74
+ 1574 0074 DE5C      		.word	23774
+ 1575 0076 4C00      		.word	76
+ 1576 0078 2B45      		.word	17707
+ 1577 007a 1400      		.word	20
+ 1578 007c 1A00      		.word	26
+ 1579 007e 0900      		.word	9
+ 1580 0080 1300      		.word	19
+ 1581 0082 0A00      		.word	10
+ 1582 0084 2840      		.word	16424
+ 1583 0086 0400      		.word	4
+ 1584 0088 1500      		.word	21
+ 1585 008a 1600      		.word	22
+ 1586 008c 1700      		.word	23
+ 1587 008e 0700      		.word	7
+ 1588 0090 E100      		.word	225
+ 1589 0092 1D00      		.word	29
+ 1590 0094 1B00      		.word	27
+ 1591 0096 0600      		.word	6
+ 1592 0098 1900      		.word	25
+ 1593 009a 0500      		.word	5
+ 1594 009c 0000      		.word	0
+ 1595 009e 0000      		.word	0
+ 1596 00a0 5000      		.word	80
+ 1597 00a2 4F00      		.word	79
+ 1598 00a4 2A00      		.word	42
+ 1599 00a6 DD5C      		.word	23773
+ 1600 00a8 0000      		.word	0
+ 1601 00aa 0000      		.word	0
+ 1602 00ac 3500      		.word	53
+ 1603 00ae 4600      		.word	70
+ 1604 00b0 2961      		.word	24873
+ 1605 00b2 0030      		.word	12288
+ 1606 00b4 3100      		.word	49
+ 1607 00b6 3300      		.word	51
+ 1608 00b8 1C00      		.word	28
+ 1609 00ba 1800      		.word	24
+ 1610 00bc 0F00      		.word	15
+ 1611 00be 0D00      		.word	13
+ 1612 00c0 2800      		.word	40
+ 1613 00c2 1200      		.word	18
+ 1614 00c4 0C00      		.word	12
+ 1615 00c6 0800      		.word	8
+ 1616 00c8 1100      		.word	17
+ 1617 00ca 0B00      		.word	11
+ 1618 00cc 3500      		.word	53
+ 1619 00ce 3800      		.word	56
+ 1620 00d0 3700      		.word	55
+ 1621 00d2 3600      		.word	54
+ 1622 00d4 1000      		.word	16
+ 1623 00d6 0E00      		.word	14
+ 1624 00d8 0000      		.word	0
+ 1625 00da 0000      		.word	0
+ 1626 00dc 5100      		.word	81
+ 1627 00de 5200      		.word	82
+ 1628 00e0 2C00      		.word	44
+ 1629 00e2 2800      		.word	40
+ 1630 00e4 0000      		.word	0
+ 1631 00e6 0000      		.word	0
+ 1632 00e8 4D00      		.word	77
+ 1633 00ea 4A00      		.word	74
+ 1634 00ec DE5C      		.word	23774
+ 1635 00ee 4C00      		.word	76
+ 1636 00f0 2B00      		.word	43
+ 1637 00f2 3400      		.word	52
+ 1638 00f4 3600      		.word	54
+ 1639 00f6 3700      		.word	55
+ 1640 00f8 1300      		.word	19
+ 1641 00fa 1C00      		.word	28
+ 1642 00fc 2961      		.word	24873
+ 1643 00fe 0400      		.word	4
+ 1644 0100 1200      		.word	18
+ 1645 0102 0800      		.word	8
+ 1646 0104 1800      		.word	24
+ 1647 0106 0C00      		.word	12
+ 1648 0108 E100      		.word	225
+ 1649 010a 3300      		.word	51
+ 1650 010c 1400      		.word	20
+ 1651 010e 0D00      		.word	13
+ 1652 0110 0E00      		.word	14
+ 1653 0112 1B00      		.word	27
+ 1654 0114 0000      		.word	0
+ 1655 0116 0000      		.word	0
+ 1656 0118 5000      		.word	80
+ 1657 011a 4F00      		.word	79
+ 1658 011c 2A00      		.word	42
+ 1659 011e DD5C      		.word	23773
+ 1660 0120 0000      		.word	0
+ 1661 0122 0000      		.word	0
+ 1662 0124 3500      		.word	53
+ 1663 0126 4600      		.word	70
+ 1664 0128 2961      		.word	24873
+ 1665 012a 0030      		.word	12288
+ 1666 012c 2D00      		.word	45
+ 1667 012e 0F00      		.word	15
+ 1668 0130 1500      		.word	21
+ 1669 0132 0600      		.word	6
+ 1670 0134 0A00      		.word	10
+ 1671 0136 0900      		.word	9
+ 1672 0138 3800      		.word	56
+ 1673 013a 1600      		.word	22
+ 1674 013c 1100      		.word	17
+ 1675 013e 1700      		.word	23
+ 1676 0140 0B00      		.word	11
+ 1677 0142 0700      		.word	7
+ 1678 0144 2840      		.word	16424
+ 1679 0146 1D00      		.word	29
+ 1680 0148 1900      		.word	25
+ 1681 014a 1A00      		.word	26
+ 1682 014c 1000      		.word	16
+ 1683 014e 0500      		.word	5
+ 1684 0150 0000      		.word	0
+ 1685 0152 0000      		.word	0
+ 1686 0154 5100      		.word	81
+ 1687 0156 5200      		.word	82
+ 1688 0158 2C00      		.word	44
+ 1689 015a 2800      		.word	40
+ 1690 015c 0000      		.word	0
+ 1691 015e 0000      		.word	0
+ 1692 0160 4D00      		.word	77
+ 1693 0162 4A00      		.word	74
+ 1694 0164 DE5C      		.word	23774
+ 1695 0166 4C00      		.word	76
+ 1696 0168 0100      		.word	1
+ 1697 016a 0100      		.word	1
+ 1698 016c 0330      		.word	12291
+ 1699 016e 0230      		.word	12290
+ 1700 0170 0100      		.word	1
+ 1701 0172 0F30      		.word	12303
+ 1702 0174 0100      		.word	1
+ 1703 0176 0630      		.word	12294
+ 1704 0178 0100      		.word	1
+ 1705 017a 0100      		.word	1
+ 1706 017c 0100      		.word	1
+ 1707 017e 0100      		.word	1
+ 1708 0180 0100      		.word	1
+ 1709 0182 0100      		.word	1
+ 1710 0184 0130      		.word	12289
+ 1711 0186 0100      		.word	1
+ 1712 0188 0100      		.word	1
+ 1713 018a 0100      		.word	1
+ 1714 018c 0000      		.word	0
+ 1715 018e 0000      		.word	0
+ 1716 0190 5000      		.word	80
+ 1717 0192 4F00      		.word	79
+ 1718 0194 2A00      		.word	42
+ 1719 0196 DD5C      		.word	23773
+ 1720 0198 0000      		.word	0
+ 1721 019a 0000      		.word	0
+ 1722 019c 3500      		.word	53
+ 1723 019e 4600      		.word	70
+ 1724 01a0 2961      		.word	24873
+ 1725 01a2 0030      		.word	12288
+ 1726 01a4 0100      		.word	1
+ 1727 01a6 0A30      		.word	12298
+ 1728 01a8 1030      		.word	12304
+ 1729 01aa 0100      		.word	1
+ 1730 01ac 0100      		.word	1
+ 1731 01ae 0100      		.word	1
+ 1732 01b0 0100      		.word	1
+ 1733 01b2 0100      		.word	1
+ 1734 01b4 0B30      		.word	12299
+ 1735 01b6 5200      		.word	82
+ 1736 01b8 0100      		.word	1
+ 1737 01ba 0100      		.word	1
+ 1738 01bc 0100      		.word	1
+ 1739 01be 0100      		.word	1
+ 1740 01c0 4F00      		.word	79
+ 1741 01c2 5100      		.word	81
+ 1742 01c4 5000      		.word	80
+ 1743 01c6 0100      		.word	1
+ 1744 01c8 0000      		.word	0
+ 1745 01ca 0000      		.word	0
+ 1746 01cc 5100      		.word	81
+ 1747 01ce 5200      		.word	82
+ 1748 01d0 2C00      		.word	44
+ 1749 01d2 2800      		.word	40
+ 1750 01d4 0000      		.word	0
+ 1751 01d6 0000      		.word	0
+ 1752 01d8 4D00      		.word	77
+ 1753 01da 4A00      		.word	74
+ 1754 01dc DE5C      		.word	23774
+ 1755 01de 4C00      		.word	76
+ 1756 01e0 2500      		.word	37
+ 1757 01e2 1E00      		.word	30
+ 1758 01e4 0330      		.word	12291
+ 1759 01e6 1E00      		.word	30
+ 1760 01e8 1E00      		.word	30
+ 1761 01ea 1E00      		.word	30
+ 1762 01ec 2500      		.word	37
+ 1763 01ee 1E00      		.word	30
+ 1764 01f0 1E00      		.word	30
+ 1765 01f2 1E00      		.word	30
+ 1766 01f4 1E00      		.word	30
+ 1767 01f6 1E00      		.word	30
+ 1768 01f8 2500      		.word	37
+ 1769 01fa 1E00      		.word	30
+ 1770 01fc 1E00      		.word	30
+ 1771 01fe 1E00      		.word	30
+ 1772 0200 1E00      		.word	30
+ 1773 0202 1E00      		.word	30
+ 1774 0204 0000      		.word	0
+ 1775 0206 0000      		.word	0
+ 1776 0208 5000      		.word	80
+ 1777 020a 4F00      		.word	79
+ 1778 020c 2A00      		.word	42
+ 1779 020e DD5C      		.word	23773
+ 1780 0210 0000      		.word	0
+ 1781 0212 0000      		.word	0
+ 1782 0214 3500      		.word	53
+ 1783 0216 4600      		.word	70
+ 1784 0218 2961      		.word	24873
+ 1785 021a 0030      		.word	12288
+ 1786 021c 0000      		.word	0
+ 1787 021e 5600      		.word	86
+ 1788 0220 2300      		.word	35
+ 1789 0222 2200      		.word	34
+ 1790 0224 2100      		.word	33
+ 1791 0226 0000      		.word	0
+ 1792 0228 0000      		.word	0
+ 1793 022a 5700      		.word	87
+ 1794 022c 2000      		.word	32
+ 1795 022e 1F00      		.word	31
+ 1796 0230 1E00      		.word	30
+ 1797 0232 0000      		.word	0
+ 1798 0234 0000      		.word	0
+ 1799 0236 0000      		.word	0
+ 1800 0238 3700      		.word	55
+ 1801 023a 2700      		.word	39
+ 1802 023c 2700      		.word	39
+ 1803 023e 0000      		.word	0
+ 1804 0240 0000      		.word	0
+ 1805 0242 0000      		.word	0
+ 1806 0244 5100      		.word	81
+ 1807 0246 5200      		.word	82
+ 1808 0248 2C00      		.word	44
+ 1809 024a 2800      		.word	40
+ 1810 024c 0000      		.word	0
+ 1811 024e 0000      		.word	0
+ 1812 0250 4D00      		.word	77
+ 1813 0252 4A00      		.word	74
+ 1814 0254 DE5C      		.word	23774
+ 1815 0256 4C00      		.word	76
+ 1816 0258 0100      		.word	1
+ 1817 025a 2000      		.word	32
+ 1818 025c 2000      		.word	32
+ 1819 025e 2000      		.word	32
+ 1820 0260 2000      		.word	32
+ 1821 0262 2000      		.word	32
+ 1822 0264 0100      		.word	1
+ 1823 0266 0100      		.word	1
+ 1824 0268 5200      		.word	82
+ 1825 026a 0100      		.word	1
+ 1826 026c 0100      		.word	1
+ 1827 026e 0100      		.word	1
+ 1828 0270 2961      		.word	24873
+ 1829 0272 E200      		.word	226
+ 1830 0274 E300      		.word	227
+ 1831 0276 0357      		.word	22275
+ 1832 0278 DD5C      		.word	23773
+ 1833 027a 2A00      		.word	42
+ 1834 027c 0000      		.word	0
+ 1835 027e 0000      		.word	0
+ 1836 0280 5000      		.word	80
+ 1837 0282 4F00      		.word	79
+ 1838 0284 2A00      		.word	42
+ 1839 0286 DD5C      		.word	23773
+ 1840 0288 0000      		.word	0
+ 1841 028a 0000      		.word	0
+ 1842 028c 3500      		.word	53
+ 1843 028e 4600      		.word	70
+ 1844 0290 2961      		.word	24873
+ 1845 0292 0030      		.word	12288
+ 1846 0294 0100      		.word	1
+ 1847 0296 0100      		.word	1
+ 1848 0298 0100      		.word	1
+ 1849 029a 0100      		.word	1
+ 1850 029c 0100      		.word	1
+ 1851 029e 0100      		.word	1
+ 1852 02a0 0100      		.word	1
+ 1853 02a2 5200      		.word	82
+ 1854 02a4 0100      		.word	1
+ 1855 02a6 0100      		.word	1
+ 1856 02a8 0100      		.word	1
+ 1857 02aa 0100      		.word	1
+ 1858 02ac 4F00      		.word	79
+ 1859 02ae 5100      		.word	81
+ 1860 02b0 5000      		.word	80
+ 1861 02b2 3400      		.word	52
+ 1862 02b4 5200      		.word	82
+ 1863 02b6 2C00      		.word	44
+ 1864 02b8 0000      		.word	0
+ 1865 02ba 0000      		.word	0
+ 1866 02bc 5100      		.word	81
+ 1867 02be 5200      		.word	82
+ 1868 02c0 2C00      		.word	44
+ 1869 02c2 2800      		.word	40
+ 1870 02c4 0000      		.word	0
+ 1871 02c6 0000      		.word	0
+ 1872 02c8 4D00      		.word	77
+ 1873 02ca 4A00      		.word	74
+ 1874 02cc DE5C      		.word	23774
+ 1875 02ce 4C00      		.word	76
+ 1876 02d0 0000 0000 		.zero	1200
+ 1876      0000 0000 
+ 1876      0000 0000 
+ 1876      0000 0000 
+ 1876      0000 0000 
+ 1877 0780 0100      		.word	1
+ 1878 0782 DB5C      		.word	23771
+ 1879 0784 DA5C      		.word	23770
+ 1880 0786 C15C      		.word	23745
+ 1881 0788 C45C      		.word	23748
+ 1882 078a C35C      		.word	23747
+ 1883 078c 0100      		.word	1
+ 1884 078e DA5C      		.word	23770
+ 1885 0790 0100      		.word	1
+ 1886 0792 1D5C      		.word	23581
+ 1887 0794 1E5C      		.word	23582
+ 1888 0796 135C      		.word	23571
+ 1889 0798 0100      		.word	1
+ 1890 079a 1E00      		.word	30
+ 1891 079c 1E00      		.word	30
+ 1892 079e 0100      		.word	1
+ 1893 07a0 0100      		.word	1
+ 1894 07a2 0100      		.word	1
+ 1895 07a4 0000      		.word	0
+ 1896 07a6 0000      		.word	0
+ 1897 07a8 0100      		.word	1
+ 1898 07aa 0100      		.word	1
+ 1899 07ac 0100      		.word	1
+ 1900 07ae 0100      		.word	1
+ 1901 07b0 0000      		.word	0
+ 1902 07b2 0000      		.word	0
+ 1903 07b4 0100      		.word	1
+ 1904 07b6 0100      		.word	1
+ 1905 07b8 0100      		.word	1
+ 1906 07ba 0100      		.word	1
+ 1907 07bc 005C      		.word	23552
+ 1908 07be 005C      		.word	23552
+ 1909 07c0 C75C      		.word	23751
+ 1910 07c2 C85C      		.word	23752
+ 1911 07c4 C55C      		.word	23749
+ 1912 07c6 C65C      		.word	23750
+ 1913 07c8 0100      		.word	1
+ 1914 07ca 015C      		.word	23553
+ 1915 07cc DC5C      		.word	23772
+ 1916 07ce DB5C      		.word	23771
+ 1917 07d0 DA5C      		.word	23770
+ 1918 07d2 0A5C      		.word	23562
+ 1919 07d4 0100      		.word	1
+ 1920 07d6 0100      		.word	1
+ 1921 07d8 0100      		.word	1
+ 1922 07da 0100      		.word	1
+ 1923 07dc 0100      		.word	1
+ 1924 07de 0100      		.word	1
+ 1925 07e0 0000      		.word	0
+ 1926 07e2 0000      		.word	0
+ 1927 07e4 DB5C      		.word	23771
+ 1928 07e6 0100      		.word	1
+ 1929 07e8 0100      		.word	1
+ 1930 07ea 0100      		.word	1
+ 1931 07ec 0000      		.word	0
+ 1932 07ee 0000      		.word	0
+ 1933 07f0 0100      		.word	1
+ 1934 07f2 0100      		.word	1
+ 1935 07f4 0100      		.word	1
+ 1936 07f6 0100      		.word	1
+ 1937               		.text
+ 1938               	.Letext0:
+ 1939               		.file 3 "/usr/local/Cellar/avr-gcc@8/8.3.0_1/avr/include/stdint.h"
+ 1940               		.file 4 "/usr/local/Cellar/avr-gcc@8/8.3.0_1/lib/avr-gcc/8/gcc/avr/8.3.0/include/stddef.h"
+ 1941               		.file 5 "./tmk_core/common/keyboard.h"
+ 1942               		.file 6 "./tmk_core/common/keycode.h"
+ 1943               		.file 7 "./tmk_core/common/action_code.h"
+ 1944               		.file 8 "./tmk_core/common/action_macro.h"
+ 1945               		.file 9 "./tmk_core/common/action.h"
+ 1946               		.file 10 "./tmk_core/common/report.h"
+ 1947               		.file 11 "./tmk_core/common/host.h"
+ 1948               		.file 12 "./tmk_core/common/debug.h"
+ 1949               		.file 13 "./quantum/keycode_config.h"
+ 1950               		.file 14 "./quantum/quantum_keycodes.h"
+ 1951               		.file 15 "./quantum/keymap.h"
+ 1952               		.file 16 "./tmk_core/common/action_layer.h"
+ 1953               		.file 17 "./tmk_core/common/timer.h"
+ 1954               		.file 18 "./tmk_core/common/action_util.h"
+ 1955               		.file 19 "/usr/local/Cellar/avr-gcc@8/8.3.0_1/avr/include/stdlib.h"
+ 1956               		.file 20 "./quantum/process_keycode/process_tap_dance.h"
+ 1957               		.file 21 "./quantum/quantum.h"
+ 1958               		.file 22 "./tmk_core/common/eeconfig.h"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 keymap.c
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccFh5uD3.s:2      *ABS*:000000000000003e __SP_H__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccFh5uD3.s:3      *ABS*:000000000000003d __SP_L__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccFh5uD3.s:4      *ABS*:000000000000003f __SREG__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccFh5uD3.s:5      *ABS*:0000000000000000 __tmp_reg__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccFh5uD3.s:6      *ABS*:0000000000000001 __zero_reg__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccFh5uD3.s:13     .text.cmd_commands:0000000000000000 cmd_commands
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccFh5uD3.s:1200   .progmem.data.__m.3324:0000000000000000 __m.3324
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccFh5uD3.s:1187   .progmem.data.__m.3326:0000000000000000 __m.3326
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccFh5uD3.s:1170   .progmem.data.__m.3328:0000000000000000 __m.3328
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccFh5uD3.s:73     .text.cmd:0000000000000000 cmd
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccFh5uD3.s:1137   .progmem.data.__m.3334:0000000000000000 __m.3334
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccFh5uD3.s:1048   .progmem.data.__m.3336:0000000000000000 __m.3336
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccFh5uD3.s:985    .progmem.data.__m.3338:0000000000000000 __m.3338
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccFh5uD3.s:132    .text.VirtualDesktop:0000000000000000 VirtualDesktop
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccFh5uD3.s:968    .progmem.data.__m.3348:0000000000000000 __m.3348
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccFh5uD3.s:951    .progmem.data.__m.3350:0000000000000000 __m.3350
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccFh5uD3.s:185    .text.SLSH_BSLSH:0000000000000000 SLSH_BSLSH
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccFh5uD3.s:226    .text.rgblight_toggle:0000000000000000 rgblight_toggle
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccFh5uD3.s:245    .text.rgblight_step:0000000000000000 rgblight_step
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccFh5uD3.s:260    .text.rgblight_step_reverse:0000000000000000 rgblight_step_reverse
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccFh5uD3.s:275    .text.rgblight_increase_hue:0000000000000000 rgblight_increase_hue
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccFh5uD3.s:290    .text.rgblight_decrease_hue:0000000000000000 rgblight_decrease_hue
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccFh5uD3.s:305    .text.rgblight_increase_sat:0000000000000000 rgblight_increase_sat
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccFh5uD3.s:320    .text.rgblight_decrease_sat:0000000000000000 rgblight_decrease_sat
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccFh5uD3.s:335    .text.rgblight_increase_val:0000000000000000 rgblight_increase_val
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccFh5uD3.s:350    .text.rgblight_decrease_val:0000000000000000 rgblight_decrease_val
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccFh5uD3.s:365    .text.rgblight_increase_speed:0000000000000000 rgblight_increase_speed
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccFh5uD3.s:380    .text.rgblight_decrease_speed:0000000000000000 rgblight_decrease_speed
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccFh5uD3.s:395    .text.persistent_default_layer_set:0000000000000000 persistent_default_layer_set
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccFh5uD3.s:436    .text.action_get_macro:0000000000000000 action_get_macro
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccFh5uD3.s:1471   .progmem.data.__c.3278:0000000000000000 __c.3278
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccFh5uD3.s:1466   .progmem.data.__c.3281:0000000000000000 __c.3281
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccFh5uD3.s:1461   .progmem.data.__c.3284:0000000000000000 __c.3284
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccFh5uD3.s:1393   .progmem.data.__c.3298:0000000000000000 __c.3298
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccFh5uD3.s:1388   .progmem.data.__c.3301:0000000000000000 __c.3301
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccFh5uD3.s:1218   .progmem.data.__c.3313:0000000000000000 __c.3313
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccFh5uD3.s:1213   .progmem.data.__c.3318:0000000000000000 __c.3318
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccFh5uD3.s:1476   .progmem.data.__m.3275:0000000000000000 __m.3275
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccFh5uD3.s:1438   .progmem.data.__m.3287:0000000000000000 __m.3287
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccFh5uD3.s:1429   .progmem.data.__m.3291:0000000000000000 __m.3291
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccFh5uD3.s:1398   .progmem.data.__m.3295:0000000000000000 __m.3295
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccFh5uD3.s:1333   .progmem.data.__m.3304:0000000000000000 __m.3304
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccFh5uD3.s:1278   .progmem.data.__m.3307:0000000000000000 __m.3307
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccFh5uD3.s:1223   .progmem.data.__m.3310:0000000000000000 __m.3310
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccFh5uD3.s:748    .text.matrix_init_user:0000000000000000 matrix_init_user
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccFh5uD3.s:765    .text.matrix_scan_user:0000000000000000 matrix_scan_user
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccFh5uD3.s:780    .text.process_record_user:0000000000000000 process_record_user
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccFh5uD3.s:1490   .data.tap_dance_actions:0000000000000000 tap_dance_actions
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccFh5uD3.s:1515   .progmem.data.keymaps:0000000000000000 keymaps
+
+UNDEFINED SYMBOLS
+action_macro_play
+register_code
+unregister_code
+eeconfig_update_default_layer
+default_layer_set
+__tablejump2__
+send_string_P
+layer_on
+layer_off
+update_tri_layer
+__do_copy_data

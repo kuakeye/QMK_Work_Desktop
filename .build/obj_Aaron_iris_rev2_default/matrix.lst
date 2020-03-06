@@ -1,0 +1,1812 @@
+   1               		.file	"matrix.c"
+   2               	__SP_H__ = 0x3e
+   3               	__SP_L__ = 0x3d
+   4               	__SREG__ = 0x3f
+   5               	__tmp_reg__ = 0
+   6               	__zero_reg__ = 1
+   7               		.text
+   8               	.Ltext0:
+   9               		.cfi_sections	.debug_frame
+  10               		.section	.text.matrix_init_user,"ax",@progbits
+  11               		.weak	matrix_init_user
+  13               	matrix_init_user:
+  14               	.LFB9:
+  15               		.file 1 "keyboards/Aaron/iris/matrix.c"
+   1:keyboards/Aaron/iris/matrix.c **** /*
+   2:keyboards/Aaron/iris/matrix.c **** Copyright 2017 Danny Nguyen <danny@keeb.io>
+   3:keyboards/Aaron/iris/matrix.c **** 
+   4:keyboards/Aaron/iris/matrix.c **** This program is free software: you can redistribute it and/or modify
+   5:keyboards/Aaron/iris/matrix.c **** it under the terms of the GNU General Public License as published by
+   6:keyboards/Aaron/iris/matrix.c **** the Free Software Foundation, either version 2 of the License, or
+   7:keyboards/Aaron/iris/matrix.c **** (at your option) any later version.
+   8:keyboards/Aaron/iris/matrix.c **** 
+   9:keyboards/Aaron/iris/matrix.c **** This program is distributed in the hope that it will be useful,
+  10:keyboards/Aaron/iris/matrix.c **** but WITHOUT ANY WARRANTY; without even the implied warranty of
+  11:keyboards/Aaron/iris/matrix.c **** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  12:keyboards/Aaron/iris/matrix.c **** GNU General Public License for more details.
+  13:keyboards/Aaron/iris/matrix.c **** 
+  14:keyboards/Aaron/iris/matrix.c **** You should have received a copy of the GNU General Public License
+  15:keyboards/Aaron/iris/matrix.c **** along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  16:keyboards/Aaron/iris/matrix.c **** */
+  17:keyboards/Aaron/iris/matrix.c **** 
+  18:keyboards/Aaron/iris/matrix.c **** /*
+  19:keyboards/Aaron/iris/matrix.c ****  * scan matrix
+  20:keyboards/Aaron/iris/matrix.c ****  */
+  21:keyboards/Aaron/iris/matrix.c **** #include <stdint.h>
+  22:keyboards/Aaron/iris/matrix.c **** #include <stdbool.h>
+  23:keyboards/Aaron/iris/matrix.c **** #include <avr/io.h>
+  24:keyboards/Aaron/iris/matrix.c **** #include "wait.h"
+  25:keyboards/Aaron/iris/matrix.c **** #include "print.h"
+  26:keyboards/Aaron/iris/matrix.c **** #include "debug.h"
+  27:keyboards/Aaron/iris/matrix.c **** #include "util.h"
+  28:keyboards/Aaron/iris/matrix.c **** #include "matrix.h"
+  29:keyboards/Aaron/iris/matrix.c **** #include "split_util.h"
+  30:keyboards/Aaron/iris/matrix.c **** #include "pro_micro.h"
+  31:keyboards/Aaron/iris/matrix.c **** #include "config.h"
+  32:keyboards/Aaron/iris/matrix.c **** #include "timer.h"
+  33:keyboards/Aaron/iris/matrix.c **** #include "backlight.h"
+  34:keyboards/Aaron/iris/matrix.c **** 
+  35:keyboards/Aaron/iris/matrix.c **** #ifdef USE_I2C
+  36:keyboards/Aaron/iris/matrix.c **** #  include "i2c.h"
+  37:keyboards/Aaron/iris/matrix.c **** #else // USE_SERIAL
+  38:keyboards/Aaron/iris/matrix.c **** #  include "serial.h"
+  39:keyboards/Aaron/iris/matrix.c **** #endif
+  40:keyboards/Aaron/iris/matrix.c **** 
+  41:keyboards/Aaron/iris/matrix.c **** #ifndef DEBOUNCING_DELAY
+  42:keyboards/Aaron/iris/matrix.c **** #   define DEBOUNCING_DELAY 5
+  43:keyboards/Aaron/iris/matrix.c **** #endif
+  44:keyboards/Aaron/iris/matrix.c **** 
+  45:keyboards/Aaron/iris/matrix.c **** #if (DEBOUNCING_DELAY > 0)
+  46:keyboards/Aaron/iris/matrix.c ****     static uint16_t debouncing_time;
+  47:keyboards/Aaron/iris/matrix.c ****     static bool debouncing = false;
+  48:keyboards/Aaron/iris/matrix.c **** #endif
+  49:keyboards/Aaron/iris/matrix.c **** 
+  50:keyboards/Aaron/iris/matrix.c **** #if (MATRIX_COLS <= 8)
+  51:keyboards/Aaron/iris/matrix.c **** #    define print_matrix_header()  print("\nr/c 01234567\n")
+  52:keyboards/Aaron/iris/matrix.c **** #    define print_matrix_row(row)  print_bin_reverse8(matrix_get_row(row))
+  53:keyboards/Aaron/iris/matrix.c **** #    define matrix_bitpop(i)       bitpop(matrix[i])
+  54:keyboards/Aaron/iris/matrix.c **** #    define ROW_SHIFTER ((uint8_t)1)
+  55:keyboards/Aaron/iris/matrix.c **** #else
+  56:keyboards/Aaron/iris/matrix.c **** #    error "Currently only supports 8 COLS"
+  57:keyboards/Aaron/iris/matrix.c **** #endif
+  58:keyboards/Aaron/iris/matrix.c **** static matrix_row_t matrix_debouncing[MATRIX_ROWS];
+  59:keyboards/Aaron/iris/matrix.c **** 
+  60:keyboards/Aaron/iris/matrix.c **** #define ERROR_DISCONNECT_COUNT 5
+  61:keyboards/Aaron/iris/matrix.c **** 
+  62:keyboards/Aaron/iris/matrix.c **** #define SERIAL_LED_ADDR 0x00
+  63:keyboards/Aaron/iris/matrix.c **** 
+  64:keyboards/Aaron/iris/matrix.c **** #define ROWS_PER_HAND (MATRIX_ROWS/2)
+  65:keyboards/Aaron/iris/matrix.c **** 
+  66:keyboards/Aaron/iris/matrix.c **** static uint8_t error_count = 0;
+  67:keyboards/Aaron/iris/matrix.c **** 
+  68:keyboards/Aaron/iris/matrix.c **** static const uint8_t row_pins[MATRIX_ROWS] = MATRIX_ROW_PINS;
+  69:keyboards/Aaron/iris/matrix.c **** static const uint8_t col_pins[MATRIX_COLS] = MATRIX_COL_PINS;
+  70:keyboards/Aaron/iris/matrix.c **** 
+  71:keyboards/Aaron/iris/matrix.c **** /* matrix state(1:on, 0:off) */
+  72:keyboards/Aaron/iris/matrix.c **** static matrix_row_t matrix[MATRIX_ROWS];
+  73:keyboards/Aaron/iris/matrix.c **** static matrix_row_t matrix_debouncing[MATRIX_ROWS];
+  74:keyboards/Aaron/iris/matrix.c **** 
+  75:keyboards/Aaron/iris/matrix.c **** #if (DIODE_DIRECTION == COL2ROW)
+  76:keyboards/Aaron/iris/matrix.c ****     static void init_cols(void);
+  77:keyboards/Aaron/iris/matrix.c ****     static bool read_cols_on_row(matrix_row_t current_matrix[], uint8_t current_row);
+  78:keyboards/Aaron/iris/matrix.c ****     static void unselect_rows(void);
+  79:keyboards/Aaron/iris/matrix.c ****     static void select_row(uint8_t row);
+  80:keyboards/Aaron/iris/matrix.c ****     static void unselect_row(uint8_t row);
+  81:keyboards/Aaron/iris/matrix.c **** #elif (DIODE_DIRECTION == ROW2COL)
+  82:keyboards/Aaron/iris/matrix.c ****     static void init_rows(void);
+  83:keyboards/Aaron/iris/matrix.c ****     static bool read_rows_on_col(matrix_row_t current_matrix[], uint8_t current_col);
+  84:keyboards/Aaron/iris/matrix.c ****     static void unselect_cols(void);
+  85:keyboards/Aaron/iris/matrix.c ****     static void unselect_col(uint8_t col);
+  86:keyboards/Aaron/iris/matrix.c ****     static void select_col(uint8_t col);
+  87:keyboards/Aaron/iris/matrix.c **** #endif
+  88:keyboards/Aaron/iris/matrix.c **** 
+  89:keyboards/Aaron/iris/matrix.c **** 
+  90:keyboards/Aaron/iris/matrix.c **** __attribute__ ((weak))
+  91:keyboards/Aaron/iris/matrix.c **** void matrix_init_kb(void) {
+  92:keyboards/Aaron/iris/matrix.c ****     matrix_init_user();
+  93:keyboards/Aaron/iris/matrix.c **** }
+  94:keyboards/Aaron/iris/matrix.c **** 
+  95:keyboards/Aaron/iris/matrix.c **** __attribute__ ((weak))
+  96:keyboards/Aaron/iris/matrix.c **** void matrix_scan_kb(void) {
+  97:keyboards/Aaron/iris/matrix.c ****     matrix_scan_user();
+  98:keyboards/Aaron/iris/matrix.c **** }
+  99:keyboards/Aaron/iris/matrix.c **** 
+ 100:keyboards/Aaron/iris/matrix.c **** __attribute__ ((weak))
+ 101:keyboards/Aaron/iris/matrix.c **** void matrix_init_user(void) {
+  16               		.loc 1 101 0
+  17               		.cfi_startproc
+  18               	/* prologue: function */
+  19               	/* frame size = 0 */
+  20               	/* stack size = 0 */
+  21               	.L__stack_usage = 0
+  22 0000 0895      		ret
+  23               		.cfi_endproc
+  24               	.LFE9:
+  26               		.section	.text.matrix_init_kb,"ax",@progbits
+  27               		.weak	matrix_init_kb
+  29               	matrix_init_kb:
+  30               	.LFB7:
+  91:keyboards/Aaron/iris/matrix.c **** void matrix_init_kb(void) {
+  31               		.loc 1 91 0
+  32               		.cfi_startproc
+  33               	/* prologue: function */
+  34               	/* frame size = 0 */
+  35               	/* stack size = 0 */
+  36               	.L__stack_usage = 0
+  92:keyboards/Aaron/iris/matrix.c ****     matrix_init_user();
+  37               		.loc 1 92 0
+  38 0000 0C94 0000 		jmp matrix_init_user
+  39               	.LVL0:
+  40               		.cfi_endproc
+  41               	.LFE7:
+  43               		.section	.text.matrix_scan_user,"ax",@progbits
+  44               		.weak	matrix_scan_user
+  46               	matrix_scan_user:
+  47               	.LFB10:
+ 102:keyboards/Aaron/iris/matrix.c **** }
+ 103:keyboards/Aaron/iris/matrix.c **** 
+ 104:keyboards/Aaron/iris/matrix.c **** __attribute__ ((weak))
+ 105:keyboards/Aaron/iris/matrix.c **** void matrix_scan_user(void) {
+  48               		.loc 1 105 0
+  49               		.cfi_startproc
+  50               	/* prologue: function */
+  51               	/* frame size = 0 */
+  52               	/* stack size = 0 */
+  53               	.L__stack_usage = 0
+  54 0000 0895      		ret
+  55               		.cfi_endproc
+  56               	.LFE10:
+  58               		.section	.text.matrix_scan_kb,"ax",@progbits
+  59               		.weak	matrix_scan_kb
+  61               	matrix_scan_kb:
+  62               	.LFB8:
+  96:keyboards/Aaron/iris/matrix.c **** void matrix_scan_kb(void) {
+  63               		.loc 1 96 0
+  64               		.cfi_startproc
+  65               	/* prologue: function */
+  66               	/* frame size = 0 */
+  67               	/* stack size = 0 */
+  68               	.L__stack_usage = 0
+  97:keyboards/Aaron/iris/matrix.c ****     matrix_scan_user();
+  69               		.loc 1 97 0
+  70 0000 0C94 0000 		jmp matrix_scan_user
+  71               	.LVL1:
+  72               		.cfi_endproc
+  73               	.LFE8:
+  75               		.section	.text.matrix_rows,"ax",@progbits
+  76               	.global	matrix_rows
+  78               	matrix_rows:
+  79               	.LFB11:
+ 106:keyboards/Aaron/iris/matrix.c **** }
+ 107:keyboards/Aaron/iris/matrix.c **** 
+ 108:keyboards/Aaron/iris/matrix.c **** inline
+ 109:keyboards/Aaron/iris/matrix.c **** uint8_t matrix_rows(void)
+ 110:keyboards/Aaron/iris/matrix.c **** {
+  80               		.loc 1 110 0
+  81               		.cfi_startproc
+  82               	/* prologue: function */
+  83               	/* frame size = 0 */
+  84               	/* stack size = 0 */
+  85               	.L__stack_usage = 0
+ 111:keyboards/Aaron/iris/matrix.c ****     return MATRIX_ROWS;
+ 112:keyboards/Aaron/iris/matrix.c **** }
+  86               		.loc 1 112 0
+  87 0000 8AE0      		ldi r24,lo8(10)
+  88 0002 0895      		ret
+  89               		.cfi_endproc
+  90               	.LFE11:
+  92               		.section	.text.matrix_cols,"ax",@progbits
+  93               	.global	matrix_cols
+  95               	matrix_cols:
+  96               	.LFB12:
+ 113:keyboards/Aaron/iris/matrix.c **** 
+ 114:keyboards/Aaron/iris/matrix.c **** inline
+ 115:keyboards/Aaron/iris/matrix.c **** uint8_t matrix_cols(void)
+ 116:keyboards/Aaron/iris/matrix.c **** {
+  97               		.loc 1 116 0
+  98               		.cfi_startproc
+  99               	/* prologue: function */
+ 100               	/* frame size = 0 */
+ 101               	/* stack size = 0 */
+ 102               	.L__stack_usage = 0
+ 117:keyboards/Aaron/iris/matrix.c ****     return MATRIX_COLS;
+ 118:keyboards/Aaron/iris/matrix.c **** }
+ 103               		.loc 1 118 0
+ 104 0000 86E0      		ldi r24,lo8(6)
+ 105 0002 0895      		ret
+ 106               		.cfi_endproc
+ 107               	.LFE12:
+ 109               		.section	.text.matrix_init,"ax",@progbits
+ 110               	.global	matrix_init
+ 112               	matrix_init:
+ 113               	.LFB13:
+ 119:keyboards/Aaron/iris/matrix.c **** 
+ 120:keyboards/Aaron/iris/matrix.c **** void matrix_init(void)
+ 121:keyboards/Aaron/iris/matrix.c **** {
+ 114               		.loc 1 121 0
+ 115               		.cfi_startproc
+ 116               	/* prologue: function */
+ 117               	/* frame size = 0 */
+ 118               	/* stack size = 0 */
+ 119               	.L__stack_usage = 0
+ 122:keyboards/Aaron/iris/matrix.c ****     debug_enable = true;
+ 120               		.loc 1 122 0
+ 121 0000 8091 0000 		lds r24,debug_config
+ 123:keyboards/Aaron/iris/matrix.c ****     debug_matrix = true;
+ 124:keyboards/Aaron/iris/matrix.c ****     debug_mouse = true;
+ 122               		.loc 1 124 0
+ 123 0004 8360      		ori r24,lo8(3)
+ 124 0006 8860      		ori r24,lo8(1<<3)
+ 125 0008 8093 0000 		sts debug_config,r24
+ 126               	.LVL2:
+ 127 000c A0E0      		ldi r26,lo8(row_pins)
+ 128 000e B0E0      		ldi r27,hi8(row_pins)
+ 129               	.LBB15:
+ 130               	.LBB16:
+ 131               	.LBB17:
+ 125:keyboards/Aaron/iris/matrix.c ****     // initialize row and col
+ 126:keyboards/Aaron/iris/matrix.c ****     unselect_rows();
+ 127:keyboards/Aaron/iris/matrix.c ****     init_cols();
+ 128:keyboards/Aaron/iris/matrix.c **** 
+ 129:keyboards/Aaron/iris/matrix.c ****     TX_RX_LED_INIT;
+ 130:keyboards/Aaron/iris/matrix.c **** 
+ 131:keyboards/Aaron/iris/matrix.c ****     // initialize matrix state: all keys off
+ 132:keyboards/Aaron/iris/matrix.c ****     for (uint8_t i=0; i < MATRIX_ROWS; i++) {
+ 133:keyboards/Aaron/iris/matrix.c ****         matrix[i] = 0;
+ 134:keyboards/Aaron/iris/matrix.c ****         matrix_debouncing[i] = 0;
+ 135:keyboards/Aaron/iris/matrix.c ****     }
+ 136:keyboards/Aaron/iris/matrix.c **** 
+ 137:keyboards/Aaron/iris/matrix.c ****     matrix_init_quantum();
+ 138:keyboards/Aaron/iris/matrix.c **** 
+ 139:keyboards/Aaron/iris/matrix.c **** }
+ 140:keyboards/Aaron/iris/matrix.c **** 
+ 141:keyboards/Aaron/iris/matrix.c **** uint8_t _matrix_scan(void)
+ 142:keyboards/Aaron/iris/matrix.c **** {
+ 143:keyboards/Aaron/iris/matrix.c ****     int offset = isLeftHand ? 0 : (ROWS_PER_HAND);
+ 144:keyboards/Aaron/iris/matrix.c **** #if (DIODE_DIRECTION == COL2ROW)
+ 145:keyboards/Aaron/iris/matrix.c ****     // Set row, read cols
+ 146:keyboards/Aaron/iris/matrix.c ****     for (uint8_t current_row = 0; current_row < ROWS_PER_HAND; current_row++) {
+ 147:keyboards/Aaron/iris/matrix.c **** #       if (DEBOUNCING_DELAY > 0)
+ 148:keyboards/Aaron/iris/matrix.c ****             bool matrix_changed = read_cols_on_row(matrix_debouncing+offset, current_row);
+ 149:keyboards/Aaron/iris/matrix.c **** 
+ 150:keyboards/Aaron/iris/matrix.c ****             if (matrix_changed) {
+ 151:keyboards/Aaron/iris/matrix.c ****                 debouncing = true;
+ 152:keyboards/Aaron/iris/matrix.c ****                 debouncing_time = timer_read();
+ 153:keyboards/Aaron/iris/matrix.c ****                 PORTD ^= (1 << 2);
+ 154:keyboards/Aaron/iris/matrix.c ****             }
+ 155:keyboards/Aaron/iris/matrix.c **** 
+ 156:keyboards/Aaron/iris/matrix.c **** #       else
+ 157:keyboards/Aaron/iris/matrix.c ****             read_cols_on_row(matrix+offset, current_row);
+ 158:keyboards/Aaron/iris/matrix.c **** #       endif
+ 159:keyboards/Aaron/iris/matrix.c **** 
+ 160:keyboards/Aaron/iris/matrix.c ****     }
+ 161:keyboards/Aaron/iris/matrix.c **** 
+ 162:keyboards/Aaron/iris/matrix.c **** #elif (DIODE_DIRECTION == ROW2COL)
+ 163:keyboards/Aaron/iris/matrix.c ****     // Set col, read rows
+ 164:keyboards/Aaron/iris/matrix.c ****     for (uint8_t current_col = 0; current_col < MATRIX_COLS; current_col++) {
+ 165:keyboards/Aaron/iris/matrix.c **** #       if (DEBOUNCING_DELAY > 0)
+ 166:keyboards/Aaron/iris/matrix.c ****             bool matrix_changed = read_rows_on_col(matrix_debouncing+offset, current_col);
+ 167:keyboards/Aaron/iris/matrix.c ****             if (matrix_changed) {
+ 168:keyboards/Aaron/iris/matrix.c ****                 debouncing = true;
+ 169:keyboards/Aaron/iris/matrix.c ****                 debouncing_time = timer_read();
+ 170:keyboards/Aaron/iris/matrix.c ****             }
+ 171:keyboards/Aaron/iris/matrix.c **** #       else
+ 172:keyboards/Aaron/iris/matrix.c ****              read_rows_on_col(matrix+offset, current_col);
+ 173:keyboards/Aaron/iris/matrix.c **** #       endif
+ 174:keyboards/Aaron/iris/matrix.c **** 
+ 175:keyboards/Aaron/iris/matrix.c ****     }
+ 176:keyboards/Aaron/iris/matrix.c **** #endif
+ 177:keyboards/Aaron/iris/matrix.c **** 
+ 178:keyboards/Aaron/iris/matrix.c **** #   if (DEBOUNCING_DELAY > 0)
+ 179:keyboards/Aaron/iris/matrix.c ****         if (debouncing && (timer_elapsed(debouncing_time) > DEBOUNCING_DELAY)) {
+ 180:keyboards/Aaron/iris/matrix.c ****             for (uint8_t i = 0; i < ROWS_PER_HAND; i++) {
+ 181:keyboards/Aaron/iris/matrix.c ****                 matrix[i+offset] = matrix_debouncing[i+offset];
+ 182:keyboards/Aaron/iris/matrix.c ****             }
+ 183:keyboards/Aaron/iris/matrix.c ****             debouncing = false;
+ 184:keyboards/Aaron/iris/matrix.c ****         }
+ 185:keyboards/Aaron/iris/matrix.c **** #   endif
+ 186:keyboards/Aaron/iris/matrix.c **** 
+ 187:keyboards/Aaron/iris/matrix.c ****     return 1;
+ 188:keyboards/Aaron/iris/matrix.c **** }
+ 189:keyboards/Aaron/iris/matrix.c **** 
+ 190:keyboards/Aaron/iris/matrix.c **** #ifdef USE_I2C
+ 191:keyboards/Aaron/iris/matrix.c **** 
+ 192:keyboards/Aaron/iris/matrix.c **** // Get rows from other half over i2c
+ 193:keyboards/Aaron/iris/matrix.c **** int i2c_transaction(void) {
+ 194:keyboards/Aaron/iris/matrix.c ****     int slaveOffset = (isLeftHand) ? (ROWS_PER_HAND) : 0;
+ 195:keyboards/Aaron/iris/matrix.c **** 
+ 196:keyboards/Aaron/iris/matrix.c ****     int err = i2c_master_start(SLAVE_I2C_ADDRESS + I2C_WRITE);
+ 197:keyboards/Aaron/iris/matrix.c ****     if (err) goto i2c_error;
+ 198:keyboards/Aaron/iris/matrix.c **** 
+ 199:keyboards/Aaron/iris/matrix.c ****     // start of matrix stored at 0x00
+ 200:keyboards/Aaron/iris/matrix.c ****     err = i2c_master_write(0x00);
+ 201:keyboards/Aaron/iris/matrix.c ****     if (err) goto i2c_error;
+ 202:keyboards/Aaron/iris/matrix.c **** 
+ 203:keyboards/Aaron/iris/matrix.c **** #ifdef BACKLIGHT_ENABLE
+ 204:keyboards/Aaron/iris/matrix.c ****     // Write backlight level for slave to read
+ 205:keyboards/Aaron/iris/matrix.c ****     err = i2c_master_write(get_backlight_level());
+ 206:keyboards/Aaron/iris/matrix.c **** #else
+ 207:keyboards/Aaron/iris/matrix.c ****     // Write zero, so our byte index is the same
+ 208:keyboards/Aaron/iris/matrix.c ****     err = i2c_master_write(0x00);
+ 209:keyboards/Aaron/iris/matrix.c **** #endif
+ 210:keyboards/Aaron/iris/matrix.c ****     if (err) goto i2c_error;
+ 211:keyboards/Aaron/iris/matrix.c **** 
+ 212:keyboards/Aaron/iris/matrix.c ****     // Start read
+ 213:keyboards/Aaron/iris/matrix.c ****     err = i2c_master_start(SLAVE_I2C_ADDRESS + I2C_READ);
+ 214:keyboards/Aaron/iris/matrix.c ****     if (err) goto i2c_error;
+ 215:keyboards/Aaron/iris/matrix.c **** 
+ 216:keyboards/Aaron/iris/matrix.c ****     if (!err) {
+ 217:keyboards/Aaron/iris/matrix.c ****         int i;
+ 218:keyboards/Aaron/iris/matrix.c ****         for (i = 0; i < ROWS_PER_HAND-1; ++i) {
+ 219:keyboards/Aaron/iris/matrix.c ****             matrix[slaveOffset+i] = i2c_master_read(I2C_ACK);
+ 220:keyboards/Aaron/iris/matrix.c ****         }
+ 221:keyboards/Aaron/iris/matrix.c ****         matrix[slaveOffset+i] = i2c_master_read(I2C_NACK);
+ 222:keyboards/Aaron/iris/matrix.c ****         i2c_master_stop();
+ 223:keyboards/Aaron/iris/matrix.c ****     } else {
+ 224:keyboards/Aaron/iris/matrix.c **** i2c_error: // the cable is disconnceted, or something else went wrong
+ 225:keyboards/Aaron/iris/matrix.c ****         i2c_reset_state();
+ 226:keyboards/Aaron/iris/matrix.c ****         return err;
+ 227:keyboards/Aaron/iris/matrix.c ****     }
+ 228:keyboards/Aaron/iris/matrix.c **** 
+ 229:keyboards/Aaron/iris/matrix.c ****     return 0;
+ 230:keyboards/Aaron/iris/matrix.c **** }
+ 231:keyboards/Aaron/iris/matrix.c **** 
+ 232:keyboards/Aaron/iris/matrix.c **** #else // USE_SERIAL
+ 233:keyboards/Aaron/iris/matrix.c **** 
+ 234:keyboards/Aaron/iris/matrix.c **** int serial_transaction(void) {
+ 235:keyboards/Aaron/iris/matrix.c ****     int slaveOffset = (isLeftHand) ? (ROWS_PER_HAND) : 0;
+ 236:keyboards/Aaron/iris/matrix.c **** 
+ 237:keyboards/Aaron/iris/matrix.c ****     if (serial_update_buffers()) {
+ 238:keyboards/Aaron/iris/matrix.c ****         return 1;
+ 239:keyboards/Aaron/iris/matrix.c ****     }
+ 240:keyboards/Aaron/iris/matrix.c **** 
+ 241:keyboards/Aaron/iris/matrix.c ****     for (int i = 0; i < ROWS_PER_HAND; ++i) {
+ 242:keyboards/Aaron/iris/matrix.c ****         matrix[slaveOffset+i] = serial_slave_buffer[i];
+ 243:keyboards/Aaron/iris/matrix.c ****     }
+ 244:keyboards/Aaron/iris/matrix.c **** 
+ 245:keyboards/Aaron/iris/matrix.c **** #ifdef BACKLIGHT_ENABLE
+ 246:keyboards/Aaron/iris/matrix.c ****     // Write backlight level for slave to read
+ 247:keyboards/Aaron/iris/matrix.c ****     serial_master_buffer[SERIAL_LED_ADDR] = get_backlight_level();
+ 248:keyboards/Aaron/iris/matrix.c **** #endif
+ 249:keyboards/Aaron/iris/matrix.c ****     return 0;
+ 250:keyboards/Aaron/iris/matrix.c **** }
+ 251:keyboards/Aaron/iris/matrix.c **** #endif
+ 252:keyboards/Aaron/iris/matrix.c **** 
+ 253:keyboards/Aaron/iris/matrix.c **** uint8_t matrix_scan(void)
+ 254:keyboards/Aaron/iris/matrix.c **** {
+ 255:keyboards/Aaron/iris/matrix.c ****     uint8_t ret = _matrix_scan();
+ 256:keyboards/Aaron/iris/matrix.c **** 
+ 257:keyboards/Aaron/iris/matrix.c **** #ifdef USE_I2C
+ 258:keyboards/Aaron/iris/matrix.c ****     if( i2c_transaction() ) {
+ 259:keyboards/Aaron/iris/matrix.c **** #else // USE_SERIAL
+ 260:keyboards/Aaron/iris/matrix.c ****     if( serial_transaction() ) {
+ 261:keyboards/Aaron/iris/matrix.c **** #endif
+ 262:keyboards/Aaron/iris/matrix.c ****         // turn on the indicator led when halves are disconnected
+ 263:keyboards/Aaron/iris/matrix.c ****         TXLED1;
+ 264:keyboards/Aaron/iris/matrix.c **** 
+ 265:keyboards/Aaron/iris/matrix.c ****         error_count++;
+ 266:keyboards/Aaron/iris/matrix.c **** 
+ 267:keyboards/Aaron/iris/matrix.c ****         if (error_count > ERROR_DISCONNECT_COUNT) {
+ 268:keyboards/Aaron/iris/matrix.c ****             // reset other half if disconnected
+ 269:keyboards/Aaron/iris/matrix.c ****             int slaveOffset = (isLeftHand) ? (ROWS_PER_HAND) : 0;
+ 270:keyboards/Aaron/iris/matrix.c ****             for (int i = 0; i < ROWS_PER_HAND; ++i) {
+ 271:keyboards/Aaron/iris/matrix.c ****                 matrix[slaveOffset+i] = 0;
+ 272:keyboards/Aaron/iris/matrix.c ****             }
+ 273:keyboards/Aaron/iris/matrix.c ****         }
+ 274:keyboards/Aaron/iris/matrix.c ****     } else {
+ 275:keyboards/Aaron/iris/matrix.c ****         // turn off the indicator led on no error
+ 276:keyboards/Aaron/iris/matrix.c ****         TXLED0;
+ 277:keyboards/Aaron/iris/matrix.c ****         error_count = 0;
+ 278:keyboards/Aaron/iris/matrix.c ****     }
+ 279:keyboards/Aaron/iris/matrix.c ****     matrix_scan_quantum();
+ 280:keyboards/Aaron/iris/matrix.c ****     return ret;
+ 281:keyboards/Aaron/iris/matrix.c **** }
+ 282:keyboards/Aaron/iris/matrix.c **** 
+ 283:keyboards/Aaron/iris/matrix.c **** void matrix_slave_scan(void) {
+ 284:keyboards/Aaron/iris/matrix.c ****     _matrix_scan();
+ 285:keyboards/Aaron/iris/matrix.c **** 
+ 286:keyboards/Aaron/iris/matrix.c ****     int offset = (isLeftHand) ? 0 : ROWS_PER_HAND;
+ 287:keyboards/Aaron/iris/matrix.c **** 
+ 288:keyboards/Aaron/iris/matrix.c **** #ifdef USE_I2C
+ 289:keyboards/Aaron/iris/matrix.c **** #ifdef BACKLIGHT_ENABLE
+ 290:keyboards/Aaron/iris/matrix.c ****     // Read backlight level sent from master and update level on slave
+ 291:keyboards/Aaron/iris/matrix.c ****     backlight_set(i2c_slave_buffer[0]);
+ 292:keyboards/Aaron/iris/matrix.c **** #endif
+ 293:keyboards/Aaron/iris/matrix.c ****     for (int i = 0; i < ROWS_PER_HAND; ++i) {
+ 294:keyboards/Aaron/iris/matrix.c ****         i2c_slave_buffer[i+1] = matrix[offset+i];
+ 295:keyboards/Aaron/iris/matrix.c ****     }
+ 296:keyboards/Aaron/iris/matrix.c **** #else // USE_SERIAL
+ 297:keyboards/Aaron/iris/matrix.c ****     for (int i = 0; i < ROWS_PER_HAND; ++i) {
+ 298:keyboards/Aaron/iris/matrix.c ****         serial_slave_buffer[i] = matrix[offset+i];
+ 299:keyboards/Aaron/iris/matrix.c ****     }
+ 300:keyboards/Aaron/iris/matrix.c **** 
+ 301:keyboards/Aaron/iris/matrix.c **** #ifdef BACKLIGHT_ENABLE
+ 302:keyboards/Aaron/iris/matrix.c ****     // Read backlight level sent from master and update level on slave
+ 303:keyboards/Aaron/iris/matrix.c ****     backlight_set(serial_master_buffer[SERIAL_LED_ADDR]);
+ 304:keyboards/Aaron/iris/matrix.c **** #endif
+ 305:keyboards/Aaron/iris/matrix.c **** #endif
+ 306:keyboards/Aaron/iris/matrix.c **** }
+ 307:keyboards/Aaron/iris/matrix.c **** 
+ 308:keyboards/Aaron/iris/matrix.c **** bool matrix_is_modified(void)
+ 309:keyboards/Aaron/iris/matrix.c **** {
+ 310:keyboards/Aaron/iris/matrix.c ****     if (debouncing) return false;
+ 311:keyboards/Aaron/iris/matrix.c ****     return true;
+ 312:keyboards/Aaron/iris/matrix.c **** }
+ 313:keyboards/Aaron/iris/matrix.c **** 
+ 314:keyboards/Aaron/iris/matrix.c **** inline
+ 315:keyboards/Aaron/iris/matrix.c **** bool matrix_is_on(uint8_t row, uint8_t col)
+ 316:keyboards/Aaron/iris/matrix.c **** {
+ 317:keyboards/Aaron/iris/matrix.c ****     return (matrix[row] & ((matrix_row_t)1<<col));
+ 318:keyboards/Aaron/iris/matrix.c **** }
+ 319:keyboards/Aaron/iris/matrix.c **** 
+ 320:keyboards/Aaron/iris/matrix.c **** inline
+ 321:keyboards/Aaron/iris/matrix.c **** matrix_row_t matrix_get_row(uint8_t row)
+ 322:keyboards/Aaron/iris/matrix.c **** {
+ 323:keyboards/Aaron/iris/matrix.c ****     return matrix[row];
+ 324:keyboards/Aaron/iris/matrix.c **** }
+ 325:keyboards/Aaron/iris/matrix.c **** 
+ 326:keyboards/Aaron/iris/matrix.c **** void matrix_print(void)
+ 327:keyboards/Aaron/iris/matrix.c **** {
+ 328:keyboards/Aaron/iris/matrix.c ****     print("\nr/c 0123456789ABCDEF\n");
+ 329:keyboards/Aaron/iris/matrix.c ****     for (uint8_t row = 0; row < MATRIX_ROWS; row++) {
+ 330:keyboards/Aaron/iris/matrix.c ****         phex(row); print(": ");
+ 331:keyboards/Aaron/iris/matrix.c ****         pbin_reverse16(matrix_get_row(row));
+ 332:keyboards/Aaron/iris/matrix.c ****         print("\n");
+ 333:keyboards/Aaron/iris/matrix.c ****     }
+ 334:keyboards/Aaron/iris/matrix.c **** }
+ 335:keyboards/Aaron/iris/matrix.c **** 
+ 336:keyboards/Aaron/iris/matrix.c **** uint8_t matrix_key_count(void)
+ 337:keyboards/Aaron/iris/matrix.c **** {
+ 338:keyboards/Aaron/iris/matrix.c ****     uint8_t count = 0;
+ 339:keyboards/Aaron/iris/matrix.c ****     for (uint8_t i = 0; i < MATRIX_ROWS; i++) {
+ 340:keyboards/Aaron/iris/matrix.c ****         count += bitpop16(matrix[i]);
+ 341:keyboards/Aaron/iris/matrix.c ****     }
+ 342:keyboards/Aaron/iris/matrix.c ****     return count;
+ 343:keyboards/Aaron/iris/matrix.c **** }
+ 344:keyboards/Aaron/iris/matrix.c **** 
+ 345:keyboards/Aaron/iris/matrix.c **** #if (DIODE_DIRECTION == COL2ROW)
+ 346:keyboards/Aaron/iris/matrix.c **** 
+ 347:keyboards/Aaron/iris/matrix.c **** static void init_cols(void)
+ 348:keyboards/Aaron/iris/matrix.c **** {
+ 349:keyboards/Aaron/iris/matrix.c ****     for(uint8_t x = 0; x < MATRIX_COLS; x++) {
+ 350:keyboards/Aaron/iris/matrix.c ****         uint8_t pin = col_pins[x];
+ 351:keyboards/Aaron/iris/matrix.c ****         _SFR_IO8((pin >> 4) + 1) &= ~_BV(pin & 0xF); // IN
+ 352:keyboards/Aaron/iris/matrix.c ****         _SFR_IO8((pin >> 4) + 2) |=  _BV(pin & 0xF); // HI
+ 353:keyboards/Aaron/iris/matrix.c ****     }
+ 354:keyboards/Aaron/iris/matrix.c **** }
+ 355:keyboards/Aaron/iris/matrix.c **** 
+ 356:keyboards/Aaron/iris/matrix.c **** static bool read_cols_on_row(matrix_row_t current_matrix[], uint8_t current_row)
+ 357:keyboards/Aaron/iris/matrix.c **** {
+ 358:keyboards/Aaron/iris/matrix.c ****     // Store last value of row prior to reading
+ 359:keyboards/Aaron/iris/matrix.c ****     matrix_row_t last_row_value = current_matrix[current_row];
+ 360:keyboards/Aaron/iris/matrix.c **** 
+ 361:keyboards/Aaron/iris/matrix.c ****     // Clear data in matrix row
+ 362:keyboards/Aaron/iris/matrix.c ****     current_matrix[current_row] = 0;
+ 363:keyboards/Aaron/iris/matrix.c **** 
+ 364:keyboards/Aaron/iris/matrix.c ****     // Select row and wait for row selecton to stabilize
+ 365:keyboards/Aaron/iris/matrix.c ****     select_row(current_row);
+ 366:keyboards/Aaron/iris/matrix.c ****     wait_us(30);
+ 367:keyboards/Aaron/iris/matrix.c **** 
+ 368:keyboards/Aaron/iris/matrix.c ****     // For each col...
+ 369:keyboards/Aaron/iris/matrix.c ****     for(uint8_t col_index = 0; col_index < MATRIX_COLS; col_index++) {
+ 370:keyboards/Aaron/iris/matrix.c **** 
+ 371:keyboards/Aaron/iris/matrix.c ****         // Select the col pin to read (active low)
+ 372:keyboards/Aaron/iris/matrix.c ****         uint8_t pin = col_pins[col_index];
+ 373:keyboards/Aaron/iris/matrix.c ****         uint8_t pin_state = (_SFR_IO8(pin >> 4) & _BV(pin & 0xF));
+ 374:keyboards/Aaron/iris/matrix.c **** 
+ 375:keyboards/Aaron/iris/matrix.c ****         // Populate the matrix row with the state of the col pin
+ 376:keyboards/Aaron/iris/matrix.c ****         current_matrix[current_row] |=  pin_state ? 0 : (ROW_SHIFTER << col_index);
+ 377:keyboards/Aaron/iris/matrix.c ****     }
+ 378:keyboards/Aaron/iris/matrix.c **** 
+ 379:keyboards/Aaron/iris/matrix.c ****     // Unselect row
+ 380:keyboards/Aaron/iris/matrix.c ****     unselect_row(current_row);
+ 381:keyboards/Aaron/iris/matrix.c **** 
+ 382:keyboards/Aaron/iris/matrix.c ****     return (last_row_value != current_matrix[current_row]);
+ 383:keyboards/Aaron/iris/matrix.c **** }
+ 384:keyboards/Aaron/iris/matrix.c **** 
+ 385:keyboards/Aaron/iris/matrix.c **** static void select_row(uint8_t row)
+ 386:keyboards/Aaron/iris/matrix.c **** {
+ 387:keyboards/Aaron/iris/matrix.c ****     uint8_t pin = row_pins[row];
+ 388:keyboards/Aaron/iris/matrix.c ****     _SFR_IO8((pin >> 4) + 1) |=  _BV(pin & 0xF); // OUT
+ 389:keyboards/Aaron/iris/matrix.c ****     _SFR_IO8((pin >> 4) + 2) &= ~_BV(pin & 0xF); // LOW
+ 390:keyboards/Aaron/iris/matrix.c **** }
+ 391:keyboards/Aaron/iris/matrix.c **** 
+ 392:keyboards/Aaron/iris/matrix.c **** static void unselect_row(uint8_t row)
+ 393:keyboards/Aaron/iris/matrix.c **** {
+ 394:keyboards/Aaron/iris/matrix.c ****     uint8_t pin = row_pins[row];
+ 395:keyboards/Aaron/iris/matrix.c ****     _SFR_IO8((pin >> 4) + 1) &= ~_BV(pin & 0xF); // IN
+ 396:keyboards/Aaron/iris/matrix.c ****     _SFR_IO8((pin >> 4) + 2) |=  _BV(pin & 0xF); // HI
+ 397:keyboards/Aaron/iris/matrix.c **** }
+ 398:keyboards/Aaron/iris/matrix.c **** 
+ 399:keyboards/Aaron/iris/matrix.c **** static void unselect_rows(void)
+ 400:keyboards/Aaron/iris/matrix.c **** {
+ 401:keyboards/Aaron/iris/matrix.c ****     for(uint8_t x = 0; x < ROWS_PER_HAND; x++) {
+ 402:keyboards/Aaron/iris/matrix.c ****         uint8_t pin = row_pins[x];
+ 403:keyboards/Aaron/iris/matrix.c ****         _SFR_IO8((pin >> 4) + 1) &= ~_BV(pin & 0xF); // IN
+ 132               		.loc 1 403 0
+ 133 0010 21E0      		ldi r18,lo8(1)
+ 134 0012 30E0      		ldi r19,0
+ 135               	.LVL3:
+ 136               	.L9:
+ 402:keyboards/Aaron/iris/matrix.c ****         uint8_t pin = row_pins[x];
+ 137               		.loc 1 402 0
+ 138 0014 8D91      		ld r24,X+
+ 139               	.LVL4:
+ 140               		.loc 1 403 0
+ 141 0016 E82F      		mov r30,r24
+ 142 0018 E295      		swap r30
+ 143 001a EF70      		andi r30,lo8(15)
+ 144 001c F0E0      		ldi r31,0
+ 145 001e 41A1      		ldd r20,Z+33
+ 146 0020 8F70      		andi r24,lo8(15)
+ 147               	.LVL5:
+ 148 0022 B901      		movw r22,r18
+ 149 0024 00C0      		rjmp 2f
+ 150               		1:
+ 151 0026 660F      		lsl r22
+ 152 0028 771F      		rol r23
+ 153               		2:
+ 154 002a 8A95      		dec r24
+ 155 002c 02F4      		brpl 1b
+ 156 002e CB01      		movw r24,r22
+ 157 0030 962F      		mov r25,r22
+ 158 0032 9095      		com r25
+ 159 0034 4923      		and r20,r25
+ 160 0036 41A3      		std Z+33,r20
+ 161               	.LVL6:
+ 404:keyboards/Aaron/iris/matrix.c ****         _SFR_IO8((pin >> 4) + 2) |=  _BV(pin & 0xF); // HI
+ 162               		.loc 1 404 0
+ 163 0038 92A1      		ldd r25,Z+34
+ 164 003a 982B      		or r25,r24
+ 165 003c 92A3      		std Z+34,r25
+ 166               	.LVL7:
+ 167               	.LBE17:
+ 401:keyboards/Aaron/iris/matrix.c ****     for(uint8_t x = 0; x < ROWS_PER_HAND; x++) {
+ 168               		.loc 1 401 0
+ 169 003e 70E0      		ldi r23,hi8(row_pins+5)
+ 170 0040 A030      		cpi r26,lo8(row_pins+5)
+ 171 0042 B707      		cpc r27,r23
+ 172 0044 01F4      		brne .L9
+ 173 0046 A0E0      		ldi r26,lo8(col_pins)
+ 174 0048 B0E0      		ldi r27,hi8(col_pins)
+ 175               	.LVL8:
+ 176               	.LBE16:
+ 177               	.LBE15:
+ 178               	.LBB18:
+ 179               	.LBB19:
+ 180               	.LBB20:
+ 351:keyboards/Aaron/iris/matrix.c ****         _SFR_IO8((pin >> 4) + 1) &= ~_BV(pin & 0xF); // IN
+ 181               		.loc 1 351 0
+ 182 004a 21E0      		ldi r18,lo8(1)
+ 183 004c 30E0      		ldi r19,0
+ 184               	.L11:
+ 185               	.LVL9:
+ 350:keyboards/Aaron/iris/matrix.c ****         uint8_t pin = col_pins[x];
+ 186               		.loc 1 350 0
+ 187 004e 8D91      		ld r24,X+
+ 188               	.LVL10:
+ 351:keyboards/Aaron/iris/matrix.c ****         _SFR_IO8((pin >> 4) + 1) &= ~_BV(pin & 0xF); // IN
+ 189               		.loc 1 351 0
+ 190 0050 E82F      		mov r30,r24
+ 191 0052 E295      		swap r30
+ 192 0054 EF70      		andi r30,lo8(15)
+ 193 0056 F0E0      		ldi r31,0
+ 194 0058 41A1      		ldd r20,Z+33
+ 195 005a 8F70      		andi r24,lo8(15)
+ 196               	.LVL11:
+ 197 005c B901      		movw r22,r18
+ 198 005e 00C0      		rjmp 2f
+ 199               		1:
+ 200 0060 660F      		lsl r22
+ 201 0062 771F      		rol r23
+ 202               		2:
+ 203 0064 8A95      		dec r24
+ 204 0066 02F4      		brpl 1b
+ 205 0068 CB01      		movw r24,r22
+ 206 006a 962F      		mov r25,r22
+ 207 006c 9095      		com r25
+ 208 006e 4923      		and r20,r25
+ 209 0070 41A3      		std Z+33,r20
+ 210               	.LVL12:
+ 352:keyboards/Aaron/iris/matrix.c ****         _SFR_IO8((pin >> 4) + 2) |=  _BV(pin & 0xF); // HI
+ 211               		.loc 1 352 0
+ 212 0072 92A1      		ldd r25,Z+34
+ 213 0074 982B      		or r25,r24
+ 214 0076 92A3      		std Z+34,r25
+ 215               	.LVL13:
+ 216               	.LBE20:
+ 349:keyboards/Aaron/iris/matrix.c ****     for(uint8_t x = 0; x < MATRIX_COLS; x++) {
+ 217               		.loc 1 349 0
+ 218 0078 70E0      		ldi r23,hi8(col_pins+6)
+ 219 007a A030      		cpi r26,lo8(col_pins+6)
+ 220 007c B707      		cpc r27,r23
+ 221 007e 01F4      		brne .L11
+ 222               	.LBE19:
+ 223               	.LBE18:
+ 129:keyboards/Aaron/iris/matrix.c ****     TX_RX_LED_INIT;
+ 224               		.loc 1 129 0
+ 225 0080 559A      		sbi 0xa,5
+ 226 0082 209A      		sbi 0x4,0
+ 227               	.LVL14:
+ 228 0084 E0E0      		ldi r30,lo8(matrix)
+ 229 0086 F0E0      		ldi r31,hi8(matrix)
+ 230 0088 A0E0      		ldi r26,lo8(matrix_debouncing)
+ 231 008a B0E0      		ldi r27,hi8(matrix_debouncing)
+ 232               	.LVL15:
+ 233               	.L13:
+ 234               	.LBB21:
+ 133:keyboards/Aaron/iris/matrix.c ****         matrix[i] = 0;
+ 235               		.loc 1 133 0 discriminator 2
+ 236 008c 1192      		st Z+,__zero_reg__
+ 237               	.LVL16:
+ 134:keyboards/Aaron/iris/matrix.c ****         matrix_debouncing[i] = 0;
+ 238               		.loc 1 134 0 discriminator 2
+ 239 008e 1D92      		st X+,__zero_reg__
+ 240               	.LVL17:
+ 132:keyboards/Aaron/iris/matrix.c ****     for (uint8_t i=0; i < MATRIX_ROWS; i++) {
+ 241               		.loc 1 132 0 discriminator 2
+ 242 0090 80E0      		ldi r24,hi8(matrix+10)
+ 243 0092 E030      		cpi r30,lo8(matrix+10)
+ 244 0094 F807      		cpc r31,r24
+ 245 0096 01F4      		brne .L13
+ 246               	.LBE21:
+ 137:keyboards/Aaron/iris/matrix.c ****     matrix_init_quantum();
+ 247               		.loc 1 137 0
+ 248 0098 0C94 0000 		jmp matrix_init_quantum
+ 249               	.LVL18:
+ 250               		.cfi_endproc
+ 251               	.LFE13:
+ 253               		.section	.text._matrix_scan,"ax",@progbits
+ 254               	.global	_matrix_scan
+ 256               	_matrix_scan:
+ 257               	.LFB14:
+ 142:keyboards/Aaron/iris/matrix.c **** {
+ 258               		.loc 1 142 0
+ 259               		.cfi_startproc
+ 260 0000 2F92      		push r2
+ 261               	.LCFI0:
+ 262               		.cfi_def_cfa_offset 3
+ 263               		.cfi_offset 2, -2
+ 264 0002 3F92      		push r3
+ 265               	.LCFI1:
+ 266               		.cfi_def_cfa_offset 4
+ 267               		.cfi_offset 3, -3
+ 268 0004 4F92      		push r4
+ 269               	.LCFI2:
+ 270               		.cfi_def_cfa_offset 5
+ 271               		.cfi_offset 4, -4
+ 272 0006 5F92      		push r5
+ 273               	.LCFI3:
+ 274               		.cfi_def_cfa_offset 6
+ 275               		.cfi_offset 5, -5
+ 276 0008 6F92      		push r6
+ 277               	.LCFI4:
+ 278               		.cfi_def_cfa_offset 7
+ 279               		.cfi_offset 6, -6
+ 280 000a 7F92      		push r7
+ 281               	.LCFI5:
+ 282               		.cfi_def_cfa_offset 8
+ 283               		.cfi_offset 7, -7
+ 284 000c 8F92      		push r8
+ 285               	.LCFI6:
+ 286               		.cfi_def_cfa_offset 9
+ 287               		.cfi_offset 8, -8
+ 288 000e 9F92      		push r9
+ 289               	.LCFI7:
+ 290               		.cfi_def_cfa_offset 10
+ 291               		.cfi_offset 9, -9
+ 292 0010 AF92      		push r10
+ 293               	.LCFI8:
+ 294               		.cfi_def_cfa_offset 11
+ 295               		.cfi_offset 10, -10
+ 296 0012 BF92      		push r11
+ 297               	.LCFI9:
+ 298               		.cfi_def_cfa_offset 12
+ 299               		.cfi_offset 11, -11
+ 300 0014 CF92      		push r12
+ 301               	.LCFI10:
+ 302               		.cfi_def_cfa_offset 13
+ 303               		.cfi_offset 12, -12
+ 304 0016 DF92      		push r13
+ 305               	.LCFI11:
+ 306               		.cfi_def_cfa_offset 14
+ 307               		.cfi_offset 13, -13
+ 308 0018 EF92      		push r14
+ 309               	.LCFI12:
+ 310               		.cfi_def_cfa_offset 15
+ 311               		.cfi_offset 14, -14
+ 312 001a FF92      		push r15
+ 313               	.LCFI13:
+ 314               		.cfi_def_cfa_offset 16
+ 315               		.cfi_offset 15, -15
+ 316 001c 0F93      		push r16
+ 317               	.LCFI14:
+ 318               		.cfi_def_cfa_offset 17
+ 319               		.cfi_offset 16, -16
+ 320 001e 1F93      		push r17
+ 321               	.LCFI15:
+ 322               		.cfi_def_cfa_offset 18
+ 323               		.cfi_offset 17, -17
+ 324 0020 CF93      		push r28
+ 325               	.LCFI16:
+ 326               		.cfi_def_cfa_offset 19
+ 327               		.cfi_offset 28, -18
+ 328 0022 DF93      		push r29
+ 329               	.LCFI17:
+ 330               		.cfi_def_cfa_offset 20
+ 331               		.cfi_offset 29, -19
+ 332               	/* prologue: function */
+ 333               	/* frame size = 0 */
+ 334               	/* stack size = 18 */
+ 335               	.L__stack_usage = 18
+ 143:keyboards/Aaron/iris/matrix.c ****     int offset = isLeftHand ? 0 : (ROWS_PER_HAND);
+ 336               		.loc 1 143 0
+ 337 0024 8091 0000 		lds r24,isLeftHand
+ 338 0028 8823      		tst r24
+ 339 002a 01F0      		breq .L28
+ 340 002c 00E0      		ldi r16,0
+ 341 002e 10E0      		ldi r17,0
+ 342 0030 00C0      		rjmp .L16
+ 343               	.L28:
+ 344 0032 05E0      		ldi r16,lo8(5)
+ 345 0034 10E0      		ldi r17,0
+ 346               	.L16:
+ 347               	.LVL19:
+ 348 0036 90E0      		ldi r25,lo8(row_pins)
+ 349 0038 E92E      		mov r14,r25
+ 350 003a 90E0      		ldi r25,hi8(row_pins)
+ 351 003c F92E      		mov r15,r25
+ 352 003e A801      		movw r20,r16
+ 353 0040 4050      		subi r20,lo8(-(matrix_debouncing))
+ 354 0042 5040      		sbci r21,hi8(-(matrix_debouncing))
+ 355 0044 6A01      		movw r12,r20
+ 356 0046 EA01      		movw r28,r20
+ 357               	.LBB35:
+ 358               	.LBB36:
+ 359               	.LBB37:
+ 360               	.LBB38:
+ 361               	.LBB39:
+ 362               	.LBB40:
+ 388:keyboards/Aaron/iris/matrix.c ****     _SFR_IO8((pin >> 4) + 1) |=  _BV(pin & 0xF); // OUT
+ 363               		.loc 1 388 0 discriminator 3
+ 364 0048 AA24      		clr r10
+ 365 004a A394      		inc r10
+ 366 004c B12C      		mov r11,__zero_reg__
+ 367               	.LBE40:
+ 368               	.LBE39:
+ 369               	.LBE38:
+ 370               	.LBE37:
+ 151:keyboards/Aaron/iris/matrix.c ****                 debouncing = true;
+ 371               		.loc 1 151 0 discriminator 3
+ 372 004e 6624      		clr r6
+ 373 0050 6394      		inc r6
+ 153:keyboards/Aaron/iris/matrix.c ****                 PORTD ^= (1 << 2);
+ 374               		.loc 1 153 0 discriminator 3
+ 375 0052 34E0      		ldi r19,lo8(4)
+ 376 0054 732E      		mov r7,r19
+ 377               	.LVL20:
+ 378               	.L22:
+ 379 0056 4E01      		movw r8,r28
+ 380               	.LBB50:
+ 381               	.LBB49:
+ 359:keyboards/Aaron/iris/matrix.c ****     matrix_row_t last_row_value = current_matrix[current_row];
+ 382               		.loc 1 359 0
+ 383 0058 5880      		ld r5,Y
+ 384               	.LVL21:
+ 362:keyboards/Aaron/iris/matrix.c ****     current_matrix[current_row] = 0;
+ 385               		.loc 1 362 0
+ 386 005a 1882      		st Y,__zero_reg__
+ 387               	.LVL22:
+ 388               	.LBB42:
+ 389               	.LBB41:
+ 387:keyboards/Aaron/iris/matrix.c ****     uint8_t pin = row_pins[row];
+ 390               		.loc 1 387 0
+ 391 005c D701      		movw r26,r14
+ 392 005e 2D91      		ld r18,X+
+ 393 0060 7D01      		movw r14,r26
+ 394               	.LVL23:
+ 388:keyboards/Aaron/iris/matrix.c ****     _SFR_IO8((pin >> 4) + 1) |=  _BV(pin & 0xF); // OUT
+ 395               		.loc 1 388 0
+ 396 0062 E22F      		mov r30,r18
+ 397 0064 E295      		swap r30
+ 398 0066 EF70      		andi r30,lo8(15)
+ 399 0068 F0E0      		ldi r31,0
+ 400 006a 81A1      		ldd r24,Z+33
+ 401 006c 2F70      		andi r18,lo8(15)
+ 402               	.LVL24:
+ 403 006e A501      		movw r20,r10
+ 404 0070 00C0      		rjmp 2f
+ 405               		1:
+ 406 0072 440F      		lsl r20
+ 407 0074 551F      		rol r21
+ 408               		2:
+ 409 0076 2A95      		dec r18
+ 410 0078 02F4      		brpl 1b
+ 411 007a 9A01      		movw r18,r20
+ 412 007c 842B      		or r24,r20
+ 413 007e 81A3      		std Z+33,r24
+ 414               	.LVL25:
+ 389:keyboards/Aaron/iris/matrix.c ****     _SFR_IO8((pin >> 4) + 2) &= ~_BV(pin & 0xF); // LOW
+ 415               		.loc 1 389 0
+ 416 0080 82A1      		ldd r24,Z+34
+ 417 0082 442E      		mov r4,r20
+ 418 0084 4094      		com r4
+ 419 0086 8421      		and r24,r4
+ 420 0088 82A3      		std Z+34,r24
+ 421               	.LVL26:
+ 422               	.LBE41:
+ 423               	.LBE42:
+ 424               	.LBB43:
+ 425               	.LBB44:
+ 426               		.file 2 "/usr/lib/avr/include/util/delay.h"
+   1:/usr/lib/avr/include/util/delay.h **** /* Copyright (c) 2002, Marek Michalkiewicz
+   2:/usr/lib/avr/include/util/delay.h ****    Copyright (c) 2004,2005,2007 Joerg Wunsch
+   3:/usr/lib/avr/include/util/delay.h ****    Copyright (c) 2007  Florin-Viorel Petrov
+   4:/usr/lib/avr/include/util/delay.h ****    All rights reserved.
+   5:/usr/lib/avr/include/util/delay.h **** 
+   6:/usr/lib/avr/include/util/delay.h ****    Redistribution and use in source and binary forms, with or without
+   7:/usr/lib/avr/include/util/delay.h ****    modification, are permitted provided that the following conditions are met:
+   8:/usr/lib/avr/include/util/delay.h **** 
+   9:/usr/lib/avr/include/util/delay.h ****    * Redistributions of source code must retain the above copyright
+  10:/usr/lib/avr/include/util/delay.h ****      notice, this list of conditions and the following disclaimer.
+  11:/usr/lib/avr/include/util/delay.h **** 
+  12:/usr/lib/avr/include/util/delay.h ****    * Redistributions in binary form must reproduce the above copyright
+  13:/usr/lib/avr/include/util/delay.h ****      notice, this list of conditions and the following disclaimer in
+  14:/usr/lib/avr/include/util/delay.h ****      the documentation and/or other materials provided with the
+  15:/usr/lib/avr/include/util/delay.h ****      distribution.
+  16:/usr/lib/avr/include/util/delay.h **** 
+  17:/usr/lib/avr/include/util/delay.h ****    * Neither the name of the copyright holders nor the names of
+  18:/usr/lib/avr/include/util/delay.h ****      contributors may be used to endorse or promote products derived
+  19:/usr/lib/avr/include/util/delay.h ****      from this software without specific prior written permission.
+  20:/usr/lib/avr/include/util/delay.h **** 
+  21:/usr/lib/avr/include/util/delay.h ****   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  22:/usr/lib/avr/include/util/delay.h ****   AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  23:/usr/lib/avr/include/util/delay.h ****   IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+  24:/usr/lib/avr/include/util/delay.h ****   ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+  25:/usr/lib/avr/include/util/delay.h ****   LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+  26:/usr/lib/avr/include/util/delay.h ****   CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+  27:/usr/lib/avr/include/util/delay.h ****   SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+  28:/usr/lib/avr/include/util/delay.h ****   INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+  29:/usr/lib/avr/include/util/delay.h ****   CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+  30:/usr/lib/avr/include/util/delay.h ****   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  31:/usr/lib/avr/include/util/delay.h ****   POSSIBILITY OF SUCH DAMAGE. */
+  32:/usr/lib/avr/include/util/delay.h **** 
+  33:/usr/lib/avr/include/util/delay.h **** /* $Id: delay.h.in 2251 2011-09-14 08:20:33Z joerg_wunsch $ */
+  34:/usr/lib/avr/include/util/delay.h **** 
+  35:/usr/lib/avr/include/util/delay.h **** #ifndef _UTIL_DELAY_H_
+  36:/usr/lib/avr/include/util/delay.h **** #define _UTIL_DELAY_H_ 1
+  37:/usr/lib/avr/include/util/delay.h **** 
+  38:/usr/lib/avr/include/util/delay.h **** #ifndef __HAS_DELAY_CYCLES
+  39:/usr/lib/avr/include/util/delay.h **** #define __HAS_DELAY_CYCLES 1
+  40:/usr/lib/avr/include/util/delay.h **** #endif
+  41:/usr/lib/avr/include/util/delay.h **** 
+  42:/usr/lib/avr/include/util/delay.h **** #include <inttypes.h>
+  43:/usr/lib/avr/include/util/delay.h **** #include <util/delay_basic.h>
+  44:/usr/lib/avr/include/util/delay.h **** #include <math.h>
+  45:/usr/lib/avr/include/util/delay.h **** 
+  46:/usr/lib/avr/include/util/delay.h **** /** \file */
+  47:/usr/lib/avr/include/util/delay.h **** /** \defgroup util_delay <util/delay.h>: Convenience functions for busy-wait delay loops
+  48:/usr/lib/avr/include/util/delay.h ****     \code
+  49:/usr/lib/avr/include/util/delay.h ****     #define F_CPU 1000000UL  // 1 MHz
+  50:/usr/lib/avr/include/util/delay.h ****     //#define F_CPU 14.7456E6
+  51:/usr/lib/avr/include/util/delay.h ****     #include <util/delay.h>
+  52:/usr/lib/avr/include/util/delay.h ****     \endcode
+  53:/usr/lib/avr/include/util/delay.h **** 
+  54:/usr/lib/avr/include/util/delay.h ****     \note As an alternative method, it is possible to pass the
+  55:/usr/lib/avr/include/util/delay.h ****     F_CPU macro down to the compiler from the Makefile.
+  56:/usr/lib/avr/include/util/delay.h ****     Obviously, in that case, no \c \#define statement should be
+  57:/usr/lib/avr/include/util/delay.h ****     used.
+  58:/usr/lib/avr/include/util/delay.h **** 
+  59:/usr/lib/avr/include/util/delay.h ****     The functions in this header file are wrappers around the basic
+  60:/usr/lib/avr/include/util/delay.h ****     busy-wait functions from <util/delay_basic.h>.  They are meant as
+  61:/usr/lib/avr/include/util/delay.h ****     convenience functions where actual time values can be specified
+  62:/usr/lib/avr/include/util/delay.h ****     rather than a number of cycles to wait for.  The idea behind is
+  63:/usr/lib/avr/include/util/delay.h ****     that compile-time constant expressions will be eliminated by
+  64:/usr/lib/avr/include/util/delay.h ****     compiler optimization so floating-point expressions can be used
+  65:/usr/lib/avr/include/util/delay.h ****     to calculate the number of delay cycles needed based on the CPU
+  66:/usr/lib/avr/include/util/delay.h ****     frequency passed by the macro F_CPU.
+  67:/usr/lib/avr/include/util/delay.h **** 
+  68:/usr/lib/avr/include/util/delay.h ****     \note In order for these functions to work as intended, compiler
+  69:/usr/lib/avr/include/util/delay.h ****     optimizations <em>must</em> be enabled, and the delay time
+  70:/usr/lib/avr/include/util/delay.h ****     <em>must</em> be an expression that is a known constant at
+  71:/usr/lib/avr/include/util/delay.h ****     compile-time.  If these requirements are not met, the resulting
+  72:/usr/lib/avr/include/util/delay.h ****     delay will be much longer (and basically unpredictable), and
+  73:/usr/lib/avr/include/util/delay.h ****     applications that otherwise do not use floating-point calculations
+  74:/usr/lib/avr/include/util/delay.h ****     will experience severe code bloat by the floating-point library
+  75:/usr/lib/avr/include/util/delay.h ****     routines linked into the application.
+  76:/usr/lib/avr/include/util/delay.h **** 
+  77:/usr/lib/avr/include/util/delay.h ****     The functions available allow the specification of microsecond, and
+  78:/usr/lib/avr/include/util/delay.h ****     millisecond delays directly, using the application-supplied macro
+  79:/usr/lib/avr/include/util/delay.h ****     F_CPU as the CPU clock frequency (in Hertz).
+  80:/usr/lib/avr/include/util/delay.h **** 
+  81:/usr/lib/avr/include/util/delay.h **** */
+  82:/usr/lib/avr/include/util/delay.h **** 
+  83:/usr/lib/avr/include/util/delay.h **** #if !defined(__DOXYGEN__)
+  84:/usr/lib/avr/include/util/delay.h **** static inline void _delay_us(double __us) __attribute__((always_inline));
+  85:/usr/lib/avr/include/util/delay.h **** static inline void _delay_ms(double __ms) __attribute__((always_inline));
+  86:/usr/lib/avr/include/util/delay.h **** #endif
+  87:/usr/lib/avr/include/util/delay.h **** 
+  88:/usr/lib/avr/include/util/delay.h **** #ifndef F_CPU
+  89:/usr/lib/avr/include/util/delay.h **** /* prevent compiler error by supplying a default */
+  90:/usr/lib/avr/include/util/delay.h **** # warning "F_CPU not defined for <util/delay.h>"
+  91:/usr/lib/avr/include/util/delay.h **** # define F_CPU 1000000UL
+  92:/usr/lib/avr/include/util/delay.h **** #endif
+  93:/usr/lib/avr/include/util/delay.h **** 
+  94:/usr/lib/avr/include/util/delay.h **** #ifndef __OPTIMIZE__
+  95:/usr/lib/avr/include/util/delay.h **** # warning "Compiler optimizations disabled; functions from <util/delay.h> won't work as designed"
+  96:/usr/lib/avr/include/util/delay.h **** #endif
+  97:/usr/lib/avr/include/util/delay.h **** 
+  98:/usr/lib/avr/include/util/delay.h **** #if __HAS_DELAY_CYCLES && defined(__OPTIMIZE__) && \
+  99:/usr/lib/avr/include/util/delay.h ****   !defined(__DELAY_BACKWARD_COMPATIBLE__) &&	   \
+ 100:/usr/lib/avr/include/util/delay.h ****   __STDC_HOSTED__
+ 101:/usr/lib/avr/include/util/delay.h **** #  include <math.h>
+ 102:/usr/lib/avr/include/util/delay.h **** #endif
+ 103:/usr/lib/avr/include/util/delay.h **** 
+ 104:/usr/lib/avr/include/util/delay.h **** /**
+ 105:/usr/lib/avr/include/util/delay.h ****    \ingroup util_delay
+ 106:/usr/lib/avr/include/util/delay.h **** 
+ 107:/usr/lib/avr/include/util/delay.h ****    Perform a delay of \c __ms milliseconds, using _delay_loop_2().
+ 108:/usr/lib/avr/include/util/delay.h **** 
+ 109:/usr/lib/avr/include/util/delay.h ****    The macro F_CPU is supposed to be defined to a
+ 110:/usr/lib/avr/include/util/delay.h ****    constant defining the CPU clock frequency (in Hertz).
+ 111:/usr/lib/avr/include/util/delay.h **** 
+ 112:/usr/lib/avr/include/util/delay.h ****    The maximal possible delay is 262.14 ms / F_CPU in MHz.
+ 113:/usr/lib/avr/include/util/delay.h **** 
+ 114:/usr/lib/avr/include/util/delay.h ****    When the user request delay which exceed the maximum possible one,
+ 115:/usr/lib/avr/include/util/delay.h ****    _delay_ms() provides a decreased resolution functionality. In this
+ 116:/usr/lib/avr/include/util/delay.h ****    mode _delay_ms() will work with a resolution of 1/10 ms, providing
+ 117:/usr/lib/avr/include/util/delay.h ****    delays up to 6.5535 seconds (independent from CPU frequency).  The
+ 118:/usr/lib/avr/include/util/delay.h ****    user will not be informed about decreased resolution.
+ 119:/usr/lib/avr/include/util/delay.h **** 
+ 120:/usr/lib/avr/include/util/delay.h ****    If the avr-gcc toolchain has __builtin_avr_delay_cycles(unsigned long)
+ 121:/usr/lib/avr/include/util/delay.h ****    support, maximal possible delay is 4294967.295 ms/ F_CPU in MHz. For
+ 122:/usr/lib/avr/include/util/delay.h ****    values greater than the maximal possible delay, overflows results in
+ 123:/usr/lib/avr/include/util/delay.h ****    no delay i.e., 0ms.
+ 124:/usr/lib/avr/include/util/delay.h **** 
+ 125:/usr/lib/avr/include/util/delay.h ****    Conversion of __us into clock cycles may not always result in integer.
+ 126:/usr/lib/avr/include/util/delay.h ****    By default, the clock cycles rounded up to next integer. This ensures that
+ 127:/usr/lib/avr/include/util/delay.h ****    the user gets atleast __us microseconds of delay.
+ 128:/usr/lib/avr/include/util/delay.h **** 
+ 129:/usr/lib/avr/include/util/delay.h ****    Alternatively, user can define __DELAY_ROUND_DOWN__ and __DELAY_ROUND_CLOSEST__
+ 130:/usr/lib/avr/include/util/delay.h ****    to round down and round to closest integer.
+ 131:/usr/lib/avr/include/util/delay.h **** 
+ 132:/usr/lib/avr/include/util/delay.h ****    Note: The new implementation of _delay_ms(double __ms) with 
+ 133:/usr/lib/avr/include/util/delay.h ****     __builtin_avr_delay_cycles(unsigned long) support is not backward compatible. 
+ 134:/usr/lib/avr/include/util/delay.h ****    User can define __DELAY_BACKWARD_COMPATIBLE__ to get a backward compatible delay.
+ 135:/usr/lib/avr/include/util/delay.h ****    Also, the backward compatible
+ 136:/usr/lib/avr/include/util/delay.h ****    algorithm will be chosen if the code is compiled in a <em>freestanding
+ 137:/usr/lib/avr/include/util/delay.h ****    environment</em> (GCC option \c -ffreestanding), as the math functions
+ 138:/usr/lib/avr/include/util/delay.h ****    required for rounding are not available to the compiler then.
+ 139:/usr/lib/avr/include/util/delay.h **** 
+ 140:/usr/lib/avr/include/util/delay.h ****  */
+ 141:/usr/lib/avr/include/util/delay.h **** void
+ 142:/usr/lib/avr/include/util/delay.h **** _delay_ms(double __ms)
+ 143:/usr/lib/avr/include/util/delay.h **** {
+ 144:/usr/lib/avr/include/util/delay.h **** 	uint16_t __ticks;
+ 145:/usr/lib/avr/include/util/delay.h **** 	double __tmp ; 
+ 146:/usr/lib/avr/include/util/delay.h **** #if __HAS_DELAY_CYCLES && defined(__OPTIMIZE__) && \
+ 147:/usr/lib/avr/include/util/delay.h ****   !defined(__DELAY_BACKWARD_COMPATIBLE__) &&	   \
+ 148:/usr/lib/avr/include/util/delay.h ****   __STDC_HOSTED__
+ 149:/usr/lib/avr/include/util/delay.h **** 	uint32_t __ticks_dc;
+ 150:/usr/lib/avr/include/util/delay.h **** 	extern void __builtin_avr_delay_cycles(unsigned long);
+ 151:/usr/lib/avr/include/util/delay.h **** 	__tmp = ((F_CPU) / 1e3) * __ms;
+ 152:/usr/lib/avr/include/util/delay.h **** 
+ 153:/usr/lib/avr/include/util/delay.h **** 	#if defined(__DELAY_ROUND_DOWN__)
+ 154:/usr/lib/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)fabs(__tmp);
+ 155:/usr/lib/avr/include/util/delay.h **** 
+ 156:/usr/lib/avr/include/util/delay.h **** 	#elif defined(__DELAY_ROUND_CLOSEST__)
+ 157:/usr/lib/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)(fabs(__tmp)+0.5);
+ 158:/usr/lib/avr/include/util/delay.h **** 
+ 159:/usr/lib/avr/include/util/delay.h **** 	#else
+ 160:/usr/lib/avr/include/util/delay.h **** 		//round up by default
+ 161:/usr/lib/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+ 162:/usr/lib/avr/include/util/delay.h **** 	#endif
+ 163:/usr/lib/avr/include/util/delay.h **** 
+ 164:/usr/lib/avr/include/util/delay.h **** 	__builtin_avr_delay_cycles(__ticks_dc);
+ 165:/usr/lib/avr/include/util/delay.h **** 
+ 166:/usr/lib/avr/include/util/delay.h **** #else
+ 167:/usr/lib/avr/include/util/delay.h **** 	__tmp = ((F_CPU) / 4e3) * __ms;
+ 168:/usr/lib/avr/include/util/delay.h **** 	if (__tmp < 1.0)
+ 169:/usr/lib/avr/include/util/delay.h **** 		__ticks = 1;
+ 170:/usr/lib/avr/include/util/delay.h **** 	else if (__tmp > 65535)
+ 171:/usr/lib/avr/include/util/delay.h **** 	{
+ 172:/usr/lib/avr/include/util/delay.h **** 		//	__ticks = requested delay in 1/10 ms
+ 173:/usr/lib/avr/include/util/delay.h **** 		__ticks = (uint16_t) (__ms * 10.0);
+ 174:/usr/lib/avr/include/util/delay.h **** 		while(__ticks)
+ 175:/usr/lib/avr/include/util/delay.h **** 		{
+ 176:/usr/lib/avr/include/util/delay.h **** 			// wait 1/10 ms
+ 177:/usr/lib/avr/include/util/delay.h **** 			_delay_loop_2(((F_CPU) / 4e3) / 10);
+ 178:/usr/lib/avr/include/util/delay.h **** 			__ticks --;
+ 179:/usr/lib/avr/include/util/delay.h **** 		}
+ 180:/usr/lib/avr/include/util/delay.h **** 		return;
+ 181:/usr/lib/avr/include/util/delay.h **** 	}
+ 182:/usr/lib/avr/include/util/delay.h **** 	else
+ 183:/usr/lib/avr/include/util/delay.h **** 		__ticks = (uint16_t)__tmp;
+ 184:/usr/lib/avr/include/util/delay.h **** 	_delay_loop_2(__ticks);
+ 185:/usr/lib/avr/include/util/delay.h **** #endif
+ 186:/usr/lib/avr/include/util/delay.h **** }
+ 187:/usr/lib/avr/include/util/delay.h **** 
+ 188:/usr/lib/avr/include/util/delay.h **** /**
+ 189:/usr/lib/avr/include/util/delay.h ****    \ingroup util_delay
+ 190:/usr/lib/avr/include/util/delay.h **** 
+ 191:/usr/lib/avr/include/util/delay.h ****    Perform a delay of \c __us microseconds, using _delay_loop_1().
+ 192:/usr/lib/avr/include/util/delay.h **** 
+ 193:/usr/lib/avr/include/util/delay.h ****    The macro F_CPU is supposed to be defined to a
+ 194:/usr/lib/avr/include/util/delay.h ****    constant defining the CPU clock frequency (in Hertz).
+ 195:/usr/lib/avr/include/util/delay.h **** 
+ 196:/usr/lib/avr/include/util/delay.h ****    The maximal possible delay is 768 us / F_CPU in MHz.
+ 197:/usr/lib/avr/include/util/delay.h **** 
+ 198:/usr/lib/avr/include/util/delay.h ****    If the user requests a delay greater than the maximal possible one,
+ 199:/usr/lib/avr/include/util/delay.h ****    _delay_us() will automatically call _delay_ms() instead.  The user
+ 200:/usr/lib/avr/include/util/delay.h ****    will not be informed about this case.
+ 201:/usr/lib/avr/include/util/delay.h **** 
+ 202:/usr/lib/avr/include/util/delay.h ****    If the avr-gcc toolchain has __builtin_avr_delay_cycles(unsigned long)
+ 203:/usr/lib/avr/include/util/delay.h ****    support, maximal possible delay is 4294967.295 us/ F_CPU in MHz. For
+ 204:/usr/lib/avr/include/util/delay.h ****    values greater than the maximal possible delay, overflow results in
+ 205:/usr/lib/avr/include/util/delay.h ****    no delay i.e., 0us.
+ 206:/usr/lib/avr/include/util/delay.h ****   
+ 207:/usr/lib/avr/include/util/delay.h ****    Conversion of __us into clock cycles may not always result in integer.
+ 208:/usr/lib/avr/include/util/delay.h ****    By default, the clock cycles rounded up to next integer. This ensures that
+ 209:/usr/lib/avr/include/util/delay.h ****    the user gets atleast __us microseconds of delay.
+ 210:/usr/lib/avr/include/util/delay.h **** 
+ 211:/usr/lib/avr/include/util/delay.h ****    Alternatively, user can define __DELAY_ROUND_DOWN__ and __DELAY_ROUND_CLOSEST__
+ 212:/usr/lib/avr/include/util/delay.h ****    to round down and round to closest integer.
+ 213:/usr/lib/avr/include/util/delay.h ****  
+ 214:/usr/lib/avr/include/util/delay.h ****    Note: The new implementation of _delay_us(double __us) with 
+ 215:/usr/lib/avr/include/util/delay.h ****     __builtin_avr_delay_cycles(unsigned long) support is not backward compatible.
+ 216:/usr/lib/avr/include/util/delay.h ****    User can define __DELAY_BACKWARD_COMPATIBLE__ to get a backward compatible delay.
+ 217:/usr/lib/avr/include/util/delay.h ****    Also, the backward compatible
+ 218:/usr/lib/avr/include/util/delay.h ****    algorithm will be chosen if the code is compiled in a <em>freestanding
+ 219:/usr/lib/avr/include/util/delay.h ****    environment</em> (GCC option \c -ffreestanding), as the math functions
+ 220:/usr/lib/avr/include/util/delay.h ****    required for rounding are not available to the compiler then.
+ 221:/usr/lib/avr/include/util/delay.h **** 
+ 222:/usr/lib/avr/include/util/delay.h ****  */
+ 223:/usr/lib/avr/include/util/delay.h **** void
+ 224:/usr/lib/avr/include/util/delay.h **** _delay_us(double __us)
+ 225:/usr/lib/avr/include/util/delay.h **** {
+ 226:/usr/lib/avr/include/util/delay.h **** 	uint8_t __ticks;
+ 227:/usr/lib/avr/include/util/delay.h **** 	double __tmp ; 
+ 228:/usr/lib/avr/include/util/delay.h **** #if __HAS_DELAY_CYCLES && defined(__OPTIMIZE__) && \
+ 229:/usr/lib/avr/include/util/delay.h ****   !defined(__DELAY_BACKWARD_COMPATIBLE__) &&	   \
+ 230:/usr/lib/avr/include/util/delay.h ****   __STDC_HOSTED__
+ 231:/usr/lib/avr/include/util/delay.h **** 	uint32_t __ticks_dc;
+ 232:/usr/lib/avr/include/util/delay.h **** 	extern void __builtin_avr_delay_cycles(unsigned long);
+ 233:/usr/lib/avr/include/util/delay.h **** 	__tmp = ((F_CPU) / 1e6) * __us;
+ 234:/usr/lib/avr/include/util/delay.h **** 
+ 235:/usr/lib/avr/include/util/delay.h **** 	#if defined(__DELAY_ROUND_DOWN__)
+ 236:/usr/lib/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)fabs(__tmp);
+ 237:/usr/lib/avr/include/util/delay.h **** 
+ 238:/usr/lib/avr/include/util/delay.h **** 	#elif defined(__DELAY_ROUND_CLOSEST__)
+ 239:/usr/lib/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)(fabs(__tmp)+0.5);
+ 240:/usr/lib/avr/include/util/delay.h **** 
+ 241:/usr/lib/avr/include/util/delay.h **** 	#else
+ 242:/usr/lib/avr/include/util/delay.h **** 		//round up by default
+ 243:/usr/lib/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+ 244:/usr/lib/avr/include/util/delay.h **** 	#endif
+ 245:/usr/lib/avr/include/util/delay.h **** 
+ 246:/usr/lib/avr/include/util/delay.h **** 	__builtin_avr_delay_cycles(__ticks_dc);
+ 427               		.loc 2 246 0
+ 428 008a 50EA      		ldi r21,lo8(-96)
+ 429 008c 5A95      		1: dec r21
+ 430 008e 01F4      		brne 1b
+ 431               	.LVL27:
+ 432 0090 80E0      		ldi r24,lo8(col_pins)
+ 433 0092 282E      		mov r2,r24
+ 434 0094 80E0      		ldi r24,hi8(col_pins)
+ 435 0096 382E      		mov r3,r24
+ 436 0098 80E0      		ldi r24,0
+ 437 009a 90E0      		ldi r25,0
+ 438               	.LVL28:
+ 439               	.L19:
+ 440               	.LBE44:
+ 441               	.LBE43:
+ 442               	.LBB45:
+ 443               	.LBB46:
+ 372:keyboards/Aaron/iris/matrix.c ****         uint8_t pin = col_pins[col_index];
+ 444               		.loc 1 372 0
+ 445 009c D101      		movw r26,r2
+ 446 009e 5D91      		ld r21,X+
+ 447 00a0 1D01      		movw r2,r26
+ 448               	.LVL29:
+ 373:keyboards/Aaron/iris/matrix.c ****         uint8_t pin_state = (_SFR_IO8(pin >> 4) & _BV(pin & 0xF));
+ 449               		.loc 1 373 0
+ 450 00a2 652F      		mov r22,r21
+ 451 00a4 6295      		swap r22
+ 452 00a6 6F70      		andi r22,lo8(15)
+ 453 00a8 70E0      		ldi r23,0
+ 454 00aa DB01      		movw r26,r22
+ 455 00ac 9096      		adiw r26,32
+ 456 00ae 6C91      		ld r22,X
+ 457               	.LVL30:
+ 376:keyboards/Aaron/iris/matrix.c ****         current_matrix[current_row] |=  pin_state ? 0 : (ROW_SHIFTER << col_index);
+ 458               		.loc 1 376 0
+ 459 00b0 7881      		ld r23,Y
+ 373:keyboards/Aaron/iris/matrix.c ****         uint8_t pin_state = (_SFR_IO8(pin >> 4) & _BV(pin & 0xF));
+ 460               		.loc 1 373 0
+ 461 00b2 5F70      		andi r21,lo8(15)
+ 462               	.LVL31:
+ 463 00b4 D501      		movw r26,r10
+ 464 00b6 00C0      		rjmp 2f
+ 465               		1:
+ 466 00b8 AA0F      		lsl r26
+ 467 00ba BB1F      		rol r27
+ 468               		2:
+ 469 00bc 5A95      		dec r21
+ 470 00be 02F4      		brpl 1b
+ 471 00c0 6A23      		and r22,r26
+ 472               	.LVL32:
+ 376:keyboards/Aaron/iris/matrix.c ****         current_matrix[current_row] |=  pin_state ? 0 : (ROW_SHIFTER << col_index);
+ 473               		.loc 1 376 0
+ 474 00c2 01F4      		brne .L29
+ 475 00c4 4A2D      		mov r20,r10
+ 476 00c6 082E      		mov r0,r24
+ 477 00c8 00C0      		rjmp 2f
+ 478               		1:
+ 479 00ca 440F      		lsl r20
+ 480               		2:
+ 481 00cc 0A94      		dec r0
+ 482 00ce 02F4      		brpl 1b
+ 483 00d0 00C0      		rjmp .L17
+ 484               	.L29:
+ 485 00d2 40E0      		ldi r20,0
+ 486               	.L17:
+ 487 00d4 472B      		or r20,r23
+ 488 00d6 4883      		st Y,r20
+ 489               	.LVL33:
+ 490 00d8 0196      		adiw r24,1
+ 491               	.LVL34:
+ 492               	.LBE46:
+ 369:keyboards/Aaron/iris/matrix.c ****     for(uint8_t col_index = 0; col_index < MATRIX_COLS; col_index++) {
+ 493               		.loc 1 369 0
+ 494 00da 8630      		cpi r24,6
+ 495 00dc 9105      		cpc r25,__zero_reg__
+ 496 00de 01F4      		brne .L19
+ 497               	.LVL35:
+ 498               	.LBE45:
+ 499               	.LBB47:
+ 500               	.LBB48:
+ 395:keyboards/Aaron/iris/matrix.c ****     _SFR_IO8((pin >> 4) + 1) &= ~_BV(pin & 0xF); // IN
+ 501               		.loc 1 395 0
+ 502 00e0 81A1      		ldd r24,Z+33
+ 503               	.LVL36:
+ 504 00e2 8421      		and r24,r4
+ 505 00e4 81A3      		std Z+33,r24
+ 506               	.LVL37:
+ 396:keyboards/Aaron/iris/matrix.c ****     _SFR_IO8((pin >> 4) + 2) |=  _BV(pin & 0xF); // HI
+ 507               		.loc 1 396 0
+ 508 00e6 82A1      		ldd r24,Z+34
+ 509 00e8 822B      		or r24,r18
+ 510 00ea 82A3      		std Z+34,r24
+ 511 00ec 2196      		adiw r28,1
+ 512               	.LBE48:
+ 513               	.LBE47:
+ 514               	.LBE49:
+ 515               	.LBE50:
+ 150:keyboards/Aaron/iris/matrix.c ****             if (matrix_changed) {
+ 516               		.loc 1 150 0
+ 517 00ee F401      		movw r30,r8
+ 518 00f0 8081      		ld r24,Z
+ 519 00f2 5816      		cp r5,r24
+ 520 00f4 01F0      		breq .L20
+ 151:keyboards/Aaron/iris/matrix.c ****                 debouncing = true;
+ 521               		.loc 1 151 0
+ 522 00f6 6092 0000 		sts debouncing,r6
+ 152:keyboards/Aaron/iris/matrix.c ****                 debouncing_time = timer_read();
+ 523               		.loc 1 152 0
+ 524 00fa 0E94 0000 		call timer_read
+ 525               	.LVL38:
+ 526 00fe 9093 0000 		sts debouncing_time+1,r25
+ 527 0102 8093 0000 		sts debouncing_time,r24
+ 153:keyboards/Aaron/iris/matrix.c ****                 PORTD ^= (1 << 2);
+ 528               		.loc 1 153 0
+ 529 0106 8BB1      		in r24,0xb
+ 530 0108 8725      		eor r24,r7
+ 531 010a 8BB9      		out 0xb,r24
+ 532               	.L20:
+ 533               	.LBE36:
+ 146:keyboards/Aaron/iris/matrix.c ****     for (uint8_t current_row = 0; current_row < ROWS_PER_HAND; current_row++) {
+ 534               		.loc 1 146 0
+ 535 010c F0E0      		ldi r31,lo8(row_pins+5)
+ 536 010e EF16      		cp r14,r31
+ 537 0110 F0E0      		ldi r31,hi8(row_pins+5)
+ 538 0112 FF06      		cpc r15,r31
+ 539 0114 01F0      		breq .+2
+ 540 0116 00C0      		rjmp .L22
+ 541               	.LBE35:
+ 179:keyboards/Aaron/iris/matrix.c ****         if (debouncing && (timer_elapsed(debouncing_time) > DEBOUNCING_DELAY)) {
+ 542               		.loc 1 179 0
+ 543 0118 8091 0000 		lds r24,debouncing
+ 544 011c 8823      		tst r24
+ 545 011e 01F0      		breq .L24
+ 179:keyboards/Aaron/iris/matrix.c ****         if (debouncing && (timer_elapsed(debouncing_time) > DEBOUNCING_DELAY)) {
+ 546               		.loc 1 179 0 is_stmt 0 discriminator 1
+ 547 0120 8091 0000 		lds r24,debouncing_time
+ 548 0124 9091 0000 		lds r25,debouncing_time+1
+ 549 0128 0E94 0000 		call timer_elapsed
+ 550               	.LVL39:
+ 551 012c 0697      		sbiw r24,6
+ 552 012e 00F0      		brlo .L24
+ 179:keyboards/Aaron/iris/matrix.c ****         if (debouncing && (timer_elapsed(debouncing_time) > DEBOUNCING_DELAY)) {
+ 553               		.loc 1 179 0
+ 554 0130 80E0      		ldi r24,0
+ 555 0132 90E0      		ldi r25,0
+ 556 0134 0050      		subi r16,lo8(-(matrix))
+ 557 0136 1040      		sbci r17,hi8(-(matrix))
+ 558               	.L27:
+ 559               	.LVL40:
+ 560 0138 F801      		movw r30,r16
+ 561 013a E80F      		add r30,r24
+ 562 013c F91F      		adc r31,r25
+ 563 013e D601      		movw r26,r12
+ 564 0140 A80F      		add r26,r24
+ 565 0142 B91F      		adc r27,r25
+ 566               	.LBB51:
+ 181:keyboards/Aaron/iris/matrix.c ****                 matrix[i+offset] = matrix_debouncing[i+offset];
+ 567               		.loc 1 181 0 is_stmt 1 discriminator 2
+ 568 0144 2C91      		ld r18,X
+ 569 0146 2083      		st Z,r18
+ 570               	.LVL41:
+ 571 0148 0196      		adiw r24,1
+ 572               	.LVL42:
+ 180:keyboards/Aaron/iris/matrix.c ****             for (uint8_t i = 0; i < ROWS_PER_HAND; i++) {
+ 573               		.loc 1 180 0 discriminator 2
+ 574 014a 8530      		cpi r24,5
+ 575 014c 9105      		cpc r25,__zero_reg__
+ 576 014e 01F4      		brne .L27
+ 577               	.LBE51:
+ 183:keyboards/Aaron/iris/matrix.c ****             debouncing = false;
+ 578               		.loc 1 183 0
+ 579 0150 1092 0000 		sts debouncing,__zero_reg__
+ 580               	.LVL43:
+ 581               	.L24:
+ 188:keyboards/Aaron/iris/matrix.c **** }
+ 582               		.loc 1 188 0
+ 583 0154 81E0      		ldi r24,lo8(1)
+ 584               	/* epilogue start */
+ 585 0156 DF91      		pop r29
+ 586 0158 CF91      		pop r28
+ 587 015a 1F91      		pop r17
+ 588 015c 0F91      		pop r16
+ 589 015e FF90      		pop r15
+ 590 0160 EF90      		pop r14
+ 591 0162 DF90      		pop r13
+ 592 0164 CF90      		pop r12
+ 593               	.LVL44:
+ 594 0166 BF90      		pop r11
+ 595 0168 AF90      		pop r10
+ 596 016a 9F90      		pop r9
+ 597 016c 8F90      		pop r8
+ 598 016e 7F90      		pop r7
+ 599 0170 6F90      		pop r6
+ 600 0172 5F90      		pop r5
+ 601               	.LVL45:
+ 602 0174 4F90      		pop r4
+ 603 0176 3F90      		pop r3
+ 604 0178 2F90      		pop r2
+ 605 017a 0895      		ret
+ 606               		.cfi_endproc
+ 607               	.LFE14:
+ 609               		.section	.text.serial_transaction,"ax",@progbits
+ 610               	.global	serial_transaction
+ 612               	serial_transaction:
+ 613               	.LFB15:
+ 234:keyboards/Aaron/iris/matrix.c **** int serial_transaction(void) {
+ 614               		.loc 1 234 0
+ 615               		.cfi_startproc
+ 616 0000 0F93      		push r16
+ 617               	.LCFI18:
+ 618               		.cfi_def_cfa_offset 3
+ 619               		.cfi_offset 16, -2
+ 620 0002 1F93      		push r17
+ 621               	.LCFI19:
+ 622               		.cfi_def_cfa_offset 4
+ 623               		.cfi_offset 17, -3
+ 624 0004 CF93      		push r28
+ 625               	.LCFI20:
+ 626               		.cfi_def_cfa_offset 5
+ 627               		.cfi_offset 28, -4
+ 628 0006 DF93      		push r29
+ 629               	.LCFI21:
+ 630               		.cfi_def_cfa_offset 6
+ 631               		.cfi_offset 29, -5
+ 632               	/* prologue: function */
+ 633               	/* frame size = 0 */
+ 634               	/* stack size = 4 */
+ 635               	.L__stack_usage = 4
+ 235:keyboards/Aaron/iris/matrix.c ****     int slaveOffset = (isLeftHand) ? (ROWS_PER_HAND) : 0;
+ 636               		.loc 1 235 0
+ 637 0008 8091 0000 		lds r24,isLeftHand
+ 638 000c 8823      		tst r24
+ 639 000e 01F0      		breq .L35
+ 640 0010 05E0      		ldi r16,lo8(5)
+ 641 0012 10E0      		ldi r17,0
+ 642 0014 00C0      		rjmp .L31
+ 643               	.L35:
+ 644 0016 00E0      		ldi r16,0
+ 645 0018 10E0      		ldi r17,0
+ 646               	.L31:
+ 647               	.LVL46:
+ 237:keyboards/Aaron/iris/matrix.c ****     if (serial_update_buffers()) {
+ 648               		.loc 1 237 0 discriminator 3
+ 649 001a 0E94 0000 		call serial_update_buffers
+ 650               	.LVL47:
+ 651 001e EC01      		movw r28,r24
+ 652 0020 0097      		sbiw r24,0
+ 653 0022 01F4      		brne .L36
+ 237:keyboards/Aaron/iris/matrix.c ****     if (serial_update_buffers()) {
+ 654               		.loc 1 237 0 is_stmt 0
+ 655 0024 20E0      		ldi r18,0
+ 656 0026 30E0      		ldi r19,0
+ 657 0028 0050      		subi r16,lo8(-(matrix))
+ 658 002a 1040      		sbci r17,hi8(-(matrix))
+ 659               	.LVL48:
+ 660               	.L34:
+ 661               	.LBB52:
+ 242:keyboards/Aaron/iris/matrix.c ****         matrix[slaveOffset+i] = serial_slave_buffer[i];
+ 662               		.loc 1 242 0 is_stmt 1 discriminator 2
+ 663 002c F901      		movw r30,r18
+ 664 002e E050      		subi r30,lo8(-(serial_slave_buffer))
+ 665 0030 F040      		sbci r31,hi8(-(serial_slave_buffer))
+ 666 0032 8081      		ld r24,Z
+ 667 0034 F801      		movw r30,r16
+ 668 0036 E20F      		add r30,r18
+ 669 0038 F31F      		adc r31,r19
+ 670 003a 8083      		st Z,r24
+ 241:keyboards/Aaron/iris/matrix.c ****     for (int i = 0; i < ROWS_PER_HAND; ++i) {
+ 671               		.loc 1 241 0 discriminator 2
+ 672 003c 2F5F      		subi r18,-1
+ 673 003e 3F4F      		sbci r19,-1
+ 674               	.LVL49:
+ 675 0040 2530      		cpi r18,5
+ 676 0042 3105      		cpc r19,__zero_reg__
+ 677 0044 01F4      		brne .L34
+ 678               	.LBE52:
+ 247:keyboards/Aaron/iris/matrix.c ****     serial_master_buffer[SERIAL_LED_ADDR] = get_backlight_level();
+ 679               		.loc 1 247 0
+ 680 0046 0E94 0000 		call get_backlight_level
+ 681               	.LVL50:
+ 682 004a 8093 0000 		sts serial_master_buffer,r24
+ 249:keyboards/Aaron/iris/matrix.c ****     return 0;
+ 683               		.loc 1 249 0
+ 684 004e 00C0      		rjmp .L32
+ 685               	.LVL51:
+ 686               	.L36:
+ 238:keyboards/Aaron/iris/matrix.c ****         return 1;
+ 687               		.loc 1 238 0
+ 688 0050 C1E0      		ldi r28,lo8(1)
+ 689 0052 D0E0      		ldi r29,0
+ 690               	.LVL52:
+ 691               	.L32:
+ 250:keyboards/Aaron/iris/matrix.c **** }
+ 692               		.loc 1 250 0
+ 693 0054 CE01      		movw r24,r28
+ 694               	/* epilogue start */
+ 695 0056 DF91      		pop r29
+ 696 0058 CF91      		pop r28
+ 697 005a 1F91      		pop r17
+ 698 005c 0F91      		pop r16
+ 699 005e 0895      		ret
+ 700               		.cfi_endproc
+ 701               	.LFE15:
+ 703               		.section	.text.matrix_scan,"ax",@progbits
+ 704               	.global	matrix_scan
+ 706               	matrix_scan:
+ 707               	.LFB16:
+ 254:keyboards/Aaron/iris/matrix.c **** {
+ 708               		.loc 1 254 0
+ 709               		.cfi_startproc
+ 710 0000 CF93      		push r28
+ 711               	.LCFI22:
+ 712               		.cfi_def_cfa_offset 3
+ 713               		.cfi_offset 28, -2
+ 714               	/* prologue: function */
+ 715               	/* frame size = 0 */
+ 716               	/* stack size = 1 */
+ 717               	.L__stack_usage = 1
+ 255:keyboards/Aaron/iris/matrix.c ****     uint8_t ret = _matrix_scan();
+ 718               		.loc 1 255 0
+ 719 0002 0E94 0000 		call _matrix_scan
+ 720               	.LVL53:
+ 721 0006 C82F      		mov r28,r24
+ 722               	.LVL54:
+ 260:keyboards/Aaron/iris/matrix.c ****     if( serial_transaction() ) {
+ 723               		.loc 1 260 0
+ 724 0008 0E94 0000 		call serial_transaction
+ 725               	.LVL55:
+ 726 000c 892B      		or r24,r25
+ 727 000e 01F0      		breq .L38
+ 263:keyboards/Aaron/iris/matrix.c ****         TXLED1;
+ 728               		.loc 1 263 0
+ 729 0010 5D98      		cbi 0xb,5
+ 265:keyboards/Aaron/iris/matrix.c ****         error_count++;
+ 730               		.loc 1 265 0
+ 731 0012 9091 0000 		lds r25,error_count
+ 732 0016 9F5F      		subi r25,lo8(-(1))
+ 733 0018 9093 0000 		sts error_count,r25
+ 267:keyboards/Aaron/iris/matrix.c ****         if (error_count > ERROR_DISCONNECT_COUNT) {
+ 734               		.loc 1 267 0
+ 735 001c 9630      		cpi r25,lo8(6)
+ 736 001e 00F0      		brlo .L40
+ 737               	.LBB53:
+ 269:keyboards/Aaron/iris/matrix.c ****             int slaveOffset = (isLeftHand) ? (ROWS_PER_HAND) : 0;
+ 738               		.loc 1 269 0
+ 739 0020 8091 0000 		lds r24,isLeftHand
+ 740 0024 8823      		tst r24
+ 741 0026 01F0      		breq .L44
+ 742 0028 45E0      		ldi r20,lo8(5)
+ 743 002a 50E0      		ldi r21,0
+ 744 002c 00C0      		rjmp .L41
+ 745               	.L44:
+ 746 002e 40E0      		ldi r20,0
+ 747 0030 50E0      		ldi r21,0
+ 748               	.L41:
+ 749               	.LVL56:
+ 750               	.LBB54:
+ 270:keyboards/Aaron/iris/matrix.c ****             for (int i = 0; i < ROWS_PER_HAND; ++i) {
+ 751               		.loc 1 270 0 discriminator 3
+ 752 0032 20E0      		ldi r18,0
+ 753 0034 30E0      		ldi r19,0
+ 754 0036 4050      		subi r20,lo8(-(matrix))
+ 755 0038 5040      		sbci r21,hi8(-(matrix))
+ 756               	.LVL57:
+ 757               	.L43:
+ 758 003a FA01      		movw r30,r20
+ 759 003c E20F      		add r30,r18
+ 760 003e F31F      		adc r31,r19
+ 271:keyboards/Aaron/iris/matrix.c ****                 matrix[slaveOffset+i] = 0;
+ 761               		.loc 1 271 0 discriminator 2
+ 762 0040 1082      		st Z,__zero_reg__
+ 270:keyboards/Aaron/iris/matrix.c ****             for (int i = 0; i < ROWS_PER_HAND; ++i) {
+ 763               		.loc 1 270 0 discriminator 2
+ 764 0042 2F5F      		subi r18,-1
+ 765 0044 3F4F      		sbci r19,-1
+ 766               	.LVL58:
+ 767 0046 2530      		cpi r18,5
+ 768 0048 3105      		cpc r19,__zero_reg__
+ 769 004a 01F4      		brne .L43
+ 770 004c 00C0      		rjmp .L40
+ 771               	.LVL59:
+ 772               	.L38:
+ 773               	.LBE54:
+ 774               	.LBE53:
+ 276:keyboards/Aaron/iris/matrix.c ****         TXLED0;
+ 775               		.loc 1 276 0
+ 776 004e 5D9A      		sbi 0xb,5
+ 277:keyboards/Aaron/iris/matrix.c ****         error_count = 0;
+ 777               		.loc 1 277 0
+ 778 0050 1092 0000 		sts error_count,__zero_reg__
+ 779               	.L40:
+ 279:keyboards/Aaron/iris/matrix.c ****     matrix_scan_quantum();
+ 780               		.loc 1 279 0
+ 781 0054 0E94 0000 		call matrix_scan_quantum
+ 782               	.LVL60:
+ 281:keyboards/Aaron/iris/matrix.c **** }
+ 783               		.loc 1 281 0
+ 784 0058 8C2F      		mov r24,r28
+ 785               	/* epilogue start */
+ 786 005a CF91      		pop r28
+ 787               	.LVL61:
+ 788 005c 0895      		ret
+ 789               		.cfi_endproc
+ 790               	.LFE16:
+ 792               		.section	.text.matrix_slave_scan,"ax",@progbits
+ 793               	.global	matrix_slave_scan
+ 795               	matrix_slave_scan:
+ 796               	.LFB17:
+ 283:keyboards/Aaron/iris/matrix.c **** void matrix_slave_scan(void) {
+ 797               		.loc 1 283 0
+ 798               		.cfi_startproc
+ 799               	/* prologue: function */
+ 800               	/* frame size = 0 */
+ 801               	/* stack size = 0 */
+ 802               	.L__stack_usage = 0
+ 284:keyboards/Aaron/iris/matrix.c ****     _matrix_scan();
+ 803               		.loc 1 284 0
+ 804 0000 0E94 0000 		call _matrix_scan
+ 805               	.LVL62:
+ 286:keyboards/Aaron/iris/matrix.c ****     int offset = (isLeftHand) ? 0 : ROWS_PER_HAND;
+ 806               		.loc 1 286 0
+ 807 0004 8091 0000 		lds r24,isLeftHand
+ 808 0008 8823      		tst r24
+ 809 000a 01F0      		breq .L52
+ 810 000c 20E0      		ldi r18,0
+ 811 000e 30E0      		ldi r19,0
+ 812 0010 00C0      		rjmp .L49
+ 813               	.L52:
+ 814 0012 25E0      		ldi r18,lo8(5)
+ 815 0014 30E0      		ldi r19,0
+ 816               	.L49:
+ 817               	.LVL63:
+ 818               	.LBB55:
+ 297:keyboards/Aaron/iris/matrix.c ****     for (int i = 0; i < ROWS_PER_HAND; ++i) {
+ 819               		.loc 1 297 0 discriminator 3
+ 820 0016 80E0      		ldi r24,0
+ 821 0018 90E0      		ldi r25,0
+ 822 001a 2050      		subi r18,lo8(-(matrix))
+ 823 001c 3040      		sbci r19,hi8(-(matrix))
+ 824               	.LVL64:
+ 825               	.L51:
+ 826 001e F901      		movw r30,r18
+ 827 0020 E80F      		add r30,r24
+ 828 0022 F91F      		adc r31,r25
+ 298:keyboards/Aaron/iris/matrix.c ****         serial_slave_buffer[i] = matrix[offset+i];
+ 829               		.loc 1 298 0 discriminator 2
+ 830 0024 4081      		ld r20,Z
+ 831 0026 FC01      		movw r30,r24
+ 832 0028 E050      		subi r30,lo8(-(serial_slave_buffer))
+ 833 002a F040      		sbci r31,hi8(-(serial_slave_buffer))
+ 834 002c 4083      		st Z,r20
+ 297:keyboards/Aaron/iris/matrix.c ****     for (int i = 0; i < ROWS_PER_HAND; ++i) {
+ 835               		.loc 1 297 0 discriminator 2
+ 836 002e 0196      		adiw r24,1
+ 837               	.LVL65:
+ 838 0030 8530      		cpi r24,5
+ 839 0032 9105      		cpc r25,__zero_reg__
+ 840 0034 01F4      		brne .L51
+ 841               	.LBE55:
+ 303:keyboards/Aaron/iris/matrix.c ****     backlight_set(serial_master_buffer[SERIAL_LED_ADDR]);
+ 842               		.loc 1 303 0
+ 843 0036 8091 0000 		lds r24,serial_master_buffer
+ 844               	.LVL66:
+ 845 003a 0C94 0000 		jmp backlight_set
+ 846               	.LVL67:
+ 847               		.cfi_endproc
+ 848               	.LFE17:
+ 850               		.section	.text.matrix_is_modified,"ax",@progbits
+ 851               	.global	matrix_is_modified
+ 853               	matrix_is_modified:
+ 854               	.LFB18:
+ 309:keyboards/Aaron/iris/matrix.c **** {
+ 855               		.loc 1 309 0
+ 856               		.cfi_startproc
+ 857               	/* prologue: function */
+ 858               	/* frame size = 0 */
+ 859               	/* stack size = 0 */
+ 860               	.L__stack_usage = 0
+ 310:keyboards/Aaron/iris/matrix.c ****     if (debouncing) return false;
+ 861               		.loc 1 310 0
+ 862 0000 9091 0000 		lds r25,debouncing
+ 312:keyboards/Aaron/iris/matrix.c **** }
+ 863               		.loc 1 312 0
+ 864 0004 81E0      		ldi r24,lo8(1)
+ 865 0006 8927      		eor r24,r25
+ 866 0008 0895      		ret
+ 867               		.cfi_endproc
+ 868               	.LFE18:
+ 870               		.section	.text.matrix_is_on,"ax",@progbits
+ 871               	.global	matrix_is_on
+ 873               	matrix_is_on:
+ 874               	.LFB19:
+ 316:keyboards/Aaron/iris/matrix.c **** {
+ 875               		.loc 1 316 0
+ 876               		.cfi_startproc
+ 877               	.LVL68:
+ 878               	/* prologue: function */
+ 879               	/* frame size = 0 */
+ 880               	/* stack size = 0 */
+ 881               	.L__stack_usage = 0
+ 317:keyboards/Aaron/iris/matrix.c ****     return (matrix[row] & ((matrix_row_t)1<<col));
+ 882               		.loc 1 317 0
+ 883 0000 E82F      		mov r30,r24
+ 884 0002 F0E0      		ldi r31,0
+ 885 0004 E050      		subi r30,lo8(-(matrix))
+ 886 0006 F040      		sbci r31,hi8(-(matrix))
+ 887 0008 2081      		ld r18,Z
+ 888 000a 30E0      		ldi r19,0
+ 889 000c 81E0      		ldi r24,lo8(1)
+ 890 000e 90E0      		ldi r25,0
+ 891               	.LVL69:
+ 892 0010 00C0      		rjmp 2f
+ 893               		1:
+ 894 0012 880F      		lsl r24
+ 895 0014 991F      		rol r25
+ 896               		2:
+ 897 0016 6A95      		dec r22
+ 898 0018 02F4      		brpl 1b
+ 899 001a 2823      		and r18,r24
+ 900 001c 3923      		and r19,r25
+ 901 001e 81E0      		ldi r24,lo8(1)
+ 902 0020 232B      		or r18,r19
+ 903 0022 01F4      		brne .L55
+ 904 0024 80E0      		ldi r24,0
+ 905               	.L55:
+ 318:keyboards/Aaron/iris/matrix.c **** }
+ 906               		.loc 1 318 0
+ 907 0026 0895      		ret
+ 908               		.cfi_endproc
+ 909               	.LFE19:
+ 911               		.section	.text.matrix_get_row,"ax",@progbits
+ 912               	.global	matrix_get_row
+ 914               	matrix_get_row:
+ 915               	.LFB20:
+ 322:keyboards/Aaron/iris/matrix.c **** {
+ 916               		.loc 1 322 0
+ 917               		.cfi_startproc
+ 918               	.LVL70:
+ 919               	/* prologue: function */
+ 920               	/* frame size = 0 */
+ 921               	/* stack size = 0 */
+ 922               	.L__stack_usage = 0
+ 323:keyboards/Aaron/iris/matrix.c ****     return matrix[row];
+ 923               		.loc 1 323 0
+ 924 0000 E82F      		mov r30,r24
+ 925 0002 F0E0      		ldi r31,0
+ 926 0004 E050      		subi r30,lo8(-(matrix))
+ 927 0006 F040      		sbci r31,hi8(-(matrix))
+ 324:keyboards/Aaron/iris/matrix.c **** }
+ 928               		.loc 1 324 0
+ 929 0008 8081      		ld r24,Z
+ 930               	.LVL71:
+ 931 000a 0895      		ret
+ 932               		.cfi_endproc
+ 933               	.LFE20:
+ 935               		.section	.text.matrix_print,"ax",@progbits
+ 936               	.global	matrix_print
+ 938               	matrix_print:
+ 939               	.LFB21:
+ 327:keyboards/Aaron/iris/matrix.c **** {
+ 940               		.loc 1 327 0
+ 941               		.cfi_startproc
+ 942               	/* prologue: function */
+ 943               	/* frame size = 0 */
+ 944               	/* stack size = 0 */
+ 945               	.L__stack_usage = 0
+ 946               	.LVL72:
+ 947 0000 0895      		ret
+ 948               		.cfi_endproc
+ 949               	.LFE21:
+ 951               		.section	.text.matrix_key_count,"ax",@progbits
+ 952               	.global	matrix_key_count
+ 954               	matrix_key_count:
+ 955               	.LFB22:
+ 337:keyboards/Aaron/iris/matrix.c **** {
+ 956               		.loc 1 337 0
+ 957               		.cfi_startproc
+ 337:keyboards/Aaron/iris/matrix.c **** {
+ 958               		.loc 1 337 0
+ 959 0000 1F93      		push r17
+ 960               	.LCFI23:
+ 961               		.cfi_def_cfa_offset 3
+ 962               		.cfi_offset 17, -2
+ 963 0002 CF93      		push r28
+ 964               	.LCFI24:
+ 965               		.cfi_def_cfa_offset 4
+ 966               		.cfi_offset 28, -3
+ 967 0004 DF93      		push r29
+ 968               	.LCFI25:
+ 969               		.cfi_def_cfa_offset 5
+ 970               		.cfi_offset 29, -4
+ 971               	/* prologue: function */
+ 972               	/* frame size = 0 */
+ 973               	/* stack size = 3 */
+ 974               	.L__stack_usage = 3
+ 975               	.LVL73:
+ 976 0006 C0E0      		ldi r28,lo8(matrix)
+ 977 0008 D0E0      		ldi r29,hi8(matrix)
+ 338:keyboards/Aaron/iris/matrix.c ****     uint8_t count = 0;
+ 978               		.loc 1 338 0
+ 979 000a 10E0      		ldi r17,0
+ 980               	.LVL74:
+ 981               	.L60:
+ 982               	.LBB56:
+ 340:keyboards/Aaron/iris/matrix.c ****         count += bitpop16(matrix[i]);
+ 983               		.loc 1 340 0 discriminator 2
+ 984 000c 8991      		ld r24,Y+
+ 985               	.LVL75:
+ 986 000e 90E0      		ldi r25,0
+ 987 0010 0E94 0000 		call bitpop16
+ 988               	.LVL76:
+ 989 0014 180F      		add r17,r24
+ 990               	.LVL77:
+ 339:keyboards/Aaron/iris/matrix.c ****     for (uint8_t i = 0; i < MATRIX_ROWS; i++) {
+ 991               		.loc 1 339 0 discriminator 2
+ 992 0016 80E0      		ldi r24,hi8(matrix+10)
+ 993 0018 C030      		cpi r28,lo8(matrix+10)
+ 994 001a D807      		cpc r29,r24
+ 995 001c 01F4      		brne .L60
+ 996               	.LBE56:
+ 343:keyboards/Aaron/iris/matrix.c **** }
+ 997               		.loc 1 343 0
+ 998 001e 812F      		mov r24,r17
+ 999               	/* epilogue start */
+ 1000 0020 DF91      		pop r29
+ 1001 0022 CF91      		pop r28
+ 1002               	.LVL78:
+ 1003 0024 1F91      		pop r17
+ 1004               	.LVL79:
+ 1005 0026 0895      		ret
+ 1006               		.cfi_endproc
+ 1007               	.LFE22:
+ 1009               		.section	.bss.matrix,"aw",@nobits
+ 1012               	matrix:
+ 1013 0000 0000 0000 		.zero	10
+ 1013      0000 0000 
+ 1013      0000 
+ 1014               		.section	.rodata.col_pins,"a",@progbits
+ 1017               	col_pins:
+ 1018 0000 F6        		.byte	-10
+ 1019 0001 F7        		.byte	-9
+ 1020 0002 31        		.byte	49
+ 1021 0003 33        		.byte	51
+ 1022 0004 32        		.byte	50
+ 1023 0005 36        		.byte	54
+ 1024               		.section	.rodata.row_pins,"a",@progbits
+ 1027               	row_pins:
+ 1028 0000 97        		.byte	-105
+ 1029 0001 C6        		.byte	-58
+ 1030 0002 34        		.byte	52
+ 1031 0003 92        		.byte	-110
+ 1032 0004 94        		.byte	-108
+ 1033 0005 0000 0000 		.zero	5
+ 1033      00
+ 1034               		.section	.bss.error_count,"aw",@nobits
+ 1037               	error_count:
+ 1038 0000 00        		.zero	1
+ 1039               		.section	.bss.matrix_debouncing,"aw",@nobits
+ 1042               	matrix_debouncing:
+ 1043 0000 0000 0000 		.zero	10
+ 1043      0000 0000 
+ 1043      0000 
+ 1044               		.section	.bss.debouncing,"aw",@nobits
+ 1047               	debouncing:
+ 1048 0000 00        		.zero	1
+ 1049               		.section	.bss.debouncing_time,"aw",@nobits
+ 1052               	debouncing_time:
+ 1053 0000 0000      		.zero	2
+ 1054               		.text
+ 1055               	.Letext0:
+ 1056               		.file 3 "/usr/lib/avr/include/stdint.h"
+ 1057               		.file 4 "./tmk_core/common/debug.h"
+ 1058               		.file 5 "./tmk_core/common/matrix.h"
+ 1059               		.file 6 "./drivers/avr/pro_micro.h"
+ 1060               		.file 7 "keyboards/Aaron/iris/split_util.h"
+ 1061               		.file 8 "keyboards/Aaron/iris/serial.h"
+ 1062               		.file 9 "./tmk_core/common/timer.h"
+ 1063               		.file 10 "./tmk_core/common/backlight.h"
+ 1064               		.file 11 "./tmk_core/common/util.h"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 matrix.c
+     /tmp/ccG7NNE2.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccG7NNE2.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccG7NNE2.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccG7NNE2.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccG7NNE2.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccG7NNE2.s:13     .text.matrix_init_user:0000000000000000 matrix_init_user
+     /tmp/ccG7NNE2.s:29     .text.matrix_init_kb:0000000000000000 matrix_init_kb
+     /tmp/ccG7NNE2.s:46     .text.matrix_scan_user:0000000000000000 matrix_scan_user
+     /tmp/ccG7NNE2.s:61     .text.matrix_scan_kb:0000000000000000 matrix_scan_kb
+     /tmp/ccG7NNE2.s:78     .text.matrix_rows:0000000000000000 matrix_rows
+     /tmp/ccG7NNE2.s:95     .text.matrix_cols:0000000000000000 matrix_cols
+     /tmp/ccG7NNE2.s:112    .text.matrix_init:0000000000000000 matrix_init
+     /tmp/ccG7NNE2.s:1027   .rodata.row_pins:0000000000000000 row_pins
+     /tmp/ccG7NNE2.s:1017   .rodata.col_pins:0000000000000000 col_pins
+     /tmp/ccG7NNE2.s:1012   .bss.matrix:0000000000000000 matrix
+     /tmp/ccG7NNE2.s:1042   .bss.matrix_debouncing:0000000000000000 matrix_debouncing
+     /tmp/ccG7NNE2.s:256    .text._matrix_scan:0000000000000000 _matrix_scan
+     /tmp/ccG7NNE2.s:1047   .bss.debouncing:0000000000000000 debouncing
+     /tmp/ccG7NNE2.s:1052   .bss.debouncing_time:0000000000000000 debouncing_time
+     /tmp/ccG7NNE2.s:612    .text.serial_transaction:0000000000000000 serial_transaction
+     /tmp/ccG7NNE2.s:706    .text.matrix_scan:0000000000000000 matrix_scan
+     /tmp/ccG7NNE2.s:1037   .bss.error_count:0000000000000000 error_count
+     /tmp/ccG7NNE2.s:795    .text.matrix_slave_scan:0000000000000000 matrix_slave_scan
+     /tmp/ccG7NNE2.s:853    .text.matrix_is_modified:0000000000000000 matrix_is_modified
+     /tmp/ccG7NNE2.s:873    .text.matrix_is_on:0000000000000000 matrix_is_on
+     /tmp/ccG7NNE2.s:914    .text.matrix_get_row:0000000000000000 matrix_get_row
+     /tmp/ccG7NNE2.s:938    .text.matrix_print:0000000000000000 matrix_print
+     /tmp/ccG7NNE2.s:954    .text.matrix_key_count:0000000000000000 matrix_key_count
+
+UNDEFINED SYMBOLS
+debug_config
+matrix_init_quantum
+isLeftHand
+timer_read
+timer_elapsed
+serial_update_buffers
+serial_slave_buffer
+get_backlight_level
+serial_master_buffer
+matrix_scan_quantum
+backlight_set
+bitpop16
+__do_copy_data
+__do_clear_bss

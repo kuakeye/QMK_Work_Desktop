@@ -1,0 +1,2024 @@
+   1               		.file	"matrix.c"
+   2               	__SP_H__ = 0x3e
+   3               	__SP_L__ = 0x3d
+   4               	__SREG__ = 0x3f
+   5               	__tmp_reg__ = 0
+   6               	__zero_reg__ = 1
+   7               		.text
+   8               	.Ltext0:
+   9               		.cfi_sections	.debug_frame
+  10               		.section	.text.matrix_init_user,"ax",@progbits
+  11               		.weak	matrix_init_user
+  13               	matrix_init_user:
+  14               	.LFB11:
+  15               		.file 1 "keyboards/Dactylv2_Lightcycle/matrix.c"
+   1:keyboards/Dactylv2_Lightcycle/matrix.c **** /*
+   2:keyboards/Dactylv2_Lightcycle/matrix.c **** Copyright 2012 Jun Wako <wakojun@gmail.com>
+   3:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+   4:keyboards/Dactylv2_Lightcycle/matrix.c **** This program is free software: you can redistribute it and/or modify
+   5:keyboards/Dactylv2_Lightcycle/matrix.c **** it under the terms of the GNU General Public License as published by
+   6:keyboards/Dactylv2_Lightcycle/matrix.c **** the Free Software Foundation, either version 2 of the License, or
+   7:keyboards/Dactylv2_Lightcycle/matrix.c **** (at your option) any later version.
+   8:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+   9:keyboards/Dactylv2_Lightcycle/matrix.c **** This program is distributed in the hope that it will be useful,
+  10:keyboards/Dactylv2_Lightcycle/matrix.c **** but WITHOUT ANY WARRANTY; without even the implied warranty of
+  11:keyboards/Dactylv2_Lightcycle/matrix.c **** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  12:keyboards/Dactylv2_Lightcycle/matrix.c **** GNU General Public License for more details.
+  13:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+  14:keyboards/Dactylv2_Lightcycle/matrix.c **** You should have received a copy of the GNU General Public License
+  15:keyboards/Dactylv2_Lightcycle/matrix.c **** along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  16:keyboards/Dactylv2_Lightcycle/matrix.c **** */
+  17:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+  18:keyboards/Dactylv2_Lightcycle/matrix.c **** /*
+  19:keyboards/Dactylv2_Lightcycle/matrix.c ****  * scan matrix
+  20:keyboards/Dactylv2_Lightcycle/matrix.c ****  */
+  21:keyboards/Dactylv2_Lightcycle/matrix.c **** #include <stdint.h>
+  22:keyboards/Dactylv2_Lightcycle/matrix.c **** #include <stdbool.h>
+  23:keyboards/Dactylv2_Lightcycle/matrix.c **** #include <avr/io.h>
+  24:keyboards/Dactylv2_Lightcycle/matrix.c **** #include "wait.h"
+  25:keyboards/Dactylv2_Lightcycle/matrix.c **** #include "print.h"
+  26:keyboards/Dactylv2_Lightcycle/matrix.c **** #include "debug.h"
+  27:keyboards/Dactylv2_Lightcycle/matrix.c **** #include "util.h"
+  28:keyboards/Dactylv2_Lightcycle/matrix.c **** #include "matrix.h"
+  29:keyboards/Dactylv2_Lightcycle/matrix.c **** #include "split_util.h"
+  30:keyboards/Dactylv2_Lightcycle/matrix.c **** #include "pro_micro.h"
+  31:keyboards/Dactylv2_Lightcycle/matrix.c **** #include "config.h"
+  32:keyboards/Dactylv2_Lightcycle/matrix.c **** #include "timer.h"
+  33:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+  34:keyboards/Dactylv2_Lightcycle/matrix.c **** #ifdef USE_I2C
+  35:keyboards/Dactylv2_Lightcycle/matrix.c **** #  include "i2c.h"
+  36:keyboards/Dactylv2_Lightcycle/matrix.c **** #else // USE_SERIAL
+  37:keyboards/Dactylv2_Lightcycle/matrix.c **** #  include "serial.h"
+  38:keyboards/Dactylv2_Lightcycle/matrix.c **** #endif
+  39:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+  40:keyboards/Dactylv2_Lightcycle/matrix.c **** #ifndef DEBOUNCING_DELAY
+  41:keyboards/Dactylv2_Lightcycle/matrix.c **** #   define DEBOUNCING_DELAY 5
+  42:keyboards/Dactylv2_Lightcycle/matrix.c **** #endif
+  43:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+  44:keyboards/Dactylv2_Lightcycle/matrix.c **** #if (DEBOUNCING_DELAY > 0)
+  45:keyboards/Dactylv2_Lightcycle/matrix.c ****     static uint16_t debouncing_time;
+  46:keyboards/Dactylv2_Lightcycle/matrix.c ****     static bool debouncing = false;
+  47:keyboards/Dactylv2_Lightcycle/matrix.c **** #endif
+  48:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+  49:keyboards/Dactylv2_Lightcycle/matrix.c **** #if (MATRIX_COLS <= 8)
+  50:keyboards/Dactylv2_Lightcycle/matrix.c **** #    define print_matrix_header()  print("\nr/c 01234567\n")
+  51:keyboards/Dactylv2_Lightcycle/matrix.c **** #    define print_matrix_row(row)  print_bin_reverse8(matrix_get_row(row))
+  52:keyboards/Dactylv2_Lightcycle/matrix.c **** #    define matrix_bitpop(i)       bitpop(matrix[i])
+  53:keyboards/Dactylv2_Lightcycle/matrix.c **** #    define ROW_SHIFTER ((uint8_t)1)
+  54:keyboards/Dactylv2_Lightcycle/matrix.c **** #else
+  55:keyboards/Dactylv2_Lightcycle/matrix.c **** #    error "Currently only supports 8 COLS"
+  56:keyboards/Dactylv2_Lightcycle/matrix.c **** #endif
+  57:keyboards/Dactylv2_Lightcycle/matrix.c **** static matrix_row_t matrix_debouncing[MATRIX_ROWS];
+  58:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+  59:keyboards/Dactylv2_Lightcycle/matrix.c **** #define ERROR_DISCONNECT_COUNT 5
+  60:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+  61:keyboards/Dactylv2_Lightcycle/matrix.c **** #define ROWS_PER_HAND (MATRIX_ROWS/2)
+  62:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+  63:keyboards/Dactylv2_Lightcycle/matrix.c **** static uint8_t error_count = 0;
+  64:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+  65:keyboards/Dactylv2_Lightcycle/matrix.c **** static const uint8_t row_pins[MATRIX_ROWS] = MATRIX_ROW_PINS;
+  66:keyboards/Dactylv2_Lightcycle/matrix.c **** static const uint8_t col_pins[MATRIX_COLS] = MATRIX_COL_PINS;
+  67:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+  68:keyboards/Dactylv2_Lightcycle/matrix.c **** /* matrix state(1:on, 0:off) */
+  69:keyboards/Dactylv2_Lightcycle/matrix.c **** static matrix_row_t matrix[MATRIX_ROWS];
+  70:keyboards/Dactylv2_Lightcycle/matrix.c **** static matrix_row_t matrix_debouncing[MATRIX_ROWS];
+  71:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+  72:keyboards/Dactylv2_Lightcycle/matrix.c **** #if (DIODE_DIRECTION == COL2ROW)
+  73:keyboards/Dactylv2_Lightcycle/matrix.c ****     static void init_cols(void);
+  74:keyboards/Dactylv2_Lightcycle/matrix.c ****     static bool read_cols_on_row(matrix_row_t current_matrix[], uint8_t current_row);
+  75:keyboards/Dactylv2_Lightcycle/matrix.c ****     static void unselect_rows(void);
+  76:keyboards/Dactylv2_Lightcycle/matrix.c ****     static void select_row(uint8_t row);
+  77:keyboards/Dactylv2_Lightcycle/matrix.c ****     static void unselect_row(uint8_t row);
+  78:keyboards/Dactylv2_Lightcycle/matrix.c **** #elif (DIODE_DIRECTION == ROW2COL)
+  79:keyboards/Dactylv2_Lightcycle/matrix.c ****     static void init_rows(void);
+  80:keyboards/Dactylv2_Lightcycle/matrix.c ****     static bool read_rows_on_col(matrix_row_t current_matrix[], uint8_t current_col);
+  81:keyboards/Dactylv2_Lightcycle/matrix.c ****     static void unselect_cols(void);
+  82:keyboards/Dactylv2_Lightcycle/matrix.c ****     static void unselect_col(uint8_t col);
+  83:keyboards/Dactylv2_Lightcycle/matrix.c ****     static void select_col(uint8_t col);
+  84:keyboards/Dactylv2_Lightcycle/matrix.c **** #endif
+  85:keyboards/Dactylv2_Lightcycle/matrix.c **** __attribute__ ((weak))
+  86:keyboards/Dactylv2_Lightcycle/matrix.c **** void matrix_init_quantum(void) {
+  87:keyboards/Dactylv2_Lightcycle/matrix.c ****     matrix_init_kb();
+  88:keyboards/Dactylv2_Lightcycle/matrix.c **** }
+  89:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+  90:keyboards/Dactylv2_Lightcycle/matrix.c **** __attribute__ ((weak))
+  91:keyboards/Dactylv2_Lightcycle/matrix.c **** void matrix_scan_quantum(void) {
+  92:keyboards/Dactylv2_Lightcycle/matrix.c ****     matrix_scan_kb();
+  93:keyboards/Dactylv2_Lightcycle/matrix.c **** }
+  94:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+  95:keyboards/Dactylv2_Lightcycle/matrix.c **** __attribute__ ((weak))
+  96:keyboards/Dactylv2_Lightcycle/matrix.c **** void matrix_init_kb(void) {
+  97:keyboards/Dactylv2_Lightcycle/matrix.c ****     matrix_init_user();
+  98:keyboards/Dactylv2_Lightcycle/matrix.c **** }
+  99:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 100:keyboards/Dactylv2_Lightcycle/matrix.c **** __attribute__ ((weak))
+ 101:keyboards/Dactylv2_Lightcycle/matrix.c **** void matrix_scan_kb(void) {
+ 102:keyboards/Dactylv2_Lightcycle/matrix.c ****     matrix_scan_user();
+ 103:keyboards/Dactylv2_Lightcycle/matrix.c **** }
+ 104:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 105:keyboards/Dactylv2_Lightcycle/matrix.c **** __attribute__ ((weak))
+ 106:keyboards/Dactylv2_Lightcycle/matrix.c **** void matrix_init_user(void) {
+  16               		.loc 1 106 0
+  17               		.cfi_startproc
+  18               	/* prologue: function */
+  19               	/* frame size = 0 */
+  20               	/* stack size = 0 */
+  21               	.L__stack_usage = 0
+  22 0000 0895      		ret
+  23               		.cfi_endproc
+  24               	.LFE11:
+  26               		.section	.text.matrix_init_kb,"ax",@progbits
+  27               		.weak	matrix_init_kb
+  29               	matrix_init_kb:
+  30               	.LFB9:
+  96:keyboards/Dactylv2_Lightcycle/matrix.c ****     matrix_init_user();
+  31               		.loc 1 96 0
+  32               		.cfi_startproc
+  33               	/* prologue: function */
+  34               	/* frame size = 0 */
+  35               	/* stack size = 0 */
+  36               	.L__stack_usage = 0
+  97:keyboards/Dactylv2_Lightcycle/matrix.c **** }
+  37               		.loc 1 97 0
+  38 0000 0C94 0000 		jmp matrix_init_user
+  39               	.LVL0:
+  40               		.cfi_endproc
+  41               	.LFE9:
+  43               		.section	.text.matrix_init_quantum,"ax",@progbits
+  44               		.weak	matrix_init_quantum
+  46               	matrix_init_quantum:
+  47               	.LFB7:
+  86:keyboards/Dactylv2_Lightcycle/matrix.c ****     matrix_init_kb();
+  48               		.loc 1 86 0
+  49               		.cfi_startproc
+  50               	/* prologue: function */
+  51               	/* frame size = 0 */
+  52               	/* stack size = 0 */
+  53               	.L__stack_usage = 0
+  87:keyboards/Dactylv2_Lightcycle/matrix.c **** }
+  54               		.loc 1 87 0
+  55 0000 0C94 0000 		jmp matrix_init_kb
+  56               	.LVL1:
+  57               		.cfi_endproc
+  58               	.LFE7:
+  60               		.section	.text.matrix_scan_user,"ax",@progbits
+  61               		.weak	matrix_scan_user
+  63               	matrix_scan_user:
+  64               	.LFB12:
+ 107:keyboards/Dactylv2_Lightcycle/matrix.c **** }
+ 108:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 109:keyboards/Dactylv2_Lightcycle/matrix.c **** __attribute__ ((weak))
+ 110:keyboards/Dactylv2_Lightcycle/matrix.c **** void matrix_scan_user(void) {
+  65               		.loc 1 110 0
+  66               		.cfi_startproc
+  67               	/* prologue: function */
+  68               	/* frame size = 0 */
+  69               	/* stack size = 0 */
+  70               	.L__stack_usage = 0
+  71 0000 0895      		ret
+  72               		.cfi_endproc
+  73               	.LFE12:
+  75               		.section	.text.matrix_scan_kb,"ax",@progbits
+  76               		.weak	matrix_scan_kb
+  78               	matrix_scan_kb:
+  79               	.LFB10:
+ 101:keyboards/Dactylv2_Lightcycle/matrix.c ****     matrix_scan_user();
+  80               		.loc 1 101 0
+  81               		.cfi_startproc
+  82               	/* prologue: function */
+  83               	/* frame size = 0 */
+  84               	/* stack size = 0 */
+  85               	.L__stack_usage = 0
+ 102:keyboards/Dactylv2_Lightcycle/matrix.c **** }
+  86               		.loc 1 102 0
+  87 0000 0C94 0000 		jmp matrix_scan_user
+  88               	.LVL2:
+  89               		.cfi_endproc
+  90               	.LFE10:
+  92               		.section	.text.matrix_scan_quantum,"ax",@progbits
+  93               		.weak	matrix_scan_quantum
+  95               	matrix_scan_quantum:
+  96               	.LFB8:
+  91:keyboards/Dactylv2_Lightcycle/matrix.c ****     matrix_scan_kb();
+  97               		.loc 1 91 0
+  98               		.cfi_startproc
+  99               	/* prologue: function */
+ 100               	/* frame size = 0 */
+ 101               	/* stack size = 0 */
+ 102               	.L__stack_usage = 0
+  92:keyboards/Dactylv2_Lightcycle/matrix.c **** }
+ 103               		.loc 1 92 0
+ 104 0000 0C94 0000 		jmp matrix_scan_kb
+ 105               	.LVL3:
+ 106               		.cfi_endproc
+ 107               	.LFE8:
+ 109               		.section	.text.matrix_rows,"ax",@progbits
+ 110               	.global	matrix_rows
+ 112               	matrix_rows:
+ 113               	.LFB13:
+ 111:keyboards/Dactylv2_Lightcycle/matrix.c **** }
+ 112:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 113:keyboards/Dactylv2_Lightcycle/matrix.c **** inline
+ 114:keyboards/Dactylv2_Lightcycle/matrix.c **** uint8_t matrix_rows(void)
+ 115:keyboards/Dactylv2_Lightcycle/matrix.c **** {
+ 114               		.loc 1 115 0
+ 115               		.cfi_startproc
+ 116               	/* prologue: function */
+ 117               	/* frame size = 0 */
+ 118               	/* stack size = 0 */
+ 119               	.L__stack_usage = 0
+ 116:keyboards/Dactylv2_Lightcycle/matrix.c ****     return MATRIX_ROWS;
+ 117:keyboards/Dactylv2_Lightcycle/matrix.c **** }
+ 120               		.loc 1 117 0
+ 121 0000 8EE0      		ldi r24,lo8(14)
+ 122 0002 0895      		ret
+ 123               		.cfi_endproc
+ 124               	.LFE13:
+ 126               		.section	.text.matrix_cols,"ax",@progbits
+ 127               	.global	matrix_cols
+ 129               	matrix_cols:
+ 130               	.LFB14:
+ 118:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 119:keyboards/Dactylv2_Lightcycle/matrix.c **** inline
+ 120:keyboards/Dactylv2_Lightcycle/matrix.c **** uint8_t matrix_cols(void)
+ 121:keyboards/Dactylv2_Lightcycle/matrix.c **** {
+ 131               		.loc 1 121 0
+ 132               		.cfi_startproc
+ 133               	/* prologue: function */
+ 134               	/* frame size = 0 */
+ 135               	/* stack size = 0 */
+ 136               	.L__stack_usage = 0
+ 122:keyboards/Dactylv2_Lightcycle/matrix.c ****     return MATRIX_COLS;
+ 123:keyboards/Dactylv2_Lightcycle/matrix.c **** }
+ 137               		.loc 1 123 0
+ 138 0000 86E0      		ldi r24,lo8(6)
+ 139 0002 0895      		ret
+ 140               		.cfi_endproc
+ 141               	.LFE14:
+ 143               		.section	.text.matrix_init,"ax",@progbits
+ 144               	.global	matrix_init
+ 146               	matrix_init:
+ 147               	.LFB15:
+ 124:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 125:keyboards/Dactylv2_Lightcycle/matrix.c **** void matrix_init(void)
+ 126:keyboards/Dactylv2_Lightcycle/matrix.c **** {
+ 148               		.loc 1 126 0
+ 149               		.cfi_startproc
+ 150               	/* prologue: function */
+ 151               	/* frame size = 0 */
+ 152               	/* stack size = 0 */
+ 153               	.L__stack_usage = 0
+ 127:keyboards/Dactylv2_Lightcycle/matrix.c ****     debug_enable = true;
+ 154               		.loc 1 127 0
+ 155 0000 8091 0000 		lds r24,debug_config
+ 128:keyboards/Dactylv2_Lightcycle/matrix.c ****     debug_matrix = true;
+ 129:keyboards/Dactylv2_Lightcycle/matrix.c ****     debug_mouse = true;
+ 156               		.loc 1 129 0
+ 157 0004 8360      		ori r24,lo8(3)
+ 158 0006 8860      		ori r24,lo8(1<<3)
+ 159 0008 8093 0000 		sts debug_config,r24
+ 160               	.LVL4:
+ 161 000c A0E0      		ldi r26,lo8(row_pins)
+ 162 000e B0E0      		ldi r27,hi8(row_pins)
+ 163               	.LBB23:
+ 164               	.LBB24:
+ 165               	.LBB25:
+ 130:keyboards/Dactylv2_Lightcycle/matrix.c ****     // initialize row and col
+ 131:keyboards/Dactylv2_Lightcycle/matrix.c ****     unselect_rows();
+ 132:keyboards/Dactylv2_Lightcycle/matrix.c ****     init_cols();
+ 133:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 134:keyboards/Dactylv2_Lightcycle/matrix.c ****     TX_RX_LED_INIT;
+ 135:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 136:keyboards/Dactylv2_Lightcycle/matrix.c ****     // initialize matrix state: all keys off
+ 137:keyboards/Dactylv2_Lightcycle/matrix.c ****     for (uint8_t i=0; i < MATRIX_ROWS; i++) {
+ 138:keyboards/Dactylv2_Lightcycle/matrix.c ****         matrix[i] = 0;
+ 139:keyboards/Dactylv2_Lightcycle/matrix.c ****         matrix_debouncing[i] = 0;
+ 140:keyboards/Dactylv2_Lightcycle/matrix.c ****     }
+ 141:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 142:keyboards/Dactylv2_Lightcycle/matrix.c ****     matrix_init_quantum();
+ 143:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 144:keyboards/Dactylv2_Lightcycle/matrix.c **** }
+ 145:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 146:keyboards/Dactylv2_Lightcycle/matrix.c **** uint8_t _matrix_scan(void)
+ 147:keyboards/Dactylv2_Lightcycle/matrix.c **** {
+ 148:keyboards/Dactylv2_Lightcycle/matrix.c ****     int offset = isLeftHand ? 0 : (ROWS_PER_HAND);
+ 149:keyboards/Dactylv2_Lightcycle/matrix.c **** #if (DIODE_DIRECTION == COL2ROW)
+ 150:keyboards/Dactylv2_Lightcycle/matrix.c ****     // Set row, read cols
+ 151:keyboards/Dactylv2_Lightcycle/matrix.c ****     for (uint8_t current_row = 0; current_row < ROWS_PER_HAND; current_row++) {
+ 152:keyboards/Dactylv2_Lightcycle/matrix.c **** #       if (DEBOUNCING_DELAY > 0)
+ 153:keyboards/Dactylv2_Lightcycle/matrix.c ****             bool matrix_changed = read_cols_on_row(matrix_debouncing+offset, current_row);
+ 154:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 155:keyboards/Dactylv2_Lightcycle/matrix.c ****             if (matrix_changed) {
+ 156:keyboards/Dactylv2_Lightcycle/matrix.c ****                 debouncing = true;
+ 157:keyboards/Dactylv2_Lightcycle/matrix.c ****                 debouncing_time = timer_read();
+ 158:keyboards/Dactylv2_Lightcycle/matrix.c ****                 PORTD ^= (1 << 2);
+ 159:keyboards/Dactylv2_Lightcycle/matrix.c ****             }
+ 160:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 161:keyboards/Dactylv2_Lightcycle/matrix.c **** #       else
+ 162:keyboards/Dactylv2_Lightcycle/matrix.c ****             read_cols_on_row(matrix+offset, current_row);
+ 163:keyboards/Dactylv2_Lightcycle/matrix.c **** #       endif
+ 164:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 165:keyboards/Dactylv2_Lightcycle/matrix.c ****     }
+ 166:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 167:keyboards/Dactylv2_Lightcycle/matrix.c **** #elif (DIODE_DIRECTION == ROW2COL)
+ 168:keyboards/Dactylv2_Lightcycle/matrix.c ****     // Set col, read rows
+ 169:keyboards/Dactylv2_Lightcycle/matrix.c ****     for (uint8_t current_col = 0; current_col < MATRIX_COLS; current_col++) {
+ 170:keyboards/Dactylv2_Lightcycle/matrix.c **** #       if (DEBOUNCING_DELAY > 0)
+ 171:keyboards/Dactylv2_Lightcycle/matrix.c ****             bool matrix_changed = read_rows_on_col(matrix_debouncing+offset, current_col);
+ 172:keyboards/Dactylv2_Lightcycle/matrix.c ****             if (matrix_changed) {
+ 173:keyboards/Dactylv2_Lightcycle/matrix.c ****                 debouncing = true;
+ 174:keyboards/Dactylv2_Lightcycle/matrix.c ****                 debouncing_time = timer_read();
+ 175:keyboards/Dactylv2_Lightcycle/matrix.c ****             }
+ 176:keyboards/Dactylv2_Lightcycle/matrix.c **** #       else
+ 177:keyboards/Dactylv2_Lightcycle/matrix.c ****              read_rows_on_col(matrix+offset, current_col);
+ 178:keyboards/Dactylv2_Lightcycle/matrix.c **** #       endif
+ 179:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 180:keyboards/Dactylv2_Lightcycle/matrix.c ****     }
+ 181:keyboards/Dactylv2_Lightcycle/matrix.c **** #endif
+ 182:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 183:keyboards/Dactylv2_Lightcycle/matrix.c **** #   if (DEBOUNCING_DELAY > 0)
+ 184:keyboards/Dactylv2_Lightcycle/matrix.c ****         if (debouncing && (timer_elapsed(debouncing_time) > DEBOUNCING_DELAY)) {
+ 185:keyboards/Dactylv2_Lightcycle/matrix.c ****             for (uint8_t i = 0; i < ROWS_PER_HAND; i++) {
+ 186:keyboards/Dactylv2_Lightcycle/matrix.c ****                 matrix[i+offset] = matrix_debouncing[i+offset];
+ 187:keyboards/Dactylv2_Lightcycle/matrix.c ****             }
+ 188:keyboards/Dactylv2_Lightcycle/matrix.c ****             debouncing = false;
+ 189:keyboards/Dactylv2_Lightcycle/matrix.c ****         }
+ 190:keyboards/Dactylv2_Lightcycle/matrix.c **** #   endif
+ 191:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 192:keyboards/Dactylv2_Lightcycle/matrix.c ****     return 1;
+ 193:keyboards/Dactylv2_Lightcycle/matrix.c **** }
+ 194:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 195:keyboards/Dactylv2_Lightcycle/matrix.c **** #ifdef USE_I2C
+ 196:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 197:keyboards/Dactylv2_Lightcycle/matrix.c **** // Get rows from other half over i2c
+ 198:keyboards/Dactylv2_Lightcycle/matrix.c **** int i2c_transaction(void) {
+ 199:keyboards/Dactylv2_Lightcycle/matrix.c ****     int slaveOffset = (isLeftHand) ? (ROWS_PER_HAND) : 0;
+ 200:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 201:keyboards/Dactylv2_Lightcycle/matrix.c ****     int err = i2c_master_start(SLAVE_I2C_ADDRESS + I2C_WRITE);
+ 202:keyboards/Dactylv2_Lightcycle/matrix.c ****     if (err) goto i2c_error;
+ 203:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 204:keyboards/Dactylv2_Lightcycle/matrix.c ****     // start of matrix stored at 0x00
+ 205:keyboards/Dactylv2_Lightcycle/matrix.c ****     err = i2c_master_write(0x00);
+ 206:keyboards/Dactylv2_Lightcycle/matrix.c ****     if (err) goto i2c_error;
+ 207:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 208:keyboards/Dactylv2_Lightcycle/matrix.c ****     // Start read
+ 209:keyboards/Dactylv2_Lightcycle/matrix.c ****     err = i2c_master_start(SLAVE_I2C_ADDRESS + I2C_READ);
+ 210:keyboards/Dactylv2_Lightcycle/matrix.c ****     if (err) goto i2c_error;
+ 211:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 212:keyboards/Dactylv2_Lightcycle/matrix.c ****     if (!err) {
+ 213:keyboards/Dactylv2_Lightcycle/matrix.c ****         int i;
+ 214:keyboards/Dactylv2_Lightcycle/matrix.c ****         for (i = 0; i < ROWS_PER_HAND-1; ++i) {
+ 215:keyboards/Dactylv2_Lightcycle/matrix.c ****             matrix[slaveOffset+i] = i2c_master_read(I2C_ACK);
+ 216:keyboards/Dactylv2_Lightcycle/matrix.c ****         }
+ 217:keyboards/Dactylv2_Lightcycle/matrix.c ****         matrix[slaveOffset+i] = i2c_master_read(I2C_NACK);
+ 218:keyboards/Dactylv2_Lightcycle/matrix.c ****         i2c_master_stop();
+ 219:keyboards/Dactylv2_Lightcycle/matrix.c ****     } else {
+ 220:keyboards/Dactylv2_Lightcycle/matrix.c **** i2c_error: // the cable is disconnceted, or something else went wrong
+ 221:keyboards/Dactylv2_Lightcycle/matrix.c ****         i2c_reset_state();
+ 222:keyboards/Dactylv2_Lightcycle/matrix.c ****         return err;
+ 223:keyboards/Dactylv2_Lightcycle/matrix.c ****     }
+ 224:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 225:keyboards/Dactylv2_Lightcycle/matrix.c ****     return 0;
+ 226:keyboards/Dactylv2_Lightcycle/matrix.c **** }
+ 227:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 228:keyboards/Dactylv2_Lightcycle/matrix.c **** #else // USE_SERIAL
+ 229:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 230:keyboards/Dactylv2_Lightcycle/matrix.c **** int serial_transaction(void) {
+ 231:keyboards/Dactylv2_Lightcycle/matrix.c ****     int slaveOffset = (isLeftHand) ? (ROWS_PER_HAND) : 0;
+ 232:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 233:keyboards/Dactylv2_Lightcycle/matrix.c ****     if (serial_update_buffers()) {
+ 234:keyboards/Dactylv2_Lightcycle/matrix.c ****         return 1;
+ 235:keyboards/Dactylv2_Lightcycle/matrix.c ****     }
+ 236:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 237:keyboards/Dactylv2_Lightcycle/matrix.c ****     for (int i = 0; i < ROWS_PER_HAND; ++i) {
+ 238:keyboards/Dactylv2_Lightcycle/matrix.c ****         matrix[slaveOffset+i] = serial_slave_buffer[i];
+ 239:keyboards/Dactylv2_Lightcycle/matrix.c ****     }
+ 240:keyboards/Dactylv2_Lightcycle/matrix.c ****     return 0;
+ 241:keyboards/Dactylv2_Lightcycle/matrix.c **** }
+ 242:keyboards/Dactylv2_Lightcycle/matrix.c **** #endif
+ 243:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 244:keyboards/Dactylv2_Lightcycle/matrix.c **** uint8_t matrix_scan(void)
+ 245:keyboards/Dactylv2_Lightcycle/matrix.c **** {
+ 246:keyboards/Dactylv2_Lightcycle/matrix.c ****     uint8_t ret = _matrix_scan();
+ 247:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 248:keyboards/Dactylv2_Lightcycle/matrix.c **** #ifdef USE_I2C
+ 249:keyboards/Dactylv2_Lightcycle/matrix.c ****     if( i2c_transaction() ) {
+ 250:keyboards/Dactylv2_Lightcycle/matrix.c **** #else // USE_SERIAL
+ 251:keyboards/Dactylv2_Lightcycle/matrix.c ****     if( serial_transaction() ) {
+ 252:keyboards/Dactylv2_Lightcycle/matrix.c **** #endif
+ 253:keyboards/Dactylv2_Lightcycle/matrix.c ****         // turn on the indicator led when halves are disconnected
+ 254:keyboards/Dactylv2_Lightcycle/matrix.c ****         TXLED1;
+ 255:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 256:keyboards/Dactylv2_Lightcycle/matrix.c ****         error_count++;
+ 257:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 258:keyboards/Dactylv2_Lightcycle/matrix.c ****         if (error_count > ERROR_DISCONNECT_COUNT) {
+ 259:keyboards/Dactylv2_Lightcycle/matrix.c ****             // reset other half if disconnected
+ 260:keyboards/Dactylv2_Lightcycle/matrix.c ****             int slaveOffset = (isLeftHand) ? (ROWS_PER_HAND) : 0;
+ 261:keyboards/Dactylv2_Lightcycle/matrix.c ****             for (int i = 0; i < ROWS_PER_HAND; ++i) {
+ 262:keyboards/Dactylv2_Lightcycle/matrix.c ****                 matrix[slaveOffset+i] = 0;
+ 263:keyboards/Dactylv2_Lightcycle/matrix.c ****             }
+ 264:keyboards/Dactylv2_Lightcycle/matrix.c ****         }
+ 265:keyboards/Dactylv2_Lightcycle/matrix.c ****     } else {
+ 266:keyboards/Dactylv2_Lightcycle/matrix.c ****         // turn off the indicator led on no error
+ 267:keyboards/Dactylv2_Lightcycle/matrix.c ****         TXLED0;
+ 268:keyboards/Dactylv2_Lightcycle/matrix.c ****         error_count = 0;
+ 269:keyboards/Dactylv2_Lightcycle/matrix.c ****     }
+ 270:keyboards/Dactylv2_Lightcycle/matrix.c ****     matrix_scan_quantum();
+ 271:keyboards/Dactylv2_Lightcycle/matrix.c ****     return ret;
+ 272:keyboards/Dactylv2_Lightcycle/matrix.c **** }
+ 273:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 274:keyboards/Dactylv2_Lightcycle/matrix.c **** void matrix_slave_scan(void) {
+ 275:keyboards/Dactylv2_Lightcycle/matrix.c ****     _matrix_scan();
+ 276:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 277:keyboards/Dactylv2_Lightcycle/matrix.c ****     int offset = (isLeftHand) ? 0 : ROWS_PER_HAND;
+ 278:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 279:keyboards/Dactylv2_Lightcycle/matrix.c **** #ifdef USE_I2C
+ 280:keyboards/Dactylv2_Lightcycle/matrix.c ****     for (int i = 0; i < ROWS_PER_HAND; ++i) {
+ 281:keyboards/Dactylv2_Lightcycle/matrix.c ****         i2c_slave_buffer[i] = matrix[offset+i];
+ 282:keyboards/Dactylv2_Lightcycle/matrix.c ****     }
+ 283:keyboards/Dactylv2_Lightcycle/matrix.c **** #else // USE_SERIAL
+ 284:keyboards/Dactylv2_Lightcycle/matrix.c ****     for (int i = 0; i < ROWS_PER_HAND; ++i) {
+ 285:keyboards/Dactylv2_Lightcycle/matrix.c ****         serial_slave_buffer[i] = matrix[offset+i];
+ 286:keyboards/Dactylv2_Lightcycle/matrix.c ****     }
+ 287:keyboards/Dactylv2_Lightcycle/matrix.c **** #endif
+ 288:keyboards/Dactylv2_Lightcycle/matrix.c **** }
+ 289:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 290:keyboards/Dactylv2_Lightcycle/matrix.c **** bool matrix_is_modified(void)
+ 291:keyboards/Dactylv2_Lightcycle/matrix.c **** {
+ 292:keyboards/Dactylv2_Lightcycle/matrix.c ****     if (debouncing) return false;
+ 293:keyboards/Dactylv2_Lightcycle/matrix.c ****     return true;
+ 294:keyboards/Dactylv2_Lightcycle/matrix.c **** }
+ 295:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 296:keyboards/Dactylv2_Lightcycle/matrix.c **** inline
+ 297:keyboards/Dactylv2_Lightcycle/matrix.c **** bool matrix_is_on(uint8_t row, uint8_t col)
+ 298:keyboards/Dactylv2_Lightcycle/matrix.c **** {
+ 299:keyboards/Dactylv2_Lightcycle/matrix.c ****     return (matrix[row] & ((matrix_row_t)1<<col));
+ 300:keyboards/Dactylv2_Lightcycle/matrix.c **** }
+ 301:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 302:keyboards/Dactylv2_Lightcycle/matrix.c **** inline
+ 303:keyboards/Dactylv2_Lightcycle/matrix.c **** matrix_row_t matrix_get_row(uint8_t row)
+ 304:keyboards/Dactylv2_Lightcycle/matrix.c **** {
+ 305:keyboards/Dactylv2_Lightcycle/matrix.c ****     return matrix[row];
+ 306:keyboards/Dactylv2_Lightcycle/matrix.c **** }
+ 307:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 308:keyboards/Dactylv2_Lightcycle/matrix.c **** void matrix_print(void)
+ 309:keyboards/Dactylv2_Lightcycle/matrix.c **** {
+ 310:keyboards/Dactylv2_Lightcycle/matrix.c ****     print("\nr/c 0123456789ABCDEF\n");
+ 311:keyboards/Dactylv2_Lightcycle/matrix.c ****     for (uint8_t row = 0; row < MATRIX_ROWS; row++) {
+ 312:keyboards/Dactylv2_Lightcycle/matrix.c ****         phex(row); print(": ");
+ 313:keyboards/Dactylv2_Lightcycle/matrix.c ****         pbin_reverse16(matrix_get_row(row));
+ 314:keyboards/Dactylv2_Lightcycle/matrix.c ****         print("\n");
+ 315:keyboards/Dactylv2_Lightcycle/matrix.c ****     }
+ 316:keyboards/Dactylv2_Lightcycle/matrix.c **** }
+ 317:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 318:keyboards/Dactylv2_Lightcycle/matrix.c **** uint8_t matrix_key_count(void)
+ 319:keyboards/Dactylv2_Lightcycle/matrix.c **** {
+ 320:keyboards/Dactylv2_Lightcycle/matrix.c ****     uint8_t count = 0;
+ 321:keyboards/Dactylv2_Lightcycle/matrix.c ****     for (uint8_t i = 0; i < MATRIX_ROWS; i++) {
+ 322:keyboards/Dactylv2_Lightcycle/matrix.c ****         count += bitpop16(matrix[i]);
+ 323:keyboards/Dactylv2_Lightcycle/matrix.c ****     }
+ 324:keyboards/Dactylv2_Lightcycle/matrix.c ****     return count;
+ 325:keyboards/Dactylv2_Lightcycle/matrix.c **** }
+ 326:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 327:keyboards/Dactylv2_Lightcycle/matrix.c **** #if (DIODE_DIRECTION == COL2ROW)
+ 328:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 329:keyboards/Dactylv2_Lightcycle/matrix.c **** static void init_cols(void)
+ 330:keyboards/Dactylv2_Lightcycle/matrix.c **** {
+ 331:keyboards/Dactylv2_Lightcycle/matrix.c ****     for(uint8_t x = 0; x < MATRIX_COLS; x++) {
+ 332:keyboards/Dactylv2_Lightcycle/matrix.c ****         uint8_t pin = col_pins[x];
+ 333:keyboards/Dactylv2_Lightcycle/matrix.c ****         _SFR_IO8((pin >> 4) + 1) &= ~_BV(pin & 0xF); // IN
+ 334:keyboards/Dactylv2_Lightcycle/matrix.c ****         _SFR_IO8((pin >> 4) + 2) |=  _BV(pin & 0xF); // HI
+ 335:keyboards/Dactylv2_Lightcycle/matrix.c ****     }
+ 336:keyboards/Dactylv2_Lightcycle/matrix.c **** }
+ 337:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 338:keyboards/Dactylv2_Lightcycle/matrix.c **** static bool read_cols_on_row(matrix_row_t current_matrix[], uint8_t current_row)
+ 339:keyboards/Dactylv2_Lightcycle/matrix.c **** {
+ 340:keyboards/Dactylv2_Lightcycle/matrix.c ****     // Store last value of row prior to reading
+ 341:keyboards/Dactylv2_Lightcycle/matrix.c ****     matrix_row_t last_row_value = current_matrix[current_row];
+ 342:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 343:keyboards/Dactylv2_Lightcycle/matrix.c ****     // Clear data in matrix row
+ 344:keyboards/Dactylv2_Lightcycle/matrix.c ****     current_matrix[current_row] = 0;
+ 345:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 346:keyboards/Dactylv2_Lightcycle/matrix.c ****     // Select row and wait for row selecton to stabilize
+ 347:keyboards/Dactylv2_Lightcycle/matrix.c ****     select_row(current_row);
+ 348:keyboards/Dactylv2_Lightcycle/matrix.c ****     wait_us(30);
+ 349:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 350:keyboards/Dactylv2_Lightcycle/matrix.c ****     // For each col...
+ 351:keyboards/Dactylv2_Lightcycle/matrix.c ****     for(uint8_t col_index = 0; col_index < MATRIX_COLS; col_index++) {
+ 352:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 353:keyboards/Dactylv2_Lightcycle/matrix.c ****         // Select the col pin to read (active low)
+ 354:keyboards/Dactylv2_Lightcycle/matrix.c ****         uint8_t pin = col_pins[col_index];
+ 355:keyboards/Dactylv2_Lightcycle/matrix.c ****         uint8_t pin_state = (_SFR_IO8(pin >> 4) & _BV(pin & 0xF));
+ 356:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 357:keyboards/Dactylv2_Lightcycle/matrix.c ****         // Populate the matrix row with the state of the col pin
+ 358:keyboards/Dactylv2_Lightcycle/matrix.c ****         current_matrix[current_row] |=  pin_state ? 0 : (ROW_SHIFTER << col_index);
+ 359:keyboards/Dactylv2_Lightcycle/matrix.c ****     }
+ 360:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 361:keyboards/Dactylv2_Lightcycle/matrix.c ****     // Unselect row
+ 362:keyboards/Dactylv2_Lightcycle/matrix.c ****     unselect_row(current_row);
+ 363:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 364:keyboards/Dactylv2_Lightcycle/matrix.c ****     return (last_row_value != current_matrix[current_row]);
+ 365:keyboards/Dactylv2_Lightcycle/matrix.c **** }
+ 366:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 367:keyboards/Dactylv2_Lightcycle/matrix.c **** static void select_row(uint8_t row)
+ 368:keyboards/Dactylv2_Lightcycle/matrix.c **** {
+ 369:keyboards/Dactylv2_Lightcycle/matrix.c ****     uint8_t pin = row_pins[row];
+ 370:keyboards/Dactylv2_Lightcycle/matrix.c ****     _SFR_IO8((pin >> 4) + 1) |=  _BV(pin & 0xF); // OUT
+ 371:keyboards/Dactylv2_Lightcycle/matrix.c ****     _SFR_IO8((pin >> 4) + 2) &= ~_BV(pin & 0xF); // LOW
+ 372:keyboards/Dactylv2_Lightcycle/matrix.c **** }
+ 373:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 374:keyboards/Dactylv2_Lightcycle/matrix.c **** static void unselect_row(uint8_t row)
+ 375:keyboards/Dactylv2_Lightcycle/matrix.c **** {
+ 376:keyboards/Dactylv2_Lightcycle/matrix.c ****     uint8_t pin = row_pins[row];
+ 377:keyboards/Dactylv2_Lightcycle/matrix.c ****     _SFR_IO8((pin >> 4) + 1) &= ~_BV(pin & 0xF); // IN
+ 378:keyboards/Dactylv2_Lightcycle/matrix.c ****     _SFR_IO8((pin >> 4) + 2) |=  _BV(pin & 0xF); // HI
+ 379:keyboards/Dactylv2_Lightcycle/matrix.c **** }
+ 380:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 381:keyboards/Dactylv2_Lightcycle/matrix.c **** static void unselect_rows(void)
+ 382:keyboards/Dactylv2_Lightcycle/matrix.c **** {
+ 383:keyboards/Dactylv2_Lightcycle/matrix.c ****     for(uint8_t x = 0; x < ROWS_PER_HAND; x++) {
+ 384:keyboards/Dactylv2_Lightcycle/matrix.c ****         uint8_t pin = row_pins[x];
+ 385:keyboards/Dactylv2_Lightcycle/matrix.c ****         _SFR_IO8((pin >> 4) + 1) &= ~_BV(pin & 0xF); // IN
+ 166               		.loc 1 385 0
+ 167 0010 41E0      		ldi r20,lo8(1)
+ 168 0012 50E0      		ldi r21,0
+ 169 0014 27E0      		ldi r18,lo8(7)
+ 170 0016 2A0F      		add r18,r26
+ 171               	.LVL5:
+ 172               	.L10:
+ 384:keyboards/Dactylv2_Lightcycle/matrix.c ****         _SFR_IO8((pin >> 4) + 1) &= ~_BV(pin & 0xF); // IN
+ 173               		.loc 1 384 0
+ 174 0018 8D91      		ld r24,X+
+ 175               	.LVL6:
+ 176               		.loc 1 385 0
+ 177 001a E82F      		mov r30,r24
+ 178 001c E295      		swap r30
+ 179 001e EF70      		andi r30,lo8(15)
+ 180 0020 F0E0      		ldi r31,0
+ 181 0022 31A1      		ldd r19,Z+33
+ 182 0024 8F70      		andi r24,lo8(15)
+ 183               	.LVL7:
+ 184 0026 BA01      		movw r22,r20
+ 185 0028 00C0      		rjmp 2f
+ 186               		1:
+ 187 002a 660F      		lsl r22
+ 188 002c 771F      		rol r23
+ 189               		2:
+ 190 002e 8A95      		dec r24
+ 191 0030 02F4      		brpl 1b
+ 192 0032 CB01      		movw r24,r22
+ 193 0034 962F      		mov r25,r22
+ 194 0036 9095      		com r25
+ 195 0038 9323      		and r25,r19
+ 196 003a 91A3      		std Z+33,r25
+ 197               	.LVL8:
+ 386:keyboards/Dactylv2_Lightcycle/matrix.c ****         _SFR_IO8((pin >> 4) + 2) |=  _BV(pin & 0xF); // HI
+ 198               		.loc 1 386 0
+ 199 003c 92A1      		ldd r25,Z+34
+ 200 003e 892B      		or r24,r25
+ 201 0040 82A3      		std Z+34,r24
+ 202               	.LVL9:
+ 203               	.LBE25:
+ 383:keyboards/Dactylv2_Lightcycle/matrix.c ****         uint8_t pin = row_pins[x];
+ 204               		.loc 1 383 0
+ 205 0042 2A13      		cpse r18,r26
+ 206 0044 00C0      		rjmp .L10
+ 207 0046 A0E0      		ldi r26,lo8(col_pins)
+ 208 0048 B0E0      		ldi r27,hi8(col_pins)
+ 209               	.LVL10:
+ 210               	.LBE24:
+ 211               	.LBE23:
+ 212               	.LBB26:
+ 213               	.LBB27:
+ 214               	.LBB28:
+ 333:keyboards/Dactylv2_Lightcycle/matrix.c ****         _SFR_IO8((pin >> 4) + 2) |=  _BV(pin & 0xF); // HI
+ 215               		.loc 1 333 0
+ 216 004a 41E0      		ldi r20,lo8(1)
+ 217 004c 50E0      		ldi r21,0
+ 218 004e 26E0      		ldi r18,lo8(6)
+ 219 0050 2A0F      		add r18,r26
+ 220               	.L11:
+ 221               	.LVL11:
+ 332:keyboards/Dactylv2_Lightcycle/matrix.c ****         _SFR_IO8((pin >> 4) + 1) &= ~_BV(pin & 0xF); // IN
+ 222               		.loc 1 332 0
+ 223 0052 8D91      		ld r24,X+
+ 224               	.LVL12:
+ 333:keyboards/Dactylv2_Lightcycle/matrix.c ****         _SFR_IO8((pin >> 4) + 2) |=  _BV(pin & 0xF); // HI
+ 225               		.loc 1 333 0
+ 226 0054 E82F      		mov r30,r24
+ 227 0056 E295      		swap r30
+ 228 0058 EF70      		andi r30,lo8(15)
+ 229 005a F0E0      		ldi r31,0
+ 230 005c 31A1      		ldd r19,Z+33
+ 231 005e 8F70      		andi r24,lo8(15)
+ 232               	.LVL13:
+ 233 0060 BA01      		movw r22,r20
+ 234 0062 00C0      		rjmp 2f
+ 235               		1:
+ 236 0064 660F      		lsl r22
+ 237 0066 771F      		rol r23
+ 238               		2:
+ 239 0068 8A95      		dec r24
+ 240 006a 02F4      		brpl 1b
+ 241 006c CB01      		movw r24,r22
+ 242 006e 962F      		mov r25,r22
+ 243 0070 9095      		com r25
+ 244 0072 9323      		and r25,r19
+ 245 0074 91A3      		std Z+33,r25
+ 246               	.LVL14:
+ 334:keyboards/Dactylv2_Lightcycle/matrix.c ****     }
+ 247               		.loc 1 334 0
+ 248 0076 92A1      		ldd r25,Z+34
+ 249 0078 892B      		or r24,r25
+ 250 007a 82A3      		std Z+34,r24
+ 251               	.LVL15:
+ 252               	.LBE28:
+ 331:keyboards/Dactylv2_Lightcycle/matrix.c ****         uint8_t pin = col_pins[x];
+ 253               		.loc 1 331 0
+ 254 007c 2A13      		cpse r18,r26
+ 255 007e 00C0      		rjmp .L11
+ 256               	.LBE27:
+ 257               	.LBE26:
+ 134:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 258               		.loc 1 134 0
+ 259 0080 559A      		sbi 0xa,5
+ 260 0082 209A      		sbi 0x4,0
+ 261               	.LVL16:
+ 262 0084 A0E0      		ldi r26,lo8(matrix_debouncing)
+ 263 0086 B0E0      		ldi r27,hi8(matrix_debouncing)
+ 264               	.LVL17:
+ 265 0088 E0E0      		ldi r30,lo8(matrix)
+ 266 008a F0E0      		ldi r31,hi8(matrix)
+ 267 008c 8EE0      		ldi r24,lo8(14)
+ 268 008e 8E0F      		add r24,r30
+ 269               	.LVL18:
+ 270               	.L12:
+ 271               	.LBB29:
+ 138:keyboards/Dactylv2_Lightcycle/matrix.c ****         matrix_debouncing[i] = 0;
+ 272               		.loc 1 138 0 discriminator 3
+ 273 0090 1192      		st Z+,__zero_reg__
+ 274               	.LVL19:
+ 139:keyboards/Dactylv2_Lightcycle/matrix.c ****     }
+ 275               		.loc 1 139 0 discriminator 3
+ 276 0092 1D92      		st X+,__zero_reg__
+ 277               	.LVL20:
+ 137:keyboards/Dactylv2_Lightcycle/matrix.c ****         matrix[i] = 0;
+ 278               		.loc 1 137 0 discriminator 3
+ 279 0094 8E13      		cpse r24,r30
+ 280 0096 00C0      		rjmp .L12
+ 281               	.LBE29:
+ 142:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 282               		.loc 1 142 0
+ 283 0098 0C94 0000 		jmp matrix_init_quantum
+ 284               	.LVL21:
+ 285               		.cfi_endproc
+ 286               	.LFE15:
+ 288               		.section	.text._matrix_scan,"ax",@progbits
+ 289               	.global	_matrix_scan
+ 291               	_matrix_scan:
+ 292               	.LFB16:
+ 147:keyboards/Dactylv2_Lightcycle/matrix.c ****     int offset = isLeftHand ? 0 : (ROWS_PER_HAND);
+ 293               		.loc 1 147 0
+ 294               		.cfi_startproc
+ 295 0000 2F92      		push r2
+ 296               	.LCFI0:
+ 297               		.cfi_def_cfa_offset 3
+ 298               		.cfi_offset 2, -2
+ 299 0002 3F92      		push r3
+ 300               	.LCFI1:
+ 301               		.cfi_def_cfa_offset 4
+ 302               		.cfi_offset 3, -3
+ 303 0004 4F92      		push r4
+ 304               	.LCFI2:
+ 305               		.cfi_def_cfa_offset 5
+ 306               		.cfi_offset 4, -4
+ 307 0006 5F92      		push r5
+ 308               	.LCFI3:
+ 309               		.cfi_def_cfa_offset 6
+ 310               		.cfi_offset 5, -5
+ 311 0008 6F92      		push r6
+ 312               	.LCFI4:
+ 313               		.cfi_def_cfa_offset 7
+ 314               		.cfi_offset 6, -6
+ 315 000a 7F92      		push r7
+ 316               	.LCFI5:
+ 317               		.cfi_def_cfa_offset 8
+ 318               		.cfi_offset 7, -7
+ 319 000c 8F92      		push r8
+ 320               	.LCFI6:
+ 321               		.cfi_def_cfa_offset 9
+ 322               		.cfi_offset 8, -8
+ 323 000e 9F92      		push r9
+ 324               	.LCFI7:
+ 325               		.cfi_def_cfa_offset 10
+ 326               		.cfi_offset 9, -9
+ 327 0010 AF92      		push r10
+ 328               	.LCFI8:
+ 329               		.cfi_def_cfa_offset 11
+ 330               		.cfi_offset 10, -10
+ 331 0012 BF92      		push r11
+ 332               	.LCFI9:
+ 333               		.cfi_def_cfa_offset 12
+ 334               		.cfi_offset 11, -11
+ 335 0014 CF92      		push r12
+ 336               	.LCFI10:
+ 337               		.cfi_def_cfa_offset 13
+ 338               		.cfi_offset 12, -12
+ 339 0016 DF92      		push r13
+ 340               	.LCFI11:
+ 341               		.cfi_def_cfa_offset 14
+ 342               		.cfi_offset 13, -13
+ 343 0018 EF92      		push r14
+ 344               	.LCFI12:
+ 345               		.cfi_def_cfa_offset 15
+ 346               		.cfi_offset 14, -14
+ 347 001a FF92      		push r15
+ 348               	.LCFI13:
+ 349               		.cfi_def_cfa_offset 16
+ 350               		.cfi_offset 15, -15
+ 351 001c 0F93      		push r16
+ 352               	.LCFI14:
+ 353               		.cfi_def_cfa_offset 17
+ 354               		.cfi_offset 16, -16
+ 355 001e 1F93      		push r17
+ 356               	.LCFI15:
+ 357               		.cfi_def_cfa_offset 18
+ 358               		.cfi_offset 17, -17
+ 359 0020 CF93      		push r28
+ 360               	.LCFI16:
+ 361               		.cfi_def_cfa_offset 19
+ 362               		.cfi_offset 28, -18
+ 363 0022 DF93      		push r29
+ 364               	.LCFI17:
+ 365               		.cfi_def_cfa_offset 20
+ 366               		.cfi_offset 29, -19
+ 367 0024 00D0      		rcall .
+ 368 0026 00D0      		rcall .
+ 369               	.LCFI18:
+ 370               		.cfi_def_cfa_offset 24
+ 371 0028 CDB7      		in r28,__SP_L__
+ 372 002a DEB7      		in r29,__SP_H__
+ 373               	.LCFI19:
+ 374               		.cfi_def_cfa_register 28
+ 375               	/* prologue: function */
+ 376               	/* frame size = 4 */
+ 377               	/* stack size = 22 */
+ 378               	.L__stack_usage = 22
+ 148:keyboards/Dactylv2_Lightcycle/matrix.c **** #if (DIODE_DIRECTION == COL2ROW)
+ 379               		.loc 1 148 0
+ 380 002c 8091 0000 		lds r24,isLeftHand
+ 381 0030 8111      		cpse r24,__zero_reg__
+ 382 0032 00C0      		rjmp .L27
+ 383 0034 37E0      		ldi r19,lo8(7)
+ 384 0036 C32E      		mov r12,r19
+ 385 0038 D12C      		mov r13,__zero_reg__
+ 386 003a 00C0      		rjmp .L18
+ 387               	.L27:
+ 388 003c C12C      		mov r12,__zero_reg__
+ 389 003e D12C      		mov r13,__zero_reg__
+ 390               	.L18:
+ 391               	.LVL22:
+ 392 0040 9601      		movw r18,r12
+ 393 0042 2050      		subi r18,lo8(-(matrix_debouncing))
+ 394 0044 3040      		sbci r19,hi8(-(matrix_debouncing))
+ 395 0046 7901      		movw r14,r18
+ 396 0048 3C83      		std Y+4,r19
+ 397 004a 2B83      		std Y+3,r18
+ 148:keyboards/Dactylv2_Lightcycle/matrix.c **** #if (DIODE_DIRECTION == COL2ROW)
+ 398               		.loc 1 148 0 is_stmt 0 discriminator 4
+ 399 004c 00E0      		ldi r16,lo8(row_pins)
+ 400 004e 10E0      		ldi r17,hi8(row_pins)
+ 401               	.LBB43:
+ 402               	.LBB44:
+ 403               	.LBB45:
+ 404               	.LBB46:
+ 405               	.LBB47:
+ 406               	.LBB48:
+ 370:keyboards/Dactylv2_Lightcycle/matrix.c ****     _SFR_IO8((pin >> 4) + 2) &= ~_BV(pin & 0xF); // LOW
+ 407               		.loc 1 370 0 is_stmt 1 discriminator 4
+ 408 0050 AA24      		clr r10
+ 409 0052 A394      		inc r10
+ 410 0054 B12C      		mov r11,__zero_reg__
+ 411               	.LBE48:
+ 412               	.LBE47:
+ 413               	.LBE46:
+ 414               	.LBE45:
+ 156:keyboards/Dactylv2_Lightcycle/matrix.c ****                 debouncing_time = timer_read();
+ 415               		.loc 1 156 0 discriminator 4
+ 416 0056 8824      		clr r8
+ 417 0058 8394      		inc r8
+ 158:keyboards/Dactylv2_Lightcycle/matrix.c ****             }
+ 418               		.loc 1 158 0 discriminator 4
+ 419 005a 94E0      		ldi r25,lo8(4)
+ 420 005c 992E      		mov r9,r25
+ 421 005e 27E0      		ldi r18,lo8(7)
+ 422 0060 722E      		mov r7,r18
+ 423 0062 700E      		add r7,r16
+ 424               	.LVL23:
+ 425               	.L22:
+ 426 0064 6B81      		ldd r22,Y+3
+ 427 0066 7C81      		ldd r23,Y+4
+ 428               	.LBB58:
+ 429               	.LBB57:
+ 341:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 430               		.loc 1 341 0
+ 431 0068 DB01      		movw r26,r22
+ 432 006a 5C90      		ld r5,X
+ 433               	.LVL24:
+ 344:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 434               		.loc 1 344 0
+ 435 006c 1C92      		st X,__zero_reg__
+ 436               	.LVL25:
+ 437               	.LBB50:
+ 438               	.LBB49:
+ 369:keyboards/Dactylv2_Lightcycle/matrix.c ****     _SFR_IO8((pin >> 4) + 1) |=  _BV(pin & 0xF); // OUT
+ 439               		.loc 1 369 0
+ 440 006e F801      		movw r30,r16
+ 441 0070 8191      		ld r24,Z+
+ 442 0072 8F01      		movw r16,r30
+ 443               	.LVL26:
+ 370:keyboards/Dactylv2_Lightcycle/matrix.c ****     _SFR_IO8((pin >> 4) + 2) &= ~_BV(pin & 0xF); // LOW
+ 444               		.loc 1 370 0
+ 445 0074 E82F      		mov r30,r24
+ 446 0076 E295      		swap r30
+ 447 0078 EF70      		andi r30,lo8(15)
+ 448 007a F0E0      		ldi r31,0
+ 449 007c 21A1      		ldd r18,Z+33
+ 450 007e 8F70      		andi r24,lo8(15)
+ 451               	.LVL27:
+ 452 0080 A501      		movw r20,r10
+ 453 0082 00C0      		rjmp 2f
+ 454               		1:
+ 455 0084 440F      		lsl r20
+ 456 0086 551F      		rol r21
+ 457               		2:
+ 458 0088 8A95      		dec r24
+ 459 008a 02F4      		brpl 1b
+ 460 008c CA01      		movw r24,r20
+ 461 008e 242B      		or r18,r20
+ 462 0090 21A3      		std Z+33,r18
+ 463               	.LVL28:
+ 371:keyboards/Dactylv2_Lightcycle/matrix.c **** }
+ 464               		.loc 1 371 0
+ 465 0092 22A1      		ldd r18,Z+34
+ 466 0094 642E      		mov r6,r20
+ 467 0096 6094      		com r6
+ 468 0098 2621      		and r18,r6
+ 469 009a 22A3      		std Z+34,r18
+ 470               	.LVL29:
+ 471               	.LBE49:
+ 472               	.LBE50:
+ 473               	.LBB51:
+ 474               	.LBB52:
+ 475               		.file 2 "c:\\msys32\\home\\683654\\qmk_utils\\avr8-gnu-toolchain\\avr\\include\\util\\delay.h"
+   1:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** /* Copyright (c) 2002, Marek Michalkiewicz
+   2:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****    Copyright (c) 2004,2005,2007 Joerg Wunsch
+   3:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****    Copyright (c) 2007  Florin-Viorel Petrov
+   4:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****    All rights reserved.
+   5:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 
+   6:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****    Redistribution and use in source and binary forms, with or without
+   7:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****    modification, are permitted provided that the following conditions are met:
+   8:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 
+   9:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****    * Redistributions of source code must retain the above copyright
+  10:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****      notice, this list of conditions and the following disclaimer.
+  11:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 
+  12:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****    * Redistributions in binary form must reproduce the above copyright
+  13:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****      notice, this list of conditions and the following disclaimer in
+  14:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****      the documentation and/or other materials provided with the
+  15:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****      distribution.
+  16:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 
+  17:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****    * Neither the name of the copyright holders nor the names of
+  18:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****      contributors may be used to endorse or promote products derived
+  19:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****      from this software without specific prior written permission.
+  20:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 
+  21:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  22:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****   AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  23:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****   IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+  24:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****   ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+  25:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****   LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+  26:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****   CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+  27:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****   SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+  28:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****   INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+  29:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****   CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+  30:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  31:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****   POSSIBILITY OF SUCH DAMAGE. */
+  32:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 
+  33:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** /* $Id$ */
+  34:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 
+  35:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** #ifndef _UTIL_DELAY_H_
+  36:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** #define _UTIL_DELAY_H_ 1
+  37:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 
+  38:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** #ifndef __DOXYGEN__
+  39:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** #  ifndef __HAS_DELAY_CYCLES
+  40:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** #    define __HAS_DELAY_CYCLES 1
+  41:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** #  endif
+  42:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** #endif  /* __DOXYGEN__ */
+  43:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 
+  44:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** #include <inttypes.h>
+  45:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** #include <util/delay_basic.h>
+  46:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** #include <math.h>
+  47:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 
+  48:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** /** \file */
+  49:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** /** \defgroup util_delay <util/delay.h>: Convenience functions for busy-wait delay loops
+  50:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****     \code
+  51:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****     #define F_CPU 1000000UL  // 1 MHz
+  52:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****     //#define F_CPU 14.7456E6
+  53:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****     #include <util/delay.h>
+  54:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****     \endcode
+  55:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 
+  56:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****     \note As an alternative method, it is possible to pass the
+  57:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****     F_CPU macro down to the compiler from the Makefile.
+  58:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****     Obviously, in that case, no \c \#define statement should be
+  59:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****     used.
+  60:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 
+  61:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****     The functions in this header file are wrappers around the basic
+  62:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****     busy-wait functions from <util/delay_basic.h>.  They are meant as
+  63:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****     convenience functions where actual time values can be specified
+  64:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****     rather than a number of cycles to wait for.  The idea behind is
+  65:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****     that compile-time constant expressions will be eliminated by
+  66:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****     compiler optimization so floating-point expressions can be used
+  67:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****     to calculate the number of delay cycles needed based on the CPU
+  68:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****     frequency passed by the macro F_CPU.
+  69:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 
+  70:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****     \note In order for these functions to work as intended, compiler
+  71:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****     optimizations <em>must</em> be enabled, and the delay time
+  72:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****     <em>must</em> be an expression that is a known constant at
+  73:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****     compile-time.  If these requirements are not met, the resulting
+  74:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****     delay will be much longer (and basically unpredictable), and
+  75:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****     applications that otherwise do not use floating-point calculations
+  76:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****     will experience severe code bloat by the floating-point library
+  77:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****     routines linked into the application.
+  78:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 
+  79:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****     The functions available allow the specification of microsecond, and
+  80:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****     millisecond delays directly, using the application-supplied macro
+  81:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****     F_CPU as the CPU clock frequency (in Hertz).
+  82:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 
+  83:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** */
+  84:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 
+  85:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** #if !defined(__DOXYGEN__)
+  86:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** static __inline__ void _delay_us(double __us) __attribute__((__always_inline__));
+  87:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** static __inline__ void _delay_ms(double __ms) __attribute__((__always_inline__));
+  88:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** #endif
+  89:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 
+  90:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** #ifndef F_CPU
+  91:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** /* prevent compiler error by supplying a default */
+  92:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** # warning "F_CPU not defined for <util/delay.h>"
+  93:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** /** \ingroup util_delay
+  94:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****     \def F_CPU
+  95:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****     \brief CPU frequency in Hz
+  96:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 
+  97:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****     The macro F_CPU specifies the CPU frequency to be considered by
+  98:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****     the delay macros.  This macro is normally supplied by the
+  99:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****     environment (e.g. from within a project header, or the project's
+ 100:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****     Makefile).  The value 1 MHz here is only provided as a "vanilla"
+ 101:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****     fallback if no such user-provided definition could be found.
+ 102:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 
+ 103:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****     In terms of the delay functions, the CPU frequency can be given as
+ 104:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****     a floating-point constant (e.g. 3.6864E6 for 3.6864 MHz).
+ 105:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****     However, the macros in <util/setbaud.h> require it to be an
+ 106:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****     integer value.
+ 107:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****  */
+ 108:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** # define F_CPU 1000000UL
+ 109:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** #endif
+ 110:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 
+ 111:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** #ifndef __OPTIMIZE__
+ 112:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** # warning "Compiler optimizations disabled; functions from <util/delay.h> won't work as designed"
+ 113:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** #endif
+ 114:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 
+ 115:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** #if __HAS_DELAY_CYCLES && defined(__OPTIMIZE__) && \
+ 116:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****   !defined(__DELAY_BACKWARD_COMPATIBLE__) &&	   \
+ 117:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****   __STDC_HOSTED__
+ 118:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** #  include <math.h>
+ 119:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** #endif
+ 120:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 
+ 121:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** /**
+ 122:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****    \ingroup util_delay
+ 123:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 
+ 124:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****    Perform a delay of \c __ms milliseconds, using _delay_loop_2().
+ 125:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 
+ 126:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****    The macro F_CPU is supposed to be defined to a
+ 127:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****    constant defining the CPU clock frequency (in Hertz).
+ 128:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 
+ 129:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****    The maximal possible delay is 262.14 ms / F_CPU in MHz.
+ 130:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 
+ 131:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****    When the user request delay which exceed the maximum possible one,
+ 132:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****    _delay_ms() provides a decreased resolution functionality. In this
+ 133:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****    mode _delay_ms() will work with a resolution of 1/10 ms, providing
+ 134:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****    delays up to 6.5535 seconds (independent from CPU frequency).  The
+ 135:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****    user will not be informed about decreased resolution.
+ 136:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 
+ 137:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****    If the avr-gcc toolchain has __builtin_avr_delay_cycles()
+ 138:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****    support, maximal possible delay is 4294967.295 ms/ F_CPU in MHz. For
+ 139:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****    values greater than the maximal possible delay, overflows results in
+ 140:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****    no delay i.e., 0ms.
+ 141:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 
+ 142:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****    Conversion of \c __ms into clock cycles may not always result in
+ 143:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****    integer.  By default, the clock cycles rounded up to next
+ 144:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****    integer. This ensures that the user gets at least \c __ms
+ 145:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****    microseconds of delay.
+ 146:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 
+ 147:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****    Alternatively, by defining the macro \c __DELAY_ROUND_DOWN__, or
+ 148:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****    \c __DELAY_ROUND_CLOSEST__, before including this header file, the
+ 149:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****    algorithm can be made to round down, or round to closest integer,
+ 150:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****    respectively.
+ 151:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 
+ 152:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****    \note
+ 153:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 
+ 154:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****    The implementation of _delay_ms() based on
+ 155:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****    __builtin_avr_delay_cycles() is not backward compatible with older
+ 156:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****    implementations.  In order to get functionality backward compatible
+ 157:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****    with previous versions, the macro \c "__DELAY_BACKWARD_COMPATIBLE__"
+ 158:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****    must be defined before including this header file. Also, the
+ 159:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****    backward compatible algorithm will be chosen if the code is
+ 160:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****    compiled in a <em>freestanding environment</em> (GCC option
+ 161:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****    \c -ffreestanding), as the math functions required for rounding are
+ 162:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****    not available to the compiler then.
+ 163:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 
+ 164:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****  */
+ 165:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** void
+ 166:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** _delay_ms(double __ms)
+ 167:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** {
+ 168:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 	double __tmp ;
+ 169:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** #if __HAS_DELAY_CYCLES && defined(__OPTIMIZE__) && \
+ 170:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****   !defined(__DELAY_BACKWARD_COMPATIBLE__) &&	   \
+ 171:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****   __STDC_HOSTED__
+ 172:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 	uint32_t __ticks_dc;
+ 173:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 	extern void __builtin_avr_delay_cycles(unsigned long);
+ 174:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 	__tmp = ((F_CPU) / 1e3) * __ms;
+ 175:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 
+ 176:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 	#if defined(__DELAY_ROUND_DOWN__)
+ 177:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 		__ticks_dc = (uint32_t)fabs(__tmp);
+ 178:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 
+ 179:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 	#elif defined(__DELAY_ROUND_CLOSEST__)
+ 180:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 		__ticks_dc = (uint32_t)(fabs(__tmp)+0.5);
+ 181:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 
+ 182:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 	#else
+ 183:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 		//round up by default
+ 184:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+ 185:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 	#endif
+ 186:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 
+ 187:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 	__builtin_avr_delay_cycles(__ticks_dc);
+ 188:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 
+ 189:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** #else
+ 190:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 	uint16_t __ticks;
+ 191:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 	__tmp = ((F_CPU) / 4e3) * __ms;
+ 192:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 	if (__tmp < 1.0)
+ 193:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 		__ticks = 1;
+ 194:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 	else if (__tmp > 65535)
+ 195:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 	{
+ 196:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 		//	__ticks = requested delay in 1/10 ms
+ 197:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 		__ticks = (uint16_t) (__ms * 10.0);
+ 198:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 		while(__ticks)
+ 199:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 		{
+ 200:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 			// wait 1/10 ms
+ 201:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 			_delay_loop_2(((F_CPU) / 4e3) / 10);
+ 202:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 			__ticks --;
+ 203:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 		}
+ 204:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 		return;
+ 205:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 	}
+ 206:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 	else
+ 207:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 		__ticks = (uint16_t)__tmp;
+ 208:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 	_delay_loop_2(__ticks);
+ 209:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** #endif
+ 210:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** }
+ 211:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 
+ 212:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** /**
+ 213:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****    \ingroup util_delay
+ 214:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 
+ 215:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****    Perform a delay of \c __us microseconds, using _delay_loop_1().
+ 216:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 
+ 217:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****    The macro F_CPU is supposed to be defined to a
+ 218:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****    constant defining the CPU clock frequency (in Hertz).
+ 219:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 
+ 220:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****    The maximal possible delay is 768 us / F_CPU in MHz.
+ 221:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 
+ 222:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****    If the user requests a delay greater than the maximal possible one,
+ 223:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****    _delay_us() will automatically call _delay_ms() instead.  The user
+ 224:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****    will not be informed about this case.
+ 225:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 
+ 226:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****    If the avr-gcc toolchain has __builtin_avr_delay_cycles()
+ 227:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****    support, maximal possible delay is 4294967.295 us/ F_CPU in MHz. For
+ 228:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****    values greater than the maximal possible delay, overflow results in
+ 229:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****    no delay i.e., 0us.
+ 230:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 
+ 231:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****    Conversion of \c __us into clock cycles may not always result in
+ 232:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****    integer.  By default, the clock cycles rounded up to next
+ 233:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****    integer. This ensures that the user gets at least \c __us
+ 234:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****    microseconds of delay.
+ 235:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 
+ 236:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****    Alternatively, by defining the macro \c __DELAY_ROUND_DOWN__, or
+ 237:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****    \c __DELAY_ROUND_CLOSEST__, before including this header file, the
+ 238:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****    algorithm can be made to round down, or round to closest integer,
+ 239:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****    respectively.
+ 240:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 
+ 241:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****    \note
+ 242:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 
+ 243:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****    The implementation of _delay_ms() based on
+ 244:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****    __builtin_avr_delay_cycles() is not backward compatible with older
+ 245:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****    implementations.  In order to get functionality backward compatible
+ 246:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****    with previous versions, the macro \c __DELAY_BACKWARD_COMPATIBLE__
+ 247:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****    must be defined before including this header file. Also, the
+ 248:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****    backward compatible algorithm will be chosen if the code is
+ 249:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****    compiled in a <em>freestanding environment</em> (GCC option
+ 250:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****    \c -ffreestanding), as the math functions required for rounding are
+ 251:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****    not available to the compiler then.
+ 252:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 
+ 253:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****  */
+ 254:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** void
+ 255:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** _delay_us(double __us)
+ 256:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** {
+ 257:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 	double __tmp ;
+ 258:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** #if __HAS_DELAY_CYCLES && defined(__OPTIMIZE__) && \
+ 259:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****   !defined(__DELAY_BACKWARD_COMPATIBLE__) &&	   \
+ 260:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h ****   __STDC_HOSTED__
+ 261:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 	uint32_t __ticks_dc;
+ 262:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 	extern void __builtin_avr_delay_cycles(unsigned long);
+ 263:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 	__tmp = ((F_CPU) / 1e6) * __us;
+ 264:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 
+ 265:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 	#if defined(__DELAY_ROUND_DOWN__)
+ 266:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 		__ticks_dc = (uint32_t)fabs(__tmp);
+ 267:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 
+ 268:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 	#elif defined(__DELAY_ROUND_CLOSEST__)
+ 269:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 		__ticks_dc = (uint32_t)(fabs(__tmp)+0.5);
+ 270:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 
+ 271:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 	#else
+ 272:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 		//round up by default
+ 273:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+ 274:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 	#endif
+ 275:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 
+ 276:c:\msys32\home\683654\qmk_utils\avr8-gnu-toolchain\avr\include\util\delay.h **** 	__builtin_avr_delay_cycles(__ticks_dc);
+ 476               		.loc 2 276 0
+ 477 009c 50EA      		ldi r21,lo8(-96)
+ 478 009e 5A95      	1:	dec r21
+ 479 00a0 01F4      		brne 1b
+ 480               	.LVL30:
+ 481 00a2 A0E0      		ldi r26,lo8(col_pins)
+ 482 00a4 B0E0      		ldi r27,hi8(col_pins)
+ 483 00a6 BA83      		std Y+2,r27
+ 484 00a8 A983      		std Y+1,r26
+ 485 00aa 20E0      		ldi r18,0
+ 486 00ac 30E0      		ldi r19,0
+ 487               	.LVL31:
+ 488               	.L20:
+ 489               	.LBE52:
+ 490               	.LBE51:
+ 491               	.LBB53:
+ 492               	.LBB54:
+ 354:keyboards/Dactylv2_Lightcycle/matrix.c ****         uint8_t pin_state = (_SFR_IO8(pin >> 4) & _BV(pin & 0xF));
+ 493               		.loc 1 354 0
+ 494 00ae A981      		ldd r26,Y+1
+ 495 00b0 BA81      		ldd r27,Y+2
+ 496 00b2 3D90      		ld r3,X+
+ 497 00b4 BA83      		std Y+2,r27
+ 498 00b6 A983      		std Y+1,r26
+ 499               	.LVL32:
+ 355:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 500               		.loc 1 355 0
+ 501 00b8 432D      		mov r20,r3
+ 502 00ba 4295      		swap r20
+ 503 00bc 4F70      		andi r20,lo8(15)
+ 504 00be 50E0      		ldi r21,0
+ 505 00c0 DA01      		movw r26,r20
+ 506 00c2 9096      		adiw r26,32
+ 507 00c4 2C90      		ld r2,X
+ 508               	.LVL33:
+ 358:keyboards/Dactylv2_Lightcycle/matrix.c ****     }
+ 509               		.loc 1 358 0
+ 510 00c6 AB81      		ldd r26,Y+3
+ 511 00c8 BC81      		ldd r27,Y+4
+ 512 00ca 4C90      		ld r4,X
+ 355:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 513               		.loc 1 355 0
+ 514 00cc 432D      		mov r20,r3
+ 515 00ce 4F70      		andi r20,lo8(15)
+ 516               	.LVL34:
+ 517 00d0 D501      		movw r26,r10
+ 518 00d2 00C0      		rjmp 2f
+ 519               		1:
+ 520 00d4 AA0F      		lsl r26
+ 521 00d6 BB1F      		rol r27
+ 522               		2:
+ 523 00d8 4A95      		dec r20
+ 524 00da 02F4      		brpl 1b
+ 525 00dc AD01      		movw r20,r26
+ 526               	.LVL35:
+ 527 00de 4221      		and r20,r2
+ 358:keyboards/Dactylv2_Lightcycle/matrix.c ****     }
+ 528               		.loc 1 358 0
+ 529 00e0 01F4      		brne .L28
+ 530 00e2 4A2D      		mov r20,r10
+ 531 00e4 022E      		mov r0,r18
+ 532 00e6 00C0      		rjmp 2f
+ 533               		1:
+ 534 00e8 440F      		lsl r20
+ 535               		2:
+ 536 00ea 0A94      		dec r0
+ 537 00ec 02F4      		brpl 1b
+ 538 00ee 00C0      		rjmp .L19
+ 539               	.L28:
+ 540 00f0 40E0      		ldi r20,0
+ 541               	.L19:
+ 542 00f2 4429      		or r20,r4
+ 543 00f4 AB81      		ldd r26,Y+3
+ 544 00f6 BC81      		ldd r27,Y+4
+ 545 00f8 4C93      		st X,r20
+ 546               	.LVL36:
+ 547 00fa 2F5F      		subi r18,-1
+ 548 00fc 3F4F      		sbci r19,-1
+ 549               	.LVL37:
+ 550               	.LBE54:
+ 351:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 551               		.loc 1 351 0
+ 552 00fe 2630      		cpi r18,6
+ 553 0100 3105      		cpc r19,__zero_reg__
+ 554 0102 01F4      		brne .L20
+ 555               	.LVL38:
+ 556               	.LBE53:
+ 557               	.LBB55:
+ 558               	.LBB56:
+ 377:keyboards/Dactylv2_Lightcycle/matrix.c ****     _SFR_IO8((pin >> 4) + 2) |=  _BV(pin & 0xF); // HI
+ 559               		.loc 1 377 0
+ 560 0104 91A1      		ldd r25,Z+33
+ 561 0106 6922      		and r6,r25
+ 562 0108 61A2      		std Z+33,r6
+ 378:keyboards/Dactylv2_Lightcycle/matrix.c **** }
+ 563               		.loc 1 378 0
+ 564 010a 92A1      		ldd r25,Z+34
+ 565 010c 892B      		or r24,r25
+ 566 010e 82A3      		std Z+34,r24
+ 567 0110 1196      		adiw r26,1
+ 568 0112 BC83      		std Y+4,r27
+ 569 0114 AB83      		std Y+3,r26
+ 570               	.LBE56:
+ 571               	.LBE55:
+ 572               	.LBE57:
+ 573               	.LBE58:
+ 155:keyboards/Dactylv2_Lightcycle/matrix.c ****                 debouncing = true;
+ 574               		.loc 1 155 0
+ 575 0116 FB01      		movw r30,r22
+ 576 0118 8081      		ld r24,Z
+ 577 011a 5816      		cp r5,r24
+ 578 011c 01F0      		breq .L21
+ 156:keyboards/Dactylv2_Lightcycle/matrix.c ****                 debouncing_time = timer_read();
+ 579               		.loc 1 156 0
+ 580 011e 8092 0000 		sts debouncing,r8
+ 157:keyboards/Dactylv2_Lightcycle/matrix.c ****                 PORTD ^= (1 << 2);
+ 581               		.loc 1 157 0
+ 582 0122 0E94 0000 		call timer_read
+ 583               	.LVL39:
+ 584 0126 9093 0000 		sts debouncing_time+1,r25
+ 585 012a 8093 0000 		sts debouncing_time,r24
+ 158:keyboards/Dactylv2_Lightcycle/matrix.c ****             }
+ 586               		.loc 1 158 0
+ 587 012e 8BB1      		in r24,0xb
+ 588 0130 8925      		eor r24,r9
+ 589 0132 8BB9      		out 0xb,r24
+ 590               	.L21:
+ 591               	.LBE44:
+ 151:keyboards/Dactylv2_Lightcycle/matrix.c **** #       if (DEBOUNCING_DELAY > 0)
+ 592               		.loc 1 151 0 discriminator 2
+ 593 0134 7012      		cpse r7,r16
+ 594 0136 00C0      		rjmp .L22
+ 595               	.LBE43:
+ 184:keyboards/Dactylv2_Lightcycle/matrix.c ****             for (uint8_t i = 0; i < ROWS_PER_HAND; i++) {
+ 596               		.loc 1 184 0
+ 597 0138 8091 0000 		lds r24,debouncing
+ 598 013c 8823      		tst r24
+ 599 013e 01F0      		breq .L24
+ 184:keyboards/Dactylv2_Lightcycle/matrix.c ****             for (uint8_t i = 0; i < ROWS_PER_HAND; i++) {
+ 600               		.loc 1 184 0 is_stmt 0 discriminator 1
+ 601 0140 8091 0000 		lds r24,debouncing_time
+ 602 0144 9091 0000 		lds r25,debouncing_time+1
+ 603 0148 0E94 0000 		call timer_elapsed
+ 604               	.LVL40:
+ 605 014c 0697      		sbiw r24,6
+ 606 014e 00F0      		brlo .L24
+ 607 0150 80E0      		ldi r24,0
+ 608 0152 90E0      		ldi r25,0
+ 609               	.L26:
+ 610               	.LVL41:
+ 611 0154 FC01      		movw r30,r24
+ 612 0156 EC0D      		add r30,r12
+ 613 0158 FD1D      		adc r31,r13
+ 614 015a E050      		subi r30,lo8(-(matrix))
+ 615 015c F040      		sbci r31,hi8(-(matrix))
+ 616 015e D701      		movw r26,r14
+ 617 0160 A80F      		add r26,r24
+ 618 0162 B91F      		adc r27,r25
+ 619               	.LBB59:
+ 186:keyboards/Dactylv2_Lightcycle/matrix.c ****             }
+ 620               		.loc 1 186 0 is_stmt 1 discriminator 3
+ 621 0164 2C91      		ld r18,X
+ 622 0166 2083      		st Z,r18
+ 623               	.LVL42:
+ 624 0168 0196      		adiw r24,1
+ 625               	.LVL43:
+ 185:keyboards/Dactylv2_Lightcycle/matrix.c ****                 matrix[i+offset] = matrix_debouncing[i+offset];
+ 626               		.loc 1 185 0 discriminator 3
+ 627 016a 8730      		cpi r24,7
+ 628 016c 9105      		cpc r25,__zero_reg__
+ 629 016e 01F4      		brne .L26
+ 630               	.LBE59:
+ 188:keyboards/Dactylv2_Lightcycle/matrix.c ****         }
+ 631               		.loc 1 188 0
+ 632 0170 1092 0000 		sts debouncing,__zero_reg__
+ 633               	.LVL44:
+ 634               	.L24:
+ 193:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 635               		.loc 1 193 0
+ 636 0174 81E0      		ldi r24,lo8(1)
+ 637               	/* epilogue start */
+ 638 0176 0F90      		pop __tmp_reg__
+ 639 0178 0F90      		pop __tmp_reg__
+ 640 017a 0F90      		pop __tmp_reg__
+ 641 017c 0F90      		pop __tmp_reg__
+ 642 017e DF91      		pop r29
+ 643 0180 CF91      		pop r28
+ 644 0182 1F91      		pop r17
+ 645 0184 0F91      		pop r16
+ 646 0186 FF90      		pop r15
+ 647 0188 EF90      		pop r14
+ 648 018a DF90      		pop r13
+ 649 018c CF90      		pop r12
+ 650               	.LVL45:
+ 651 018e BF90      		pop r11
+ 652 0190 AF90      		pop r10
+ 653 0192 9F90      		pop r9
+ 654 0194 8F90      		pop r8
+ 655 0196 7F90      		pop r7
+ 656 0198 6F90      		pop r6
+ 657 019a 5F90      		pop r5
+ 658               	.LVL46:
+ 659 019c 4F90      		pop r4
+ 660 019e 3F90      		pop r3
+ 661               	.LVL47:
+ 662 01a0 2F90      		pop r2
+ 663 01a2 0895      		ret
+ 664               		.cfi_endproc
+ 665               	.LFE16:
+ 667               		.section	.text.serial_transaction,"ax",@progbits
+ 668               	.global	serial_transaction
+ 670               	serial_transaction:
+ 671               	.LFB17:
+ 230:keyboards/Dactylv2_Lightcycle/matrix.c ****     int slaveOffset = (isLeftHand) ? (ROWS_PER_HAND) : 0;
+ 672               		.loc 1 230 0
+ 673               		.cfi_startproc
+ 674 0000 CF93      		push r28
+ 675               	.LCFI20:
+ 676               		.cfi_def_cfa_offset 3
+ 677               		.cfi_offset 28, -2
+ 678 0002 DF93      		push r29
+ 679               	.LCFI21:
+ 680               		.cfi_def_cfa_offset 4
+ 681               		.cfi_offset 29, -3
+ 682               	/* prologue: function */
+ 683               	/* frame size = 0 */
+ 684               	/* stack size = 2 */
+ 685               	.L__stack_usage = 2
+ 231:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 686               		.loc 1 231 0
+ 687 0004 8091 0000 		lds r24,isLeftHand
+ 688 0008 8111      		cpse r24,__zero_reg__
+ 689 000a 00C0      		rjmp .L36
+ 690 000c C0E0      		ldi r28,0
+ 691 000e D0E0      		ldi r29,0
+ 692 0010 00C0      		rjmp .L33
+ 693               	.L36:
+ 694 0012 C7E0      		ldi r28,lo8(7)
+ 695 0014 D0E0      		ldi r29,0
+ 696               	.L33:
+ 697               	.LVL48:
+ 233:keyboards/Dactylv2_Lightcycle/matrix.c ****         return 1;
+ 698               		.loc 1 233 0 discriminator 4
+ 699 0016 0E94 0000 		call serial_update_buffers
+ 700               	.LVL49:
+ 701 001a 0097      		sbiw r24,0
+ 702 001c 01F4      		brne .L37
+ 703 001e 20E0      		ldi r18,0
+ 704 0020 30E0      		ldi r19,0
+ 705               	.L35:
+ 706               	.LVL50:
+ 707               	.LBB60:
+ 238:keyboards/Dactylv2_Lightcycle/matrix.c ****     }
+ 708               		.loc 1 238 0 discriminator 3
+ 709 0022 F901      		movw r30,r18
+ 710 0024 E050      		subi r30,lo8(-(serial_slave_buffer))
+ 711 0026 F040      		sbci r31,hi8(-(serial_slave_buffer))
+ 712 0028 4081      		ld r20,Z
+ 713 002a F901      		movw r30,r18
+ 714 002c EC0F      		add r30,r28
+ 715 002e FD1F      		adc r31,r29
+ 716 0030 E050      		subi r30,lo8(-(matrix))
+ 717 0032 F040      		sbci r31,hi8(-(matrix))
+ 718 0034 4083      		st Z,r20
+ 237:keyboards/Dactylv2_Lightcycle/matrix.c ****         matrix[slaveOffset+i] = serial_slave_buffer[i];
+ 719               		.loc 1 237 0 discriminator 3
+ 720 0036 2F5F      		subi r18,-1
+ 721 0038 3F4F      		sbci r19,-1
+ 722               	.LVL51:
+ 723 003a 2730      		cpi r18,7
+ 724 003c 3105      		cpc r19,__zero_reg__
+ 725 003e 01F4      		brne .L35
+ 726 0040 00C0      		rjmp .L34
+ 727               	.LVL52:
+ 728               	.L37:
+ 729               	.LBE60:
+ 234:keyboards/Dactylv2_Lightcycle/matrix.c ****     }
+ 730               		.loc 1 234 0
+ 731 0042 81E0      		ldi r24,lo8(1)
+ 732 0044 90E0      		ldi r25,0
+ 733               	.L34:
+ 734               	/* epilogue start */
+ 241:keyboards/Dactylv2_Lightcycle/matrix.c **** #endif
+ 735               		.loc 1 241 0
+ 736 0046 DF91      		pop r29
+ 737 0048 CF91      		pop r28
+ 738               	.LVL53:
+ 739 004a 0895      		ret
+ 740               		.cfi_endproc
+ 741               	.LFE17:
+ 743               		.section	.text.matrix_scan,"ax",@progbits
+ 744               	.global	matrix_scan
+ 746               	matrix_scan:
+ 747               	.LFB18:
+ 245:keyboards/Dactylv2_Lightcycle/matrix.c ****     uint8_t ret = _matrix_scan();
+ 748               		.loc 1 245 0
+ 749               		.cfi_startproc
+ 750 0000 CF93      		push r28
+ 751               	.LCFI22:
+ 752               		.cfi_def_cfa_offset 3
+ 753               		.cfi_offset 28, -2
+ 754               	/* prologue: function */
+ 755               	/* frame size = 0 */
+ 756               	/* stack size = 1 */
+ 757               	.L__stack_usage = 1
+ 246:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 758               		.loc 1 246 0
+ 759 0002 0E94 0000 		call _matrix_scan
+ 760               	.LVL54:
+ 761 0006 C82F      		mov r28,r24
+ 762               	.LVL55:
+ 251:keyboards/Dactylv2_Lightcycle/matrix.c **** #endif
+ 763               		.loc 1 251 0
+ 764 0008 0E94 0000 		call serial_transaction
+ 765               	.LVL56:
+ 766 000c 892B      		or r24,r25
+ 767 000e 01F0      		breq .L40
+ 254:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 768               		.loc 1 254 0
+ 769 0010 5D98      		cbi 0xb,5
+ 256:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 770               		.loc 1 256 0
+ 771 0012 9091 0000 		lds r25,error_count
+ 772 0016 9F5F      		subi r25,lo8(-(1))
+ 773 0018 9093 0000 		sts error_count,r25
+ 258:keyboards/Dactylv2_Lightcycle/matrix.c ****             // reset other half if disconnected
+ 774               		.loc 1 258 0
+ 775 001c 9630      		cpi r25,lo8(6)
+ 776 001e 00F0      		brlo .L42
+ 777               	.LBB61:
+ 260:keyboards/Dactylv2_Lightcycle/matrix.c ****             for (int i = 0; i < ROWS_PER_HAND; ++i) {
+ 778               		.loc 1 260 0
+ 779 0020 8091 0000 		lds r24,isLeftHand
+ 780 0024 8111      		cpse r24,__zero_reg__
+ 781 0026 00C0      		rjmp .L46
+ 782 0028 40E0      		ldi r20,0
+ 783 002a 50E0      		ldi r21,0
+ 784 002c 00C0      		rjmp .L43
+ 785               	.L46:
+ 786 002e 47E0      		ldi r20,lo8(7)
+ 787 0030 50E0      		ldi r21,0
+ 788               	.L43:
+ 789               	.LVL57:
+ 790               	.LBB62:
+ 261:keyboards/Dactylv2_Lightcycle/matrix.c ****                 matrix[slaveOffset+i] = 0;
+ 791               		.loc 1 261 0 discriminator 4
+ 792 0032 20E0      		ldi r18,0
+ 793 0034 30E0      		ldi r19,0
+ 794               	.LVL58:
+ 795               	.L44:
+ 796 0036 F901      		movw r30,r18
+ 797 0038 E40F      		add r30,r20
+ 798 003a F51F      		adc r31,r21
+ 799 003c E050      		subi r30,lo8(-(matrix))
+ 800 003e F040      		sbci r31,hi8(-(matrix))
+ 262:keyboards/Dactylv2_Lightcycle/matrix.c ****             }
+ 801               		.loc 1 262 0 discriminator 3
+ 802 0040 1082      		st Z,__zero_reg__
+ 261:keyboards/Dactylv2_Lightcycle/matrix.c ****                 matrix[slaveOffset+i] = 0;
+ 803               		.loc 1 261 0 discriminator 3
+ 804 0042 2F5F      		subi r18,-1
+ 805 0044 3F4F      		sbci r19,-1
+ 806               	.LVL59:
+ 807 0046 2730      		cpi r18,7
+ 808 0048 3105      		cpc r19,__zero_reg__
+ 809 004a 01F4      		brne .L44
+ 810 004c 00C0      		rjmp .L42
+ 811               	.LVL60:
+ 812               	.L40:
+ 813               	.LBE62:
+ 814               	.LBE61:
+ 267:keyboards/Dactylv2_Lightcycle/matrix.c ****         error_count = 0;
+ 815               		.loc 1 267 0
+ 816 004e 5D9A      		sbi 0xb,5
+ 268:keyboards/Dactylv2_Lightcycle/matrix.c ****     }
+ 817               		.loc 1 268 0
+ 818 0050 1092 0000 		sts error_count,__zero_reg__
+ 819               	.L42:
+ 270:keyboards/Dactylv2_Lightcycle/matrix.c ****     return ret;
+ 820               		.loc 1 270 0
+ 821 0054 0E94 0000 		call matrix_scan_quantum
+ 822               	.LVL61:
+ 272:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 823               		.loc 1 272 0
+ 824 0058 8C2F      		mov r24,r28
+ 825               	/* epilogue start */
+ 826 005a CF91      		pop r28
+ 827               	.LVL62:
+ 828 005c 0895      		ret
+ 829               		.cfi_endproc
+ 830               	.LFE18:
+ 832               		.section	.text.matrix_slave_scan,"ax",@progbits
+ 833               	.global	matrix_slave_scan
+ 835               	matrix_slave_scan:
+ 836               	.LFB19:
+ 274:keyboards/Dactylv2_Lightcycle/matrix.c ****     _matrix_scan();
+ 837               		.loc 1 274 0
+ 838               		.cfi_startproc
+ 839               	/* prologue: function */
+ 840               	/* frame size = 0 */
+ 841               	/* stack size = 0 */
+ 842               	.L__stack_usage = 0
+ 275:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 843               		.loc 1 275 0
+ 844 0000 0E94 0000 		call _matrix_scan
+ 845               	.LVL63:
+ 277:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 846               		.loc 1 277 0
+ 847 0004 8091 0000 		lds r24,isLeftHand
+ 848 0008 8111      		cpse r24,__zero_reg__
+ 849 000a 00C0      		rjmp .L51
+ 850 000c 27E0      		ldi r18,lo8(7)
+ 851 000e 30E0      		ldi r19,0
+ 852 0010 00C0      		rjmp .L49
+ 853               	.L51:
+ 854 0012 20E0      		ldi r18,0
+ 855 0014 30E0      		ldi r19,0
+ 856               	.L49:
+ 857               	.LVL64:
+ 858               	.LBB63:
+ 284:keyboards/Dactylv2_Lightcycle/matrix.c ****         serial_slave_buffer[i] = matrix[offset+i];
+ 859               		.loc 1 284 0 discriminator 4
+ 860 0016 80E0      		ldi r24,0
+ 861 0018 90E0      		ldi r25,0
+ 862               	.LVL65:
+ 863               	.L50:
+ 864 001a FC01      		movw r30,r24
+ 865 001c E20F      		add r30,r18
+ 866 001e F31F      		adc r31,r19
+ 867 0020 E050      		subi r30,lo8(-(matrix))
+ 868 0022 F040      		sbci r31,hi8(-(matrix))
+ 285:keyboards/Dactylv2_Lightcycle/matrix.c ****     }
+ 869               		.loc 1 285 0 discriminator 3
+ 870 0024 4081      		ld r20,Z
+ 871 0026 FC01      		movw r30,r24
+ 872 0028 E050      		subi r30,lo8(-(serial_slave_buffer))
+ 873 002a F040      		sbci r31,hi8(-(serial_slave_buffer))
+ 874 002c 4083      		st Z,r20
+ 284:keyboards/Dactylv2_Lightcycle/matrix.c ****         serial_slave_buffer[i] = matrix[offset+i];
+ 875               		.loc 1 284 0 discriminator 3
+ 876 002e 0196      		adiw r24,1
+ 877               	.LVL66:
+ 878 0030 8730      		cpi r24,7
+ 879 0032 9105      		cpc r25,__zero_reg__
+ 880 0034 01F4      		brne .L50
+ 881               	/* epilogue start */
+ 882               	.LBE63:
+ 288:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 883               		.loc 1 288 0
+ 884 0036 0895      		ret
+ 885               		.cfi_endproc
+ 886               	.LFE19:
+ 888               		.section	.text.matrix_is_modified,"ax",@progbits
+ 889               	.global	matrix_is_modified
+ 891               	matrix_is_modified:
+ 892               	.LFB20:
+ 291:keyboards/Dactylv2_Lightcycle/matrix.c ****     if (debouncing) return false;
+ 893               		.loc 1 291 0
+ 894               		.cfi_startproc
+ 895               	/* prologue: function */
+ 896               	/* frame size = 0 */
+ 897               	/* stack size = 0 */
+ 898               	.L__stack_usage = 0
+ 292:keyboards/Dactylv2_Lightcycle/matrix.c ****     return true;
+ 899               		.loc 1 292 0
+ 900 0000 9091 0000 		lds r25,debouncing
+ 294:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 901               		.loc 1 294 0
+ 902 0004 81E0      		ldi r24,lo8(1)
+ 903 0006 8927      		eor r24,r25
+ 904 0008 0895      		ret
+ 905               		.cfi_endproc
+ 906               	.LFE20:
+ 908               		.section	.text.matrix_is_on,"ax",@progbits
+ 909               	.global	matrix_is_on
+ 911               	matrix_is_on:
+ 912               	.LFB21:
+ 298:keyboards/Dactylv2_Lightcycle/matrix.c ****     return (matrix[row] & ((matrix_row_t)1<<col));
+ 913               		.loc 1 298 0
+ 914               		.cfi_startproc
+ 915               	.LVL67:
+ 916               	/* prologue: function */
+ 917               	/* frame size = 0 */
+ 918               	/* stack size = 0 */
+ 919               	.L__stack_usage = 0
+ 299:keyboards/Dactylv2_Lightcycle/matrix.c **** }
+ 920               		.loc 1 299 0
+ 921 0000 E82F      		mov r30,r24
+ 922 0002 F0E0      		ldi r31,0
+ 923 0004 E050      		subi r30,lo8(-(matrix))
+ 924 0006 F040      		sbci r31,hi8(-(matrix))
+ 925 0008 2081      		ld r18,Z
+ 926 000a 822F      		mov r24,r18
+ 927               	.LVL68:
+ 928 000c 90E0      		ldi r25,0
+ 929 000e 21E0      		ldi r18,lo8(1)
+ 930 0010 30E0      		ldi r19,0
+ 931 0012 00C0      		rjmp 2f
+ 932               		1:
+ 933 0014 220F      		lsl r18
+ 934 0016 331F      		rol r19
+ 935               		2:
+ 936 0018 6A95      		dec r22
+ 937 001a 02F4      		brpl 1b
+ 938 001c 2823      		and r18,r24
+ 939 001e 3923      		and r19,r25
+ 940 0020 81E0      		ldi r24,lo8(1)
+ 941 0022 232B      		or r18,r19
+ 942 0024 01F4      		brne .L55
+ 943 0026 80E0      		ldi r24,0
+ 944               	.L55:
+ 300:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 945               		.loc 1 300 0
+ 946 0028 0895      		ret
+ 947               		.cfi_endproc
+ 948               	.LFE21:
+ 950               		.section	.text.matrix_get_row,"ax",@progbits
+ 951               	.global	matrix_get_row
+ 953               	matrix_get_row:
+ 954               	.LFB22:
+ 304:keyboards/Dactylv2_Lightcycle/matrix.c ****     return matrix[row];
+ 955               		.loc 1 304 0
+ 956               		.cfi_startproc
+ 957               	.LVL69:
+ 958               	/* prologue: function */
+ 959               	/* frame size = 0 */
+ 960               	/* stack size = 0 */
+ 961               	.L__stack_usage = 0
+ 305:keyboards/Dactylv2_Lightcycle/matrix.c **** }
+ 962               		.loc 1 305 0
+ 963 0000 E82F      		mov r30,r24
+ 964 0002 F0E0      		ldi r31,0
+ 965 0004 E050      		subi r30,lo8(-(matrix))
+ 966 0006 F040      		sbci r31,hi8(-(matrix))
+ 306:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 967               		.loc 1 306 0
+ 968 0008 8081      		ld r24,Z
+ 969               	.LVL70:
+ 970 000a 0895      		ret
+ 971               		.cfi_endproc
+ 972               	.LFE22:
+ 974               		.section	.text.matrix_print,"ax",@progbits
+ 975               	.global	matrix_print
+ 977               	matrix_print:
+ 978               	.LFB23:
+ 309:keyboards/Dactylv2_Lightcycle/matrix.c ****     print("\nr/c 0123456789ABCDEF\n");
+ 979               		.loc 1 309 0
+ 980               		.cfi_startproc
+ 981 0000 CF92      		push r12
+ 982               	.LCFI23:
+ 983               		.cfi_def_cfa_offset 3
+ 984               		.cfi_offset 12, -2
+ 985 0002 DF92      		push r13
+ 986               	.LCFI24:
+ 987               		.cfi_def_cfa_offset 4
+ 988               		.cfi_offset 13, -3
+ 989 0004 EF92      		push r14
+ 990               	.LCFI25:
+ 991               		.cfi_def_cfa_offset 5
+ 992               		.cfi_offset 14, -4
+ 993 0006 FF92      		push r15
+ 994               	.LCFI26:
+ 995               		.cfi_def_cfa_offset 6
+ 996               		.cfi_offset 15, -5
+ 997 0008 0F93      		push r16
+ 998               	.LCFI27:
+ 999               		.cfi_def_cfa_offset 7
+ 1000               		.cfi_offset 16, -6
+ 1001 000a 1F93      		push r17
+ 1002               	.LCFI28:
+ 1003               		.cfi_def_cfa_offset 8
+ 1004               		.cfi_offset 17, -7
+ 1005 000c CF93      		push r28
+ 1006               	.LCFI29:
+ 1007               		.cfi_def_cfa_offset 9
+ 1008               		.cfi_offset 28, -8
+ 1009 000e DF93      		push r29
+ 1010               	.LCFI30:
+ 1011               		.cfi_def_cfa_offset 10
+ 1012               		.cfi_offset 29, -9
+ 1013               	/* prologue: function */
+ 1014               	/* frame size = 0 */
+ 1015               	/* stack size = 8 */
+ 1016               	.L__stack_usage = 8
+ 310:keyboards/Dactylv2_Lightcycle/matrix.c ****     for (uint8_t row = 0; row < MATRIX_ROWS; row++) {
+ 1017               		.loc 1 310 0
+ 1018 0010 80E0      		ldi r24,lo8(__c.2026)
+ 1019 0012 90E0      		ldi r25,hi8(__c.2026)
+ 1020 0014 0E94 0000 		call xputs
+ 1021 0018 80E0      		ldi r24,lo8(matrix)
+ 1022 001a E82E      		mov r14,r24
+ 1023 001c 80E0      		ldi r24,hi8(matrix)
+ 1024 001e F82E      		mov r15,r24
+ 1025 0020 C0E0      		ldi r28,0
+ 1026 0022 D0E0      		ldi r29,0
+ 1027               	.LBB64:
+ 312:keyboards/Dactylv2_Lightcycle/matrix.c ****         pbin_reverse16(matrix_get_row(row));
+ 1028               		.loc 1 312 0
+ 1029 0024 90E0      		ldi r25,lo8(__c.2029)
+ 1030 0026 C92E      		mov r12,r25
+ 1031 0028 90E0      		ldi r25,hi8(__c.2029)
+ 1032 002a D92E      		mov r13,r25
+ 313:keyboards/Dactylv2_Lightcycle/matrix.c ****         print("\n");
+ 1033               		.loc 1 313 0
+ 1034 002c 00E0      		ldi r16,lo8(__c.2033)
+ 1035 002e 10E0      		ldi r17,hi8(__c.2033)
+ 1036               	.L58:
+ 312:keyboards/Dactylv2_Lightcycle/matrix.c ****         pbin_reverse16(matrix_get_row(row));
+ 1037               		.loc 1 312 0 discriminator 3
+ 1038 0030 DF93      		push r29
+ 1039               	.LCFI31:
+ 1040               		.cfi_def_cfa_offset 11
+ 1041 0032 CF93      		push r28
+ 1042               	.LCFI32:
+ 1043               		.cfi_def_cfa_offset 12
+ 1044 0034 DF92      		push r13
+ 1045               	.LCFI33:
+ 1046               		.cfi_def_cfa_offset 13
+ 1047 0036 CF92      		push r12
+ 1048               	.LCFI34:
+ 1049               		.cfi_def_cfa_offset 14
+ 1050 0038 0E94 0000 		call __xprintf
+ 1051 003c 80E0      		ldi r24,lo8(__c.2031)
+ 1052 003e 90E0      		ldi r25,hi8(__c.2031)
+ 1053 0040 0E94 0000 		call xputs
+ 1054               	.LBB65:
+ 1055               	.LBB66:
+ 305:keyboards/Dactylv2_Lightcycle/matrix.c **** }
+ 1056               		.loc 1 305 0 discriminator 3
+ 1057 0044 F701      		movw r30,r14
+ 1058 0046 8191      		ld r24,Z+
+ 1059 0048 7F01      		movw r14,r30
+ 1060               	.LBE66:
+ 1061               	.LBE65:
+ 313:keyboards/Dactylv2_Lightcycle/matrix.c ****         print("\n");
+ 1062               		.loc 1 313 0 discriminator 3
+ 1063 004a 90E0      		ldi r25,0
+ 1064 004c 0E94 0000 		call bitrev16
+ 1065 0050 9F93      		push r25
+ 1066               	.LCFI35:
+ 1067               		.cfi_def_cfa_offset 15
+ 1068 0052 8F93      		push r24
+ 1069               	.LCFI36:
+ 1070               		.cfi_def_cfa_offset 16
+ 1071 0054 1F93      		push r17
+ 1072               	.LCFI37:
+ 1073               		.cfi_def_cfa_offset 17
+ 1074 0056 0F93      		push r16
+ 1075               	.LCFI38:
+ 1076               		.cfi_def_cfa_offset 18
+ 1077 0058 0E94 0000 		call __xprintf
+ 314:keyboards/Dactylv2_Lightcycle/matrix.c ****     }
+ 1078               		.loc 1 314 0 discriminator 3
+ 1079 005c 80E0      		ldi r24,lo8(__c.2035)
+ 1080 005e 90E0      		ldi r25,hi8(__c.2035)
+ 1081 0060 0E94 0000 		call xputs
+ 1082 0064 2196      		adiw r28,1
+ 311:keyboards/Dactylv2_Lightcycle/matrix.c ****         phex(row); print(": ");
+ 1083               		.loc 1 311 0 discriminator 3
+ 1084 0066 8DB7      		in r24,__SP_L__
+ 1085 0068 9EB7      		in r25,__SP_H__
+ 1086 006a 0896      		adiw r24,8
+ 1087 006c 0FB6      		in __tmp_reg__,__SREG__
+ 1088 006e F894      		cli
+ 1089 0070 9EBF      		out __SP_H__,r25
+ 1090 0072 0FBE      		out __SREG__,__tmp_reg__
+ 1091 0074 8DBF      		out __SP_L__,r24
+ 1092               	.LCFI39:
+ 1093               		.cfi_def_cfa_offset 10
+ 1094 0076 CE30      		cpi r28,14
+ 1095 0078 D105      		cpc r29,__zero_reg__
+ 1096 007a 01F4      		brne .L58
+ 1097               	/* epilogue start */
+ 1098               	.LBE64:
+ 316:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 1099               		.loc 1 316 0
+ 1100 007c DF91      		pop r29
+ 1101 007e CF91      		pop r28
+ 1102 0080 1F91      		pop r17
+ 1103 0082 0F91      		pop r16
+ 1104 0084 FF90      		pop r15
+ 1105 0086 EF90      		pop r14
+ 1106 0088 DF90      		pop r13
+ 1107 008a CF90      		pop r12
+ 1108 008c 0895      		ret
+ 1109               		.cfi_endproc
+ 1110               	.LFE23:
+ 1112               		.section	.text.matrix_key_count,"ax",@progbits
+ 1113               	.global	matrix_key_count
+ 1115               	matrix_key_count:
+ 1116               	.LFB24:
+ 319:keyboards/Dactylv2_Lightcycle/matrix.c ****     uint8_t count = 0;
+ 1117               		.loc 1 319 0
+ 1118               		.cfi_startproc
+ 1119 0000 0F93      		push r16
+ 1120               	.LCFI40:
+ 1121               		.cfi_def_cfa_offset 3
+ 1122               		.cfi_offset 16, -2
+ 1123 0002 1F93      		push r17
+ 1124               	.LCFI41:
+ 1125               		.cfi_def_cfa_offset 4
+ 1126               		.cfi_offset 17, -3
+ 1127 0004 CF93      		push r28
+ 1128               	.LCFI42:
+ 1129               		.cfi_def_cfa_offset 5
+ 1130               		.cfi_offset 28, -4
+ 1131 0006 DF93      		push r29
+ 1132               	.LCFI43:
+ 1133               		.cfi_def_cfa_offset 6
+ 1134               		.cfi_offset 29, -5
+ 1135               	/* prologue: function */
+ 1136               	/* frame size = 0 */
+ 1137               	/* stack size = 4 */
+ 1138               	.L__stack_usage = 4
+ 1139               	.LVL71:
+ 319:keyboards/Dactylv2_Lightcycle/matrix.c ****     uint8_t count = 0;
+ 1140               		.loc 1 319 0
+ 1141 0008 C0E0      		ldi r28,lo8(matrix)
+ 1142 000a D0E0      		ldi r29,hi8(matrix)
+ 320:keyboards/Dactylv2_Lightcycle/matrix.c ****     for (uint8_t i = 0; i < MATRIX_ROWS; i++) {
+ 1143               		.loc 1 320 0
+ 1144 000c 10E0      		ldi r17,0
+ 1145 000e 0C2F      		mov r16,r28
+ 1146 0010 025F      		subi r16,lo8(-(14))
+ 1147               	.LVL72:
+ 1148               	.L61:
+ 1149               	.LBB67:
+ 322:keyboards/Dactylv2_Lightcycle/matrix.c ****     }
+ 1150               		.loc 1 322 0 discriminator 3
+ 1151 0012 8991      		ld r24,Y+
+ 1152               	.LVL73:
+ 1153 0014 90E0      		ldi r25,0
+ 1154 0016 0E94 0000 		call bitpop16
+ 1155               	.LVL74:
+ 1156 001a 180F      		add r17,r24
+ 1157               	.LVL75:
+ 321:keyboards/Dactylv2_Lightcycle/matrix.c ****         count += bitpop16(matrix[i]);
+ 1158               		.loc 1 321 0 discriminator 3
+ 1159 001c 0C13      		cpse r16,r28
+ 1160 001e 00C0      		rjmp .L61
+ 1161               	.LBE67:
+ 325:keyboards/Dactylv2_Lightcycle/matrix.c **** 
+ 1162               		.loc 1 325 0
+ 1163 0020 812F      		mov r24,r17
+ 1164               	/* epilogue start */
+ 1165 0022 DF91      		pop r29
+ 1166 0024 CF91      		pop r28
+ 1167               	.LVL76:
+ 1168 0026 1F91      		pop r17
+ 1169               	.LVL77:
+ 1170 0028 0F91      		pop r16
+ 1171 002a 0895      		ret
+ 1172               		.cfi_endproc
+ 1173               	.LFE24:
+ 1175               		.section	.progmem.data.__c.2035,"a",@progbits
+ 1178               	__c.2035:
+ 1179 0000 0A00      		.string	"\n"
+ 1180               		.section	.progmem.data.__c.2033,"a",@progbits
+ 1183               	__c.2033:
+ 1184 0000 2530 3136 		.string	"%016b"
+ 1184      6200 
+ 1185               		.section	.progmem.data.__c.2031,"a",@progbits
+ 1188               	__c.2031:
+ 1189 0000 3A20 00   		.string	": "
+ 1190               		.section	.progmem.data.__c.2029,"a",@progbits
+ 1193               	__c.2029:
+ 1194 0000 2530 3258 		.string	"%02X"
+ 1194      00
+ 1195               		.section	.progmem.data.__c.2026,"a",@progbits
+ 1198               	__c.2026:
+ 1199 0000 0A72 2F63 		.string	"\nr/c 0123456789ABCDEF\n"
+ 1199      2030 3132 
+ 1199      3334 3536 
+ 1199      3738 3941 
+ 1199      4243 4445 
+ 1200               		.section	.bss.matrix,"aw",@nobits
+ 1203               	matrix:
+ 1204 0000 0000 0000 		.zero	14
+ 1204      0000 0000 
+ 1204      0000 0000 
+ 1204      0000 
+ 1205               		.section	.rodata.col_pins,"a",@progbits
+ 1208               	col_pins:
+ 1209 0000 35        		.byte	53
+ 1210 0001 34        		.byte	52
+ 1211 0002 C6        		.byte	-58
+ 1212 0003 97        		.byte	-105
+ 1213 0004 66        		.byte	102
+ 1214 0005 94        		.byte	-108
+ 1215               		.section	.rodata.row_pins,"a",@progbits
+ 1218               	row_pins:
+ 1219 0000 36        		.byte	54
+ 1220 0001 32        		.byte	50
+ 1221 0002 33        		.byte	51
+ 1222 0003 31        		.byte	49
+ 1223 0004 F7        		.byte	-9
+ 1224 0005 F6        		.byte	-10
+ 1225 0006 0000 0000 		.zero	8
+ 1225      0000 0000 
+ 1226               		.section	.bss.error_count,"aw",@nobits
+ 1229               	error_count:
+ 1230 0000 00        		.zero	1
+ 1231               		.section	.bss.matrix_debouncing,"aw",@nobits
+ 1234               	matrix_debouncing:
+ 1235 0000 0000 0000 		.zero	14
+ 1235      0000 0000 
+ 1235      0000 0000 
+ 1235      0000 
+ 1236               		.section	.bss.debouncing,"aw",@nobits
+ 1239               	debouncing:
+ 1240 0000 00        		.zero	1
+ 1241               		.section	.bss.debouncing_time,"aw",@nobits
+ 1244               	debouncing_time:
+ 1245 0000 0000      		.zero	2
+ 1246               		.text
+ 1247               	.Letext0:
+ 1248               		.file 3 "c:\\msys32\\home\\683654\\qmk_utils\\avr8-gnu-toolchain\\avr\\include\\stdint.h"
+ 1249               		.file 4 "./tmk_core/common/debug.h"
+ 1250               		.file 5 "./tmk_core/common/matrix.h"
+ 1251               		.file 6 "./drivers/avr/pro_micro.h"
+ 1252               		.file 7 "keyboards/Dactylv2_Lightcycle/split_util.h"
+ 1253               		.file 8 "keyboards/Dactylv2_Lightcycle/serial.h"
+ 1254               		.file 9 "./tmk_core/common/timer.h"
+ 1255               		.file 10 "./tmk_core/common/util.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 matrix.c
+C:\msys32\tmp\ccFFWlaS.s:2      *ABS*:0000003e __SP_H__
+C:\msys32\tmp\ccFFWlaS.s:3      *ABS*:0000003d __SP_L__
+C:\msys32\tmp\ccFFWlaS.s:4      *ABS*:0000003f __SREG__
+C:\msys32\tmp\ccFFWlaS.s:5      *ABS*:00000000 __tmp_reg__
+C:\msys32\tmp\ccFFWlaS.s:6      *ABS*:00000001 __zero_reg__
+C:\msys32\tmp\ccFFWlaS.s:13     .text.matrix_init_user:00000000 matrix_init_user
+C:\msys32\tmp\ccFFWlaS.s:29     .text.matrix_init_kb:00000000 matrix_init_kb
+C:\msys32\tmp\ccFFWlaS.s:46     .text.matrix_init_quantum:00000000 matrix_init_quantum
+C:\msys32\tmp\ccFFWlaS.s:63     .text.matrix_scan_user:00000000 matrix_scan_user
+C:\msys32\tmp\ccFFWlaS.s:78     .text.matrix_scan_kb:00000000 matrix_scan_kb
+C:\msys32\tmp\ccFFWlaS.s:95     .text.matrix_scan_quantum:00000000 matrix_scan_quantum
+C:\msys32\tmp\ccFFWlaS.s:112    .text.matrix_rows:00000000 matrix_rows
+C:\msys32\tmp\ccFFWlaS.s:129    .text.matrix_cols:00000000 matrix_cols
+C:\msys32\tmp\ccFFWlaS.s:146    .text.matrix_init:00000000 matrix_init
+C:\msys32\tmp\ccFFWlaS.s:1218   .rodata.row_pins:00000000 row_pins
+C:\msys32\tmp\ccFFWlaS.s:1208   .rodata.col_pins:00000000 col_pins
+C:\msys32\tmp\ccFFWlaS.s:1234   .bss.matrix_debouncing:00000000 matrix_debouncing
+C:\msys32\tmp\ccFFWlaS.s:1203   .bss.matrix:00000000 matrix
+C:\msys32\tmp\ccFFWlaS.s:291    .text._matrix_scan:00000000 _matrix_scan
+C:\msys32\tmp\ccFFWlaS.s:1239   .bss.debouncing:00000000 debouncing
+C:\msys32\tmp\ccFFWlaS.s:1244   .bss.debouncing_time:00000000 debouncing_time
+C:\msys32\tmp\ccFFWlaS.s:670    .text.serial_transaction:00000000 serial_transaction
+C:\msys32\tmp\ccFFWlaS.s:746    .text.matrix_scan:00000000 matrix_scan
+C:\msys32\tmp\ccFFWlaS.s:1229   .bss.error_count:00000000 error_count
+C:\msys32\tmp\ccFFWlaS.s:835    .text.matrix_slave_scan:00000000 matrix_slave_scan
+C:\msys32\tmp\ccFFWlaS.s:891    .text.matrix_is_modified:00000000 matrix_is_modified
+C:\msys32\tmp\ccFFWlaS.s:911    .text.matrix_is_on:00000000 matrix_is_on
+C:\msys32\tmp\ccFFWlaS.s:953    .text.matrix_get_row:00000000 matrix_get_row
+C:\msys32\tmp\ccFFWlaS.s:977    .text.matrix_print:00000000 matrix_print
+C:\msys32\tmp\ccFFWlaS.s:1198   .progmem.data.__c.2026:00000000 __c.2026
+C:\msys32\tmp\ccFFWlaS.s:1193   .progmem.data.__c.2029:00000000 __c.2029
+C:\msys32\tmp\ccFFWlaS.s:1183   .progmem.data.__c.2033:00000000 __c.2033
+C:\msys32\tmp\ccFFWlaS.s:1188   .progmem.data.__c.2031:00000000 __c.2031
+C:\msys32\tmp\ccFFWlaS.s:1178   .progmem.data.__c.2035:00000000 __c.2035
+C:\msys32\tmp\ccFFWlaS.s:1115   .text.matrix_key_count:00000000 matrix_key_count
+
+UNDEFINED SYMBOLS
+debug_config
+isLeftHand
+timer_read
+timer_elapsed
+serial_update_buffers
+serial_slave_buffer
+xputs
+__xprintf
+bitrev16
+bitpop16
+__do_copy_data
+__do_clear_bss

@@ -1,0 +1,513 @@
+   1               		.file	"bootloader.c"
+   2               	__SP_H__ = 0x3e
+   3               	__SP_L__ = 0x3d
+   4               	__SREG__ = 0x3f
+   5               	__tmp_reg__ = 0
+   6               	__zero_reg__ = 1
+   7               		.text
+   8               	.Ltext0:
+   9               		.cfi_sections	.debug_frame
+  10               		.section	.text.bootloader_jump,"ax",@progbits
+  11               	.global	bootloader_jump
+  13               	bootloader_jump:
+  14               	.LFB100:
+  15               		.file 1 "./tmk_core/common/avr/bootloader.c"
+   1:./tmk_core/common/avr/bootloader.c **** #include <stdint.h>
+   2:./tmk_core/common/avr/bootloader.c **** #include <stdbool.h>
+   3:./tmk_core/common/avr/bootloader.c **** #include <avr/io.h>
+   4:./tmk_core/common/avr/bootloader.c **** #include <avr/eeprom.h>
+   5:./tmk_core/common/avr/bootloader.c **** #include <avr/interrupt.h>
+   6:./tmk_core/common/avr/bootloader.c **** #include <avr/wdt.h>
+   7:./tmk_core/common/avr/bootloader.c **** #include <util/delay.h>
+   8:./tmk_core/common/avr/bootloader.c **** #include "bootloader.h"
+   9:./tmk_core/common/avr/bootloader.c **** #include <avr/boot.h>
+  10:./tmk_core/common/avr/bootloader.c **** 
+  11:./tmk_core/common/avr/bootloader.c **** #ifdef PROTOCOL_LUFA
+  12:./tmk_core/common/avr/bootloader.c **** #include <LUFA/Drivers/USB/USB.h>
+  13:./tmk_core/common/avr/bootloader.c **** #endif
+  14:./tmk_core/common/avr/bootloader.c **** 
+  15:./tmk_core/common/avr/bootloader.c **** 
+  16:./tmk_core/common/avr/bootloader.c **** /** \brief Bootloader Size in *bytes*
+  17:./tmk_core/common/avr/bootloader.c ****  *
+  18:./tmk_core/common/avr/bootloader.c ****  * AVR Boot section size are defined by setting BOOTSZ fuse in fact. Consult with your MCU datashee
+  19:./tmk_core/common/avr/bootloader.c ****  * Note that 'Word'(2 bytes) size and address are used in datasheet while TMK uses 'Byte'.
+  20:./tmk_core/common/avr/bootloader.c ****  *
+  21:./tmk_core/common/avr/bootloader.c ****  * Size of Bootloaders in bytes:
+  22:./tmk_core/common/avr/bootloader.c ****  *   Atmel DFU loader(ATmega32U4)   4096
+  23:./tmk_core/common/avr/bootloader.c ****  *   Atmel DFU loader(AT90USB128)   8192
+  24:./tmk_core/common/avr/bootloader.c ****  *   LUFA bootloader(ATmega32U4)    4096
+  25:./tmk_core/common/avr/bootloader.c ****  *   Arduino Caterina(ATmega32U4)   4096
+  26:./tmk_core/common/avr/bootloader.c ****  *   USBaspLoader(ATmega***)        2048
+  27:./tmk_core/common/avr/bootloader.c ****  *   Teensy   halfKay(ATmega32U4)   512
+  28:./tmk_core/common/avr/bootloader.c ****  *   Teensy++ halfKay(AT90USB128)   1024
+  29:./tmk_core/common/avr/bootloader.c ****  *
+  30:./tmk_core/common/avr/bootloader.c ****  * AVR Boot section is located at the end of Flash memory like the followings.
+  31:./tmk_core/common/avr/bootloader.c ****  *
+  32:./tmk_core/common/avr/bootloader.c ****  * byte     Atmel/LUFA(ATMega32u4)          byte     Atmel(AT90SUB128)
+  33:./tmk_core/common/avr/bootloader.c ****  * 0x0000   +---------------+               0x00000  +---------------+
+  34:./tmk_core/common/avr/bootloader.c ****  *          |               |                        |               |
+  35:./tmk_core/common/avr/bootloader.c ****  *          |               |                        |               |
+  36:./tmk_core/common/avr/bootloader.c ****  *          |  Application  |                        |  Application  |
+  37:./tmk_core/common/avr/bootloader.c ****  *          |               |                        |               |
+  38:./tmk_core/common/avr/bootloader.c ****  *          =               =                        =               =
+  39:./tmk_core/common/avr/bootloader.c ****  *          |               | 32KB-4KB               |               | 128KB-8KB
+  40:./tmk_core/common/avr/bootloader.c ****  * 0x7000   +---------------+               0x1E000  +---------------+
+  41:./tmk_core/common/avr/bootloader.c ****  *          |  Bootloader   | 4KB                    |  Bootloader   | 8KB
+  42:./tmk_core/common/avr/bootloader.c ****  * 0x7FFF   +---------------+               0x1FFFF  +---------------+
+  43:./tmk_core/common/avr/bootloader.c ****  *
+  44:./tmk_core/common/avr/bootloader.c ****  *
+  45:./tmk_core/common/avr/bootloader.c ****  * byte     Teensy(ATMega32u4)              byte     Teensy++(AT90SUB128)
+  46:./tmk_core/common/avr/bootloader.c ****  * 0x0000   +---------------+               0x00000  +---------------+
+  47:./tmk_core/common/avr/bootloader.c ****  *          |               |                        |               |
+  48:./tmk_core/common/avr/bootloader.c ****  *          |               |                        |               |
+  49:./tmk_core/common/avr/bootloader.c ****  *          |  Application  |                        |  Application  |
+  50:./tmk_core/common/avr/bootloader.c ****  *          |               |                        |               |
+  51:./tmk_core/common/avr/bootloader.c ****  *          =               =                        =               =
+  52:./tmk_core/common/avr/bootloader.c ****  *          |               | 32KB-512B              |               | 128KB-1KB
+  53:./tmk_core/common/avr/bootloader.c ****  * 0x7E00   +---------------+               0x1FC00  +---------------+
+  54:./tmk_core/common/avr/bootloader.c ****  *          |  Bootloader   | 512B                   |  Bootloader   | 1KB
+  55:./tmk_core/common/avr/bootloader.c ****  * 0x7FFF   +---------------+               0x1FFFF  +---------------+
+  56:./tmk_core/common/avr/bootloader.c ****  */
+  57:./tmk_core/common/avr/bootloader.c **** #define FLASH_SIZE (FLASHEND + 1L)
+  58:./tmk_core/common/avr/bootloader.c **** 
+  59:./tmk_core/common/avr/bootloader.c **** #if !defined(BOOTLOADER_SIZE)
+  60:./tmk_core/common/avr/bootloader.c ****     uint16_t bootloader_start;
+  61:./tmk_core/common/avr/bootloader.c **** #endif
+  62:./tmk_core/common/avr/bootloader.c **** 
+  63:./tmk_core/common/avr/bootloader.c **** #define BOOT_SIZE_256  0b110
+  64:./tmk_core/common/avr/bootloader.c **** #define BOOT_SIZE_512  0b100
+  65:./tmk_core/common/avr/bootloader.c **** #define BOOT_SIZE_1024 0b010
+  66:./tmk_core/common/avr/bootloader.c **** #define BOOT_SIZE_2048 0b000
+  67:./tmk_core/common/avr/bootloader.c **** 
+  68:./tmk_core/common/avr/bootloader.c **** /** \brief Entering the Bootloader via Software
+  69:./tmk_core/common/avr/bootloader.c ****  *
+  70:./tmk_core/common/avr/bootloader.c ****  * http://www.fourwalledcubicle.com/files/LUFA/Doc/120730/html/_page__software_bootloader_start.htm
+  71:./tmk_core/common/avr/bootloader.c ****  */
+  72:./tmk_core/common/avr/bootloader.c **** #define BOOTLOADER_RESET_KEY 0xB007B007
+  73:./tmk_core/common/avr/bootloader.c **** uint32_t reset_key  __attribute__ ((section (".noinit")));
+  74:./tmk_core/common/avr/bootloader.c **** 
+  75:./tmk_core/common/avr/bootloader.c **** /** \brief initialize MCU status by watchdog reset
+  76:./tmk_core/common/avr/bootloader.c ****  *
+  77:./tmk_core/common/avr/bootloader.c ****  * FIXME: needs doc
+  78:./tmk_core/common/avr/bootloader.c ****  */
+  79:./tmk_core/common/avr/bootloader.c **** void bootloader_jump(void) {
+  16               		.loc 1 79 0
+  17               		.cfi_startproc
+  18               	/* prologue: function */
+  19               	/* frame size = 0 */
+  20               	/* stack size = 0 */
+  21               	.L__stack_usage = 0
+  80:./tmk_core/common/avr/bootloader.c **** 
+  81:./tmk_core/common/avr/bootloader.c ****     #if !defined(BOOTLOADER_SIZE)
+  82:./tmk_core/common/avr/bootloader.c ****         uint8_t high_fuse = boot_lock_fuse_bits_get(GET_HIGH_FUSE_BITS);
+  83:./tmk_core/common/avr/bootloader.c **** 
+  84:./tmk_core/common/avr/bootloader.c ****         if (high_fuse & BOOT_SIZE_256) {
+  85:./tmk_core/common/avr/bootloader.c ****             bootloader_start = (FLASH_SIZE - 512) >> 1;
+  86:./tmk_core/common/avr/bootloader.c ****         } else if (high_fuse & BOOT_SIZE_512) {
+  87:./tmk_core/common/avr/bootloader.c ****             bootloader_start = (FLASH_SIZE - 1024) >> 1;
+  88:./tmk_core/common/avr/bootloader.c ****         } else if (high_fuse & BOOT_SIZE_1024) {
+  89:./tmk_core/common/avr/bootloader.c ****             bootloader_start = (FLASH_SIZE - 2048) >> 1;
+  90:./tmk_core/common/avr/bootloader.c ****         } else {
+  91:./tmk_core/common/avr/bootloader.c ****             bootloader_start = (FLASH_SIZE - 4096) >> 1;
+  92:./tmk_core/common/avr/bootloader.c ****         }
+  93:./tmk_core/common/avr/bootloader.c ****     #endif
+  94:./tmk_core/common/avr/bootloader.c **** 
+  95:./tmk_core/common/avr/bootloader.c ****     // Something like this might work, but it compiled larger than the block above
+  96:./tmk_core/common/avr/bootloader.c ****     // bootloader_start = FLASH_SIZE - (256 << (~high_fuse & 0b110 >> 1));
+  97:./tmk_core/common/avr/bootloader.c **** 
+  98:./tmk_core/common/avr/bootloader.c **** 
+  99:./tmk_core/common/avr/bootloader.c ****     #if defined(BOOTLOADER_HALFKAY)
+ 100:./tmk_core/common/avr/bootloader.c ****         //  http://www.pjrc.com/teensy/jump_to_bootloader.html
+ 101:./tmk_core/common/avr/bootloader.c ****         cli();
+ 102:./tmk_core/common/avr/bootloader.c ****         // disable watchdog, if enabled (it's not)
+ 103:./tmk_core/common/avr/bootloader.c ****         // disable all peripherals
+ 104:./tmk_core/common/avr/bootloader.c ****         // a shutdown call might make sense here
+ 105:./tmk_core/common/avr/bootloader.c ****         UDCON = 1;
+ 106:./tmk_core/common/avr/bootloader.c ****         USBCON = (1<<FRZCLK);  // disable USB
+ 107:./tmk_core/common/avr/bootloader.c ****         UCSR1B = 0;
+ 108:./tmk_core/common/avr/bootloader.c ****         _delay_ms(5);
+ 109:./tmk_core/common/avr/bootloader.c ****         #if defined(__AVR_AT90USB162__)                // Teensy 1.0
+ 110:./tmk_core/common/avr/bootloader.c ****             EIMSK = 0; PCICR = 0; SPCR = 0; ACSR = 0; EECR = 0;
+ 111:./tmk_core/common/avr/bootloader.c ****             TIMSK0 = 0; TIMSK1 = 0; UCSR1B = 0;
+ 112:./tmk_core/common/avr/bootloader.c ****             DDRB = 0; DDRC = 0; DDRD = 0;
+ 113:./tmk_core/common/avr/bootloader.c ****             PORTB = 0; PORTC = 0; PORTD = 0;
+ 114:./tmk_core/common/avr/bootloader.c ****             asm volatile("jmp 0x3E00");
+ 115:./tmk_core/common/avr/bootloader.c ****         #elif defined(__AVR_ATmega32U4__)              // Teensy 2.0
+ 116:./tmk_core/common/avr/bootloader.c ****             EIMSK = 0; PCICR = 0; SPCR = 0; ACSR = 0; EECR = 0; ADCSRA = 0;
+ 117:./tmk_core/common/avr/bootloader.c ****             TIMSK0 = 0; TIMSK1 = 0; TIMSK3 = 0; TIMSK4 = 0; UCSR1B = 0; TWCR = 0;
+ 118:./tmk_core/common/avr/bootloader.c ****             DDRB = 0; DDRC = 0; DDRD = 0; DDRE = 0; DDRF = 0; TWCR = 0;
+ 119:./tmk_core/common/avr/bootloader.c ****             PORTB = 0; PORTC = 0; PORTD = 0; PORTE = 0; PORTF = 0;
+ 120:./tmk_core/common/avr/bootloader.c ****             asm volatile("jmp 0x7E00");
+ 121:./tmk_core/common/avr/bootloader.c ****         #elif defined(__AVR_AT90USB646__)              // Teensy++ 1.0
+ 122:./tmk_core/common/avr/bootloader.c ****             EIMSK = 0; PCICR = 0; SPCR = 0; ACSR = 0; EECR = 0; ADCSRA = 0;
+ 123:./tmk_core/common/avr/bootloader.c ****             TIMSK0 = 0; TIMSK1 = 0; TIMSK2 = 0; TIMSK3 = 0; UCSR1B = 0; TWCR = 0;
+ 124:./tmk_core/common/avr/bootloader.c ****             DDRA = 0; DDRB = 0; DDRC = 0; DDRD = 0; DDRE = 0; DDRF = 0;
+ 125:./tmk_core/common/avr/bootloader.c ****             PORTA = 0; PORTB = 0; PORTC = 0; PORTD = 0; PORTE = 0; PORTF = 0;
+ 126:./tmk_core/common/avr/bootloader.c ****             asm volatile("jmp 0xFC00");
+ 127:./tmk_core/common/avr/bootloader.c ****         #elif defined(__AVR_AT90USB1286__)             // Teensy++ 2.0
+ 128:./tmk_core/common/avr/bootloader.c ****             EIMSK = 0; PCICR = 0; SPCR = 0; ACSR = 0; EECR = 0; ADCSRA = 0;
+ 129:./tmk_core/common/avr/bootloader.c ****             TIMSK0 = 0; TIMSK1 = 0; TIMSK2 = 0; TIMSK3 = 0; UCSR1B = 0; TWCR = 0;
+ 130:./tmk_core/common/avr/bootloader.c ****             DDRA = 0; DDRB = 0; DDRC = 0; DDRD = 0; DDRE = 0; DDRF = 0;
+ 131:./tmk_core/common/avr/bootloader.c ****             PORTA = 0; PORTB = 0; PORTC = 0; PORTD = 0; PORTE = 0; PORTF = 0;
+ 132:./tmk_core/common/avr/bootloader.c ****             asm volatile("jmp 0x1FC00");
+ 133:./tmk_core/common/avr/bootloader.c ****         #endif
+ 134:./tmk_core/common/avr/bootloader.c **** 
+ 135:./tmk_core/common/avr/bootloader.c ****     #elif defined(BOOTLOADER_CATERINA)
+ 136:./tmk_core/common/avr/bootloader.c ****         // this block may be optional
+ 137:./tmk_core/common/avr/bootloader.c ****         // TODO: figure it out
+ 138:./tmk_core/common/avr/bootloader.c **** 
+ 139:./tmk_core/common/avr/bootloader.c ****         uint16_t *const bootKeyPtr = (uint16_t *)0x0800;
+ 140:./tmk_core/common/avr/bootloader.c **** 
+ 141:./tmk_core/common/avr/bootloader.c ****         // Value used by Caterina bootloader use to determine whether to run the
+ 142:./tmk_core/common/avr/bootloader.c ****         // sketch or the bootloader programmer.
+ 143:./tmk_core/common/avr/bootloader.c ****         uint16_t bootKey = 0x7777;
+ 144:./tmk_core/common/avr/bootloader.c **** 
+ 145:./tmk_core/common/avr/bootloader.c ****         *bootKeyPtr = bootKey;
+ 146:./tmk_core/common/avr/bootloader.c **** 
+ 147:./tmk_core/common/avr/bootloader.c ****         // setup watchdog timeout
+ 148:./tmk_core/common/avr/bootloader.c ****         wdt_enable(WDTO_60MS);
+ 149:./tmk_core/common/avr/bootloader.c **** 
+ 150:./tmk_core/common/avr/bootloader.c ****         while(1) {} // wait for watchdog timer to trigger
+ 151:./tmk_core/common/avr/bootloader.c **** 
+ 152:./tmk_core/common/avr/bootloader.c ****     #else // Assume remaining boards are DFU, even if the flag isn't set
+ 153:./tmk_core/common/avr/bootloader.c **** 
+ 154:./tmk_core/common/avr/bootloader.c ****         #if !(defined(__AVR_ATmega32A__) || defined(__AVR_ATmega328P__)) // no USB - maybe BOOTLOAD
+ 155:./tmk_core/common/avr/bootloader.c ****             UDCON = 1;
+  22               		.loc 1 155 0
+  23 0000 81E0      		ldi r24,lo8(1)
+  24 0002 8093 E000 		sts 224,r24
+ 156:./tmk_core/common/avr/bootloader.c ****             USBCON = (1<<FRZCLK);  // disable USB
+  25               		.loc 1 156 0
+  26 0006 80E2      		ldi r24,lo8(32)
+  27 0008 8093 D800 		sts 216,r24
+ 157:./tmk_core/common/avr/bootloader.c ****             UCSR1B = 0;
+  28               		.loc 1 157 0
+  29 000c 1092 C900 		sts 201,__zero_reg__
+  30               	.LVL0:
+  31               	.LBB4:
+  32               	.LBB5:
+  33               		.file 2 "/usr/lib/avr/include/util/delay.h"
+   1:/usr/lib/avr/include/util/delay.h **** /* Copyright (c) 2002, Marek Michalkiewicz
+   2:/usr/lib/avr/include/util/delay.h ****    Copyright (c) 2004,2005,2007 Joerg Wunsch
+   3:/usr/lib/avr/include/util/delay.h ****    Copyright (c) 2007  Florin-Viorel Petrov
+   4:/usr/lib/avr/include/util/delay.h ****    All rights reserved.
+   5:/usr/lib/avr/include/util/delay.h **** 
+   6:/usr/lib/avr/include/util/delay.h ****    Redistribution and use in source and binary forms, with or without
+   7:/usr/lib/avr/include/util/delay.h ****    modification, are permitted provided that the following conditions are met:
+   8:/usr/lib/avr/include/util/delay.h **** 
+   9:/usr/lib/avr/include/util/delay.h ****    * Redistributions of source code must retain the above copyright
+  10:/usr/lib/avr/include/util/delay.h ****      notice, this list of conditions and the following disclaimer.
+  11:/usr/lib/avr/include/util/delay.h **** 
+  12:/usr/lib/avr/include/util/delay.h ****    * Redistributions in binary form must reproduce the above copyright
+  13:/usr/lib/avr/include/util/delay.h ****      notice, this list of conditions and the following disclaimer in
+  14:/usr/lib/avr/include/util/delay.h ****      the documentation and/or other materials provided with the
+  15:/usr/lib/avr/include/util/delay.h ****      distribution.
+  16:/usr/lib/avr/include/util/delay.h **** 
+  17:/usr/lib/avr/include/util/delay.h ****    * Neither the name of the copyright holders nor the names of
+  18:/usr/lib/avr/include/util/delay.h ****      contributors may be used to endorse or promote products derived
+  19:/usr/lib/avr/include/util/delay.h ****      from this software without specific prior written permission.
+  20:/usr/lib/avr/include/util/delay.h **** 
+  21:/usr/lib/avr/include/util/delay.h ****   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  22:/usr/lib/avr/include/util/delay.h ****   AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  23:/usr/lib/avr/include/util/delay.h ****   IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+  24:/usr/lib/avr/include/util/delay.h ****   ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+  25:/usr/lib/avr/include/util/delay.h ****   LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+  26:/usr/lib/avr/include/util/delay.h ****   CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+  27:/usr/lib/avr/include/util/delay.h ****   SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+  28:/usr/lib/avr/include/util/delay.h ****   INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+  29:/usr/lib/avr/include/util/delay.h ****   CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+  30:/usr/lib/avr/include/util/delay.h ****   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  31:/usr/lib/avr/include/util/delay.h ****   POSSIBILITY OF SUCH DAMAGE. */
+  32:/usr/lib/avr/include/util/delay.h **** 
+  33:/usr/lib/avr/include/util/delay.h **** /* $Id: delay.h.in 2251 2011-09-14 08:20:33Z joerg_wunsch $ */
+  34:/usr/lib/avr/include/util/delay.h **** 
+  35:/usr/lib/avr/include/util/delay.h **** #ifndef _UTIL_DELAY_H_
+  36:/usr/lib/avr/include/util/delay.h **** #define _UTIL_DELAY_H_ 1
+  37:/usr/lib/avr/include/util/delay.h **** 
+  38:/usr/lib/avr/include/util/delay.h **** #ifndef __HAS_DELAY_CYCLES
+  39:/usr/lib/avr/include/util/delay.h **** #define __HAS_DELAY_CYCLES 1
+  40:/usr/lib/avr/include/util/delay.h **** #endif
+  41:/usr/lib/avr/include/util/delay.h **** 
+  42:/usr/lib/avr/include/util/delay.h **** #include <inttypes.h>
+  43:/usr/lib/avr/include/util/delay.h **** #include <util/delay_basic.h>
+  44:/usr/lib/avr/include/util/delay.h **** #include <math.h>
+  45:/usr/lib/avr/include/util/delay.h **** 
+  46:/usr/lib/avr/include/util/delay.h **** /** \file */
+  47:/usr/lib/avr/include/util/delay.h **** /** \defgroup util_delay <util/delay.h>: Convenience functions for busy-wait delay loops
+  48:/usr/lib/avr/include/util/delay.h ****     \code
+  49:/usr/lib/avr/include/util/delay.h ****     #define F_CPU 1000000UL  // 1 MHz
+  50:/usr/lib/avr/include/util/delay.h ****     //#define F_CPU 14.7456E6
+  51:/usr/lib/avr/include/util/delay.h ****     #include <util/delay.h>
+  52:/usr/lib/avr/include/util/delay.h ****     \endcode
+  53:/usr/lib/avr/include/util/delay.h **** 
+  54:/usr/lib/avr/include/util/delay.h ****     \note As an alternative method, it is possible to pass the
+  55:/usr/lib/avr/include/util/delay.h ****     F_CPU macro down to the compiler from the Makefile.
+  56:/usr/lib/avr/include/util/delay.h ****     Obviously, in that case, no \c \#define statement should be
+  57:/usr/lib/avr/include/util/delay.h ****     used.
+  58:/usr/lib/avr/include/util/delay.h **** 
+  59:/usr/lib/avr/include/util/delay.h ****     The functions in this header file are wrappers around the basic
+  60:/usr/lib/avr/include/util/delay.h ****     busy-wait functions from <util/delay_basic.h>.  They are meant as
+  61:/usr/lib/avr/include/util/delay.h ****     convenience functions where actual time values can be specified
+  62:/usr/lib/avr/include/util/delay.h ****     rather than a number of cycles to wait for.  The idea behind is
+  63:/usr/lib/avr/include/util/delay.h ****     that compile-time constant expressions will be eliminated by
+  64:/usr/lib/avr/include/util/delay.h ****     compiler optimization so floating-point expressions can be used
+  65:/usr/lib/avr/include/util/delay.h ****     to calculate the number of delay cycles needed based on the CPU
+  66:/usr/lib/avr/include/util/delay.h ****     frequency passed by the macro F_CPU.
+  67:/usr/lib/avr/include/util/delay.h **** 
+  68:/usr/lib/avr/include/util/delay.h ****     \note In order for these functions to work as intended, compiler
+  69:/usr/lib/avr/include/util/delay.h ****     optimizations <em>must</em> be enabled, and the delay time
+  70:/usr/lib/avr/include/util/delay.h ****     <em>must</em> be an expression that is a known constant at
+  71:/usr/lib/avr/include/util/delay.h ****     compile-time.  If these requirements are not met, the resulting
+  72:/usr/lib/avr/include/util/delay.h ****     delay will be much longer (and basically unpredictable), and
+  73:/usr/lib/avr/include/util/delay.h ****     applications that otherwise do not use floating-point calculations
+  74:/usr/lib/avr/include/util/delay.h ****     will experience severe code bloat by the floating-point library
+  75:/usr/lib/avr/include/util/delay.h ****     routines linked into the application.
+  76:/usr/lib/avr/include/util/delay.h **** 
+  77:/usr/lib/avr/include/util/delay.h ****     The functions available allow the specification of microsecond, and
+  78:/usr/lib/avr/include/util/delay.h ****     millisecond delays directly, using the application-supplied macro
+  79:/usr/lib/avr/include/util/delay.h ****     F_CPU as the CPU clock frequency (in Hertz).
+  80:/usr/lib/avr/include/util/delay.h **** 
+  81:/usr/lib/avr/include/util/delay.h **** */
+  82:/usr/lib/avr/include/util/delay.h **** 
+  83:/usr/lib/avr/include/util/delay.h **** #if !defined(__DOXYGEN__)
+  84:/usr/lib/avr/include/util/delay.h **** static inline void _delay_us(double __us) __attribute__((always_inline));
+  85:/usr/lib/avr/include/util/delay.h **** static inline void _delay_ms(double __ms) __attribute__((always_inline));
+  86:/usr/lib/avr/include/util/delay.h **** #endif
+  87:/usr/lib/avr/include/util/delay.h **** 
+  88:/usr/lib/avr/include/util/delay.h **** #ifndef F_CPU
+  89:/usr/lib/avr/include/util/delay.h **** /* prevent compiler error by supplying a default */
+  90:/usr/lib/avr/include/util/delay.h **** # warning "F_CPU not defined for <util/delay.h>"
+  91:/usr/lib/avr/include/util/delay.h **** # define F_CPU 1000000UL
+  92:/usr/lib/avr/include/util/delay.h **** #endif
+  93:/usr/lib/avr/include/util/delay.h **** 
+  94:/usr/lib/avr/include/util/delay.h **** #ifndef __OPTIMIZE__
+  95:/usr/lib/avr/include/util/delay.h **** # warning "Compiler optimizations disabled; functions from <util/delay.h> won't work as designed"
+  96:/usr/lib/avr/include/util/delay.h **** #endif
+  97:/usr/lib/avr/include/util/delay.h **** 
+  98:/usr/lib/avr/include/util/delay.h **** #if __HAS_DELAY_CYCLES && defined(__OPTIMIZE__) && \
+  99:/usr/lib/avr/include/util/delay.h ****   !defined(__DELAY_BACKWARD_COMPATIBLE__) &&	   \
+ 100:/usr/lib/avr/include/util/delay.h ****   __STDC_HOSTED__
+ 101:/usr/lib/avr/include/util/delay.h **** #  include <math.h>
+ 102:/usr/lib/avr/include/util/delay.h **** #endif
+ 103:/usr/lib/avr/include/util/delay.h **** 
+ 104:/usr/lib/avr/include/util/delay.h **** /**
+ 105:/usr/lib/avr/include/util/delay.h ****    \ingroup util_delay
+ 106:/usr/lib/avr/include/util/delay.h **** 
+ 107:/usr/lib/avr/include/util/delay.h ****    Perform a delay of \c __ms milliseconds, using _delay_loop_2().
+ 108:/usr/lib/avr/include/util/delay.h **** 
+ 109:/usr/lib/avr/include/util/delay.h ****    The macro F_CPU is supposed to be defined to a
+ 110:/usr/lib/avr/include/util/delay.h ****    constant defining the CPU clock frequency (in Hertz).
+ 111:/usr/lib/avr/include/util/delay.h **** 
+ 112:/usr/lib/avr/include/util/delay.h ****    The maximal possible delay is 262.14 ms / F_CPU in MHz.
+ 113:/usr/lib/avr/include/util/delay.h **** 
+ 114:/usr/lib/avr/include/util/delay.h ****    When the user request delay which exceed the maximum possible one,
+ 115:/usr/lib/avr/include/util/delay.h ****    _delay_ms() provides a decreased resolution functionality. In this
+ 116:/usr/lib/avr/include/util/delay.h ****    mode _delay_ms() will work with a resolution of 1/10 ms, providing
+ 117:/usr/lib/avr/include/util/delay.h ****    delays up to 6.5535 seconds (independent from CPU frequency).  The
+ 118:/usr/lib/avr/include/util/delay.h ****    user will not be informed about decreased resolution.
+ 119:/usr/lib/avr/include/util/delay.h **** 
+ 120:/usr/lib/avr/include/util/delay.h ****    If the avr-gcc toolchain has __builtin_avr_delay_cycles(unsigned long)
+ 121:/usr/lib/avr/include/util/delay.h ****    support, maximal possible delay is 4294967.295 ms/ F_CPU in MHz. For
+ 122:/usr/lib/avr/include/util/delay.h ****    values greater than the maximal possible delay, overflows results in
+ 123:/usr/lib/avr/include/util/delay.h ****    no delay i.e., 0ms.
+ 124:/usr/lib/avr/include/util/delay.h **** 
+ 125:/usr/lib/avr/include/util/delay.h ****    Conversion of __us into clock cycles may not always result in integer.
+ 126:/usr/lib/avr/include/util/delay.h ****    By default, the clock cycles rounded up to next integer. This ensures that
+ 127:/usr/lib/avr/include/util/delay.h ****    the user gets atleast __us microseconds of delay.
+ 128:/usr/lib/avr/include/util/delay.h **** 
+ 129:/usr/lib/avr/include/util/delay.h ****    Alternatively, user can define __DELAY_ROUND_DOWN__ and __DELAY_ROUND_CLOSEST__
+ 130:/usr/lib/avr/include/util/delay.h ****    to round down and round to closest integer.
+ 131:/usr/lib/avr/include/util/delay.h **** 
+ 132:/usr/lib/avr/include/util/delay.h ****    Note: The new implementation of _delay_ms(double __ms) with 
+ 133:/usr/lib/avr/include/util/delay.h ****     __builtin_avr_delay_cycles(unsigned long) support is not backward compatible. 
+ 134:/usr/lib/avr/include/util/delay.h ****    User can define __DELAY_BACKWARD_COMPATIBLE__ to get a backward compatible delay.
+ 135:/usr/lib/avr/include/util/delay.h ****    Also, the backward compatible
+ 136:/usr/lib/avr/include/util/delay.h ****    algorithm will be chosen if the code is compiled in a <em>freestanding
+ 137:/usr/lib/avr/include/util/delay.h ****    environment</em> (GCC option \c -ffreestanding), as the math functions
+ 138:/usr/lib/avr/include/util/delay.h ****    required for rounding are not available to the compiler then.
+ 139:/usr/lib/avr/include/util/delay.h **** 
+ 140:/usr/lib/avr/include/util/delay.h ****  */
+ 141:/usr/lib/avr/include/util/delay.h **** void
+ 142:/usr/lib/avr/include/util/delay.h **** _delay_ms(double __ms)
+ 143:/usr/lib/avr/include/util/delay.h **** {
+ 144:/usr/lib/avr/include/util/delay.h **** 	uint16_t __ticks;
+ 145:/usr/lib/avr/include/util/delay.h **** 	double __tmp ; 
+ 146:/usr/lib/avr/include/util/delay.h **** #if __HAS_DELAY_CYCLES && defined(__OPTIMIZE__) && \
+ 147:/usr/lib/avr/include/util/delay.h ****   !defined(__DELAY_BACKWARD_COMPATIBLE__) &&	   \
+ 148:/usr/lib/avr/include/util/delay.h ****   __STDC_HOSTED__
+ 149:/usr/lib/avr/include/util/delay.h **** 	uint32_t __ticks_dc;
+ 150:/usr/lib/avr/include/util/delay.h **** 	extern void __builtin_avr_delay_cycles(unsigned long);
+ 151:/usr/lib/avr/include/util/delay.h **** 	__tmp = ((F_CPU) / 1e3) * __ms;
+ 152:/usr/lib/avr/include/util/delay.h **** 
+ 153:/usr/lib/avr/include/util/delay.h **** 	#if defined(__DELAY_ROUND_DOWN__)
+ 154:/usr/lib/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)fabs(__tmp);
+ 155:/usr/lib/avr/include/util/delay.h **** 
+ 156:/usr/lib/avr/include/util/delay.h **** 	#elif defined(__DELAY_ROUND_CLOSEST__)
+ 157:/usr/lib/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)(fabs(__tmp)+0.5);
+ 158:/usr/lib/avr/include/util/delay.h **** 
+ 159:/usr/lib/avr/include/util/delay.h **** 	#else
+ 160:/usr/lib/avr/include/util/delay.h **** 		//round up by default
+ 161:/usr/lib/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+ 162:/usr/lib/avr/include/util/delay.h **** 	#endif
+ 163:/usr/lib/avr/include/util/delay.h **** 
+ 164:/usr/lib/avr/include/util/delay.h **** 	__builtin_avr_delay_cycles(__ticks_dc);
+  34               		.loc 2 164 0
+  35 0010 8FE1      		ldi r24,lo8(19999)
+  36 0012 9EE4      		ldi r25,hi8(19999)
+  37 0014 0197      		1: sbiw r24,1
+  38 0016 01F4      		brne 1b
+  39 0018 00C0      		rjmp .
+  40 001a 0000      		nop
+  41               	.LBE5:
+  42               	.LBE4:
+ 158:./tmk_core/common/avr/bootloader.c ****             _delay_ms(5); // 5 seems to work fine
+ 159:./tmk_core/common/avr/bootloader.c ****         #endif
+ 160:./tmk_core/common/avr/bootloader.c **** 
+ 161:./tmk_core/common/avr/bootloader.c ****         #ifdef BOOTLOADER_BOOTLOADHID
+ 162:./tmk_core/common/avr/bootloader.c ****             // force bootloadHID to stay in bootloader mode, so that it waits
+ 163:./tmk_core/common/avr/bootloader.c ****             // for a new firmware to be flashed
+ 164:./tmk_core/common/avr/bootloader.c ****             eeprom_write_byte((uint8_t *)1, 0x00);
+ 165:./tmk_core/common/avr/bootloader.c ****         #endif
+ 166:./tmk_core/common/avr/bootloader.c **** 
+ 167:./tmk_core/common/avr/bootloader.c ****         // watchdog reset
+ 168:./tmk_core/common/avr/bootloader.c ****         reset_key = BOOTLOADER_RESET_KEY;
+  43               		.loc 1 168 0
+  44 001c 87E0      		ldi r24,lo8(7)
+  45 001e 90EB      		ldi r25,lo8(-80)
+  46 0020 DC01      		movw r26,r24
+  47 0022 8093 0000 		sts reset_key,r24
+  48 0026 9093 0000 		sts reset_key+1,r25
+  49 002a A093 0000 		sts reset_key+2,r26
+  50 002e B093 0000 		sts reset_key+3,r27
+ 169:./tmk_core/common/avr/bootloader.c ****         wdt_enable(WDTO_250MS);
+  51               		.loc 1 169 0
+  52 0032 2CE0      		ldi r18,lo8(12)
+  53 0034 88E1      		ldi r24,lo8(24)
+  54 0036 90E0      		ldi r25,0
+  55               	/* #APP */
+  56               	 ;  169 "./tmk_core/common/avr/bootloader.c" 1
+  57 0038 0FB6      		in __tmp_reg__,__SREG__
+  58 003a F894      		cli
+  59 003c A895      		wdr
+  60 003e 8093 6000 		sts 96,r24
+  61 0042 0FBE      		out __SREG__,__tmp_reg__
+  62 0044 2093 6000 		sts 96,r18
+  63               		
+  64               	 ;  0 "" 2
+  65               	/* #NOAPP */
+  66               	.L2:
+  67 0048 00C0      		rjmp .L2
+  68               		.cfi_endproc
+  69               	.LFE100:
+  71               		.section	.init3,"ax",@progbits
+  72               	.global	bootloader_jump_after_watchdog_reset
+  74               	bootloader_jump_after_watchdog_reset:
+  75               	.LFB101:
+ 170:./tmk_core/common/avr/bootloader.c ****         for (;;);
+ 171:./tmk_core/common/avr/bootloader.c ****     #endif
+ 172:./tmk_core/common/avr/bootloader.c **** 
+ 173:./tmk_core/common/avr/bootloader.c **** }
+ 174:./tmk_core/common/avr/bootloader.c **** 
+ 175:./tmk_core/common/avr/bootloader.c **** #ifdef __AVR_ATmega32A__
+ 176:./tmk_core/common/avr/bootloader.c ****     // MCUSR is actually called MCUCSR in ATmega32A
+ 177:./tmk_core/common/avr/bootloader.c ****     #define MCUSR MCUCSR
+ 178:./tmk_core/common/avr/bootloader.c **** #endif
+ 179:./tmk_core/common/avr/bootloader.c **** 
+ 180:./tmk_core/common/avr/bootloader.c **** /* this runs before main() */
+ 181:./tmk_core/common/avr/bootloader.c **** void bootloader_jump_after_watchdog_reset(void) __attribute__ ((used, naked, section (".init3")));
+ 182:./tmk_core/common/avr/bootloader.c **** void bootloader_jump_after_watchdog_reset(void)
+ 183:./tmk_core/common/avr/bootloader.c **** {
+  76               		.loc 1 183 0
+  77               		.cfi_startproc
+  78               	/* prologue: naked */
+  79               	/* frame size = 0 */
+  80               	/* stack size = 0 */
+  81               	.L__stack_usage = 0
+ 184:./tmk_core/common/avr/bootloader.c ****     #ifndef BOOTLOADER_HALFKAY
+ 185:./tmk_core/common/avr/bootloader.c ****         if ((MCUSR & (1<<WDRF)) && reset_key == BOOTLOADER_RESET_KEY) {
+  82               		.loc 1 185 0
+  83 0000 04B6      		in __tmp_reg__,0x34
+  84 0002 03FE      		sbrs __tmp_reg__,3
+  85 0004 00C0      		rjmp .L4
+  86               		.loc 1 185 0 is_stmt 0 discriminator 1
+  87 0006 8091 0000 		lds r24,reset_key
+  88 000a 9091 0000 		lds r25,reset_key+1
+  89 000e A091 0000 		lds r26,reset_key+2
+  90 0012 B091 0000 		lds r27,reset_key+3
+  91 0016 8730      		cpi r24,7
+  92 0018 904B      		sbci r25,-80
+  93 001a A740      		sbci r26,7
+  94 001c B04B      		sbci r27,-80
+  95 001e 01F4      		brne .L4
+ 186:./tmk_core/common/avr/bootloader.c ****             reset_key = 0;
+  96               		.loc 1 186 0 is_stmt 1
+  97 0020 1092 0000 		sts reset_key,__zero_reg__
+  98 0024 1092 0000 		sts reset_key+1,__zero_reg__
+  99 0028 1092 0000 		sts reset_key+2,__zero_reg__
+ 100 002c 1092 0000 		sts reset_key+3,__zero_reg__
+ 187:./tmk_core/common/avr/bootloader.c **** 
+ 188:./tmk_core/common/avr/bootloader.c ****             // My custom USBasploader requires this to come up.
+ 189:./tmk_core/common/avr/bootloader.c ****             MCUSR = 0;
+ 101               		.loc 1 189 0
+ 102 0030 14BE      		out 0x34,__zero_reg__
+ 190:./tmk_core/common/avr/bootloader.c **** 
+ 191:./tmk_core/common/avr/bootloader.c ****             // Seems like Teensy halfkay loader requires clearing WDRF and disabling watchdog.
+ 192:./tmk_core/common/avr/bootloader.c ****             MCUSR &= ~(1<<WDRF);
+ 103               		.loc 1 192 0
+ 104 0032 84B7      		in r24,0x34
+ 105 0034 877F      		andi r24,lo8(-9)
+ 106 0036 84BF      		out 0x34,r24
+ 193:./tmk_core/common/avr/bootloader.c ****             wdt_disable();
+ 107               		.loc 1 193 0
+ 108 0038 88E1      		ldi r24,lo8(24)
+ 109               	/* #APP */
+ 110               	 ;  193 "./tmk_core/common/avr/bootloader.c" 1
+ 111 003a 0FB6      		in __tmp_reg__, __SREG__
+ 112 003c F894      		cli
+ 113 003e 8093 6000 		sts 96, r24
+ 114 0042 1092 6000 		sts 96, __zero_reg__
+ 115 0046 0FBE      		out __SREG__,__tmp_reg__
+ 116               		
+ 117               	 ;  0 "" 2
+ 194:./tmk_core/common/avr/bootloader.c **** 
+ 195:./tmk_core/common/avr/bootloader.c **** 
+ 196:./tmk_core/common/avr/bootloader.c ****             // This is compled into 'icall', address should be in word unit, not byte.
+ 197:./tmk_core/common/avr/bootloader.c ****             #ifdef BOOTLOADER_SIZE
+ 198:./tmk_core/common/avr/bootloader.c ****                 ((void (*)(void))( (FLASH_SIZE - BOOTLOADER_SIZE) >> 1))();
+ 118               		.loc 1 198 0
+ 119               	/* #NOAPP */
+ 120 0048 E0E0      		ldi r30,0
+ 121 004a F8E3      		ldi r31,lo8(56)
+ 122 004c 0995      		icall
+ 123               	.LVL1:
+ 124               	.L4:
+ 125               	/* epilogue start */
+ 199:./tmk_core/common/avr/bootloader.c ****             #else
+ 200:./tmk_core/common/avr/bootloader.c ****                 asm("ijmp" :: "z" (bootloader_start));
+ 201:./tmk_core/common/avr/bootloader.c ****             #endif
+ 202:./tmk_core/common/avr/bootloader.c ****         }
+ 203:./tmk_core/common/avr/bootloader.c ****     #endif
+ 204:./tmk_core/common/avr/bootloader.c **** }
+ 126               		.loc 1 204 0
+ 127               		.cfi_endproc
+ 128               	.LFE101:
+ 130               	.global	reset_key
+ 131               		.section	.noinit,"aw",@nobits
+ 134               	reset_key:
+ 135 0000 0000 0000 		.zero	4
+ 136               		.text
+ 137               	.Letext0:
+ 138               		.file 3 "/usr/lib/avr/include/stdint.h"
+ 139               		.file 4 "./lib/lufa/LUFA/Drivers/USB/Core/USBTask.h"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 bootloader.c
+     /tmp/cc01Acyc.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/cc01Acyc.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/cc01Acyc.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/cc01Acyc.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/cc01Acyc.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/cc01Acyc.s:13     .text.bootloader_jump:0000000000000000 bootloader_jump
+     /tmp/cc01Acyc.s:134    .noinit:0000000000000000 reset_key
+     /tmp/cc01Acyc.s:74     .init3:0000000000000000 bootloader_jump_after_watchdog_reset
+
+NO UNDEFINED SYMBOLS

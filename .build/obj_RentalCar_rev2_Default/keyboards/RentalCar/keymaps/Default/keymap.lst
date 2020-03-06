@@ -1,0 +1,2447 @@
+   1               		.file	"keymap.c"
+   2               	__SP_H__ = 0x3e
+   3               	__SP_L__ = 0x3d
+   4               	__SREG__ = 0x3f
+   5               	__tmp_reg__ = 0
+   6               	__zero_reg__ = 1
+   7               		.text
+   8               	.Ltext0:
+   9               		.cfi_sections	.debug_frame
+  10               		.section	.text.cmd_commands,"ax",@progbits
+  11               	.global	cmd_commands
+  13               	cmd_commands:
+  14               	.LFB26:
+  15               		.file 1 "keyboards/RentalCar/keymaps/Default/keymap.c"
+   1:keyboards/RentalCar/keymaps/Default/keymap.c **** #include "Dactyl.h"
+   2:keyboards/RentalCar/keymaps/Default/keymap.c **** #include "action_layer.h"
+   3:keyboards/RentalCar/keymaps/Default/keymap.c **** #include "eeconfig.h"
+   4:keyboards/RentalCar/keymaps/Default/keymap.c **** 
+   5:keyboards/RentalCar/keymaps/Default/keymap.c **** extern keymap_config_t keymap_config;
+   6:keyboards/RentalCar/keymaps/Default/keymap.c **** #define _QWERTY 0
+   7:keyboards/RentalCar/keymaps/Default/keymap.c **** #define _COLEMAK 1
+   8:keyboards/RentalCar/keymaps/Default/keymap.c **** 
+   9:keyboards/RentalCar/keymaps/Default/keymap.c **** #define _DVORAK 2
+  10:keyboards/RentalCar/keymaps/Default/keymap.c **** #define _LOWER 3
+  11:keyboards/RentalCar/keymaps/Default/keymap.c **** #define _RAISE 4
+  12:keyboards/RentalCar/keymaps/Default/keymap.c **** #define _FN3 5
+  13:keyboards/RentalCar/keymaps/Default/keymap.c **** //#define _FN4 6
+  14:keyboards/RentalCar/keymaps/Default/keymap.c **** #define _ADJUST 16
+  15:keyboards/RentalCar/keymaps/Default/keymap.c **** enum {
+  16:keyboards/RentalCar/keymaps/Default/keymap.c **** 	TD_CPY_PST = 0,
+  17:keyboards/RentalCar/keymaps/Default/keymap.c **** 	TD_CMD,
+  18:keyboards/RentalCar/keymaps/Default/keymap.c **** 	TD_SLSH,
+  19:keyboards/RentalCar/keymaps/Default/keymap.c **** 	TD_VRDSK
+  20:keyboards/RentalCar/keymaps/Default/keymap.c **** };
+  21:keyboards/RentalCar/keymaps/Default/keymap.c **** enum custom_keycodes {
+  22:keyboards/RentalCar/keymaps/Default/keymap.c **** 	COLEMAK = SAFE_RANGE,
+  23:keyboards/RentalCar/keymaps/Default/keymap.c **** 	QWERTY,
+  24:keyboards/RentalCar/keymaps/Default/keymap.c **** 	DVORAK,
+  25:keyboards/RentalCar/keymaps/Default/keymap.c **** 	LOWER,
+  26:keyboards/RentalCar/keymaps/Default/keymap.c **** 	RAISE,
+  27:keyboards/RentalCar/keymaps/Default/keymap.c **** 	FN3,
+  28:keyboards/RentalCar/keymaps/Default/keymap.c **** //	FN4,
+  29:keyboards/RentalCar/keymaps/Default/keymap.c **** 	ADJUST,
+  30:keyboards/RentalCar/keymaps/Default/keymap.c **** 	dance_cln_finished,
+  31:keyboards/RentalCar/keymaps/Default/keymap.c **** };
+  32:keyboards/RentalCar/keymaps/Default/keymap.c **** 
+  33:keyboards/RentalCar/keymaps/Default/keymap.c **** #define KC_ KC_TRNS
+  34:keyboards/RentalCar/keymaps/Default/keymap.c **** #define _______ KC_TRNS
+  35:keyboards/RentalCar/keymaps/Default/keymap.c **** #define KC_CAPW LGUI(LSFT(KC_3))        // Capture whole screen
+  36:keyboards/RentalCar/keymaps/Default/keymap.c **** #define KC_CPYW LGUI(LSFT(LCTL(KC_3)))  // Copy whole screen
+  37:keyboards/RentalCar/keymaps/Default/keymap.c **** #define KC_CAPP LGUI(LSFT(KC_4))       // Capture portion of screen
+  38:keyboards/RentalCar/keymaps/Default/keymap.c **** #define KC_CPYP LGUI(LSFT(LCTL(KC_4)))  // Copy portion of screen
+  39:keyboards/RentalCar/keymaps/Default/keymap.c **** #define KC_X0 MT(MOD_LCTL, KC_ESC)
+  40:keyboards/RentalCar/keymaps/Default/keymap.c **** #define KC_LDWN LOWER				//Numpad
+  41:keyboards/RentalCar/keymaps/Default/keymap.c **** #define KC_LUP RAISE
+  42:keyboards/RentalCar/keymaps/Default/keymap.c **** #define KC_TOGUP TG(4)
+  43:keyboards/RentalCar/keymaps/Default/keymap.c **** #define KC_REST RESET
+  44:keyboards/RentalCar/keymaps/Default/keymap.c **** #define KC_X3 LT(_LOWER,KC_EQL)		//function layer 4 ie macros when held tab when pressed
+  45:keyboards/RentalCar/keymaps/Default/keymap.c **** #define KC_X4 LT(_ADJUST, KC_ENT) //Shift when held enter when pressed
+  46:keyboards/RentalCar/keymaps/Default/keymap.c **** #define KC_X5 LT(RAISE, KC_P0)  //Raise to functions when held P0 when pressed
+  47:keyboards/RentalCar/keymaps/Default/keymap.c **** #define KC_X6 TD(TD_SLSH)				//slash vs backslash
+  48:keyboards/RentalCar/keymaps/Default/keymap.c **** #define KC_X7 TD(TD_CPY_PST)		//single tap is copy double is paste
+  49:keyboards/RentalCar/keymaps/Default/keymap.c **** #define KC_X8 TD(TD_CMD)			//single tap is cmd double is ipconfig
+  50:keyboards/RentalCar/keymaps/Default/keymap.c **** 
+  51:keyboards/RentalCar/keymaps/Default/keymap.c **** 
+  52:keyboards/RentalCar/keymaps/Default/keymap.c **** #define KC_X9 RGUI(KC_TAB)	//gui tab to switch desktops
+  53:keyboards/RentalCar/keymaps/Default/keymap.c **** #define KC_X10 TD(TD_VRDSK)
+  54:keyboards/RentalCar/keymaps/Default/keymap.c **** 
+  55:keyboards/RentalCar/keymaps/Default/keymap.c **** 
+  56:keyboards/RentalCar/keymaps/Default/keymap.c **** #define KC_XLgn M(1)
+  57:keyboards/RentalCar/keymaps/Default/keymap.c **** #define KC_EMAL M(2)
+  58:keyboards/RentalCar/keymaps/Default/keymap.c **** #define KC_WWWX M(3)
+  59:keyboards/RentalCar/keymaps/Default/keymap.c **** #define KC_NTAB M(4)
+  60:keyboards/RentalCar/keymaps/Default/keymap.c **** #define KC_0CA M(6)
+  61:keyboards/RentalCar/keymaps/Default/keymap.c **** #define KC_PASS M(10)
+  62:keyboards/RentalCar/keymaps/Default/keymap.c **** #define KC_IPCF M(11)
+  63:keyboards/RentalCar/keymaps/Default/keymap.c **** #define KC_OP M(12)
+  64:keyboards/RentalCar/keymaps/Default/keymap.c **** #define KC_OC M(13)
+  65:keyboards/RentalCar/keymaps/Default/keymap.c **** #define KC_OD M(14)
+  66:keyboards/RentalCar/keymaps/Default/keymap.c **** #define KC_TCLK M(15)
+  67:keyboards/RentalCar/keymaps/Default/keymap.c **** #define KC_ESCT MT(MOD_LCTL, KC_ESC)
+  68:keyboards/RentalCar/keymaps/Default/keymap.c **** #define KC_GUIT M(0)
+  69:keyboards/RentalCar/keymaps/Default/keymap.c **** 
+  70:keyboards/RentalCar/keymaps/Default/keymap.c **** const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
+  71:keyboards/RentalCar/keymaps/Default/keymap.c **** /* Keymap 0: Basic layer
+  72:keyboards/RentalCar/keymaps/Default/keymap.c ****  *
+  73:keyboards/RentalCar/keymaps/Default/keymap.c ****  * ,-------------------------------------------.           ,----------------------------------_----
+  74:keyboards/RentalCar/keymaps/Default/keymap.c ****  * |   =    |   1  |   2  |   3  |   4  |   5  |           |   6  |   7  |   8  |   9  |   0  |   -
+  75:keyboards/RentalCar/keymaps/Default/keymap.c ****  * |--------+------+------+------+------+------|           |------+------+------+------+------|----
+  76:keyboards/RentalCar/keymaps/Default/keymap.c ****  * |Tab\FN3 |   Q  |   W  |   F  |   P  |   G  |           |   J  |   L  |   U  |   Y  |   :  |   \
+  77:keyboards/RentalCar/keymaps/Default/keymap.c ****  * |--------+------+------+------+------+----- |           |------+------+------+------+------|----
+  78:keyboards/RentalCar/keymaps/Default/keymap.c ****  * | ENT/ADJ|   A  |   R  |   S  |   T  |   D  |           |   H  |   N  |   E  |   I  |   O  | ENT
+  79:keyboards/RentalCar/keymaps/Default/keymap.c ****  * |--------+------+------+------+------+------|           |------+------+------+------+------|----
+  80:keyboards/RentalCar/keymaps/Default/keymap.c ****  * | LShift |   Z  |   X  |   C  |   V  |   B  |           |   K  |   M  |   ,  |   .  |  /   |RShi
+  81:keyboards/RentalCar/keymaps/Default/keymap.c ****  * `--------+------+------+------+------+------'           `-------+------+------+------+------|---
+  82:keyboards/RentalCar/keymaps/Default/keymap.c ****  * |CTR     |  ALT | GUI  | Left | Right|    1                1   | LEFT | RIGHT|  UP  | DOWN  | ~L
+  83:keyboards/RentalCar/keymaps/Default/keymap.c ****  * `----------------------------------'                          `---------------------------------
+  84:keyboards/RentalCar/keymaps/Default/keymap.c ****  *				6	5		4	   3		2				2		 3		4		5		6
+  85:keyboards/RentalCar/keymaps/Default/keymap.c ****  *                                 ,-------------.       ,-------------.
+  86:keyboards/RentalCar/keymaps/Default/keymap.c ****  *                                 |   6  |   5  |       | 5    |  6     |
+  87:keyboards/RentalCar/keymaps/Default/keymap.c ****  *                          ,------|------|------|       |------+--------+------.
+  88:keyboards/RentalCar/keymaps/Default/keymap.c ****  *                          |   1  |  2    |   4  |       | 4    |        |      |
+  89:keyboards/RentalCar/keymaps/Default/keymap.c ****  *                          |Backsp|GUI   |------|       |------|    1   |    2 |
+  90:keyboards/RentalCar/keymaps/Default/keymap.c ****  *                          |  acs |TAB   |   3  |       | 3    |        |      |
+  91:keyboards/RentalCar/keymaps/Default/keymap.c ****  *                         `--------------------'       `----------------------'
+  92:keyboards/RentalCar/keymaps/Default/keymap.c ****  
+  93:keyboards/RentalCar/keymaps/Default/keymap.c ****  
+  94:keyboards/RentalCar/keymaps/Default/keymap.c ****   	
+  95:keyboards/RentalCar/keymaps/Default/keymap.c ****  */
+  96:keyboards/RentalCar/keymaps/Default/keymap.c ****  
+  97:keyboards/RentalCar/keymaps/Default/keymap.c ****  //FOR adjust layer push and hold X3(raise) and LUP (lower).
+  98:keyboards/RentalCar/keymaps/Default/keymap.c ****  //x3= lower when held and Equal ("=") when pressed
+  99:keyboards/RentalCar/keymaps/Default/keymap.c ****  //ESCT is control when held ans Esc when pressed
+ 100:keyboards/RentalCar/keymaps/Default/keymap.c ****  //GUIT is window+tab.  only works on win 10
+ 101:keyboards/RentalCar/keymaps/Default/keymap.c **** 		[_QWERTY] = KC_KEYMAP(
+ 102:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//,----+----+----+----+----+----.										,----+----+----+----+----+----.
+ 103:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//,----+----+----+----+----+----.										,----+----+----+----+----+----.
+ 104:keyboards/RentalCar/keymaps/Default/keymap.c **** 		Q  , W  , E  , R  , T  ,    										  Y  , U  , I  , O , P  ,
+ 105:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|   									|----+----+----+----+----+----|
+ 106:keyboards/RentalCar/keymaps/Default/keymap.c **** 		 A  , S  , D  , F  , G  ,											H  , J  , K  , L  ,SCLN,
+ 107:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|										|----+----+----+----+----+----|
+ 108:keyboards/RentalCar/keymaps/Default/keymap.c **** 		 Z  , X  , C  , V  , B  ,											N  , M  ,COMM,DOT,SLSH,
+ 109:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|										|----+----+----+----+----+----|
+ 110:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//`----+----+----+----+----+----'   									 `----+----+----+----+----+----'
+ 111:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//							`----+----+----+'			`----+----+----'
+ 112:keyboards/RentalCar/keymaps/Default/keymap.c **** 										ESCT,LALT,			 LGUI, RCTRL,
+ 113:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//							`----+----+----+'			`----+----+----'
+ 114:keyboards/RentalCar/keymaps/Default/keymap.c **** 											HOME,			PGUP,
+ 115:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//							`----+----+----+'			`----+----+----'
+ 116:keyboards/RentalCar/keymaps/Default/keymap.c **** 									BSPC,DEL,END,			PGDN, ENT, SPC
+ 117:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//							`----+----+----+'			`----+----+----'
+ 118:keyboards/RentalCar/keymaps/Default/keymap.c **** 
+ 119:keyboards/RentalCar/keymaps/Default/keymap.c **** 	),
+ 120:keyboards/RentalCar/keymaps/Default/keymap.c **** 	
+ 121:keyboards/RentalCar/keymaps/Default/keymap.c **** 			[_COLEMAK] = KC_KEYMAP(
+ 122:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//,----+----+----+----+----+----. 									   ,----+----+----+----+----+----.
+ 123:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//,----+----+----+----+----+----.   									 ,----+----+----+----+----+----.
+ 124:keyboards/RentalCar/keymaps/Default/keymap.c **** 		Q  , W  , F  , P  , G  , 									  	   J  , L  , U  , Y  ,SCLN,
+ 125:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----| 									   |----+----+----+----+----+----|
+ 126:keyboards/RentalCar/keymaps/Default/keymap.c **** 		A  , R  , S  , T  , D  ,									  	    H  , N  , E  , I  , O  ,
+ 127:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|									    |----+----+----+----+----+----|
+ 128:keyboards/RentalCar/keymaps/Default/keymap.c **** 		Z  , X  , C  , V  , B  ,  										  K  , M  ,COMM,DOT ,SLSH,
+ 129:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----| 									   |----+----+----+----+----+----|
+ 130:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//`----+----+----+----+----+----'   									 `----+----+----+----+----+----'
+ 131:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//							`----+----+----+'			`----+----+----'
+ 132:keyboards/RentalCar/keymaps/Default/keymap.c **** 										ESCT,LALT,			 LGUI, RCTRL,
+ 133:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//							`----+----+----+'			`----+----+----'
+ 134:keyboards/RentalCar/keymaps/Default/keymap.c **** 											HOME,			PGUP,
+ 135:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//							`----+----+----+'			`----+----+----'
+ 136:keyboards/RentalCar/keymaps/Default/keymap.c **** 									BSPC,DEL,END,			PGDN, ENT, SPC
+ 137:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//							`----+----+----+'			`----+----+----'
+ 138:keyboards/RentalCar/keymaps/Default/keymap.c **** 
+ 139:keyboards/RentalCar/keymaps/Default/keymap.c **** 	),
+ 140:keyboards/RentalCar/keymaps/Default/keymap.c **** 
+ 141:keyboards/RentalCar/keymaps/Default/keymap.c **** 	[_DVORAK] = KC_KEYMAP(
+ 142:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//,----+----+----+----+----+----.  								  ,----+----+----+----+----+----.
+ 143:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//,----+----+----+----+----+----.  								  ,----+----+----+----+----+----.
+ 144:keyboards/RentalCar/keymaps/Default/keymap.c **** 		QUOT,COMM,DOT , P  , Y  , 								 	    F  , G  , C  , R  , L  ,
+ 145:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|    								|----+----+----+----+----+----|
+ 146:keyboards/RentalCar/keymaps/Default/keymap.c **** 		A  , O  , E  , U  , I  ,  									    D  , H  , T  , N  , S  ,
+ 147:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----| 								   |----+----+----+----+----+----|
+ 148:keyboards/RentalCar/keymaps/Default/keymap.c **** 		SCLN, Q  , J  , K  , X  ,  							   			 B  , M  , W  , V  , Z  ,
+ 149:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|    							   |----+----+----+----+----+----|
+ 150:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//`----+----+----+----+----+----'   									 `----+----+----+----+----+----'
+ 151:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//							`----+----+----+'			`----+----+----'
+ 152:keyboards/RentalCar/keymaps/Default/keymap.c **** 										ESCT,LALT,			 LGUI, RCTRL,
+ 153:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//							`----+----+----+'			`----+----+----'
+ 154:keyboards/RentalCar/keymaps/Default/keymap.c **** 											HOME,			PGUP,
+ 155:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//							`----+----+----+'			`----+----+----'
+ 156:keyboards/RentalCar/keymaps/Default/keymap.c **** 									BSPC,DEL,END,			PGDN, ENT, SPC
+ 157:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//							`----+----+----+'			`----+----+----'
+ 158:keyboards/RentalCar/keymaps/Default/keymap.c **** 
+ 159:keyboards/RentalCar/keymaps/Default/keymap.c **** 	),
+ 160:keyboards/RentalCar/keymaps/Default/keymap.c **** /*
+ 161:keyboards/RentalCar/keymaps/Default/keymap.c **** 	[_LOWER] = KC_KEYMAP(
+ 162:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//,----+----+----+----+----+----.    ,----+----+----+----+----+----.
+ 163:keyboards/RentalCar/keymaps/Default/keymap.c **** 		ESC , 1  , 2 , 3  , 4  , 5  ,      6  , 7  , 8  , 9  , 0  , EQL ,
+ 164:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|
+ 165:keyboards/RentalCar/keymaps/Default/keymap.c **** 		DEL ,CAPP,LEFT,RGHT, UP ,LBRC,     RBRC, P4 , P5 , P6 ,PLUS,PIPE,
+ 166:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|
+ 167:keyboards/RentalCar/keymaps/Default/keymap.c **** 			,CPYP, UP ,    ,DOWN,LCBR,     RCBR, P1 , P2 , P3 ,MINS,    ,11111
+ 168:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|
+ 169:keyboards/RentalCar/keymaps/Default/keymap.c **** 			,LEFT,DOWN,RIGHT,    ,    ,     DEL ,   , P0 ,PDOT,    ,  NLCK, 
+ 170:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//`----+----+----+----+----+----'    `----+----+----+----+----+----'
+ 171:keyboards/RentalCar/keymaps/Default/keymap.c **** 		X0 ,LALT,LGUI, X10, LDWN ,BSPC,     SPC, UP ,QUOT,LEFT, DOWN ,RGHT,
+ 172:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//`----+----+----+----+----+----'    `----+----+----+----+----+----'
+ 173:keyboards/RentalCar/keymaps/Default/keymap.c **** 		X3  , 1  ,REST, 3  ,    , 5  ,      6  ,    , 8  , 9 , 0  ,MINS
+ 174:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//`----+----+----+----+----+----'    `----+----+----+----+----+----'
+ 175:keyboards/RentalCar/keymaps/Default/keymap.c **** 	),
+ 176:keyboards/RentalCar/keymaps/Default/keymap.c **** 
+ 177:keyboards/RentalCar/keymaps/Default/keymap.c **** 	[_RAISE] = KC_KEYMAP(
+ 178:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//,----+----+----+----+----+----.    ,----+----+----+----+----+----.
+ 179:keyboards/RentalCar/keymaps/Default/keymap.c **** 		ESC ,EXLM, AT ,HASH,DLR ,PERC,     CIRC,AMPR,ASTR,LPRN,RPRN,    ,
+ 180:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|
+ 181:keyboards/RentalCar/keymaps/Default/keymap.c **** 		DEL ,MPRV,MNXT,VOLU,PGUP,UNDS,     EQL ,HOME,    ,    ,    ,BSLS,
+ 182:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|88
+ 183:keyboards/RentalCar/keymaps/Default/keymap.c **** 		LSFT,MSTP,MPLY,VOLD,PGDN,MINS,     PLUS,END,COMM ,    ,UP ,    ,
+ 184:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|
+ 185:keyboards/RentalCar/keymaps/Default/keymap.c **** 		,    ,    , X3 ,    ,    ,         ,    ,    ,LEFT,DOWN,RIGHT,    
+ 186:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//`----+----+----+----+----+----'    `----+----+----+----+----+----'
+ 187:keyboards/RentalCar/keymaps/Default/keymap.c **** 		X0 ,LALT,LGUI, X10, LDWN ,BSPC,     SPC, UP ,QUOT,LEFT, DOWN ,RGHT,
+ 188:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//`----+----+----+----+----+----'    `----+----+----+----+----+----'
+ 189:keyboards/RentalCar/keymaps/Default/keymap.c **** 		X3  , 1  , 2  , 3  ,   , 5  ,      6  ,   , 8  ,REST, 0  ,MINS
+ 190:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//`----+----+----+----+----+----'    `----+----+----+----+----+----'
+ 191:keyboards/RentalCar/keymaps/Default/keymap.c **** 	),*/
+ 192:keyboards/RentalCar/keymaps/Default/keymap.c **** 	
+ 193:keyboards/RentalCar/keymaps/Default/keymap.c **** 	[_LOWER] = KC_KEYMAP(
+ 194:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//,----+----+----+----+----+----.  								  ,----+----+----+----+----+----.
+ 195:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|   							 |----+----+----+----+----+----|
+ 196:keyboards/RentalCar/keymaps/Default/keymap.c **** 		    ,WWWX,EMAL,    ,TCLK,   							      ,    ,    ,   ,PASS,   
+ 197:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|   							 |----+----+----+----+----+----|
+ 198:keyboards/RentalCar/keymaps/Default/keymap.c **** 		 0CA ,     ,   ,    ,    ,     									,    , UP ,IPCF,     ,   
+ 199:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|   							 |----+----+----+----+----+----|
+ 200:keyboards/RentalCar/keymaps/Default/keymap.c **** 		 REST ,XLgn,     ,    ,    ,								,LEFT,DOWN,RIGHT,      REST ,
+ 201:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//|----+---+----+----+----+----|   							 |----+----+----+----+----+----|
+ 202:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|  								  |----+----+----+----+----+----|
+ 203:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//							`----+----+----+'			`----+----+----'
+ 204:keyboards/RentalCar/keymaps/Default/keymap.c **** 										PGUP,PGDN,			 HOME, END,
+ 205:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//							`----+----+----+'			`----+----+----'
+ 206:keyboards/RentalCar/keymaps/Default/keymap.c **** 											PSCR,			DEL,
+ 207:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//							`----+----+----+'			`----+----+----'
+ 208:keyboards/RentalCar/keymaps/Default/keymap.c **** 									BSPC,LSFT,GUIT,			LUP, ENT, SPC
+ 209:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//							`----+----+----+'			`----+----+----'
+ 210:keyboards/RentalCar/keymaps/Default/keymap.c **** 	),
+ 211:keyboards/RentalCar/keymaps/Default/keymap.c **** 	
+ 212:keyboards/RentalCar/keymaps/Default/keymap.c **** 	[_RAISE] = KC_KEYMAP(
+ 213:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//,----+----+----+----+----+----.									,----+----+----+----+----+----.
+ 214:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|									|----+----+----+----+----+----|
+ 215:keyboards/RentalCar/keymaps/Default/keymap.c **** 		 1  , WWWX, 1  , 1  , 1  ,										NO , 4  , 5  , 6  ,PMNS,
+ 216:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|									|----+----+----+----+----+----|
+ 217:keyboards/RentalCar/keymaps/Default/keymap.c **** 		 1  , 1  , 1  , 1  , 1  ,										NO , 1   , 2  ,  3 ,PPLS, 
+ 218:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|									|----+----+----+----+----+----|
+ 219:keyboards/RentalCar/keymaps/Default/keymap.c **** 		REST ,1, 1  , 1  , 1  ,											NO , 0  , 0  , DOT , NO,
+ 220:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|									|----+----+----+----+----+----|
+ 221:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|  									  |----+----+----+----+----+----|
+ 222:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//							`----+----+----+'			`----+----+----'
+ 223:keyboards/RentalCar/keymaps/Default/keymap.c **** 										PGUP,PGDN,			 HOME, END,
+ 224:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//							`----+----+----+'			`----+----+----'
+ 225:keyboards/RentalCar/keymaps/Default/keymap.c **** 											PSCR,			DEL,
+ 226:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//							`----+----+----+'			`----+----+----'
+ 227:keyboards/RentalCar/keymaps/Default/keymap.c **** 									BSPC,LSFT,GUIT,			LUP, ENT, SPC
+ 228:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//							`----+----+----+'			`----+----+----'
+ 229:keyboards/RentalCar/keymaps/Default/keymap.c **** 
+ 230:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//`----+----+----+----+----+----'    `----+----+----+----+----+----'
+ 231:keyboards/RentalCar/keymaps/Default/keymap.c **** 	),
+ 232:keyboards/RentalCar/keymaps/Default/keymap.c **** 	
+ 233:keyboards/RentalCar/keymaps/Default/keymap.c **** 	
+ 234:keyboards/RentalCar/keymaps/Default/keymap.c **** 	[_FN3] = KC_KEYMAP(
+ 235:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//,----+----+----+----+----+----.    ,----+----+----+----+----+----.
+ 236:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|
+ 237:keyboards/RentalCar/keymaps/Default/keymap.c **** 		 3 , 3,  3, 3  , 3  ,         	    ,    ,    ,    ,    ,
+ 238:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|
+ 239:keyboards/RentalCar/keymaps/Default/keymap.c **** 			,UP,    ,    ,    ,             ,    ,    , UP ,    ,
+ 240:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|
+ 241:keyboards/RentalCar/keymaps/Default/keymap.c **** 		LEFT,DOWN,RIGHT,    ,    ,              ,    ,LEFT,DOWN,RIGHT,  
+ 242:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//`----+----+----+----+----+----'    `----+----+----+----+----+----'
+ 243:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//`----+----+----+----+----+----'    `----+----+----+----+----+----'
+ 244:keyboards/RentalCar/keymaps/Default/keymap.c **** //		X3  , 1  , 2  , 3  , 4  , 5  ,      6  , 7  , 8  , 9 , 0  ,MINS,
+ 245:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//							`----+----+----+'			`----+----+----'
+ 246:keyboards/RentalCar/keymaps/Default/keymap.c **** 										PGUP,PGDN,			 END, HOME,
+ 247:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//							`----+----+----+'			`----+----+----'
+ 248:keyboards/RentalCar/keymaps/Default/keymap.c **** 											PSCR,			DEL,
+ 249:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//							`----+----+----+'			`----+----+----'
+ 250:keyboards/RentalCar/keymaps/Default/keymap.c **** 									BSPC,LDWN,GUIT,			LUP, ENT, SPC
+ 251:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//							`----+----+----+'			`----+----+----'
+ 252:keyboards/RentalCar/keymaps/Default/keymap.c **** 
+ 253:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//`----+----+----+----+----+----'    `----+----+----+----+----+----'
+ 254:keyboards/RentalCar/keymaps/Default/keymap.c **** 	),
+ 255:keyboards/RentalCar/keymaps/Default/keymap.c **** /*
+ 256:keyboards/RentalCar/keymaps/Default/keymap.c **** 	[_FN4] = KEYMAP( \
+ 257:keyboards/RentalCar/keymaps/Default/keymap.c **** 	_______, _______, M(3)   , M(2)     , _______,  M(4)  ,		 _______, _______, _______, _______, ____
+ 258:keyboards/RentalCar/keymaps/Default/keymap.c **** 	_______, M(6)   , _______, _______  , _______, _______,		 _______, _______, _______, _______, ____
+ 259:keyboards/RentalCar/keymaps/Default/keymap.c **** 	_______, _______, M(1)   ,TD(TD_CMD), _______, _______,		 _______, _______, _______, _______, KC_U
+ 260:keyboards/RentalCar/keymaps/Default/keymap.c **** 	M(7)   , M(8)   , M(9)   , _______  , _______, _______,		 _______, _______, _______, KC_LEFT, KC_D
+ 261:keyboards/RentalCar/keymaps/Default/keymap.c **** 	_______, _______, _______, _______  , _______, _______,		 _______, _______, _______, _______, ____
+ 262:keyboards/RentalCar/keymaps/Default/keymap.c **** 	_______, _______ , _______, _______  , _______, _______,	 _______, _______, _______, _______, ____
+ 263:keyboards/RentalCar/keymaps/Default/keymap.c **** 	),*/
+ 264:keyboards/RentalCar/keymaps/Default/keymap.c **** 
+ 265:keyboards/RentalCar/keymaps/Default/keymap.c **** 	/* Adjust (Lower + Raise)
+ 266:keyboards/RentalCar/keymaps/Default/keymap.c **** * ,-----------------------------------------------------------------------------------.
+ 267:keyboards/RentalCar/keymaps/Default/keymap.c **** * |      | Reset|RGB Tg|RGB Md|Hue Up|Hue Dn|Sat Up|Sat Dn|Val Up|Val Dn| RESET|      |
+ 268:keyboards/RentalCar/keymaps/Default/keymap.c **** * |------+------+------+------+------+-------------+------+------+------+------+------|
+ 269:keyboards/RentalCar/keymaps/Default/keymap.c **** * |      |      |      |Aud on|Audoff|AGnorm|AGswap|Qwerty|Colemk|Dvorak|      |      |
+ 270:keyboards/RentalCar/keymaps/Default/keymap.c **** * |------+------+------+------+------+------|------+------+------+------+------+------|
+ 271:keyboards/RentalCar/keymaps/Default/keymap.c **** * |      |      |      |      |      |      |      |      |      |      |      |      |
+ 272:keyboards/RentalCar/keymaps/Default/keymap.c **** * |------+------+------+------+------+------+------+------+------+------+------+------|
+ 273:keyboards/RentalCar/keymaps/Default/keymap.c **** * |      |      |      |      |      |             |      |      |      |      |      |
+ 274:keyboards/RentalCar/keymaps/Default/keymap.c **** * `-----------------------------------------------------------------------------------'
+ 275:keyboards/RentalCar/keymaps/Default/keymap.c **** */
+ 276:keyboards/RentalCar/keymaps/Default/keymap.c **** 	[_ADJUST] = KEYMAP( \
+ 277:keyboards/RentalCar/keymaps/Default/keymap.c **** 	QWERTY, DVORAK, COLEMAK, RGB_MOD, RGB_HUD, RGB_HUI, RGB_SAD, RGB_SAI, RGB_VAD, RGB_VAI, \
+ 278:keyboards/RentalCar/keymaps/Default/keymap.c **** 	QWERTY, _______, AU_ON,   AU_OFF,  AG_NORM, AG_SWAP, QWERTY,  COLEMAK, DVORAK,  _______, \
+ 279:keyboards/RentalCar/keymaps/Default/keymap.c **** 	_______, _______, COLEMAK, _______, _______, _______, _______, _______, _______, KC_REST, \
+ 280:keyboards/RentalCar/keymaps/Default/keymap.c **** 	_______, _______, _______, _______, _______, _______, _______, _______, \
+ 281:keyboards/RentalCar/keymaps/Default/keymap.c **** 	_______, _______, _______, _______ \
+ 282:keyboards/RentalCar/keymaps/Default/keymap.c **** 	)
+ 283:keyboards/RentalCar/keymaps/Default/keymap.c **** 
+ 284:keyboards/RentalCar/keymaps/Default/keymap.c **** 
+ 285:keyboards/RentalCar/keymaps/Default/keymap.c **** };
+ 286:keyboards/RentalCar/keymaps/Default/keymap.c **** 
+ 287:keyboards/RentalCar/keymaps/Default/keymap.c **** #ifdef AUDIO_ENABLE
+ 288:keyboards/RentalCar/keymaps/Default/keymap.c **** float tone_qwerty[][2]     = SONG(QWERTY_SOUND);
+ 289:keyboards/RentalCar/keymaps/Default/keymap.c **** float tone_dvorak[][2]     = SONG(DVORAK_SOUND);
+ 290:keyboards/RentalCar/keymaps/Default/keymap.c **** float tone_colemak[][2]    = SONG(COLEMAK_SOUND);
+ 291:keyboards/RentalCar/keymaps/Default/keymap.c **** #endif
+ 292:keyboards/RentalCar/keymaps/Default/keymap.c **** 
+ 293:keyboards/RentalCar/keymaps/Default/keymap.c **** void persistent_default_layer_set(uint16_t default_layer) {
+ 294:keyboards/RentalCar/keymaps/Default/keymap.c **** 	eeconfig_update_default_layer(default_layer);
+ 295:keyboards/RentalCar/keymaps/Default/keymap.c **** 	default_layer_set(default_layer);
+ 296:keyboards/RentalCar/keymaps/Default/keymap.c **** }
+ 297:keyboards/RentalCar/keymaps/Default/keymap.c **** 
+ 298:keyboards/RentalCar/keymaps/Default/keymap.c **** /*
+ 299:keyboards/RentalCar/keymaps/Default/keymap.c **** void dance_cln_finished(void){
+ 300:keyboards/RentalCar/keymaps/Default/keymap.c **** register_code (KC_LGUI);
+ 301:keyboards/RentalCar/keymaps/Default/keymap.c **** register_code(KC_TAB);
+ 302:keyboards/RentalCar/keymaps/Default/keymap.c **** unregister_code(KC_TAB);
+ 303:keyboards/RentalCar/keymaps/Default/keymap.c **** unregister_code(KC_LGUI); 
+ 304:keyboards/RentalCar/keymaps/Default/keymap.c **** }*/
+ 305:keyboards/RentalCar/keymaps/Default/keymap.c **** 
+ 306:keyboards/RentalCar/keymaps/Default/keymap.c **** const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) {
+ 307:keyboards/RentalCar/keymaps/Default/keymap.c **** 	
+ 308:keyboards/RentalCar/keymaps/Default/keymap.c **** 	switch (id) {
+ 309:keyboards/RentalCar/keymaps/Default/keymap.c **** 	case 0:
+ 310:keyboards/RentalCar/keymaps/Default/keymap.c **** 		if (record->event.pressed) {
+ 311:keyboards/RentalCar/keymaps/Default/keymap.c **** 			return MACRO(D(LGUI), T(TAB), U(LGUI), END);
+ 312:keyboards/RentalCar/keymaps/Default/keymap.c **** 		}
+ 313:keyboards/RentalCar/keymaps/Default/keymap.c **** 	case 1:
+ 314:keyboards/RentalCar/keymaps/Default/keymap.c **** 		if (record->event.pressed) {
+ 315:keyboards/RentalCar/keymaps/Default/keymap.c **** 		//	SEND_STRING("admin"SS_TAP(X_TAB)"1111"SS_TAP(X_ENTER));
+ 316:keyboards/RentalCar/keymaps/Default/keymap.c **** 		//return false;	break;
+ 317:keyboards/RentalCar/keymaps/Default/keymap.c **** 			return MACRO(I(10), T(A), T(D), T(M), T(I), T(N), W(75), T(TAB), T(1), T(1),T(1), T(1), T(ENTER)
+ 318:keyboards/RentalCar/keymaps/Default/keymap.c **** 		}
+ 319:keyboards/RentalCar/keymaps/Default/keymap.c **** 	case 2:
+ 320:keyboards/RentalCar/keymaps/Default/keymap.c **** 		if (record->event.pressed) {
+ 321:keyboards/RentalCar/keymaps/Default/keymap.c **** 			SEND_STRING("email");// auto send email
+ 322:keyboards/RentalCar/keymaps/Default/keymap.c **** 			return false;	break;
+ 323:keyboards/RentalCar/keymaps/Default/keymap.c **** 		}
+ 324:keyboards/RentalCar/keymaps/Default/keymap.c **** 	case 3:
+ 325:keyboards/RentalCar/keymaps/Default/keymap.c **** 		if (record->event.pressed) {
+ 326:keyboards/RentalCar/keymaps/Default/keymap.c **** 			SEND_STRING("www.support.xerox.com"SS_TAP(X_ENTER));
+ 327:keyboards/RentalCar/keymaps/Default/keymap.c **** 						return false;	break;
+ 328:keyboards/RentalCar/keymaps/Default/keymap.c **** 		}
+ 329:keyboards/RentalCar/keymaps/Default/keymap.c **** 	case 4:
+ 330:keyboards/RentalCar/keymaps/Default/keymap.c **** 		if(record->event.pressed) {
+ 331:keyboards/RentalCar/keymaps/Default/keymap.c **** 			return MACRO(I(10), D(LCTRL), T(T), T(V), T(ENTER), U(LCTRL), END);
+ 332:keyboards/RentalCar/keymaps/Default/keymap.c **** 		}
+ 333:keyboards/RentalCar/keymaps/Default/keymap.c **** 		
+ 334:keyboards/RentalCar/keymaps/Default/keymap.c **** 	case 5:{
+ 335:keyboards/RentalCar/keymaps/Default/keymap.c **** 			return  MACRO_TAP_HOLD_LAYER(record, MACRO(TYPE(KC_X), END), _LOWER);	
+ 336:keyboards/RentalCar/keymaps/Default/keymap.c **** 		}
+ 337:keyboards/RentalCar/keymaps/Default/keymap.c **** 	case 6: {
+ 338:keyboards/RentalCar/keymaps/Default/keymap.c **** 			if(record->event.pressed) 
+ 339:keyboards/RentalCar/keymaps/Default/keymap.c **** 			return MACRO(I(10), T(0), T(C), T(TAB), T(TAB), T(A), T(TAB), END);
+ 340:keyboards/RentalCar/keymaps/Default/keymap.c **** 		}
+ 341:keyboards/RentalCar/keymaps/Default/keymap.c **** 	case 10: {
+ 342:keyboards/RentalCar/keymaps/Default/keymap.c **** 		if(record->event.pressed) {
+ 343:keyboards/RentalCar/keymaps/Default/keymap.c **** 		SEND_STRING(""); //send string
+ 344:keyboards/RentalCar/keymaps/Default/keymap.c **** 			return false; break;}
+ 345:keyboards/RentalCar/keymaps/Default/keymap.c **** 	}		
+ 346:keyboards/RentalCar/keymaps/Default/keymap.c **** 	case 11: {
+ 347:keyboards/RentalCar/keymaps/Default/keymap.c **** 		if(record->event.pressed) {
+ 348:keyboards/RentalCar/keymaps/Default/keymap.c **** 			SEND_STRING("ipconfig /all");
+ 349:keyboards/RentalCar/keymaps/Default/keymap.c **** 					return false; break;}
+ 350:keyboards/RentalCar/keymaps/Default/keymap.c **** 	}
+ 351:keyboards/RentalCar/keymaps/Default/keymap.c **** 	case 12: {
+ 352:keyboards/RentalCar/keymaps/Default/keymap.c **** 	if(record->event.pressed) 
+ 353:keyboards/RentalCar/keymaps/Default/keymap.c **** 		return MACRO( I(10),T(TAB), T(O), T(P), T(TAB),T(ENTER), T(TAB),T(TAB),T(TAB),T(Z),T(R),T(TAB),T(
+ 354:keyboards/RentalCar/keymaps/Default/keymap.c **** 	}	
+ 355:keyboards/RentalCar/keymaps/Default/keymap.c **** 		case 13: {
+ 356:keyboards/RentalCar/keymaps/Default/keymap.c **** 	if(record->event.pressed) 
+ 357:keyboards/RentalCar/keymaps/Default/keymap.c **** 		return MACRO( I(10),T(TAB), T(O), T(T), T(TAB),T(ENTER), T(TAB),T(TAB),T(TAB),T(Z),T(R),T(TAB),T(
+ 358:keyboards/RentalCar/keymaps/Default/keymap.c **** 	}	
+ 359:keyboards/RentalCar/keymaps/Default/keymap.c **** 		case 14: {
+ 360:keyboards/RentalCar/keymaps/Default/keymap.c **** 	if(record->event.pressed) 
+ 361:keyboards/RentalCar/keymaps/Default/keymap.c **** 		return MACRO( I(10),T(TAB), T(I), T(N), T(TAB),T(ENTER), T(TAB),T(TAB),T(TAB),T(I),T(N),T(TAB),T(
+ 362:keyboards/RentalCar/keymaps/Default/keymap.c **** 	}	
+ 363:keyboards/RentalCar/keymaps/Default/keymap.c **** 		case 15: {
+ 364:keyboards/RentalCar/keymaps/Default/keymap.c **** 	if(record->event.pressed) 
+ 365:keyboards/RentalCar/keymaps/Default/keymap.c **** 		SEND_STRING("username"SS_TAP(X_TAB)"pass"SS_TAP(X_TAB)SS_TAP(X_ENTER));//allows sending password 
+ 366:keyboards/RentalCar/keymaps/Default/keymap.c **** 		return false; break;
+ 367:keyboards/RentalCar/keymaps/Default/keymap.c **** 	}	
+ 368:keyboards/RentalCar/keymaps/Default/keymap.c **** 		break;
+ 369:keyboards/RentalCar/keymaps/Default/keymap.c **** 	}		
+ 370:keyboards/RentalCar/keymaps/Default/keymap.c **** 	return MACRO_NONE;
+ 371:keyboards/RentalCar/keymaps/Default/keymap.c **** }
+ 372:keyboards/RentalCar/keymaps/Default/keymap.c **** //return MACRO_NONE;
+ 373:keyboards/RentalCar/keymaps/Default/keymap.c **** 
+ 374:keyboards/RentalCar/keymaps/Default/keymap.c **** 
+ 375:keyboards/RentalCar/keymaps/Default/keymap.c **** void cmd_commands(qk_tap_dance_state_t *state, void *user_data) {
+  16               		.loc 1 375 0
+  17               		.cfi_startproc
+  18               	.LVL0:
+  19               	/* prologue: function */
+  20               	/* frame size = 0 */
+  21               	/* stack size = 0 */
+  22               	.L__stack_usage = 0
+ 376:keyboards/RentalCar/keymaps/Default/keymap.c **** 	if (state->count == 1) {
+  23               		.loc 1 376 0
+  24 0000 FC01      		movw r30,r24
+  25 0002 8081      		ld r24,Z
+  26               	.LVL1:
+  27 0004 8130      		cpi r24,lo8(1)
+  28 0006 01F4      		brne .L2
+ 377:keyboards/RentalCar/keymaps/Default/keymap.c **** 		action_macro_play(MACRO(D(LCTRL), T(C), U(LCTRL),END));
+  29               		.loc 1 377 0
+  30 0008 80E0      		ldi r24,lo8(__m.3219)
+  31 000a 90E0      		ldi r25,hi8(__m.3219)
+  32 000c 00C0      		rjmp .L4
+  33               	.L2:
+ 378:keyboards/RentalCar/keymaps/Default/keymap.c **** 	}
+ 379:keyboards/RentalCar/keymaps/Default/keymap.c **** 	else if (state->count ==2){
+  34               		.loc 1 379 0
+  35 000e 8230      		cpi r24,lo8(2)
+  36 0010 01F4      		brne .L3
+ 380:keyboards/RentalCar/keymaps/Default/keymap.c **** 		action_macro_play(MACRO(D(LCTRL), T(V), U(LCTRL),END));
+  37               		.loc 1 380 0
+  38 0012 80E0      		ldi r24,lo8(__m.3221)
+  39 0014 90E0      		ldi r25,hi8(__m.3221)
+  40 0016 00C0      		rjmp .L4
+  41               	.L3:
+ 381:keyboards/RentalCar/keymaps/Default/keymap.c **** 	}
+ 382:keyboards/RentalCar/keymaps/Default/keymap.c **** 	else {
+ 383:keyboards/RentalCar/keymaps/Default/keymap.c **** 		action_macro_play(MACRO(D(LCTRL), T(A), T(C), U(LCTRL),END));
+  42               		.loc 1 383 0
+  43 0018 80E0      		ldi r24,lo8(__m.3223)
+  44 001a 90E0      		ldi r25,hi8(__m.3223)
+  45               	.L4:
+  46 001c 0C94 0000 		jmp action_macro_play
+  47               	.LVL2:
+  48               		.cfi_endproc
+  49               	.LFE26:
+  51               		.section	.text.cmd,"ax",@progbits
+  52               	.global	cmd
+  54               	cmd:
+  55               	.LFB27:
+ 384:keyboards/RentalCar/keymaps/Default/keymap.c **** 	}
+ 385:keyboards/RentalCar/keymaps/Default/keymap.c **** }
+ 386:keyboards/RentalCar/keymaps/Default/keymap.c **** 
+ 387:keyboards/RentalCar/keymaps/Default/keymap.c **** 
+ 388:keyboards/RentalCar/keymaps/Default/keymap.c **** void cmd(qk_tap_dance_state_t *state, void *user_data) {
+  56               		.loc 1 388 0
+  57               		.cfi_startproc
+  58               	.LVL3:
+  59               	/* prologue: function */
+  60               	/* frame size = 0 */
+  61               	/* stack size = 0 */
+  62               	.L__stack_usage = 0
+ 389:keyboards/RentalCar/keymaps/Default/keymap.c **** 	if(state->count==1){
+  63               		.loc 1 389 0
+  64 0000 FC01      		movw r30,r24
+  65 0002 8081      		ld r24,Z
+  66               	.LVL4:
+  67 0004 8130      		cpi r24,lo8(1)
+  68 0006 01F4      		brne .L7
+ 390:keyboards/RentalCar/keymaps/Default/keymap.c **** 		action_macro_play(MACRO(D(LGUI), T(R),W(255), U(LGUI),W(255), T(C), T(M), T(D), T(ENTER),END));
+  69               		.loc 1 390 0
+  70 0008 80E0      		ldi r24,lo8(__m.3229)
+  71 000a 90E0      		ldi r25,hi8(__m.3229)
+  72 000c 00C0      		rjmp .L9
+  73               	.L7:
+ 391:keyboards/RentalCar/keymaps/Default/keymap.c **** 	}
+ 392:keyboards/RentalCar/keymaps/Default/keymap.c **** 	else if (state->count == 2) {
+  74               		.loc 1 392 0
+  75 000e 8230      		cpi r24,lo8(2)
+  76 0010 01F4      		brne .L8
+ 393:keyboards/RentalCar/keymaps/Default/keymap.c **** 		action_macro_play(MACRO(D(LGUI), T(R), U(LGUI), T(C), T(M), T(D), T(ENTER),W(255),W(255), T(I), T
+  77               		.loc 1 393 0
+  78 0012 80E0      		ldi r24,lo8(__m.3231)
+  79 0014 90E0      		ldi r25,hi8(__m.3231)
+  80 0016 00C0      		rjmp .L9
+  81               	.L8:
+ 394:keyboards/RentalCar/keymaps/Default/keymap.c **** 	}
+ 395:keyboards/RentalCar/keymaps/Default/keymap.c **** 	else{
+ 396:keyboards/RentalCar/keymaps/Default/keymap.c **** 		action_macro_play(MACRO(D(LGUI), T(R),W(255), U(LGUI),W(255), T(C), T(M), T(D), T(ENTER), W(255),
+  82               		.loc 1 396 0
+  83 0018 80E0      		ldi r24,lo8(__m.3233)
+  84 001a 90E0      		ldi r25,hi8(__m.3233)
+  85               	.L9:
+  86 001c 0C94 0000 		jmp action_macro_play
+  87               	.LVL5:
+  88               		.cfi_endproc
+  89               	.LFE27:
+  91               		.section	.text.VirtualDesktop,"ax",@progbits
+  92               	.global	VirtualDesktop
+  94               	VirtualDesktop:
+  95               	.LFB29:
+ 397:keyboards/RentalCar/keymaps/Default/keymap.c **** 	}
+ 398:keyboards/RentalCar/keymaps/Default/keymap.c **** }
+ 399:keyboards/RentalCar/keymaps/Default/keymap.c **** void SLSH_BSLSH(qk_tap_dance_state_t *state, void *user_data) {
+ 400:keyboards/RentalCar/keymaps/Default/keymap.c **** 	if (state->count == 1) {
+ 401:keyboards/RentalCar/keymaps/Default/keymap.c **** 		register_code (KC_SLSH);
+ 402:keyboards/RentalCar/keymaps/Default/keymap.c **** 		unregister_code (KC_SLSH);
+ 403:keyboards/RentalCar/keymaps/Default/keymap.c **** 	}
+ 404:keyboards/RentalCar/keymaps/Default/keymap.c **** 	else{
+ 405:keyboards/RentalCar/keymaps/Default/keymap.c **** 		register_code (KC_BSLS);
+ 406:keyboards/RentalCar/keymaps/Default/keymap.c **** 		unregister_code (KC_BSLS);
+ 407:keyboards/RentalCar/keymaps/Default/keymap.c **** 	}
+ 408:keyboards/RentalCar/keymaps/Default/keymap.c **** }
+ 409:keyboards/RentalCar/keymaps/Default/keymap.c **** void VirtualDesktop(qk_tap_dance_state_t *state, void *user_data) {
+  96               		.loc 1 409 0
+  97               		.cfi_startproc
+  98               	.LVL6:
+  99               	/* prologue: function */
+ 100               	/* frame size = 0 */
+ 101               	/* stack size = 0 */
+ 102               	.L__stack_usage = 0
+ 410:keyboards/RentalCar/keymaps/Default/keymap.c **** 	if (state->count == 1) 
+ 103               		.loc 1 410 0
+ 104 0000 FC01      		movw r30,r24
+ 105 0002 8081      		ld r24,Z
+ 106               	.LVL7:
+ 107 0004 8130      		cpi r24,lo8(1)
+ 108 0006 01F4      		brne .L11
+ 411:keyboards/RentalCar/keymaps/Default/keymap.c **** 		action_macro_play(MACRO(D(LGUI),D(LCTRL),T(LEFT),U(LCTRL),U(LGUI),END));
+ 109               		.loc 1 411 0
+ 110 0008 80E0      		ldi r24,lo8(__m.3243)
+ 111 000a 90E0      		ldi r25,hi8(__m.3243)
+ 112 000c 00C0      		rjmp .L13
+ 113               	.L11:
+ 412:keyboards/RentalCar/keymaps/Default/keymap.c **** 	else if(state->count==2)
+ 114               		.loc 1 412 0
+ 115 000e 8230      		cpi r24,lo8(2)
+ 116 0010 01F4      		brne .L10
+ 413:keyboards/RentalCar/keymaps/Default/keymap.c **** 		action_macro_play(MACRO(D(LGUI),D(LCTRL),T(RIGHT),U(LCTRL),U(LGUI),END));
+ 117               		.loc 1 413 0
+ 118 0012 80E0      		ldi r24,lo8(__m.3245)
+ 119 0014 90E0      		ldi r25,hi8(__m.3245)
+ 120               	.L13:
+ 121 0016 0C94 0000 		jmp action_macro_play
+ 122               	.LVL8:
+ 123               	.L10:
+ 124 001a 0895      		ret
+ 125               		.cfi_endproc
+ 126               	.LFE29:
+ 128               		.section	.text.SLSH_BSLSH,"ax",@progbits
+ 129               	.global	SLSH_BSLSH
+ 131               	SLSH_BSLSH:
+ 132               	.LFB28:
+ 399:keyboards/RentalCar/keymaps/Default/keymap.c **** void SLSH_BSLSH(qk_tap_dance_state_t *state, void *user_data) {
+ 133               		.loc 1 399 0
+ 134               		.cfi_startproc
+ 135               	.LVL9:
+ 136               	/* prologue: function */
+ 137               	/* frame size = 0 */
+ 138               	/* stack size = 0 */
+ 139               	.L__stack_usage = 0
+ 400:keyboards/RentalCar/keymaps/Default/keymap.c **** 	if (state->count == 1) {
+ 140               		.loc 1 400 0
+ 141 0000 FC01      		movw r30,r24
+ 142 0002 8081      		ld r24,Z
+ 143               	.LVL10:
+ 144 0004 8130      		cpi r24,lo8(1)
+ 145 0006 01F4      		brne .L15
+ 401:keyboards/RentalCar/keymaps/Default/keymap.c **** 		register_code (KC_SLSH);
+ 146               		.loc 1 401 0
+ 147 0008 88E3      		ldi r24,lo8(56)
+ 148 000a 0E94 0000 		call register_code
+ 149               	.LVL11:
+ 402:keyboards/RentalCar/keymaps/Default/keymap.c **** 		unregister_code (KC_SLSH);
+ 150               		.loc 1 402 0
+ 151 000e 88E3      		ldi r24,lo8(56)
+ 152 0010 00C0      		rjmp .L16
+ 153               	.LVL12:
+ 154               	.L15:
+ 405:keyboards/RentalCar/keymaps/Default/keymap.c **** 		register_code (KC_BSLS);
+ 155               		.loc 1 405 0
+ 156 0012 81E3      		ldi r24,lo8(49)
+ 157 0014 0E94 0000 		call register_code
+ 158               	.LVL13:
+ 406:keyboards/RentalCar/keymaps/Default/keymap.c **** 		unregister_code (KC_BSLS);
+ 159               		.loc 1 406 0
+ 160 0018 81E3      		ldi r24,lo8(49)
+ 161               	.L16:
+ 162 001a 0C94 0000 		jmp unregister_code
+ 163               	.LVL14:
+ 164               		.cfi_endproc
+ 165               	.LFE28:
+ 167               		.section	.text.rgblight_toggle,"ax",@progbits
+ 168               		.weak	rgblight_toggle
+ 170               	rgblight_toggle:
+ 171               	.LFB10:
+ 172               		.file 2 "./quantum/rgb.h"
+   1:./quantum/rgb.h **** /* Copyright 2017 Jack Humbert
+   2:./quantum/rgb.h ****  *
+   3:./quantum/rgb.h ****  * This program is free software: you can redistribute it and/or modify
+   4:./quantum/rgb.h ****  * it under the terms of the GNU General Public License as published by
+   5:./quantum/rgb.h ****  * the Free Software Foundation, either version 2 of the License, or
+   6:./quantum/rgb.h ****  * (at your option) any later version.
+   7:./quantum/rgb.h ****  *
+   8:./quantum/rgb.h ****  * This program is distributed in the hope that it will be useful,
+   9:./quantum/rgb.h ****  * but WITHOUT ANY WARRANTY; without even the implied warranty of
+  10:./quantum/rgb.h ****  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  11:./quantum/rgb.h ****  * GNU General Public License for more details.
+  12:./quantum/rgb.h ****  *
+  13:./quantum/rgb.h ****  * You should have received a copy of the GNU General Public License
+  14:./quantum/rgb.h ****  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  15:./quantum/rgb.h ****  */
+  16:./quantum/rgb.h **** 
+  17:./quantum/rgb.h **** #ifndef RGB_H
+  18:./quantum/rgb.h **** #define RGB_H
+  19:./quantum/rgb.h **** 
+  20:./quantum/rgb.h **** __attribute__((weak))
+  21:./quantum/rgb.h **** void rgblight_toggle(void) {};
+ 173               		.loc 2 21 0
+ 174               		.cfi_startproc
+ 175               	/* prologue: function */
+ 176               	/* frame size = 0 */
+ 177               	/* stack size = 0 */
+ 178               	.L__stack_usage = 0
+ 179 0000 0895      		ret
+ 180               		.cfi_endproc
+ 181               	.LFE10:
+ 183               		.section	.text.rgblight_step,"ax",@progbits
+ 184               		.weak	rgblight_step
+ 186               	rgblight_step:
+ 187               	.LFB11:
+  22:./quantum/rgb.h **** 
+  23:./quantum/rgb.h **** __attribute__((weak))
+  24:./quantum/rgb.h **** void rgblight_step(void) {};
+ 188               		.loc 2 24 0
+ 189               		.cfi_startproc
+ 190               	/* prologue: function */
+ 191               	/* frame size = 0 */
+ 192               	/* stack size = 0 */
+ 193               	.L__stack_usage = 0
+ 194 0000 0895      		ret
+ 195               		.cfi_endproc
+ 196               	.LFE11:
+ 198               		.section	.text.rgblight_step_reverse,"ax",@progbits
+ 199               		.weak	rgblight_step_reverse
+ 201               	rgblight_step_reverse:
+ 202               	.LFB12:
+  25:./quantum/rgb.h **** 
+  26:./quantum/rgb.h **** __attribute__((weak))
+  27:./quantum/rgb.h **** void rgblight_step_reverse(void) {};
+ 203               		.loc 2 27 0
+ 204               		.cfi_startproc
+ 205               	/* prologue: function */
+ 206               	/* frame size = 0 */
+ 207               	/* stack size = 0 */
+ 208               	.L__stack_usage = 0
+ 209 0000 0895      		ret
+ 210               		.cfi_endproc
+ 211               	.LFE12:
+ 213               		.section	.text.rgblight_increase_hue,"ax",@progbits
+ 214               		.weak	rgblight_increase_hue
+ 216               	rgblight_increase_hue:
+ 217               	.LFB13:
+  28:./quantum/rgb.h **** 
+  29:./quantum/rgb.h **** __attribute__((weak))
+  30:./quantum/rgb.h **** void rgblight_increase_hue(void) {};
+ 218               		.loc 2 30 0
+ 219               		.cfi_startproc
+ 220               	/* prologue: function */
+ 221               	/* frame size = 0 */
+ 222               	/* stack size = 0 */
+ 223               	.L__stack_usage = 0
+ 224 0000 0895      		ret
+ 225               		.cfi_endproc
+ 226               	.LFE13:
+ 228               		.section	.text.rgblight_decrease_hue,"ax",@progbits
+ 229               		.weak	rgblight_decrease_hue
+ 231               	rgblight_decrease_hue:
+ 232               	.LFB14:
+  31:./quantum/rgb.h **** 
+  32:./quantum/rgb.h **** __attribute__((weak))
+  33:./quantum/rgb.h **** void rgblight_decrease_hue(void) {};
+ 233               		.loc 2 33 0
+ 234               		.cfi_startproc
+ 235               	/* prologue: function */
+ 236               	/* frame size = 0 */
+ 237               	/* stack size = 0 */
+ 238               	.L__stack_usage = 0
+ 239 0000 0895      		ret
+ 240               		.cfi_endproc
+ 241               	.LFE14:
+ 243               		.section	.text.rgblight_increase_sat,"ax",@progbits
+ 244               		.weak	rgblight_increase_sat
+ 246               	rgblight_increase_sat:
+ 247               	.LFB15:
+  34:./quantum/rgb.h **** 
+  35:./quantum/rgb.h **** __attribute__((weak))
+  36:./quantum/rgb.h **** void rgblight_increase_sat(void) {};
+ 248               		.loc 2 36 0
+ 249               		.cfi_startproc
+ 250               	/* prologue: function */
+ 251               	/* frame size = 0 */
+ 252               	/* stack size = 0 */
+ 253               	.L__stack_usage = 0
+ 254 0000 0895      		ret
+ 255               		.cfi_endproc
+ 256               	.LFE15:
+ 258               		.section	.text.rgblight_decrease_sat,"ax",@progbits
+ 259               		.weak	rgblight_decrease_sat
+ 261               	rgblight_decrease_sat:
+ 262               	.LFB16:
+  37:./quantum/rgb.h **** 
+  38:./quantum/rgb.h **** __attribute__((weak))
+  39:./quantum/rgb.h **** void rgblight_decrease_sat(void) {};
+ 263               		.loc 2 39 0
+ 264               		.cfi_startproc
+ 265               	/* prologue: function */
+ 266               	/* frame size = 0 */
+ 267               	/* stack size = 0 */
+ 268               	.L__stack_usage = 0
+ 269 0000 0895      		ret
+ 270               		.cfi_endproc
+ 271               	.LFE16:
+ 273               		.section	.text.rgblight_increase_val,"ax",@progbits
+ 274               		.weak	rgblight_increase_val
+ 276               	rgblight_increase_val:
+ 277               	.LFB17:
+  40:./quantum/rgb.h **** 
+  41:./quantum/rgb.h **** __attribute__((weak))
+  42:./quantum/rgb.h **** void rgblight_increase_val(void) {};
+ 278               		.loc 2 42 0
+ 279               		.cfi_startproc
+ 280               	/* prologue: function */
+ 281               	/* frame size = 0 */
+ 282               	/* stack size = 0 */
+ 283               	.L__stack_usage = 0
+ 284 0000 0895      		ret
+ 285               		.cfi_endproc
+ 286               	.LFE17:
+ 288               		.section	.text.rgblight_decrease_val,"ax",@progbits
+ 289               		.weak	rgblight_decrease_val
+ 291               	rgblight_decrease_val:
+ 292               	.LFB18:
+  43:./quantum/rgb.h **** 
+  44:./quantum/rgb.h **** __attribute__((weak))
+  45:./quantum/rgb.h **** void rgblight_decrease_val(void) {};
+ 293               		.loc 2 45 0
+ 294               		.cfi_startproc
+ 295               	/* prologue: function */
+ 296               	/* frame size = 0 */
+ 297               	/* stack size = 0 */
+ 298               	.L__stack_usage = 0
+ 299 0000 0895      		ret
+ 300               		.cfi_endproc
+ 301               	.LFE18:
+ 303               		.section	.text.rgblight_increase_speed,"ax",@progbits
+ 304               		.weak	rgblight_increase_speed
+ 306               	rgblight_increase_speed:
+ 307               	.LFB19:
+  46:./quantum/rgb.h **** 
+  47:./quantum/rgb.h **** __attribute__((weak))
+  48:./quantum/rgb.h **** void rgblight_increase_speed(void) {};
+ 308               		.loc 2 48 0
+ 309               		.cfi_startproc
+ 310               	/* prologue: function */
+ 311               	/* frame size = 0 */
+ 312               	/* stack size = 0 */
+ 313               	.L__stack_usage = 0
+ 314 0000 0895      		ret
+ 315               		.cfi_endproc
+ 316               	.LFE19:
+ 318               		.section	.text.rgblight_decrease_speed,"ax",@progbits
+ 319               		.weak	rgblight_decrease_speed
+ 321               	rgblight_decrease_speed:
+ 322               	.LFB20:
+  49:./quantum/rgb.h **** 
+  50:./quantum/rgb.h **** __attribute__((weak))
+  51:./quantum/rgb.h **** void rgblight_decrease_speed(void) {};
+ 323               		.loc 2 51 0
+ 324               		.cfi_startproc
+ 325               	/* prologue: function */
+ 326               	/* frame size = 0 */
+ 327               	/* stack size = 0 */
+ 328               	.L__stack_usage = 0
+ 329 0000 0895      		ret
+ 330               		.cfi_endproc
+ 331               	.LFE20:
+ 333               		.section	.text.persistent_default_layer_set,"ax",@progbits
+ 334               	.global	persistent_default_layer_set
+ 336               	persistent_default_layer_set:
+ 337               	.LFB24:
+ 293:keyboards/RentalCar/keymaps/Default/keymap.c **** void persistent_default_layer_set(uint16_t default_layer) {
+ 338               		.loc 1 293 0
+ 339               		.cfi_startproc
+ 340               	.LVL15:
+ 293:keyboards/RentalCar/keymaps/Default/keymap.c **** void persistent_default_layer_set(uint16_t default_layer) {
+ 341               		.loc 1 293 0
+ 342 0000 CF93      		push r28
+ 343               	.LCFI0:
+ 344               		.cfi_def_cfa_offset 3
+ 345               		.cfi_offset 28, -2
+ 346 0002 DF93      		push r29
+ 347               	.LCFI1:
+ 348               		.cfi_def_cfa_offset 4
+ 349               		.cfi_offset 29, -3
+ 350               	/* prologue: function */
+ 351               	/* frame size = 0 */
+ 352               	/* stack size = 2 */
+ 353               	.L__stack_usage = 2
+ 354 0004 EC01      		movw r28,r24
+ 294:keyboards/RentalCar/keymaps/Default/keymap.c **** 	eeconfig_update_default_layer(default_layer);
+ 355               		.loc 1 294 0
+ 356 0006 0E94 0000 		call eeconfig_update_default_layer
+ 357               	.LVL16:
+ 295:keyboards/RentalCar/keymaps/Default/keymap.c **** 	default_layer_set(default_layer);
+ 358               		.loc 1 295 0
+ 359 000a BE01      		movw r22,r28
+ 360 000c 80E0      		ldi r24,0
+ 361 000e 90E0      		ldi r25,0
+ 362               	/* epilogue start */
+ 296:keyboards/RentalCar/keymaps/Default/keymap.c **** }
+ 363               		.loc 1 296 0
+ 364 0010 DF91      		pop r29
+ 365 0012 CF91      		pop r28
+ 366               	.LVL17:
+ 295:keyboards/RentalCar/keymaps/Default/keymap.c **** 	default_layer_set(default_layer);
+ 367               		.loc 1 295 0
+ 368 0014 0C94 0000 		jmp default_layer_set
+ 369               	.LVL18:
+ 370               		.cfi_endproc
+ 371               	.LFE24:
+ 373               		.section	.text.action_get_macro,"ax",@progbits
+ 374               	.global	action_get_macro
+ 376               	action_get_macro:
+ 377               	.LFB25:
+ 306:keyboards/RentalCar/keymaps/Default/keymap.c **** const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) {
+ 378               		.loc 1 306 0
+ 379               		.cfi_startproc
+ 380               	.LVL19:
+ 381               	/* prologue: function */
+ 382               	/* frame size = 0 */
+ 383               	/* stack size = 0 */
+ 384               	.L__stack_usage = 0
+ 385 0000 DC01      		movw r26,r24
+ 308:keyboards/RentalCar/keymaps/Default/keymap.c **** 	switch (id) {
+ 386               		.loc 1 308 0
+ 387 0002 462F      		mov r20,r22
+ 388               	.LVL20:
+ 389 0004 50E0      		ldi r21,0
+ 390 0006 4031      		cpi r20,16
+ 391 0008 5105      		cpc r21,__zero_reg__
+ 392 000a 00F0      		brlo .+2
+ 393 000c 00C0      		rjmp .L58
+ 394 000e 4050      		subi r20,lo8(-(gs(.L32)))
+ 395 0010 5040      		sbci r21,hi8(-(gs(.L32)))
+ 396 0012 FA01      		movw r30,r20
+ 397 0014 0C94 0000 		jmp __tablejump2__
+ 398               		.section	.progmem.gcc_sw_table.action_get_macro,"a",@progbits
+ 399               		.p2align	1
+ 400               	.L32:
+ 401 0000 0000      		.word gs(.L31)
+ 402 0002 0000      		.word gs(.L33)
+ 403 0004 0000      		.word gs(.L34)
+ 404 0006 0000      		.word gs(.L35)
+ 405 0008 0000      		.word gs(.L36)
+ 406 000a 0000      		.word gs(.L37)
+ 407 000c 0000      		.word gs(.L38)
+ 408 000e 0000      		.word gs(.L58)
+ 409 0010 0000      		.word gs(.L58)
+ 410 0012 0000      		.word gs(.L58)
+ 411 0014 0000      		.word gs(.L39)
+ 412 0016 0000      		.word gs(.L40)
+ 413 0018 0000      		.word gs(.L41)
+ 414 001a 0000      		.word gs(.L42)
+ 415 001c 0000      		.word gs(.L43)
+ 416 001e 0000      		.word gs(.L44)
+ 417               		.section	.text.action_get_macro
+ 418               	.L31:
+ 310:keyboards/RentalCar/keymaps/Default/keymap.c **** 		if (record->event.pressed) {
+ 419               		.loc 1 310 0
+ 420 0018 1296      		adiw r26,2
+ 421 001a 8C91      		ld r24,X
+ 422 001c 1297      		sbiw r26,2
+ 423               	.LVL21:
+ 424 001e 8111      		cpse r24,__zero_reg__
+ 425 0020 00C0      		rjmp .L49
+ 426               	.L33:
+ 314:keyboards/RentalCar/keymaps/Default/keymap.c **** 		if (record->event.pressed) {
+ 427               		.loc 1 314 0
+ 428 0022 1296      		adiw r26,2
+ 429 0024 8C91      		ld r24,X
+ 430 0026 1297      		sbiw r26,2
+ 431 0028 8111      		cpse r24,__zero_reg__
+ 432 002a 00C0      		rjmp .L50
+ 433               	.L34:
+ 320:keyboards/RentalCar/keymaps/Default/keymap.c **** 		if (record->event.pressed) {
+ 434               		.loc 1 320 0
+ 435 002c 1296      		adiw r26,2
+ 436 002e 8C91      		ld r24,X
+ 437 0030 1297      		sbiw r26,2
+ 438 0032 8823      		tst r24
+ 439 0034 01F0      		breq .L35
+ 321:keyboards/RentalCar/keymaps/Default/keymap.c **** 			SEND_STRING("email");// auto send email
+ 440               		.loc 1 321 0
+ 441 0036 80E0      		ldi r24,lo8(__c.3181)
+ 442 0038 90E0      		ldi r25,hi8(__c.3181)
+ 443 003a 00C0      		rjmp .L77
+ 444               	.L35:
+ 325:keyboards/RentalCar/keymaps/Default/keymap.c **** 		if (record->event.pressed) {
+ 445               		.loc 1 325 0
+ 446 003c 1296      		adiw r26,2
+ 447 003e 8C91      		ld r24,X
+ 448 0040 1297      		sbiw r26,2
+ 449 0042 8823      		tst r24
+ 450 0044 01F0      		breq .L36
+ 326:keyboards/RentalCar/keymaps/Default/keymap.c **** 			SEND_STRING("www.support.xerox.com"SS_TAP(X_ENTER));
+ 451               		.loc 1 326 0
+ 452 0046 80E0      		ldi r24,lo8(__c.3184)
+ 453 0048 90E0      		ldi r25,hi8(__c.3184)
+ 454 004a 00C0      		rjmp .L77
+ 455               	.L36:
+ 330:keyboards/RentalCar/keymaps/Default/keymap.c **** 		if(record->event.pressed) {
+ 456               		.loc 1 330 0
+ 457 004c 1296      		adiw r26,2
+ 458 004e 8C91      		ld r24,X
+ 459 0050 1297      		sbiw r26,2
+ 460 0052 8111      		cpse r24,__zero_reg__
+ 461 0054 00C0      		rjmp .L51
+ 462               	.L37:
+ 335:keyboards/RentalCar/keymaps/Default/keymap.c **** 			return  MACRO_TAP_HOLD_LAYER(record, MACRO(TYPE(KC_X), END), _LOWER);	
+ 463               		.loc 1 335 0
+ 464 0056 1296      		adiw r26,2
+ 465 0058 9C91      		ld r25,X
+ 466 005a 1297      		sbiw r26,2
+ 467 005c 1596      		adiw r26,5
+ 468 005e 8C91      		ld r24,X
+ 469 0060 9923      		tst r25
+ 470 0062 01F0      		breq .L45
+ 335:keyboards/RentalCar/keymaps/Default/keymap.c **** 			return  MACRO_TAP_HOLD_LAYER(record, MACRO(TYPE(KC_X), END), _LOWER);	
+ 471               		.loc 1 335 0 is_stmt 0 discriminator 1
+ 472 0064 982F      		mov r25,r24
+ 473 0066 9295      		swap r25
+ 474 0068 9F70      		andi r25,lo8(15)
+ 475 006a 01F0      		breq .L46
+ 335:keyboards/RentalCar/keymaps/Default/keymap.c **** 			return  MACRO_TAP_HOLD_LAYER(record, MACRO(TYPE(KC_X), END), _LOWER);	
+ 476               		.loc 1 335 0 discriminator 4
+ 477 006c 80FF      		sbrs r24,0
+ 478 006e 00C0      		rjmp .L58
+ 479               	.L46:
+ 480               	.LBB2:
+ 335:keyboards/RentalCar/keymaps/Default/keymap.c **** 			return  MACRO_TAP_HOLD_LAYER(record, MACRO(TYPE(KC_X), END), _LOWER);	
+ 481               		.loc 1 335 0 discriminator 3
+ 482 0070 83E0      		ldi r24,lo8(3)
+ 483 0072 0E94 0000 		call layer_on
+ 484               	.LVL22:
+ 485 0076 00C0      		rjmp .L58
+ 486               	.LVL23:
+ 487               	.L45:
+ 488               	.LBE2:
+ 335:keyboards/RentalCar/keymaps/Default/keymap.c **** 			return  MACRO_TAP_HOLD_LAYER(record, MACRO(TYPE(KC_X), END), _LOWER);	
+ 489               		.loc 1 335 0 discriminator 2
+ 490 0078 982F      		mov r25,r24
+ 491 007a 9295      		swap r25
+ 492 007c 9F70      		andi r25,lo8(15)
+ 493 007e 01F0      		breq .L47
+ 335:keyboards/RentalCar/keymaps/Default/keymap.c **** 			return  MACRO_TAP_HOLD_LAYER(record, MACRO(TYPE(KC_X), END), _LOWER);	
+ 494               		.loc 1 335 0 discriminator 6
+ 495 0080 80FF      		sbrs r24,0
+ 496 0082 00C0      		rjmp .L53
+ 497               	.L47:
+ 498               	.LBB3:
+ 335:keyboards/RentalCar/keymaps/Default/keymap.c **** 			return  MACRO_TAP_HOLD_LAYER(record, MACRO(TYPE(KC_X), END), _LOWER);	
+ 499               		.loc 1 335 0 discriminator 7
+ 500 0084 83E0      		ldi r24,lo8(3)
+ 501 0086 0E94 0000 		call layer_off
+ 502               	.LVL24:
+ 503 008a 00C0      		rjmp .L58
+ 504               	.LVL25:
+ 505               	.L38:
+ 506               	.LBE3:
+ 338:keyboards/RentalCar/keymaps/Default/keymap.c **** 			if(record->event.pressed) 
+ 507               		.loc 1 338 0 is_stmt 1
+ 508 008c 1296      		adiw r26,2
+ 509 008e 8C91      		ld r24,X
+ 510 0090 1297      		sbiw r26,2
+ 511               	.LVL26:
+ 512 0092 8111      		cpse r24,__zero_reg__
+ 513 0094 00C0      		rjmp .L54
+ 514               	.L39:
+ 342:keyboards/RentalCar/keymaps/Default/keymap.c **** 		if(record->event.pressed) {
+ 515               		.loc 1 342 0
+ 516 0096 1296      		adiw r26,2
+ 517 0098 8C91      		ld r24,X
+ 518 009a 1297      		sbiw r26,2
+ 519 009c 8823      		tst r24
+ 520 009e 01F0      		breq .L40
+ 343:keyboards/RentalCar/keymaps/Default/keymap.c **** 		SEND_STRING(""); //send string
+ 521               		.loc 1 343 0
+ 522 00a0 80E0      		ldi r24,lo8(__c.3198)
+ 523 00a2 90E0      		ldi r25,hi8(__c.3198)
+ 524 00a4 00C0      		rjmp .L77
+ 525               	.L40:
+ 347:keyboards/RentalCar/keymaps/Default/keymap.c **** 		if(record->event.pressed) {
+ 526               		.loc 1 347 0
+ 527 00a6 1296      		adiw r26,2
+ 528 00a8 8C91      		ld r24,X
+ 529 00aa 1297      		sbiw r26,2
+ 530 00ac 8823      		tst r24
+ 531 00ae 01F0      		breq .L41
+ 348:keyboards/RentalCar/keymaps/Default/keymap.c **** 			SEND_STRING("ipconfig /all");
+ 532               		.loc 1 348 0
+ 533 00b0 80E0      		ldi r24,lo8(__c.3201)
+ 534 00b2 90E0      		ldi r25,hi8(__c.3201)
+ 535 00b4 00C0      		rjmp .L77
+ 536               	.L41:
+ 352:keyboards/RentalCar/keymaps/Default/keymap.c **** 	if(record->event.pressed) 
+ 537               		.loc 1 352 0
+ 538 00b6 1296      		adiw r26,2
+ 539 00b8 8C91      		ld r24,X
+ 540 00ba 1297      		sbiw r26,2
+ 541 00bc 8111      		cpse r24,__zero_reg__
+ 542 00be 00C0      		rjmp .L55
+ 543               	.L42:
+ 356:keyboards/RentalCar/keymaps/Default/keymap.c **** 	if(record->event.pressed) 
+ 544               		.loc 1 356 0
+ 545 00c0 1296      		adiw r26,2
+ 546 00c2 8C91      		ld r24,X
+ 547 00c4 1297      		sbiw r26,2
+ 548 00c6 8111      		cpse r24,__zero_reg__
+ 549 00c8 00C0      		rjmp .L56
+ 550               	.L43:
+ 360:keyboards/RentalCar/keymaps/Default/keymap.c **** 	if(record->event.pressed) 
+ 551               		.loc 1 360 0
+ 552 00ca 1296      		adiw r26,2
+ 553 00cc 8C91      		ld r24,X
+ 554 00ce 1297      		sbiw r26,2
+ 555 00d0 8111      		cpse r24,__zero_reg__
+ 556 00d2 00C0      		rjmp .L57
+ 557               	.L44:
+ 364:keyboards/RentalCar/keymaps/Default/keymap.c **** 	if(record->event.pressed) 
+ 558               		.loc 1 364 0
+ 559 00d4 1296      		adiw r26,2
+ 560 00d6 8C91      		ld r24,X
+ 561 00d8 8823      		tst r24
+ 562 00da 01F0      		breq .L58
+ 365:keyboards/RentalCar/keymaps/Default/keymap.c **** 		SEND_STRING("username"SS_TAP(X_TAB)"pass"SS_TAP(X_TAB)SS_TAP(X_ENTER));//allows sending password 
+ 563               		.loc 1 365 0
+ 564 00dc 80E0      		ldi r24,lo8(__c.3213)
+ 565 00de 90E0      		ldi r25,hi8(__c.3213)
+ 566               	.L77:
+ 567 00e0 0E94 0000 		call send_string_P
+ 568               	.LVL27:
+ 569 00e4 00C0      		rjmp .L58
+ 570               	.LVL28:
+ 571               	.L49:
+ 311:keyboards/RentalCar/keymaps/Default/keymap.c **** 			return MACRO(D(LGUI), T(TAB), U(LGUI), END);
+ 572               		.loc 1 311 0
+ 573 00e6 80E0      		ldi r24,lo8(__m.3175)
+ 574 00e8 90E0      		ldi r25,hi8(__m.3175)
+ 575 00ea 0895      		ret
+ 576               	.L50:
+ 317:keyboards/RentalCar/keymaps/Default/keymap.c **** 			return MACRO(I(10), T(A), T(D), T(M), T(I), T(N), W(75), T(TAB), T(1), T(1),T(1), T(1), T(ENTER)
+ 577               		.loc 1 317 0
+ 578 00ec 80E0      		ldi r24,lo8(__m.3178)
+ 579 00ee 90E0      		ldi r25,hi8(__m.3178)
+ 580 00f0 0895      		ret
+ 581               	.L51:
+ 331:keyboards/RentalCar/keymaps/Default/keymap.c **** 			return MACRO(I(10), D(LCTRL), T(T), T(V), T(ENTER), U(LCTRL), END);
+ 582               		.loc 1 331 0
+ 583 00f2 80E0      		ldi r24,lo8(__m.3187)
+ 584 00f4 90E0      		ldi r25,hi8(__m.3187)
+ 585 00f6 0895      		ret
+ 586               	.L53:
+ 335:keyboards/RentalCar/keymaps/Default/keymap.c **** 			return  MACRO_TAP_HOLD_LAYER(record, MACRO(TYPE(KC_X), END), _LOWER);	
+ 587               		.loc 1 335 0
+ 588 00f8 80E0      		ldi r24,lo8(__m.3191)
+ 589 00fa 90E0      		ldi r25,hi8(__m.3191)
+ 590 00fc 0895      		ret
+ 591               	.L54:
+ 339:keyboards/RentalCar/keymaps/Default/keymap.c **** 			return MACRO(I(10), T(0), T(C), T(TAB), T(TAB), T(A), T(TAB), END);
+ 592               		.loc 1 339 0
+ 593 00fe 80E0      		ldi r24,lo8(__m.3195)
+ 594 0100 90E0      		ldi r25,hi8(__m.3195)
+ 595 0102 0895      		ret
+ 596               	.L55:
+ 353:keyboards/RentalCar/keymaps/Default/keymap.c **** 		return MACRO( I(10),T(TAB), T(O), T(P), T(TAB),T(ENTER), T(TAB),T(TAB),T(TAB),T(Z),T(R),T(TAB),T(
+ 597               		.loc 1 353 0
+ 598 0104 80E0      		ldi r24,lo8(__m.3204)
+ 599 0106 90E0      		ldi r25,hi8(__m.3204)
+ 600 0108 0895      		ret
+ 601               	.L56:
+ 357:keyboards/RentalCar/keymaps/Default/keymap.c **** 		return MACRO( I(10),T(TAB), T(O), T(T), T(TAB),T(ENTER), T(TAB),T(TAB),T(TAB),T(Z),T(R),T(TAB),T(
+ 602               		.loc 1 357 0
+ 603 010a 80E0      		ldi r24,lo8(__m.3207)
+ 604 010c 90E0      		ldi r25,hi8(__m.3207)
+ 605 010e 0895      		ret
+ 606               	.L57:
+ 361:keyboards/RentalCar/keymaps/Default/keymap.c **** 		return MACRO( I(10),T(TAB), T(I), T(N), T(TAB),T(ENTER), T(TAB),T(TAB),T(TAB),T(I),T(N),T(TAB),T(
+ 607               		.loc 1 361 0
+ 608 0110 80E0      		ldi r24,lo8(__m.3210)
+ 609 0112 90E0      		ldi r25,hi8(__m.3210)
+ 610 0114 0895      		ret
+ 611               	.LVL29:
+ 612               	.L58:
+ 335:keyboards/RentalCar/keymaps/Default/keymap.c **** 			return  MACRO_TAP_HOLD_LAYER(record, MACRO(TYPE(KC_X), END), _LOWER);	
+ 613               		.loc 1 335 0
+ 614 0116 80E0      		ldi r24,0
+ 615 0118 90E0      		ldi r25,0
+ 371:keyboards/RentalCar/keymaps/Default/keymap.c **** }
+ 616               		.loc 1 371 0
+ 617 011a 0895      		ret
+ 618               		.cfi_endproc
+ 619               	.LFE25:
+ 621               		.section	.text.matrix_init_user,"ax",@progbits
+ 622               	.global	matrix_init_user
+ 624               	matrix_init_user:
+ 625               	.LFB30:
+ 414:keyboards/RentalCar/keymaps/Default/keymap.c **** }
+ 415:keyboards/RentalCar/keymaps/Default/keymap.c **** 	
+ 416:keyboards/RentalCar/keymaps/Default/keymap.c **** qk_tap_dance_action_t tap_dance_actions[] = {
+ 417:keyboards/RentalCar/keymaps/Default/keymap.c **** 	
+ 418:keyboards/RentalCar/keymaps/Default/keymap.c **** 	//Tap once for Esc, twice for Caps Lock
+ 419:keyboards/RentalCar/keymaps/Default/keymap.c **** 	[TD_CPY_PST] = ACTION_TAP_DANCE_FN(cmd_commands),
+ 420:keyboards/RentalCar/keymaps/Default/keymap.c **** 	[TD_SLSH]= ACTION_TAP_DANCE_FN(SLSH_BSLSH),
+ 421:keyboards/RentalCar/keymaps/Default/keymap.c **** 	[TD_CMD]=ACTION_TAP_DANCE_FN(cmd),
+ 422:keyboards/RentalCar/keymaps/Default/keymap.c **** 	[TD_VRDSK]=ACTION_TAP_DANCE_FN(VirtualDesktop)
+ 423:keyboards/RentalCar/keymaps/Default/keymap.c **** };
+ 424:keyboards/RentalCar/keymaps/Default/keymap.c **** 
+ 425:keyboards/RentalCar/keymaps/Default/keymap.c **** void matrix_init_user(void) {
+ 626               		.loc 1 425 0
+ 627               		.cfi_startproc
+ 628               	/* prologue: function */
+ 629               	/* frame size = 0 */
+ 630               	/* stack size = 0 */
+ 631               	.L__stack_usage = 0
+ 632 0000 0895      		ret
+ 633               		.cfi_endproc
+ 634               	.LFE30:
+ 636               		.section	.text.matrix_scan_user,"ax",@progbits
+ 637               	.global	matrix_scan_user
+ 639               	matrix_scan_user:
+ 640               	.LFB31:
+ 426:keyboards/RentalCar/keymaps/Default/keymap.c **** }
+ 427:keyboards/RentalCar/keymaps/Default/keymap.c **** 
+ 428:keyboards/RentalCar/keymaps/Default/keymap.c **** void matrix_scan_user(void) {
+ 641               		.loc 1 428 0
+ 642               		.cfi_startproc
+ 643               	/* prologue: function */
+ 644               	/* frame size = 0 */
+ 645               	/* stack size = 0 */
+ 646               	.L__stack_usage = 0
+ 647 0000 0895      		ret
+ 648               		.cfi_endproc
+ 649               	.LFE31:
+ 651               		.section	.text.process_record_user,"ax",@progbits
+ 652               	.global	process_record_user
+ 654               	process_record_user:
+ 655               	.LFB32:
+ 429:keyboards/RentalCar/keymaps/Default/keymap.c **** 	
+ 430:keyboards/RentalCar/keymaps/Default/keymap.c **** 	
+ 431:keyboards/RentalCar/keymaps/Default/keymap.c **** }
+ 432:keyboards/RentalCar/keymaps/Default/keymap.c **** 
+ 433:keyboards/RentalCar/keymaps/Default/keymap.c **** bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+ 656               		.loc 1 433 0
+ 657               		.cfi_startproc
+ 658               	.LVL30:
+ 659               		.loc 1 433 0
+ 660 0000 CF93      		push r28
+ 661               	.LCFI2:
+ 662               		.cfi_def_cfa_offset 3
+ 663               		.cfi_offset 28, -2
+ 664               	/* prologue: function */
+ 665               	/* frame size = 0 */
+ 666               	/* stack size = 1 */
+ 667               	.L__stack_usage = 1
+ 668 0002 FB01      		movw r30,r22
+ 434:keyboards/RentalCar/keymaps/Default/keymap.c **** 	switch (keycode) {
+ 669               		.loc 1 434 0
+ 670 0004 8C3D      		cpi r24,-36
+ 671 0006 2CE5      		ldi r18,92
+ 672 0008 9207      		cpc r25,r18
+ 673 000a 01F0      		breq .L82
+ 674 000c 00F4      		brsh .L83
+ 675 000e 8A3D      		cpi r24,-38
+ 676 0010 2CE5      		ldi r18,92
+ 677 0012 9207      		cpc r25,r18
+ 678 0014 01F0      		breq .L84
+ 679 0016 8B3D      		cpi r24,-37
+ 680 0018 9C45      		sbci r25,92
+ 681 001a 01F0      		breq .L85
+ 682 001c 00C0      		rjmp .L92
+ 683               	.L83:
+ 684 001e 8E3D      		cpi r24,-34
+ 685 0020 2CE5      		ldi r18,92
+ 686 0022 9207      		cpc r25,r18
+ 687 0024 01F0      		breq .L86
+ 688 0026 00F0      		brlo .L87
+ 689 0028 803E      		cpi r24,-32
+ 690 002a 9C45      		sbci r25,92
+ 691 002c 01F0      		breq .L88
+ 692 002e 00C0      		rjmp .L92
+ 693               	.L84:
+ 435:keyboards/RentalCar/keymaps/Default/keymap.c **** 	case COLEMAK:
+ 436:keyboards/RentalCar/keymaps/Default/keymap.c **** 	if (record->event.pressed) {
+ 694               		.loc 1 436 0
+ 695 0030 C281      		ldd r28,Z+2
+ 696 0032 CC23      		tst r28
+ 697 0034 01F0      		breq .L81
+ 437:keyboards/RentalCar/keymaps/Default/keymap.c **** 		#ifdef AUDIO_ENABLE
+ 438:keyboards/RentalCar/keymaps/Default/keymap.c **** 		PLAY_NOTE_ARRAY(tone_colemak, false, 0);
+ 439:keyboards/RentalCar/keymaps/Default/keymap.c **** 		#endif
+ 440:keyboards/RentalCar/keymaps/Default/keymap.c **** 		persistent_default_layer_set(1UL<<_COLEMAK);
+ 698               		.loc 1 440 0
+ 699 0036 82E0      		ldi r24,lo8(2)
+ 700 0038 90E0      		ldi r25,0
+ 701               	.LVL31:
+ 702 003a 00C0      		rjmp .L103
+ 703               	.LVL32:
+ 704               	.L85:
+ 441:keyboards/RentalCar/keymaps/Default/keymap.c **** 	}
+ 442:keyboards/RentalCar/keymaps/Default/keymap.c **** 	return false;
+ 443:keyboards/RentalCar/keymaps/Default/keymap.c **** 	break;
+ 444:keyboards/RentalCar/keymaps/Default/keymap.c **** 	case QWERTY:
+ 445:keyboards/RentalCar/keymaps/Default/keymap.c **** 		if (record->event.pressed) {
+ 705               		.loc 1 445 0
+ 706 003c C281      		ldd r28,Z+2
+ 707 003e CC23      		tst r28
+ 708 0040 01F0      		breq .L81
+ 446:keyboards/RentalCar/keymaps/Default/keymap.c **** 			#ifdef AUDIO_ENABLE
+ 447:keyboards/RentalCar/keymaps/Default/keymap.c **** 			PLAY_NOTE_ARRAY(tone_qwerty, false, 0);
+ 448:keyboards/RentalCar/keymaps/Default/keymap.c **** 			#endif
+ 449:keyboards/RentalCar/keymaps/Default/keymap.c **** 			persistent_default_layer_set(1UL<<_QWERTY);
+ 709               		.loc 1 449 0
+ 710 0042 81E0      		ldi r24,lo8(1)
+ 711 0044 90E0      		ldi r25,0
+ 712               	.LVL33:
+ 713               	.L103:
+ 714 0046 0E94 0000 		call persistent_default_layer_set
+ 715               	.LVL34:
+ 716 004a 00C0      		rjmp .L102
+ 717               	.LVL35:
+ 718               	.L82:
+ 450:keyboards/RentalCar/keymaps/Default/keymap.c **** 		}
+ 451:keyboards/RentalCar/keymaps/Default/keymap.c **** 		return false;
+ 452:keyboards/RentalCar/keymaps/Default/keymap.c **** 		break;
+ 453:keyboards/RentalCar/keymaps/Default/keymap.c **** 	case DVORAK:
+ 454:keyboards/RentalCar/keymaps/Default/keymap.c **** 		if (record->event.pressed) {
+ 719               		.loc 1 454 0
+ 720 004c C281      		ldd r28,Z+2
+ 721 004e CC23      		tst r28
+ 722 0050 01F0      		breq .L81
+ 455:keyboards/RentalCar/keymaps/Default/keymap.c **** 			#ifdef AUDIO_ENABLE
+ 456:keyboards/RentalCar/keymaps/Default/keymap.c **** 			PLAY_NOTE_ARRAY(tone_dvorak, false, 0);
+ 457:keyboards/RentalCar/keymaps/Default/keymap.c **** 			#endif
+ 458:keyboards/RentalCar/keymaps/Default/keymap.c **** 			persistent_default_layer_set(1UL<<_DVORAK);
+ 723               		.loc 1 458 0
+ 724 0052 84E0      		ldi r24,lo8(4)
+ 725 0054 90E0      		ldi r25,0
+ 726               	.LVL36:
+ 727 0056 00C0      		rjmp .L103
+ 728               	.LVL37:
+ 729               	.L87:
+ 459:keyboards/RentalCar/keymaps/Default/keymap.c **** 		}
+ 460:keyboards/RentalCar/keymaps/Default/keymap.c **** 		return false;
+ 461:keyboards/RentalCar/keymaps/Default/keymap.c **** 		break;
+ 462:keyboards/RentalCar/keymaps/Default/keymap.c **** 	case LOWER:
+ 463:keyboards/RentalCar/keymaps/Default/keymap.c **** 		if (record->event.pressed) {
+ 730               		.loc 1 463 0
+ 731 0058 C281      		ldd r28,Z+2
+ 464:keyboards/RentalCar/keymaps/Default/keymap.c **** 			layer_on(_LOWER);
+ 732               		.loc 1 464 0
+ 733 005a 83E0      		ldi r24,lo8(3)
+ 734               	.LVL38:
+ 735 005c 00C0      		rjmp .L106
+ 736               	.LVL39:
+ 737               	.L86:
+ 465:keyboards/RentalCar/keymaps/Default/keymap.c **** 			update_tri_layer(_LOWER, _RAISE, _ADJUST);
+ 466:keyboards/RentalCar/keymaps/Default/keymap.c **** 		} else {
+ 467:keyboards/RentalCar/keymaps/Default/keymap.c **** 			layer_off(_LOWER);
+ 468:keyboards/RentalCar/keymaps/Default/keymap.c **** 			update_tri_layer(_LOWER, _RAISE, _ADJUST);
+ 469:keyboards/RentalCar/keymaps/Default/keymap.c **** 		}
+ 470:keyboards/RentalCar/keymaps/Default/keymap.c **** 		return false;
+ 471:keyboards/RentalCar/keymaps/Default/keymap.c **** 		break;
+ 472:keyboards/RentalCar/keymaps/Default/keymap.c **** 	case RAISE:
+ 473:keyboards/RentalCar/keymaps/Default/keymap.c **** 		if (record->event.pressed) {
+ 738               		.loc 1 473 0
+ 739 005e C281      		ldd r28,Z+2
+ 474:keyboards/RentalCar/keymaps/Default/keymap.c **** 			layer_on(_RAISE);
+ 740               		.loc 1 474 0
+ 741 0060 84E0      		ldi r24,lo8(4)
+ 742               	.LVL40:
+ 743               	.L106:
+ 473:keyboards/RentalCar/keymaps/Default/keymap.c **** 		if (record->event.pressed) {
+ 744               		.loc 1 473 0
+ 745 0062 CC23      		tst r28
+ 746 0064 01F0      		breq .L90
+ 747               		.loc 1 474 0
+ 748 0066 0E94 0000 		call layer_on
+ 749               	.LVL41:
+ 475:keyboards/RentalCar/keymaps/Default/keymap.c **** 			update_tri_layer(_LOWER, _RAISE, _ADJUST);
+ 750               		.loc 1 475 0
+ 751 006a 40E1      		ldi r20,lo8(16)
+ 752 006c 64E0      		ldi r22,lo8(4)
+ 753 006e 83E0      		ldi r24,lo8(3)
+ 754 0070 0E94 0000 		call update_tri_layer
+ 755               	.LVL42:
+ 756 0074 00C0      		rjmp .L102
+ 757               	.LVL43:
+ 758               	.L90:
+ 476:keyboards/RentalCar/keymaps/Default/keymap.c **** 		} else {
+ 477:keyboards/RentalCar/keymaps/Default/keymap.c **** 			layer_off(_RAISE);
+ 759               		.loc 1 477 0
+ 760 0076 0E94 0000 		call layer_off
+ 761               	.LVL44:
+ 478:keyboards/RentalCar/keymaps/Default/keymap.c **** 			update_tri_layer(_LOWER, _RAISE, _ADJUST);
+ 762               		.loc 1 478 0
+ 763 007a 40E1      		ldi r20,lo8(16)
+ 764 007c 64E0      		ldi r22,lo8(4)
+ 765 007e 83E0      		ldi r24,lo8(3)
+ 766 0080 0E94 0000 		call update_tri_layer
+ 767               	.LVL45:
+ 768 0084 00C0      		rjmp .L81
+ 769               	.LVL46:
+ 770               	.L88:
+ 479:keyboards/RentalCar/keymaps/Default/keymap.c **** 		}
+ 480:keyboards/RentalCar/keymaps/Default/keymap.c **** 		return false;
+ 481:keyboards/RentalCar/keymaps/Default/keymap.c **** 		break;
+ 482:keyboards/RentalCar/keymaps/Default/keymap.c **** 	case ADJUST:
+ 483:keyboards/RentalCar/keymaps/Default/keymap.c **** 		if (record->event.pressed) {
+ 771               		.loc 1 483 0
+ 772 0086 C281      		ldd r28,Z+2
+ 484:keyboards/RentalCar/keymaps/Default/keymap.c **** 			layer_on(_ADJUST);
+ 773               		.loc 1 484 0
+ 774 0088 80E1      		ldi r24,lo8(16)
+ 775               	.LVL47:
+ 483:keyboards/RentalCar/keymaps/Default/keymap.c **** 		if (record->event.pressed) {
+ 776               		.loc 1 483 0
+ 777 008a CC23      		tst r28
+ 778 008c 01F0      		breq .L91
+ 779               		.loc 1 484 0
+ 780 008e 0E94 0000 		call layer_on
+ 781               	.LVL48:
+ 782               	.L102:
+ 485:keyboards/RentalCar/keymaps/Default/keymap.c **** 		} else {
+ 486:keyboards/RentalCar/keymaps/Default/keymap.c **** 			layer_off(_ADJUST);
+ 487:keyboards/RentalCar/keymaps/Default/keymap.c **** 		}
+ 488:keyboards/RentalCar/keymaps/Default/keymap.c **** 		return false;
+ 783               		.loc 1 488 0
+ 784 0092 C0E0      		ldi r28,0
+ 785 0094 00C0      		rjmp .L81
+ 786               	.LVL49:
+ 787               	.L91:
+ 486:keyboards/RentalCar/keymaps/Default/keymap.c **** 			layer_off(_ADJUST);
+ 788               		.loc 1 486 0
+ 789 0096 0E94 0000 		call layer_off
+ 790               	.LVL50:
+ 791 009a 00C0      		rjmp .L81
+ 792               	.LVL51:
+ 793               	.L92:
+ 489:keyboards/RentalCar/keymaps/Default/keymap.c **** 		break;
+ 490:keyboards/RentalCar/keymaps/Default/keymap.c **** 	}
+ 491:keyboards/RentalCar/keymaps/Default/keymap.c **** 	return true;
+ 794               		.loc 1 491 0
+ 795 009c C1E0      		ldi r28,lo8(1)
+ 796               	.LVL52:
+ 797               	.L81:
+ 492:keyboards/RentalCar/keymaps/Default/keymap.c **** }
+ 798               		.loc 1 492 0
+ 799 009e 8C2F      		mov r24,r28
+ 800               	/* epilogue start */
+ 801 00a0 CF91      		pop r28
+ 802 00a2 0895      		ret
+ 803               		.cfi_endproc
+ 804               	.LFE32:
+ 806               		.section	.progmem.data.__m.3245,"a",@progbits
+ 809               	__m.3245:
+ 810 0000 01        		.byte	1
+ 811 0001 E3        		.byte	-29
+ 812 0002 01        		.byte	1
+ 813 0003 E0        		.byte	-32
+ 814 0004 01        		.byte	1
+ 815 0005 4F        		.byte	79
+ 816 0006 02        		.byte	2
+ 817 0007 4F        		.byte	79
+ 818 0008 02        		.byte	2
+ 819 0009 E0        		.byte	-32
+ 820 000a 02        		.byte	2
+ 821 000b E3        		.byte	-29
+ 822 000c 00        		.byte	0
+ 823               		.section	.progmem.data.__m.3243,"a",@progbits
+ 826               	__m.3243:
+ 827 0000 01        		.byte	1
+ 828 0001 E3        		.byte	-29
+ 829 0002 01        		.byte	1
+ 830 0003 E0        		.byte	-32
+ 831 0004 01        		.byte	1
+ 832 0005 50        		.byte	80
+ 833 0006 02        		.byte	2
+ 834 0007 50        		.byte	80
+ 835 0008 02        		.byte	2
+ 836 0009 E0        		.byte	-32
+ 837 000a 02        		.byte	2
+ 838 000b E3        		.byte	-29
+ 839 000c 00        		.byte	0
+ 840               		.section	.progmem.data.__m.3233,"a",@progbits
+ 843               	__m.3233:
+ 844 0000 01        		.byte	1
+ 845 0001 E3        		.byte	-29
+ 846 0002 01        		.byte	1
+ 847 0003 15        		.byte	21
+ 848 0004 02        		.byte	2
+ 849 0005 15        		.byte	21
+ 850 0006 74        		.byte	116
+ 851 0007 FF        		.byte	-1
+ 852 0008 02        		.byte	2
+ 853 0009 E3        		.byte	-29
+ 854 000a 74        		.byte	116
+ 855 000b FF        		.byte	-1
+ 856 000c 01        		.byte	1
+ 857 000d 06        		.byte	6
+ 858 000e 02        		.byte	2
+ 859 000f 06        		.byte	6
+ 860 0010 01        		.byte	1
+ 861 0011 10        		.byte	16
+ 862 0012 02        		.byte	2
+ 863 0013 10        		.byte	16
+ 864 0014 01        		.byte	1
+ 865 0015 07        		.byte	7
+ 866 0016 02        		.byte	2
+ 867 0017 07        		.byte	7
+ 868 0018 01        		.byte	1
+ 869 0019 28        		.byte	40
+ 870 001a 02        		.byte	2
+ 871 001b 28        		.byte	40
+ 872 001c 74        		.byte	116
+ 873 001d FF        		.byte	-1
+ 874 001e 01        		.byte	1
+ 875 001f 13        		.byte	19
+ 876 0020 02        		.byte	2
+ 877 0021 13        		.byte	19
+ 878 0022 01        		.byte	1
+ 879 0023 0C        		.byte	12
+ 880 0024 02        		.byte	2
+ 881 0025 0C        		.byte	12
+ 882 0026 01        		.byte	1
+ 883 0027 11        		.byte	17
+ 884 0028 02        		.byte	2
+ 885 0029 11        		.byte	17
+ 886 002a 01        		.byte	1
+ 887 002b 0A        		.byte	10
+ 888 002c 02        		.byte	2
+ 889 002d 0A        		.byte	10
+ 890 002e 01        		.byte	1
+ 891 002f 2C        		.byte	44
+ 892 0030 02        		.byte	2
+ 893 0031 2C        		.byte	44
+ 894 0032 01        		.byte	1
+ 895 0033 E0        		.byte	-32
+ 896 0034 01        		.byte	1
+ 897 0035 19        		.byte	25
+ 898 0036 02        		.byte	2
+ 899 0037 19        		.byte	25
+ 900 0038 02        		.byte	2
+ 901 0039 E0        		.byte	-32
+ 902 003a 00        		.byte	0
+ 903               		.section	.progmem.data.__m.3231,"a",@progbits
+ 906               	__m.3231:
+ 907 0000 01        		.byte	1
+ 908 0001 E3        		.byte	-29
+ 909 0002 01        		.byte	1
+ 910 0003 15        		.byte	21
+ 911 0004 02        		.byte	2
+ 912 0005 15        		.byte	21
+ 913 0006 02        		.byte	2
+ 914 0007 E3        		.byte	-29
+ 915 0008 01        		.byte	1
+ 916 0009 06        		.byte	6
+ 917 000a 02        		.byte	2
+ 918 000b 06        		.byte	6
+ 919 000c 01        		.byte	1
+ 920 000d 10        		.byte	16
+ 921 000e 02        		.byte	2
+ 922 000f 10        		.byte	16
+ 923 0010 01        		.byte	1
+ 924 0011 07        		.byte	7
+ 925 0012 02        		.byte	2
+ 926 0013 07        		.byte	7
+ 927 0014 01        		.byte	1
+ 928 0015 28        		.byte	40
+ 929 0016 02        		.byte	2
+ 930 0017 28        		.byte	40
+ 931 0018 74        		.byte	116
+ 932 0019 FF        		.byte	-1
+ 933 001a 74        		.byte	116
+ 934 001b FF        		.byte	-1
+ 935 001c 01        		.byte	1
+ 936 001d 0C        		.byte	12
+ 937 001e 02        		.byte	2
+ 938 001f 0C        		.byte	12
+ 939 0020 01        		.byte	1
+ 940 0021 13        		.byte	19
+ 941 0022 02        		.byte	2
+ 942 0023 13        		.byte	19
+ 943 0024 01        		.byte	1
+ 944 0025 06        		.byte	6
+ 945 0026 02        		.byte	2
+ 946 0027 06        		.byte	6
+ 947 0028 01        		.byte	1
+ 948 0029 12        		.byte	18
+ 949 002a 02        		.byte	2
+ 950 002b 12        		.byte	18
+ 951 002c 01        		.byte	1
+ 952 002d 11        		.byte	17
+ 953 002e 02        		.byte	2
+ 954 002f 11        		.byte	17
+ 955 0030 01        		.byte	1
+ 956 0031 09        		.byte	9
+ 957 0032 02        		.byte	2
+ 958 0033 09        		.byte	9
+ 959 0034 01        		.byte	1
+ 960 0035 0C        		.byte	12
+ 961 0036 02        		.byte	2
+ 962 0037 0C        		.byte	12
+ 963 0038 01        		.byte	1
+ 964 0039 0A        		.byte	10
+ 965 003a 02        		.byte	2
+ 966 003b 0A        		.byte	10
+ 967 003c 01        		.byte	1
+ 968 003d 2C        		.byte	44
+ 969 003e 02        		.byte	2
+ 970 003f 2C        		.byte	44
+ 971 0040 01        		.byte	1
+ 972 0041 38        		.byte	56
+ 973 0042 02        		.byte	2
+ 974 0043 38        		.byte	56
+ 975 0044 01        		.byte	1
+ 976 0045 04        		.byte	4
+ 977 0046 02        		.byte	2
+ 978 0047 04        		.byte	4
+ 979 0048 01        		.byte	1
+ 980 0049 0F        		.byte	15
+ 981 004a 02        		.byte	2
+ 982 004b 0F        		.byte	15
+ 983 004c 01        		.byte	1
+ 984 004d 0F        		.byte	15
+ 985 004e 02        		.byte	2
+ 986 004f 0F        		.byte	15
+ 987 0050 01        		.byte	1
+ 988 0051 28        		.byte	40
+ 989 0052 02        		.byte	2
+ 990 0053 28        		.byte	40
+ 991 0054 00        		.byte	0
+ 992               		.section	.progmem.data.__m.3229,"a",@progbits
+ 995               	__m.3229:
+ 996 0000 01        		.byte	1
+ 997 0001 E3        		.byte	-29
+ 998 0002 01        		.byte	1
+ 999 0003 15        		.byte	21
+ 1000 0004 02        		.byte	2
+ 1001 0005 15        		.byte	21
+ 1002 0006 74        		.byte	116
+ 1003 0007 FF        		.byte	-1
+ 1004 0008 02        		.byte	2
+ 1005 0009 E3        		.byte	-29
+ 1006 000a 74        		.byte	116
+ 1007 000b FF        		.byte	-1
+ 1008 000c 01        		.byte	1
+ 1009 000d 06        		.byte	6
+ 1010 000e 02        		.byte	2
+ 1011 000f 06        		.byte	6
+ 1012 0010 01        		.byte	1
+ 1013 0011 10        		.byte	16
+ 1014 0012 02        		.byte	2
+ 1015 0013 10        		.byte	16
+ 1016 0014 01        		.byte	1
+ 1017 0015 07        		.byte	7
+ 1018 0016 02        		.byte	2
+ 1019 0017 07        		.byte	7
+ 1020 0018 01        		.byte	1
+ 1021 0019 28        		.byte	40
+ 1022 001a 02        		.byte	2
+ 1023 001b 28        		.byte	40
+ 1024 001c 00        		.byte	0
+ 1025               		.section	.progmem.data.__m.3223,"a",@progbits
+ 1028               	__m.3223:
+ 1029 0000 01        		.byte	1
+ 1030 0001 E0        		.byte	-32
+ 1031 0002 01        		.byte	1
+ 1032 0003 04        		.byte	4
+ 1033 0004 02        		.byte	2
+ 1034 0005 04        		.byte	4
+ 1035 0006 01        		.byte	1
+ 1036 0007 06        		.byte	6
+ 1037 0008 02        		.byte	2
+ 1038 0009 06        		.byte	6
+ 1039 000a 02        		.byte	2
+ 1040 000b E0        		.byte	-32
+ 1041 000c 00        		.byte	0
+ 1042               		.section	.progmem.data.__m.3221,"a",@progbits
+ 1045               	__m.3221:
+ 1046 0000 01        		.byte	1
+ 1047 0001 E0        		.byte	-32
+ 1048 0002 01        		.byte	1
+ 1049 0003 19        		.byte	25
+ 1050 0004 02        		.byte	2
+ 1051 0005 19        		.byte	25
+ 1052 0006 02        		.byte	2
+ 1053 0007 E0        		.byte	-32
+ 1054 0008 00        		.byte	0
+ 1055               		.section	.progmem.data.__m.3219,"a",@progbits
+ 1058               	__m.3219:
+ 1059 0000 01        		.byte	1
+ 1060 0001 E0        		.byte	-32
+ 1061 0002 01        		.byte	1
+ 1062 0003 06        		.byte	6
+ 1063 0004 02        		.byte	2
+ 1064 0005 06        		.byte	6
+ 1065 0006 02        		.byte	2
+ 1066 0007 E0        		.byte	-32
+ 1067 0008 00        		.byte	0
+ 1068               		.section	.progmem.data.__c.3213,"a",@progbits
+ 1071               	__c.3213:
+ 1072 0000 7573 6572 		.string	"username\001+pass\001+\001("
+ 1072      6E61 6D65 
+ 1072      012B 7061 
+ 1072      7373 012B 
+ 1072      0128 00
+ 1073               		.section	.progmem.data.__m.3210,"a",@progbits
+ 1076               	__m.3210:
+ 1077 0000 75        		.byte	117
+ 1078 0001 0A        		.byte	10
+ 1079 0002 01        		.byte	1
+ 1080 0003 2B        		.byte	43
+ 1081 0004 02        		.byte	2
+ 1082 0005 2B        		.byte	43
+ 1083 0006 01        		.byte	1
+ 1084 0007 0C        		.byte	12
+ 1085 0008 02        		.byte	2
+ 1086 0009 0C        		.byte	12
+ 1087 000a 01        		.byte	1
+ 1088 000b 11        		.byte	17
+ 1089 000c 02        		.byte	2
+ 1090 000d 11        		.byte	17
+ 1091 000e 01        		.byte	1
+ 1092 000f 2B        		.byte	43
+ 1093 0010 02        		.byte	2
+ 1094 0011 2B        		.byte	43
+ 1095 0012 01        		.byte	1
+ 1096 0013 28        		.byte	40
+ 1097 0014 02        		.byte	2
+ 1098 0015 28        		.byte	40
+ 1099 0016 01        		.byte	1
+ 1100 0017 2B        		.byte	43
+ 1101 0018 02        		.byte	2
+ 1102 0019 2B        		.byte	43
+ 1103 001a 01        		.byte	1
+ 1104 001b 2B        		.byte	43
+ 1105 001c 02        		.byte	2
+ 1106 001d 2B        		.byte	43
+ 1107 001e 01        		.byte	1
+ 1108 001f 2B        		.byte	43
+ 1109 0020 02        		.byte	2
+ 1110 0021 2B        		.byte	43
+ 1111 0022 01        		.byte	1
+ 1112 0023 0C        		.byte	12
+ 1113 0024 02        		.byte	2
+ 1114 0025 0C        		.byte	12
+ 1115 0026 01        		.byte	1
+ 1116 0027 11        		.byte	17
+ 1117 0028 02        		.byte	2
+ 1118 0029 11        		.byte	17
+ 1119 002a 01        		.byte	1
+ 1120 002b 2B        		.byte	43
+ 1121 002c 02        		.byte	2
+ 1122 002d 2B        		.byte	43
+ 1123 002e 01        		.byte	1
+ 1124 002f 28        		.byte	40
+ 1125 0030 02        		.byte	2
+ 1126 0031 28        		.byte	40
+ 1127 0032 00        		.byte	0
+ 1128               		.section	.progmem.data.__m.3207,"a",@progbits
+ 1131               	__m.3207:
+ 1132 0000 75        		.byte	117
+ 1133 0001 0A        		.byte	10
+ 1134 0002 01        		.byte	1
+ 1135 0003 2B        		.byte	43
+ 1136 0004 02        		.byte	2
+ 1137 0005 2B        		.byte	43
+ 1138 0006 01        		.byte	1
+ 1139 0007 12        		.byte	18
+ 1140 0008 02        		.byte	2
+ 1141 0009 12        		.byte	18
+ 1142 000a 01        		.byte	1
+ 1143 000b 17        		.byte	23
+ 1144 000c 02        		.byte	2
+ 1145 000d 17        		.byte	23
+ 1146 000e 01        		.byte	1
+ 1147 000f 2B        		.byte	43
+ 1148 0010 02        		.byte	2
+ 1149 0011 2B        		.byte	43
+ 1150 0012 01        		.byte	1
+ 1151 0013 28        		.byte	40
+ 1152 0014 02        		.byte	2
+ 1153 0015 28        		.byte	40
+ 1154 0016 01        		.byte	1
+ 1155 0017 2B        		.byte	43
+ 1156 0018 02        		.byte	2
+ 1157 0019 2B        		.byte	43
+ 1158 001a 01        		.byte	1
+ 1159 001b 2B        		.byte	43
+ 1160 001c 02        		.byte	2
+ 1161 001d 2B        		.byte	43
+ 1162 001e 01        		.byte	1
+ 1163 001f 2B        		.byte	43
+ 1164 0020 02        		.byte	2
+ 1165 0021 2B        		.byte	43
+ 1166 0022 01        		.byte	1
+ 1167 0023 1D        		.byte	29
+ 1168 0024 02        		.byte	2
+ 1169 0025 1D        		.byte	29
+ 1170 0026 01        		.byte	1
+ 1171 0027 15        		.byte	21
+ 1172 0028 02        		.byte	2
+ 1173 0029 15        		.byte	21
+ 1174 002a 01        		.byte	1
+ 1175 002b 2B        		.byte	43
+ 1176 002c 02        		.byte	2
+ 1177 002d 2B        		.byte	43
+ 1178 002e 01        		.byte	1
+ 1179 002f 28        		.byte	40
+ 1180 0030 02        		.byte	2
+ 1181 0031 28        		.byte	40
+ 1182 0032 00        		.byte	0
+ 1183               		.section	.progmem.data.__m.3204,"a",@progbits
+ 1186               	__m.3204:
+ 1187 0000 75        		.byte	117
+ 1188 0001 0A        		.byte	10
+ 1189 0002 01        		.byte	1
+ 1190 0003 2B        		.byte	43
+ 1191 0004 02        		.byte	2
+ 1192 0005 2B        		.byte	43
+ 1193 0006 01        		.byte	1
+ 1194 0007 12        		.byte	18
+ 1195 0008 02        		.byte	2
+ 1196 0009 12        		.byte	18
+ 1197 000a 01        		.byte	1
+ 1198 000b 13        		.byte	19
+ 1199 000c 02        		.byte	2
+ 1200 000d 13        		.byte	19
+ 1201 000e 01        		.byte	1
+ 1202 000f 2B        		.byte	43
+ 1203 0010 02        		.byte	2
+ 1204 0011 2B        		.byte	43
+ 1205 0012 01        		.byte	1
+ 1206 0013 28        		.byte	40
+ 1207 0014 02        		.byte	2
+ 1208 0015 28        		.byte	40
+ 1209 0016 01        		.byte	1
+ 1210 0017 2B        		.byte	43
+ 1211 0018 02        		.byte	2
+ 1212 0019 2B        		.byte	43
+ 1213 001a 01        		.byte	1
+ 1214 001b 2B        		.byte	43
+ 1215 001c 02        		.byte	2
+ 1216 001d 2B        		.byte	43
+ 1217 001e 01        		.byte	1
+ 1218 001f 2B        		.byte	43
+ 1219 0020 02        		.byte	2
+ 1220 0021 2B        		.byte	43
+ 1221 0022 01        		.byte	1
+ 1222 0023 1D        		.byte	29
+ 1223 0024 02        		.byte	2
+ 1224 0025 1D        		.byte	29
+ 1225 0026 01        		.byte	1
+ 1226 0027 15        		.byte	21
+ 1227 0028 02        		.byte	2
+ 1228 0029 15        		.byte	21
+ 1229 002a 01        		.byte	1
+ 1230 002b 2B        		.byte	43
+ 1231 002c 02        		.byte	2
+ 1232 002d 2B        		.byte	43
+ 1233 002e 01        		.byte	1
+ 1234 002f 28        		.byte	40
+ 1235 0030 02        		.byte	2
+ 1236 0031 28        		.byte	40
+ 1237 0032 00        		.byte	0
+ 1238               		.section	.progmem.data.__c.3201,"a",@progbits
+ 1241               	__c.3201:
+ 1242 0000 6970 636F 		.string	"ipconfig /all"
+ 1242      6E66 6967 
+ 1242      202F 616C 
+ 1242      6C00 
+ 1243               		.section	.progmem.data.__c.3198,"a",@progbits
+ 1246               	__c.3198:
+ 1247 0000 00        		.zero	1
+ 1248               		.section	.progmem.data.__m.3195,"a",@progbits
+ 1251               	__m.3195:
+ 1252 0000 75        		.byte	117
+ 1253 0001 0A        		.byte	10
+ 1254 0002 01        		.byte	1
+ 1255 0003 27        		.byte	39
+ 1256 0004 02        		.byte	2
+ 1257 0005 27        		.byte	39
+ 1258 0006 01        		.byte	1
+ 1259 0007 06        		.byte	6
+ 1260 0008 02        		.byte	2
+ 1261 0009 06        		.byte	6
+ 1262 000a 01        		.byte	1
+ 1263 000b 2B        		.byte	43
+ 1264 000c 02        		.byte	2
+ 1265 000d 2B        		.byte	43
+ 1266 000e 01        		.byte	1
+ 1267 000f 2B        		.byte	43
+ 1268 0010 02        		.byte	2
+ 1269 0011 2B        		.byte	43
+ 1270 0012 01        		.byte	1
+ 1271 0013 04        		.byte	4
+ 1272 0014 02        		.byte	2
+ 1273 0015 04        		.byte	4
+ 1274 0016 01        		.byte	1
+ 1275 0017 2B        		.byte	43
+ 1276 0018 02        		.byte	2
+ 1277 0019 2B        		.byte	43
+ 1278 001a 00        		.byte	0
+ 1279               		.section	.progmem.data.__m.3191,"a",@progbits
+ 1282               	__m.3191:
+ 1283 0000 01        		.byte	1
+ 1284 0001 1B        		.byte	27
+ 1285 0002 02        		.byte	2
+ 1286 0003 1B        		.byte	27
+ 1287 0004 00        		.byte	0
+ 1288               		.section	.progmem.data.__m.3187,"a",@progbits
+ 1291               	__m.3187:
+ 1292 0000 75        		.byte	117
+ 1293 0001 0A        		.byte	10
+ 1294 0002 01        		.byte	1
+ 1295 0003 E0        		.byte	-32
+ 1296 0004 01        		.byte	1
+ 1297 0005 17        		.byte	23
+ 1298 0006 02        		.byte	2
+ 1299 0007 17        		.byte	23
+ 1300 0008 01        		.byte	1
+ 1301 0009 19        		.byte	25
+ 1302 000a 02        		.byte	2
+ 1303 000b 19        		.byte	25
+ 1304 000c 01        		.byte	1
+ 1305 000d 28        		.byte	40
+ 1306 000e 02        		.byte	2
+ 1307 000f 28        		.byte	40
+ 1308 0010 02        		.byte	2
+ 1309 0011 E0        		.byte	-32
+ 1310 0012 00        		.byte	0
+ 1311               		.section	.progmem.data.__c.3184,"a",@progbits
+ 1314               	__c.3184:
+ 1315 0000 7777 772E 		.string	"www.support.xerox.com\001("
+ 1315      7375 7070 
+ 1315      6F72 742E 
+ 1315      7865 726F 
+ 1315      782E 636F 
+ 1316               		.section	.progmem.data.__c.3181,"a",@progbits
+ 1319               	__c.3181:
+ 1320 0000 656D 6169 		.string	"email"
+ 1320      6C00 
+ 1321               		.section	.progmem.data.__m.3178,"a",@progbits
+ 1324               	__m.3178:
+ 1325 0000 75        		.byte	117
+ 1326 0001 0A        		.byte	10
+ 1327 0002 01        		.byte	1
+ 1328 0003 04        		.byte	4
+ 1329 0004 02        		.byte	2
+ 1330 0005 04        		.byte	4
+ 1331 0006 01        		.byte	1
+ 1332 0007 07        		.byte	7
+ 1333 0008 02        		.byte	2
+ 1334 0009 07        		.byte	7
+ 1335 000a 01        		.byte	1
+ 1336 000b 10        		.byte	16
+ 1337 000c 02        		.byte	2
+ 1338 000d 10        		.byte	16
+ 1339 000e 01        		.byte	1
+ 1340 000f 0C        		.byte	12
+ 1341 0010 02        		.byte	2
+ 1342 0011 0C        		.byte	12
+ 1343 0012 01        		.byte	1
+ 1344 0013 11        		.byte	17
+ 1345 0014 02        		.byte	2
+ 1346 0015 11        		.byte	17
+ 1347 0016 74        		.byte	116
+ 1348 0017 4B        		.byte	75
+ 1349 0018 01        		.byte	1
+ 1350 0019 2B        		.byte	43
+ 1351 001a 02        		.byte	2
+ 1352 001b 2B        		.byte	43
+ 1353 001c 01        		.byte	1
+ 1354 001d 1E        		.byte	30
+ 1355 001e 02        		.byte	2
+ 1356 001f 1E        		.byte	30
+ 1357 0020 01        		.byte	1
+ 1358 0021 1E        		.byte	30
+ 1359 0022 02        		.byte	2
+ 1360 0023 1E        		.byte	30
+ 1361 0024 01        		.byte	1
+ 1362 0025 1E        		.byte	30
+ 1363 0026 02        		.byte	2
+ 1364 0027 1E        		.byte	30
+ 1365 0028 01        		.byte	1
+ 1366 0029 1E        		.byte	30
+ 1367 002a 02        		.byte	2
+ 1368 002b 1E        		.byte	30
+ 1369 002c 01        		.byte	1
+ 1370 002d 28        		.byte	40
+ 1371 002e 02        		.byte	2
+ 1372 002f 28        		.byte	40
+ 1373 0030 00        		.byte	0
+ 1374               		.section	.progmem.data.__m.3175,"a",@progbits
+ 1377               	__m.3175:
+ 1378 0000 01        		.byte	1
+ 1379 0001 E3        		.byte	-29
+ 1380 0002 01        		.byte	1
+ 1381 0003 2B        		.byte	43
+ 1382 0004 02        		.byte	2
+ 1383 0005 2B        		.byte	43
+ 1384 0006 02        		.byte	2
+ 1385 0007 E3        		.byte	-29
+ 1386 0008 00        		.byte	0
+ 1387               	.global	tap_dance_actions
+ 1388               		.section	.data.tap_dance_actions,"aw",@progbits
+ 1391               	tap_dance_actions:
+ 1392 0000 0000      		.word	0
+ 1393 0002 0000      		.word	gs(cmd_commands)
+ 1394 0004 0000      		.word	0
+ 1395 0006 0000 0000 		.zero	12
+ 1395      0000 0000 
+ 1395      0000 0000 
+ 1396 0012 0000      		.word	0
+ 1397 0014 0000      		.word	0
+ 1398 0016 0000      		.word	gs(cmd)
+ 1399 0018 0000      		.word	0
+ 1400 001a 0000 0000 		.zero	12
+ 1400      0000 0000 
+ 1400      0000 0000 
+ 1401 0026 0000      		.word	0
+ 1402 0028 0000      		.word	0
+ 1403 002a 0000      		.word	gs(SLSH_BSLSH)
+ 1404 002c 0000      		.word	0
+ 1405 002e 0000 0000 		.zero	12
+ 1405      0000 0000 
+ 1405      0000 0000 
+ 1406 003a 0000      		.word	0
+ 1407 003c 0000      		.word	0
+ 1408 003e 0000      		.word	gs(VirtualDesktop)
+ 1409 0040 0000      		.word	0
+ 1410 0042 0000 0000 		.zero	12
+ 1410      0000 0000 
+ 1410      0000 0000 
+ 1411 004e 0000      		.word	0
+ 1412               	.global	keymaps
+ 1413               		.section	.progmem.data.keymaps,"a",@progbits
+ 1416               	keymaps:
+ 1417 0000 1400      		.word	20
+ 1418 0002 1A00      		.word	26
+ 1419 0004 0800      		.word	8
+ 1420 0006 1500      		.word	21
+ 1421 0008 1700      		.word	23
+ 1422 000a 0000      		.word	0
+ 1423 000c 0400      		.word	4
+ 1424 000e 1600      		.word	22
+ 1425 0010 0700      		.word	7
+ 1426 0012 0900      		.word	9
+ 1427 0014 0A00      		.word	10
+ 1428 0016 0000      		.word	0
+ 1429 0018 1D00      		.word	29
+ 1430 001a 1B00      		.word	27
+ 1431 001c 0600      		.word	6
+ 1432 001e 1900      		.word	25
+ 1433 0020 0500      		.word	5
+ 1434 0022 0000      		.word	0
+ 1435 0024 4D00      		.word	77
+ 1436 0026 4A00      		.word	74
+ 1437 0028 E200      		.word	226
+ 1438 002a 2961      		.word	24873
+ 1439 002c 0000      		.word	0
+ 1440 002e 0000      		.word	0
+ 1441 0030 4C00      		.word	76
+ 1442 0032 2A00      		.word	42
+ 1443 0034 0000      		.word	0
+ 1444 0036 0000      		.word	0
+ 1445 0038 0000      		.word	0
+ 1446 003a 0000      		.word	0
+ 1447 003c 1300      		.word	19
+ 1448 003e 1200      		.word	18
+ 1449 0040 0C00      		.word	12
+ 1450 0042 1800      		.word	24
+ 1451 0044 1C00      		.word	28
+ 1452 0046 0000      		.word	0
+ 1453 0048 3300      		.word	51
+ 1454 004a 0F00      		.word	15
+ 1455 004c 0E00      		.word	14
+ 1456 004e 0D00      		.word	13
+ 1457 0050 0B00      		.word	11
+ 1458 0052 0000      		.word	0
+ 1459 0054 3800      		.word	56
+ 1460 0056 3700      		.word	55
+ 1461 0058 3600      		.word	54
+ 1462 005a 1000      		.word	16
+ 1463 005c 1100      		.word	17
+ 1464 005e 0000      		.word	0
+ 1465 0060 4E00      		.word	78
+ 1466 0062 4B00      		.word	75
+ 1467 0064 E300      		.word	227
+ 1468 0066 E400      		.word	228
+ 1469 0068 0000      		.word	0
+ 1470 006a 0000      		.word	0
+ 1471 006c 2800      		.word	40
+ 1472 006e 2C00      		.word	44
+ 1473 0070 0000      		.word	0
+ 1474 0072 0000      		.word	0
+ 1475 0074 0000      		.word	0
+ 1476 0076 0000      		.word	0
+ 1477 0078 1400      		.word	20
+ 1478 007a 1A00      		.word	26
+ 1479 007c 0900      		.word	9
+ 1480 007e 1300      		.word	19
+ 1481 0080 0A00      		.word	10
+ 1482 0082 0000      		.word	0
+ 1483 0084 0400      		.word	4
+ 1484 0086 1500      		.word	21
+ 1485 0088 1600      		.word	22
+ 1486 008a 1700      		.word	23
+ 1487 008c 0700      		.word	7
+ 1488 008e 0000      		.word	0
+ 1489 0090 1D00      		.word	29
+ 1490 0092 1B00      		.word	27
+ 1491 0094 0600      		.word	6
+ 1492 0096 1900      		.word	25
+ 1493 0098 0500      		.word	5
+ 1494 009a 0000      		.word	0
+ 1495 009c 4D00      		.word	77
+ 1496 009e 4A00      		.word	74
+ 1497 00a0 E200      		.word	226
+ 1498 00a2 2961      		.word	24873
+ 1499 00a4 0000      		.word	0
+ 1500 00a6 0000      		.word	0
+ 1501 00a8 4C00      		.word	76
+ 1502 00aa 2A00      		.word	42
+ 1503 00ac 0000      		.word	0
+ 1504 00ae 0000      		.word	0
+ 1505 00b0 0000      		.word	0
+ 1506 00b2 0000      		.word	0
+ 1507 00b4 3300      		.word	51
+ 1508 00b6 1C00      		.word	28
+ 1509 00b8 1800      		.word	24
+ 1510 00ba 0F00      		.word	15
+ 1511 00bc 0D00      		.word	13
+ 1512 00be 0000      		.word	0
+ 1513 00c0 1200      		.word	18
+ 1514 00c2 0C00      		.word	12
+ 1515 00c4 0800      		.word	8
+ 1516 00c6 1100      		.word	17
+ 1517 00c8 0B00      		.word	11
+ 1518 00ca 0000      		.word	0
+ 1519 00cc 3800      		.word	56
+ 1520 00ce 3700      		.word	55
+ 1521 00d0 3600      		.word	54
+ 1522 00d2 1000      		.word	16
+ 1523 00d4 0E00      		.word	14
+ 1524 00d6 0000      		.word	0
+ 1525 00d8 4E00      		.word	78
+ 1526 00da 4B00      		.word	75
+ 1527 00dc E300      		.word	227
+ 1528 00de E400      		.word	228
+ 1529 00e0 0000      		.word	0
+ 1530 00e2 0000      		.word	0
+ 1531 00e4 2800      		.word	40
+ 1532 00e6 2C00      		.word	44
+ 1533 00e8 0000      		.word	0
+ 1534 00ea 0000      		.word	0
+ 1535 00ec 0000      		.word	0
+ 1536 00ee 0000      		.word	0
+ 1537 00f0 3400      		.word	52
+ 1538 00f2 3600      		.word	54
+ 1539 00f4 3700      		.word	55
+ 1540 00f6 1300      		.word	19
+ 1541 00f8 1C00      		.word	28
+ 1542 00fa 0000      		.word	0
+ 1543 00fc 0400      		.word	4
+ 1544 00fe 1200      		.word	18
+ 1545 0100 0800      		.word	8
+ 1546 0102 1800      		.word	24
+ 1547 0104 0C00      		.word	12
+ 1548 0106 0000      		.word	0
+ 1549 0108 3300      		.word	51
+ 1550 010a 1400      		.word	20
+ 1551 010c 0D00      		.word	13
+ 1552 010e 0E00      		.word	14
+ 1553 0110 1B00      		.word	27
+ 1554 0112 0000      		.word	0
+ 1555 0114 4D00      		.word	77
+ 1556 0116 4A00      		.word	74
+ 1557 0118 E200      		.word	226
+ 1558 011a 2961      		.word	24873
+ 1559 011c 0000      		.word	0
+ 1560 011e 0000      		.word	0
+ 1561 0120 4C00      		.word	76
+ 1562 0122 2A00      		.word	42
+ 1563 0124 0000      		.word	0
+ 1564 0126 0000      		.word	0
+ 1565 0128 0000      		.word	0
+ 1566 012a 0000      		.word	0
+ 1567 012c 0F00      		.word	15
+ 1568 012e 1500      		.word	21
+ 1569 0130 0600      		.word	6
+ 1570 0132 0A00      		.word	10
+ 1571 0134 0900      		.word	9
+ 1572 0136 0000      		.word	0
+ 1573 0138 1600      		.word	22
+ 1574 013a 1100      		.word	17
+ 1575 013c 1700      		.word	23
+ 1576 013e 0B00      		.word	11
+ 1577 0140 0700      		.word	7
+ 1578 0142 0000      		.word	0
+ 1579 0144 1D00      		.word	29
+ 1580 0146 1900      		.word	25
+ 1581 0148 1A00      		.word	26
+ 1582 014a 1000      		.word	16
+ 1583 014c 0500      		.word	5
+ 1584 014e 0000      		.word	0
+ 1585 0150 4E00      		.word	78
+ 1586 0152 4B00      		.word	75
+ 1587 0154 E300      		.word	227
+ 1588 0156 E400      		.word	228
+ 1589 0158 0000      		.word	0
+ 1590 015a 0000      		.word	0
+ 1591 015c 2800      		.word	40
+ 1592 015e 2C00      		.word	44
+ 1593 0160 0000      		.word	0
+ 1594 0162 0000      		.word	0
+ 1595 0164 0000      		.word	0
+ 1596 0166 0000      		.word	0
+ 1597 0168 0100      		.word	1
+ 1598 016a 0330      		.word	12291
+ 1599 016c 0230      		.word	12290
+ 1600 016e 0100      		.word	1
+ 1601 0170 0F30      		.word	12303
+ 1602 0172 0000      		.word	0
+ 1603 0174 0630      		.word	12294
+ 1604 0176 0100      		.word	1
+ 1605 0178 0100      		.word	1
+ 1606 017a 0100      		.word	1
+ 1607 017c 0100      		.word	1
+ 1608 017e 0000      		.word	0
+ 1609 0180 005C      		.word	23552
+ 1610 0182 0130      		.word	12289
+ 1611 0184 0100      		.word	1
+ 1612 0186 0100      		.word	1
+ 1613 0188 0100      		.word	1
+ 1614 018a 0000      		.word	0
+ 1615 018c 0030      		.word	12288
+ 1616 018e 4600      		.word	70
+ 1617 0190 4E00      		.word	78
+ 1618 0192 4B00      		.word	75
+ 1619 0194 0000      		.word	0
+ 1620 0196 0000      		.word	0
+ 1621 0198 E100      		.word	225
+ 1622 019a 2A00      		.word	42
+ 1623 019c 0000      		.word	0
+ 1624 019e 0000      		.word	0
+ 1625 01a0 0000      		.word	0
+ 1626 01a2 0000      		.word	0
+ 1627 01a4 0A30      		.word	12298
+ 1628 01a6 0100      		.word	1
+ 1629 01a8 0100      		.word	1
+ 1630 01aa 0100      		.word	1
+ 1631 01ac 0100      		.word	1
+ 1632 01ae 0000      		.word	0
+ 1633 01b0 0100      		.word	1
+ 1634 01b2 0B30      		.word	12299
+ 1635 01b4 5200      		.word	82
+ 1636 01b6 0100      		.word	1
+ 1637 01b8 0100      		.word	1
+ 1638 01ba 0000      		.word	0
+ 1639 01bc 005C      		.word	23552
+ 1640 01be 4F00      		.word	79
+ 1641 01c0 5100      		.word	81
+ 1642 01c2 5000      		.word	80
+ 1643 01c4 0100      		.word	1
+ 1644 01c6 0000      		.word	0
+ 1645 01c8 DE5C      		.word	23774
+ 1646 01ca 4C00      		.word	76
+ 1647 01cc 4A00      		.word	74
+ 1648 01ce 4D00      		.word	77
+ 1649 01d0 0000      		.word	0
+ 1650 01d2 0000      		.word	0
+ 1651 01d4 2800      		.word	40
+ 1652 01d6 2C00      		.word	44
+ 1653 01d8 0000      		.word	0
+ 1654 01da 0000      		.word	0
+ 1655 01dc 0000      		.word	0
+ 1656 01de 0000      		.word	0
+ 1657 01e0 1E00      		.word	30
+ 1658 01e2 0330      		.word	12291
+ 1659 01e4 1E00      		.word	30
+ 1660 01e6 1E00      		.word	30
+ 1661 01e8 1E00      		.word	30
+ 1662 01ea 0000      		.word	0
+ 1663 01ec 1E00      		.word	30
+ 1664 01ee 1E00      		.word	30
+ 1665 01f0 1E00      		.word	30
+ 1666 01f2 1E00      		.word	30
+ 1667 01f4 1E00      		.word	30
+ 1668 01f6 0000      		.word	0
+ 1669 01f8 005C      		.word	23552
+ 1670 01fa 1E00      		.word	30
+ 1671 01fc 1E00      		.word	30
+ 1672 01fe 1E00      		.word	30
+ 1673 0200 1E00      		.word	30
+ 1674 0202 0000      		.word	0
+ 1675 0204 0030      		.word	12288
+ 1676 0206 4600      		.word	70
+ 1677 0208 4E00      		.word	78
+ 1678 020a 4B00      		.word	75
+ 1679 020c 0000      		.word	0
+ 1680 020e 0000      		.word	0
+ 1681 0210 E100      		.word	225
+ 1682 0212 2A00      		.word	42
+ 1683 0214 0000      		.word	0
+ 1684 0216 0000      		.word	0
+ 1685 0218 0000      		.word	0
+ 1686 021a 0000      		.word	0
+ 1687 021c 5600      		.word	86
+ 1688 021e 2300      		.word	35
+ 1689 0220 2200      		.word	34
+ 1690 0222 2100      		.word	33
+ 1691 0224 0000      		.word	0
+ 1692 0226 0000      		.word	0
+ 1693 0228 5700      		.word	87
+ 1694 022a 2000      		.word	32
+ 1695 022c 1F00      		.word	31
+ 1696 022e 1E00      		.word	30
+ 1697 0230 0000      		.word	0
+ 1698 0232 0000      		.word	0
+ 1699 0234 0000      		.word	0
+ 1700 0236 3700      		.word	55
+ 1701 0238 2700      		.word	39
+ 1702 023a 2700      		.word	39
+ 1703 023c 0000      		.word	0
+ 1704 023e 0000      		.word	0
+ 1705 0240 DE5C      		.word	23774
+ 1706 0242 4C00      		.word	76
+ 1707 0244 4A00      		.word	74
+ 1708 0246 4D00      		.word	77
+ 1709 0248 0000      		.word	0
+ 1710 024a 0000      		.word	0
+ 1711 024c 2800      		.word	40
+ 1712 024e 2C00      		.word	44
+ 1713 0250 0000      		.word	0
+ 1714 0252 0000      		.word	0
+ 1715 0254 0000      		.word	0
+ 1716 0256 0000      		.word	0
+ 1717 0258 2000      		.word	32
+ 1718 025a 2000      		.word	32
+ 1719 025c 2000      		.word	32
+ 1720 025e 2000      		.word	32
+ 1721 0260 2000      		.word	32
+ 1722 0262 0000      		.word	0
+ 1723 0264 0100      		.word	1
+ 1724 0266 5200      		.word	82
+ 1725 0268 0100      		.word	1
+ 1726 026a 0100      		.word	1
+ 1727 026c 0100      		.word	1
+ 1728 026e 0000      		.word	0
+ 1729 0270 5000      		.word	80
+ 1730 0272 5100      		.word	81
+ 1731 0274 4F00      		.word	79
+ 1732 0276 0100      		.word	1
+ 1733 0278 0100      		.word	1
+ 1734 027a 0000      		.word	0
+ 1735 027c 0030      		.word	12288
+ 1736 027e 4600      		.word	70
+ 1737 0280 4E00      		.word	78
+ 1738 0282 4B00      		.word	75
+ 1739 0284 0000      		.word	0
+ 1740 0286 0000      		.word	0
+ 1741 0288 DD5C      		.word	23773
+ 1742 028a 2A00      		.word	42
+ 1743 028c 0000      		.word	0
+ 1744 028e 0000      		.word	0
+ 1745 0290 0000      		.word	0
+ 1746 0292 0000      		.word	0
+ 1747 0294 0100      		.word	1
+ 1748 0296 0100      		.word	1
+ 1749 0298 0100      		.word	1
+ 1750 029a 0100      		.word	1
+ 1751 029c 0100      		.word	1
+ 1752 029e 0000      		.word	0
+ 1753 02a0 0100      		.word	1
+ 1754 02a2 5200      		.word	82
+ 1755 02a4 0100      		.word	1
+ 1756 02a6 0100      		.word	1
+ 1757 02a8 0100      		.word	1
+ 1758 02aa 0000      		.word	0
+ 1759 02ac 4F00      		.word	79
+ 1760 02ae 5100      		.word	81
+ 1761 02b0 5000      		.word	80
+ 1762 02b2 0100      		.word	1
+ 1763 02b4 0100      		.word	1
+ 1764 02b6 0000      		.word	0
+ 1765 02b8 DE5C      		.word	23774
+ 1766 02ba 4C00      		.word	76
+ 1767 02bc 4D00      		.word	77
+ 1768 02be 4A00      		.word	74
+ 1769 02c0 0000      		.word	0
+ 1770 02c2 0000      		.word	0
+ 1771 02c4 2800      		.word	40
+ 1772 02c6 2C00      		.word	44
+ 1773 02c8 0000      		.word	0
+ 1774 02ca 0000      		.word	0
+ 1775 02cc 0000      		.word	0
+ 1776 02ce 0000      		.word	0
+ 1777 02d0 0000 0000 		.zero	1200
+ 1777      0000 0000 
+ 1777      0000 0000 
+ 1777      0000 0000 
+ 1777      0000 0000 
+ 1778 0780 DB5C      		.word	23771
+ 1779 0782 DC5C      		.word	23772
+ 1780 0784 DA5C      		.word	23770
+ 1781 0786 C15C      		.word	23745
+ 1782 0788 C45C      		.word	23748
+ 1783 078a 0000      		.word	0
+ 1784 078c DB5C      		.word	23771
+ 1785 078e 0100      		.word	1
+ 1786 0790 1D5C      		.word	23581
+ 1787 0792 1E5C      		.word	23582
+ 1788 0794 135C      		.word	23571
+ 1789 0796 0000      		.word	0
+ 1790 0798 0100      		.word	1
+ 1791 079a 0100      		.word	1
+ 1792 079c DA5C      		.word	23770
+ 1793 079e 0100      		.word	1
+ 1794 07a0 0100      		.word	1
+ 1795 07a2 0000      		.word	0
+ 1796 07a4 0100      		.word	1
+ 1797 07a6 0100      		.word	1
+ 1798 07a8 0100      		.word	1
+ 1799 07aa 0100      		.word	1
+ 1800 07ac 0000      		.word	0
+ 1801 07ae 0000      		.word	0
+ 1802 07b0 0100      		.word	1
+ 1803 07b2 0100      		.word	1
+ 1804 07b4 0000      		.word	0
+ 1805 07b6 0000      		.word	0
+ 1806 07b8 0000      		.word	0
+ 1807 07ba 0000      		.word	0
+ 1808 07bc C75C      		.word	23751
+ 1809 07be C85C      		.word	23752
+ 1810 07c0 C55C      		.word	23749
+ 1811 07c2 C65C      		.word	23750
+ 1812 07c4 C35C      		.word	23747
+ 1813 07c6 0000      		.word	0
+ 1814 07c8 0100      		.word	1
+ 1815 07ca DC5C      		.word	23772
+ 1816 07cc DA5C      		.word	23770
+ 1817 07ce DB5C      		.word	23771
+ 1818 07d0 0A5C      		.word	23562
+ 1819 07d2 0000      		.word	0
+ 1820 07d4 005C      		.word	23552
+ 1821 07d6 0100      		.word	1
+ 1822 07d8 0100      		.word	1
+ 1823 07da 0100      		.word	1
+ 1824 07dc 0100      		.word	1
+ 1825 07de 0000      		.word	0
+ 1826 07e0 0100      		.word	1
+ 1827 07e2 0100      		.word	1
+ 1828 07e4 0100      		.word	1
+ 1829 07e6 0100      		.word	1
+ 1830 07e8 0000      		.word	0
+ 1831 07ea 0000      		.word	0
+ 1832 07ec 0100      		.word	1
+ 1833 07ee 0100      		.word	1
+ 1834 07f0 0000      		.word	0
+ 1835 07f2 0000      		.word	0
+ 1836 07f4 0000      		.word	0
+ 1837 07f6 0000      		.word	0
+ 1838               		.text
+ 1839               	.Letext0:
+ 1840               		.file 3 "/usr/lib/avr/include/stdint.h"
+ 1841               		.file 4 "./tmk_core/common/keyboard.h"
+ 1842               		.file 5 "./tmk_core/common/keycode.h"
+ 1843               		.file 6 "./tmk_core/common/action_code.h"
+ 1844               		.file 7 "./tmk_core/common/action_macro.h"
+ 1845               		.file 8 "./tmk_core/common/action.h"
+ 1846               		.file 9 "./tmk_core/common/report.h"
+ 1847               		.file 10 "./quantum/quantum_keycodes.h"
+ 1848               		.file 11 "./quantum/process_keycode/process_tap_dance.h"
+ 1849               		.file 12 "./tmk_core/common/action_util.h"
+ 1850               		.file 13 "./tmk_core/common/eeconfig.h"
+ 1851               		.file 14 "./tmk_core/common/action_layer.h"
+ 1852               		.file 15 "./quantum/quantum.h"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 keymap.c
+     /tmp/ccDgCgtC.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccDgCgtC.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccDgCgtC.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccDgCgtC.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccDgCgtC.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccDgCgtC.s:13     .text.cmd_commands:0000000000000000 cmd_commands
+     /tmp/ccDgCgtC.s:1058   .progmem.data.__m.3219:0000000000000000 __m.3219
+     /tmp/ccDgCgtC.s:1045   .progmem.data.__m.3221:0000000000000000 __m.3221
+     /tmp/ccDgCgtC.s:1028   .progmem.data.__m.3223:0000000000000000 __m.3223
+     /tmp/ccDgCgtC.s:54     .text.cmd:0000000000000000 cmd
+     /tmp/ccDgCgtC.s:995    .progmem.data.__m.3229:0000000000000000 __m.3229
+     /tmp/ccDgCgtC.s:906    .progmem.data.__m.3231:0000000000000000 __m.3231
+     /tmp/ccDgCgtC.s:843    .progmem.data.__m.3233:0000000000000000 __m.3233
+     /tmp/ccDgCgtC.s:94     .text.VirtualDesktop:0000000000000000 VirtualDesktop
+     /tmp/ccDgCgtC.s:826    .progmem.data.__m.3243:0000000000000000 __m.3243
+     /tmp/ccDgCgtC.s:809    .progmem.data.__m.3245:0000000000000000 __m.3245
+     /tmp/ccDgCgtC.s:131    .text.SLSH_BSLSH:0000000000000000 SLSH_BSLSH
+     /tmp/ccDgCgtC.s:170    .text.rgblight_toggle:0000000000000000 rgblight_toggle
+     /tmp/ccDgCgtC.s:186    .text.rgblight_step:0000000000000000 rgblight_step
+     /tmp/ccDgCgtC.s:201    .text.rgblight_step_reverse:0000000000000000 rgblight_step_reverse
+     /tmp/ccDgCgtC.s:216    .text.rgblight_increase_hue:0000000000000000 rgblight_increase_hue
+     /tmp/ccDgCgtC.s:231    .text.rgblight_decrease_hue:0000000000000000 rgblight_decrease_hue
+     /tmp/ccDgCgtC.s:246    .text.rgblight_increase_sat:0000000000000000 rgblight_increase_sat
+     /tmp/ccDgCgtC.s:261    .text.rgblight_decrease_sat:0000000000000000 rgblight_decrease_sat
+     /tmp/ccDgCgtC.s:276    .text.rgblight_increase_val:0000000000000000 rgblight_increase_val
+     /tmp/ccDgCgtC.s:291    .text.rgblight_decrease_val:0000000000000000 rgblight_decrease_val
+     /tmp/ccDgCgtC.s:306    .text.rgblight_increase_speed:0000000000000000 rgblight_increase_speed
+     /tmp/ccDgCgtC.s:321    .text.rgblight_decrease_speed:0000000000000000 rgblight_decrease_speed
+     /tmp/ccDgCgtC.s:336    .text.persistent_default_layer_set:0000000000000000 persistent_default_layer_set
+     /tmp/ccDgCgtC.s:376    .text.action_get_macro:0000000000000000 action_get_macro
+     /tmp/ccDgCgtC.s:1319   .progmem.data.__c.3181:0000000000000000 __c.3181
+     /tmp/ccDgCgtC.s:1314   .progmem.data.__c.3184:0000000000000000 __c.3184
+     /tmp/ccDgCgtC.s:1246   .progmem.data.__c.3198:0000000000000000 __c.3198
+     /tmp/ccDgCgtC.s:1241   .progmem.data.__c.3201:0000000000000000 __c.3201
+     /tmp/ccDgCgtC.s:1071   .progmem.data.__c.3213:0000000000000000 __c.3213
+     /tmp/ccDgCgtC.s:1377   .progmem.data.__m.3175:0000000000000000 __m.3175
+     /tmp/ccDgCgtC.s:1324   .progmem.data.__m.3178:0000000000000000 __m.3178
+     /tmp/ccDgCgtC.s:1291   .progmem.data.__m.3187:0000000000000000 __m.3187
+     /tmp/ccDgCgtC.s:1282   .progmem.data.__m.3191:0000000000000000 __m.3191
+     /tmp/ccDgCgtC.s:1251   .progmem.data.__m.3195:0000000000000000 __m.3195
+     /tmp/ccDgCgtC.s:1186   .progmem.data.__m.3204:0000000000000000 __m.3204
+     /tmp/ccDgCgtC.s:1131   .progmem.data.__m.3207:0000000000000000 __m.3207
+     /tmp/ccDgCgtC.s:1076   .progmem.data.__m.3210:0000000000000000 __m.3210
+     /tmp/ccDgCgtC.s:624    .text.matrix_init_user:0000000000000000 matrix_init_user
+     /tmp/ccDgCgtC.s:639    .text.matrix_scan_user:0000000000000000 matrix_scan_user
+     /tmp/ccDgCgtC.s:654    .text.process_record_user:0000000000000000 process_record_user
+     /tmp/ccDgCgtC.s:1391   .data.tap_dance_actions:0000000000000000 tap_dance_actions
+     /tmp/ccDgCgtC.s:1416   .progmem.data.keymaps:0000000000000000 keymaps
+
+UNDEFINED SYMBOLS
+action_macro_play
+register_code
+unregister_code
+eeconfig_update_default_layer
+default_layer_set
+__tablejump2__
+layer_on
+layer_off
+send_string_P
+update_tri_layer
+__do_copy_data

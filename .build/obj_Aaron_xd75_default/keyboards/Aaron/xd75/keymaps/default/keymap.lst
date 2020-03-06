@@ -1,0 +1,914 @@
+   1               		.file	"keymap.c"
+   2               	__SP_H__ = 0x3e
+   3               	__SP_L__ = 0x3d
+   4               	__SREG__ = 0x3f
+   5               	__tmp_reg__ = 0
+   6               	__zero_reg__ = 1
+   7               		.text
+   8               	.Ltext0:
+   9               		.cfi_sections	.debug_frame
+  10               		.section	.text.persistent_default_layer_set,"ax",@progbits
+  11               	.global	persistent_default_layer_set
+  13               	persistent_default_layer_set:
+  14               	.LFB106:
+  15               		.file 1 "keyboards/Aaron/xd75/keymaps/default/keymap.c"
+   1:keyboards/Aaron/xd75/keymaps/default/keymap.c **** /* Copyright 2017 Wunder
+   2:keyboards/Aaron/xd75/keymaps/default/keymap.c ****  *
+   3:keyboards/Aaron/xd75/keymaps/default/keymap.c ****  * This program is free software: you can redistribute it and/or modify
+   4:keyboards/Aaron/xd75/keymaps/default/keymap.c ****  * it under the terms of the GNU General Public License as published by
+   5:keyboards/Aaron/xd75/keymaps/default/keymap.c ****  * the Free Software Foundation, either version 2 of the License, or
+   6:keyboards/Aaron/xd75/keymaps/default/keymap.c ****  * (at your option) any later version.
+   7:keyboards/Aaron/xd75/keymaps/default/keymap.c ****  *
+   8:keyboards/Aaron/xd75/keymaps/default/keymap.c ****  * This program is distributed in the hope that it will be useful,
+   9:keyboards/Aaron/xd75/keymaps/default/keymap.c ****  * but WITHOUT ANY WARRANTY; without even the implied warranty of
+  10:keyboards/Aaron/xd75/keymaps/default/keymap.c ****  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  11:keyboards/Aaron/xd75/keymaps/default/keymap.c ****  * GNU General Public License for more details.
+  12:keyboards/Aaron/xd75/keymaps/default/keymap.c ****  *
+  13:keyboards/Aaron/xd75/keymaps/default/keymap.c ****  * You should have received a copy of the GNU General Public License
+  14:keyboards/Aaron/xd75/keymaps/default/keymap.c ****  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  15:keyboards/Aaron/xd75/keymaps/default/keymap.c ****  */
+  16:keyboards/Aaron/xd75/keymaps/default/keymap.c **** #include "xd75.h"
+  17:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 
+  18:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 
+  19:keyboards/Aaron/xd75/keymaps/default/keymap.c **** #define KC_ESCT MT(MOD_LCTL, KC_ESC)
+  20:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 
+  21:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 
+  22:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 
+  23:keyboards/Aaron/xd75/keymaps/default/keymap.c **** #define _COLEMAK 0
+  24:keyboards/Aaron/xd75/keymaps/default/keymap.c **** #define _QWERTY 1
+  25:keyboards/Aaron/xd75/keymaps/default/keymap.c **** #define _LOWER 3
+  26:keyboards/Aaron/xd75/keymaps/default/keymap.c **** #define _RAISE 4
+  27:keyboards/Aaron/xd75/keymaps/default/keymap.c **** #define _ADJUST 5
+  28:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 
+  29:keyboards/Aaron/xd75/keymaps/default/keymap.c **** enum custom_keycodes {
+  30:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 	COLEMAK = SAFE_RANGE,
+  31:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 	QWERTY,
+  32:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 	LOWER,
+  33:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 	RAISE,
+  34:keyboards/Aaron/xd75/keymaps/default/keymap.c **** //	FN4,
+  35:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 	ADJUST,
+  36:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 
+  37:keyboards/Aaron/xd75/keymaps/default/keymap.c **** };
+  38:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 
+  39:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 
+  40:keyboards/Aaron/xd75/keymaps/default/keymap.c **** #define _______ KC_TRNS
+  41:keyboards/Aaron/xd75/keymaps/default/keymap.c **** #define ___T___ KC_TRNS
+  42:keyboards/Aaron/xd75/keymaps/default/keymap.c **** #define XXXXXXX KC_NO
+  43:keyboards/Aaron/xd75/keymaps/default/keymap.c **** // Layer shorthand
+  44:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 
+  45:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 
+  46:keyboards/Aaron/xd75/keymaps/default/keymap.c **** const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
+  47:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 
+  48:keyboards/Aaron/xd75/keymaps/default/keymap.c **** /* QWERTY
+  49:keyboards/Aaron/xd75/keymaps/default/keymap.c ****  * .-----------------------------------------------------------------------------------------------
+  50:keyboards/Aaron/xd75/keymaps/default/keymap.c ****  * | ESC    | 1      | 2      | 3      | 4      | 5      | -      | `      | =      | 6      | 7   
+  51:keyboards/Aaron/xd75/keymaps/default/keymap.c ****  * |--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+-----
+  52:keyboards/Aaron/xd75/keymaps/default/keymap.c ****  * | TAB    | Q      | W      | E      | R      | T      | [      | \      | ]      | Y      | U   
+  53:keyboards/Aaron/xd75/keymaps/default/keymap.c ****  * |--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+-----
+  54:keyboards/Aaron/xd75/keymaps/default/keymap.c ****  * | CAP LK | A      | S      | D      | F      | G      | HOME   | DEL    | PG UP  | H      | J   
+  55:keyboards/Aaron/xd75/keymaps/default/keymap.c ****  * |--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+-----
+  56:keyboards/Aaron/xd75/keymaps/default/keymap.c ****  * | LSHIFT | Z      | X      | C      | V      | B      | END    | UP     | PG DN  | N      | M   
+  57:keyboards/Aaron/xd75/keymaps/default/keymap.c ****  * |--------+--------+--------+--------+--------+-----------------+--------+--------+--------+-----
+  58:keyboards/Aaron/xd75/keymaps/default/keymap.c ****  * | LCTRL  | LGUI   | LALT   | FN     | SPACE  | SPACE  | LEFT   | DOWN   | RIGHT  | SPACE  | SPAC
+  59:keyboards/Aaron/xd75/keymaps/default/keymap.c ****  * '-----------------------------------------------------------------------------------------------
+  60:keyboards/Aaron/xd75/keymaps/default/keymap.c ****  */
+  61:keyboards/Aaron/xd75/keymaps/default/keymap.c ****  
+  62:keyboards/Aaron/xd75/keymaps/default/keymap.c ****   [_COLEMAK] = { /* COLEMAK  */
+  63:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 	{ KC_GRV,  KC_1,    KC_2,    KC_3,    KC_4,       KC_5,    KC_SLSH, KC_ASTR,    KC_MINS, KC_6,    
+  64:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 	{ KC_TAB,  KC_Q,    KC_W,    KC_F,    KC_P,       KC_G,    KC_7,    KC_8,       KC_9,    KC_J,    
+  65:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 	{ KC_ENT,  KC_A,    KC_R,    KC_S,    KC_T,       KC_D,    KC_4,    KC_5,       KC_6,    KC_H,    
+  66:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 	{ KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,       KC_B,    KC_1,    KC_2,       KC_3,    KC_K,    
+  67:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 	{ KC_ESCT, KC_LCTL, KC_LALT, M(1), MO(_RAISE), KC_BSPC, KC_0,   KC_KP_DOT,   KC_PLUS, KC_SPC,   MO
+  68:keyboards/Aaron/xd75/keymaps/default/keymap.c ****  },
+  69:keyboards/Aaron/xd75/keymaps/default/keymap.c ****   [_QWERTY] = { /* QWERTY */
+  70:keyboards/Aaron/xd75/keymaps/default/keymap.c ****   { KC_GRV,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,
+  71:keyboards/Aaron/xd75/keymaps/default/keymap.c ****   { KC_TAB,  KC_Q,    KC_W,    KC_F,    KC_P,    KC_G,    KC_J,    KC_L,    KC_U,    KC_Y,    KC_SC
+  72:keyboards/Aaron/xd75/keymaps/default/keymap.c ****   { KC_ENT,  KC_A,    KC_R,    KC_S,    KC_T,    KC_D,    KC_H,    KC_N,    KC_E,    KC_I,    KC_O,
+  73:keyboards/Aaron/xd75/keymaps/default/keymap.c ****   { KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_K,    KC_M,    KC_COMM, KC_DOT,  KC_SL
+  74:keyboards/Aaron/xd75/keymaps/default/keymap.c ****   { KC_ESCT,    KC_LCTL, KC_LALT, KC_LGUI, MO(_RAISE), KC_SPC,  KC_SPC,  MO(_LOWER), KC_RGUI, KC_RA
+  75:keyboards/Aaron/xd75/keymaps/default/keymap.c ****  },
+  76:keyboards/Aaron/xd75/keymaps/default/keymap.c ****   
+  77:keyboards/Aaron/xd75/keymaps/default/keymap.c ****  
+  78:keyboards/Aaron/xd75/keymaps/default/keymap.c ****  
+  79:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 
+  80:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 
+  81:keyboards/Aaron/xd75/keymaps/default/keymap.c **** /* FUNCTION+
+  82:keyboards/Aaron/xd75/keymaps/default/keymap.c ****  * .-----------------------------------------------------------------------------------------------
+  83:keyboards/Aaron/xd75/keymaps/default/keymap.c ****  * | F1     | F2     | F3     | F4     | F5     | F6     | NUM LK | P/     | P*     | F7     | F8  
+  84:keyboards/Aaron/xd75/keymaps/default/keymap.c ****  * |--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+-----
+  85:keyboards/Aaron/xd75/keymaps/default/keymap.c ****  * | SELECT | CALC   | MYCOMP | MAIL   | RGB HD | RGB HI | P7     | P8     | P9     | -      |     
+  86:keyboards/Aaron/xd75/keymaps/default/keymap.c ****  * |--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+-----
+  87:keyboards/Aaron/xd75/keymaps/default/keymap.c ****  * | PREV   | PLAY   | NEXT   | STOP   | RGB SD | RGB SI | P4     | P5     | P6     | +      |     
+  88:keyboards/Aaron/xd75/keymaps/default/keymap.c ****  * |--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+-----
+  89:keyboards/Aaron/xd75/keymaps/default/keymap.c ****  * | VOL-   | MUTE   | VOL+   | APP    | RGB VD | RGB VI | P1     | P2     | P3     | PENT   |     
+  90:keyboards/Aaron/xd75/keymaps/default/keymap.c ****  * |--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+-----
+  91:keyboards/Aaron/xd75/keymaps/default/keymap.c ****  * |        |        | RGB TG | FN     | RGB RMD| RGB MD | P0     |        | P.     | PENT   | PENT
+  92:keyboards/Aaron/xd75/keymaps/default/keymap.c ****  * '-----------------------------------------------------------------------------------------------
+  93:keyboards/Aaron/xd75/keymaps/default/keymap.c ****  */
+  94:keyboards/Aaron/xd75/keymaps/default/keymap.c ****   [_LOWER] = { /* LOWERED */
+  95:keyboards/Aaron/xd75/keymaps/default/keymap.c ****   { _______, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F1
+  96:keyboards/Aaron/xd75/keymaps/default/keymap.c ****   { _______, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RP
+  97:keyboards/Aaron/xd75/keymaps/default/keymap.c ****   { _______, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_UNDS, KC_PLUS, KC_LCBR, KC_RC
+  98:keyboards/Aaron/xd75/keymaps/default/keymap.c ****   { RGB_M_P, RGB_M_B,RGB_M_R,RGB_M_SW,RGB_M_SN,RGB_M_K, RGB_M_X,RGB_M_G, _______, _______, _______,
+  99:keyboards/Aaron/xd75/keymaps/default/keymap.c ****   {RGB_TOG,RGB_MOD,RGB_RMOD, _______, _______, _______, _______, _______, _______, _______, _______
+ 100:keyboards/Aaron/xd75/keymaps/default/keymap.c ****  },
+ 101:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 
+ 102:keyboards/Aaron/xd75/keymaps/default/keymap.c **** /* RAISED
+ 103:keyboards/Aaron/xd75/keymaps/default/keymap.c ****  * .-----------------------------------------------------------------------------------------------
+ 104:keyboards/Aaron/xd75/keymaps/default/keymap.c ****  * |        | F1     | F2     | F3     | F4     | F5     | F6     | F7     | F8     | F9     | F10 
+ 105:keyboards/Aaron/xd75/keymaps/default/keymap.c ****  * |--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+-----
+ 106:keyboards/Aaron/xd75/keymaps/default/keymap.c ****  * |        | 1      | 2      | 3      | 4      | 5      | 6      | 7      | 8      | 9      | 0   
+ 107:keyboards/Aaron/xd75/keymaps/default/keymap.c ****  * |--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+-----
+ 108:keyboards/Aaron/xd75/keymaps/default/keymap.c ****  * |        | F1     | F2     | F3     | F4     | F5     | F6     | -      | =      | [      | ]   
+ 109:keyboards/Aaron/xd75/keymaps/default/keymap.c ****  * |--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+-----
+ 110:keyboards/Aaron/xd75/keymaps/default/keymap.c ****  * |        | F7     | F8     | F9     | F10    | F11    | F12    |        |        |        |     
+ 111:keyboards/Aaron/xd75/keymaps/default/keymap.c ****  * |--------+--------+--------+--------+--------+- 2u ------------+--------+--------+--------+-----
+ 112:keyboards/Aaron/xd75/keymaps/default/keymap.c ****  * |        |        |        |        |        | XXXXXX .        |        |        |        |     
+ 113:keyboards/Aaron/xd75/keymaps/default/keymap.c ****  * '-----------------------------------------------------------------------------------------------
+ 114:keyboards/Aaron/xd75/keymaps/default/keymap.c ****  */
+ 115:keyboards/Aaron/xd75/keymaps/default/keymap.c ****  
+ 116:keyboards/Aaron/xd75/keymaps/default/keymap.c ****  [_RAISE] = { /* RAISED */
+ 117:keyboards/Aaron/xd75/keymaps/default/keymap.c ****   { RESET, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,
+ 118:keyboards/Aaron/xd75/keymaps/default/keymap.c ****   { _______, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,
+ 119:keyboards/Aaron/xd75/keymaps/default/keymap.c ****   { _______, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_MINS, KC_EQL,  KC_LBRC, KC_RB
+ 120:keyboards/Aaron/xd75/keymaps/default/keymap.c ****   { _______, KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  _______, _______, _______, _____
+ 121:keyboards/Aaron/xd75/keymaps/default/keymap.c ****   { DF(_QWERTY), DF(_COLEMAK), _______, _______, _______, _______, _______, _______, _______, _____
+ 122:keyboards/Aaron/xd75/keymaps/default/keymap.c ****  },
+ 123:keyboards/Aaron/xd75/keymaps/default/keymap.c ****  
+ 124:keyboards/Aaron/xd75/keymaps/default/keymap.c ****  [_ADJUST] = { /* FUNCTION */
+ 125:keyboards/Aaron/xd75/keymaps/default/keymap.c ****   { KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_NLCK, KC_SLSH, KC_ASTR, KC_F7,   KC_F8
+ 126:keyboards/Aaron/xd75/keymaps/default/keymap.c ****   { KC_MSEL, KC_CALC, KC_MYCM, KC_MAIL, RGB_HUD, RGB_HUI, KC_P7,   KC_P8,   KC_P9,   KC_MINS, _____
+ 127:keyboards/Aaron/xd75/keymaps/default/keymap.c ****   { KC_MPRV, KC_MPLY, KC_MNXT, KC_MSTP,  RGB_SAD, RGB_SAI, KC_P4,   KC_P5,   KC_P6,   KC_PLUS, ____
+ 128:keyboards/Aaron/xd75/keymaps/default/keymap.c ****   { KC_VOLD, KC_MUTE, KC_VOLU, KC_APP,  RGB_VAD, RGB_VAI, KC_P1,   KC_P2,   KC_P3,   KC_PENT, _____
+ 129:keyboards/Aaron/xd75/keymaps/default/keymap.c ****   { _______, _______, RGB_TOG,_______, RGB_RMOD,RGB_MOD, KC_P0,  _______, KC_PDOT, KC_PENT, KC_PENT
+ 130:keyboards/Aaron/xd75/keymaps/default/keymap.c ****  }
+ 131:keyboards/Aaron/xd75/keymaps/default/keymap.c **** };
+ 132:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 
+ 133:keyboards/Aaron/xd75/keymaps/default/keymap.c **** const uint16_t PROGMEM fn_actions[] = {
+ 134:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 
+ 135:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 
+ 136:keyboards/Aaron/xd75/keymaps/default/keymap.c **** };
+ 137:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 
+ 138:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 
+ 139:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 
+ 140:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 
+ 141:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 
+ 142:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 
+ 143:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 
+ 144:keyboards/Aaron/xd75/keymaps/default/keymap.c **** void persistent_default_layer_set(uint16_t default_layer) {
+  16               		.loc 1 144 0
+  17               		.cfi_startproc
+  18               	.LVL0:
+  19 0000 CF93      		push r28
+  20               	.LCFI0:
+  21               		.cfi_def_cfa_offset 3
+  22               		.cfi_offset 28, -2
+  23 0002 DF93      		push r29
+  24               	.LCFI1:
+  25               		.cfi_def_cfa_offset 4
+  26               		.cfi_offset 29, -3
+  27               	/* prologue: function */
+  28               	/* frame size = 0 */
+  29               	/* stack size = 2 */
+  30               	.L__stack_usage = 2
+  31 0004 EC01      		movw r28,r24
+ 145:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 	eeconfig_update_default_layer(default_layer);
+  32               		.loc 1 145 0
+  33 0006 0E94 0000 		call eeconfig_update_default_layer
+  34               	.LVL1:
+ 146:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 	default_layer_set(default_layer);
+  35               		.loc 1 146 0
+  36 000a BE01      		movw r22,r28
+  37 000c 80E0      		ldi r24,0
+  38 000e 90E0      		ldi r25,0
+  39               	/* epilogue start */
+ 147:keyboards/Aaron/xd75/keymaps/default/keymap.c **** }
+  40               		.loc 1 147 0
+  41 0010 DF91      		pop r29
+  42 0012 CF91      		pop r28
+  43               	.LVL2:
+ 146:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 	default_layer_set(default_layer);
+  44               		.loc 1 146 0
+  45 0014 0C94 0000 		jmp default_layer_set
+  46               	.LVL3:
+  47               		.cfi_endproc
+  48               	.LFE106:
+  50               		.section	.text.process_record_user,"ax",@progbits
+  51               	.global	process_record_user
+  53               	process_record_user:
+  54               	.LFB107:
+ 148:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 
+ 149:keyboards/Aaron/xd75/keymaps/default/keymap.c **** bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+  55               		.loc 1 149 0
+  56               		.cfi_startproc
+  57               	.LVL4:
+  58 0000 CF93      		push r28
+  59               	.LCFI2:
+  60               		.cfi_def_cfa_offset 3
+  61               		.cfi_offset 28, -2
+  62               	/* prologue: function */
+  63               	/* frame size = 0 */
+  64               	/* stack size = 1 */
+  65               	.L__stack_usage = 1
+  66 0002 FB01      		movw r30,r22
+ 150:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 	switch (keycode) {
+  67               		.loc 1 150 0
+  68 0004 8C3D      		cpi r24,-36
+  69 0006 2CE5      		ldi r18,92
+  70 0008 9207      		cpc r25,r18
+  71 000a 01F0      		breq .L4
+  72 000c 00F4      		brsh .L5
+  73 000e 8A3D      		cpi r24,-38
+  74 0010 2CE5      		ldi r18,92
+  75 0012 9207      		cpc r25,r18
+  76 0014 01F0      		breq .L6
+  77 0016 8B3D      		cpi r24,-37
+  78 0018 9C45      		sbci r25,92
+  79 001a 01F0      		breq .L7
+  80 001c 00C0      		rjmp .L13
+  81               	.L5:
+  82 001e 8D3D      		cpi r24,-35
+  83 0020 2CE5      		ldi r18,92
+  84 0022 9207      		cpc r25,r18
+  85 0024 01F0      		breq .L8
+  86 0026 8E3D      		cpi r24,-34
+  87 0028 9C45      		sbci r25,92
+  88 002a 01F0      		breq .L9
+  89 002c 00C0      		rjmp .L13
+  90               	.L7:
+ 151:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 	case QWERTY:
+ 152:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 		if (record->event.pressed) {
+  91               		.loc 1 152 0
+  92 002e C281      		ldd r28,Z+2
+  93 0030 CC23      		tst r28
+  94 0032 01F0      		breq .L3
+ 153:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 			#ifdef AUDIO_ENABLE
+ 154:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 			PLAY_NOTE_ARRAY(tone_qwerty, false, 0);
+ 155:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 			#endif
+ 156:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 			persistent_default_layer_set(1UL<<_QWERTY);
+  95               		.loc 1 156 0
+  96 0034 82E0      		ldi r24,lo8(2)
+  97 0036 90E0      		ldi r25,0
+  98               	.LVL5:
+  99 0038 00C0      		rjmp .L21
+ 100               	.LVL6:
+ 101               	.L6:
+ 157:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 		}
+ 158:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 		return false;
+ 159:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 		break;
+ 160:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 	case COLEMAK:
+ 161:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 		if (record->event.pressed) {
+ 102               		.loc 1 161 0
+ 103 003a C281      		ldd r28,Z+2
+ 104 003c CC23      		tst r28
+ 105 003e 01F0      		breq .L3
+ 162:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 			#ifdef AUDIO_ENABLE
+ 163:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 			PLAY_NOTE_ARRAY(tone_colemak, false, 0);
+ 164:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 			#endif
+ 165:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 			persistent_default_layer_set(1UL<<_COLEMAK);
+ 106               		.loc 1 165 0
+ 107 0040 81E0      		ldi r24,lo8(1)
+ 108 0042 90E0      		ldi r25,0
+ 109               	.LVL7:
+ 110               	.L21:
+ 111 0044 0E94 0000 		call persistent_default_layer_set
+ 112               	.LVL8:
+ 113 0048 00C0      		rjmp .L20
+ 114               	.LVL9:
+ 115               	.L4:
+ 166:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 		}
+ 167:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 		return false;
+ 168:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 	case LOWER:
+ 169:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 		if (record->event.pressed) {
+ 116               		.loc 1 169 0
+ 117 004a C281      		ldd r28,Z+2
+ 170:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 			layer_on(_LOWER);
+ 118               		.loc 1 170 0
+ 119 004c 83E0      		ldi r24,lo8(3)
+ 120               	.LVL10:
+ 121 004e 00C0      		rjmp .L24
+ 122               	.LVL11:
+ 123               	.L8:
+ 171:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 			update_tri_layer(_LOWER, _RAISE, _ADJUST);
+ 172:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 		} else {
+ 173:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 			layer_off(_LOWER);
+ 174:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 			update_tri_layer(_LOWER, _RAISE, _ADJUST);
+ 175:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 		}
+ 176:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 		return false;
+ 177:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 		break;
+ 178:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 	case RAISE:
+ 179:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 		if (record->event.pressed) {
+ 124               		.loc 1 179 0
+ 125 0050 C281      		ldd r28,Z+2
+ 180:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 			layer_on(_RAISE);
+ 126               		.loc 1 180 0
+ 127 0052 84E0      		ldi r24,lo8(4)
+ 128               	.LVL12:
+ 129               	.L24:
+ 179:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 		if (record->event.pressed) {
+ 130               		.loc 1 179 0
+ 131 0054 CC23      		tst r28
+ 132 0056 01F0      		breq .L11
+ 133               		.loc 1 180 0
+ 134 0058 0E94 0000 		call layer_on
+ 135               	.LVL13:
+ 181:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 			update_tri_layer(_LOWER, _RAISE, _ADJUST);
+ 136               		.loc 1 181 0
+ 137 005c 45E0      		ldi r20,lo8(5)
+ 138 005e 64E0      		ldi r22,lo8(4)
+ 139 0060 83E0      		ldi r24,lo8(3)
+ 140 0062 0E94 0000 		call update_tri_layer
+ 141               	.LVL14:
+ 142 0066 00C0      		rjmp .L20
+ 143               	.LVL15:
+ 144               	.L11:
+ 182:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 		} else {
+ 183:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 			layer_off(_RAISE);
+ 145               		.loc 1 183 0
+ 146 0068 0E94 0000 		call layer_off
+ 147               	.LVL16:
+ 184:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 			update_tri_layer(_LOWER, _RAISE, _ADJUST);
+ 148               		.loc 1 184 0
+ 149 006c 45E0      		ldi r20,lo8(5)
+ 150 006e 64E0      		ldi r22,lo8(4)
+ 151 0070 83E0      		ldi r24,lo8(3)
+ 152 0072 0E94 0000 		call update_tri_layer
+ 153               	.LVL17:
+ 154 0076 00C0      		rjmp .L3
+ 155               	.LVL18:
+ 156               	.L9:
+ 185:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 		}
+ 186:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 		return false;
+ 187:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 		break;
+ 188:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 	case ADJUST:
+ 189:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 		if (record->event.pressed) {
+ 157               		.loc 1 189 0
+ 158 0078 C281      		ldd r28,Z+2
+ 190:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 			layer_on(_ADJUST);
+ 159               		.loc 1 190 0
+ 160 007a 85E0      		ldi r24,lo8(5)
+ 161               	.LVL19:
+ 189:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 		if (record->event.pressed) {
+ 162               		.loc 1 189 0
+ 163 007c CC23      		tst r28
+ 164 007e 01F0      		breq .L12
+ 165               		.loc 1 190 0
+ 166 0080 0E94 0000 		call layer_on
+ 167               	.LVL20:
+ 168               	.L20:
+ 191:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 		} else {
+ 192:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 			layer_off(_ADJUST);
+ 193:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 		}
+ 194:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 		return false;
+ 169               		.loc 1 194 0
+ 170 0084 C0E0      		ldi r28,0
+ 171 0086 00C0      		rjmp .L3
+ 172               	.LVL21:
+ 173               	.L12:
+ 192:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 			layer_off(_ADJUST);
+ 174               		.loc 1 192 0
+ 175 0088 0E94 0000 		call layer_off
+ 176               	.LVL22:
+ 177 008c 00C0      		rjmp .L3
+ 178               	.LVL23:
+ 179               	.L13:
+ 195:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 		break;
+ 196:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 	}
+ 197:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 	return true;
+ 180               		.loc 1 197 0
+ 181 008e C1E0      		ldi r28,lo8(1)
+ 182               	.LVL24:
+ 183               	.L3:
+ 198:keyboards/Aaron/xd75/keymaps/default/keymap.c **** }
+ 184               		.loc 1 198 0
+ 185 0090 8C2F      		mov r24,r28
+ 186               	/* epilogue start */
+ 187 0092 CF91      		pop r28
+ 188 0094 0895      		ret
+ 189               		.cfi_endproc
+ 190               	.LFE107:
+ 192               		.section	.text.action_get_macro,"ax",@progbits
+ 193               	.global	action_get_macro
+ 195               	action_get_macro:
+ 196               	.LFB108:
+ 199:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 
+ 200:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 
+ 201:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 
+ 202:keyboards/Aaron/xd75/keymaps/default/keymap.c **** const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
+ 203:keyboards/Aaron/xd75/keymaps/default/keymap.c **** {
+ 197               		.loc 1 203 0
+ 198               		.cfi_startproc
+ 199               	.LVL25:
+ 200 0000 CF93      		push r28
+ 201               	.LCFI3:
+ 202               		.cfi_def_cfa_offset 3
+ 203               		.cfi_offset 28, -2
+ 204 0002 DF93      		push r29
+ 205               	.LCFI4:
+ 206               		.cfi_def_cfa_offset 4
+ 207               		.cfi_offset 29, -3
+ 208               	/* prologue: function */
+ 209               	/* frame size = 0 */
+ 210               	/* stack size = 2 */
+ 211               	.L__stack_usage = 2
+ 212 0004 EC01      		movw r28,r24
+ 204:keyboards/Aaron/xd75/keymaps/default/keymap.c ****   // MACRODOWN only works in this function
+ 205:keyboards/Aaron/xd75/keymaps/default/keymap.c ****       switch(id) {
+ 213               		.loc 1 205 0
+ 214 0006 6623      		tst r22
+ 215 0008 01F0      		breq .L28
+ 216 000a 6130      		cpi r22,lo8(1)
+ 217 000c 01F0      		breq .L29
+ 218 000e 00C0      		rjmp .L38
+ 219               	.L28:
+ 206:keyboards/Aaron/xd75/keymaps/default/keymap.c ****         case 0:
+ 207:keyboards/Aaron/xd75/keymaps/default/keymap.c ****           if (record->event.pressed) {
+ 220               		.loc 1 207 0
+ 221 0010 8A81      		ldd r24,Y+2
+ 222               	.LVL26:
+ 223 0012 8823      		tst r24
+ 224 0014 01F0      		breq .L29
+ 208:keyboards/Aaron/xd75/keymaps/default/keymap.c ****             register_code(KC_RSFT);
+ 225               		.loc 1 208 0
+ 226 0016 85EE      		ldi r24,lo8(-27)
+ 227 0018 0E94 0000 		call register_code
+ 228               	.LVL27:
+ 229               	.L29:
+ 209:keyboards/Aaron/xd75/keymaps/default/keymap.c ****             #ifdef BACKLIGHT_ENABLE
+ 210:keyboards/Aaron/xd75/keymaps/default/keymap.c ****               backlight_step();
+ 211:keyboards/Aaron/xd75/keymaps/default/keymap.c ****             #endif
+ 212:keyboards/Aaron/xd75/keymaps/default/keymap.c ****           }
+ 213:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 		case 1:
+ 214:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 			if (record->event.pressed) {
+ 230               		.loc 1 214 0
+ 231 001c 8A81      		ldd r24,Y+2
+ 232 001e 8111      		cpse r24,__zero_reg__
+ 233 0020 00C0      		rjmp .L31
+ 215:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 			return MACRO(D(LGUI), T(TAB), U(LGUI), END);
+ 216:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 		}
+ 217:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 
+ 218:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 
+ 219:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 		  else {
+ 220:keyboards/Aaron/xd75/keymaps/default/keymap.c ****             unregister_code(KC_RSFT);
+ 234               		.loc 1 220 0
+ 235 0022 85EE      		ldi r24,lo8(-27)
+ 236 0024 0E94 0000 		call unregister_code
+ 237               	.LVL28:
+ 238               	.L38:
+ 221:keyboards/Aaron/xd75/keymaps/default/keymap.c ****           }
+ 222:keyboards/Aaron/xd75/keymaps/default/keymap.c ****         break;
+ 223:keyboards/Aaron/xd75/keymaps/default/keymap.c ****       }
+ 224:keyboards/Aaron/xd75/keymaps/default/keymap.c ****     return MACRO_NONE;
+ 239               		.loc 1 224 0
+ 240 0028 80E0      		ldi r24,0
+ 241 002a 90E0      		ldi r25,0
+ 242 002c 00C0      		rjmp .L27
+ 243               	.L31:
+ 215:keyboards/Aaron/xd75/keymaps/default/keymap.c **** 			return MACRO(D(LGUI), T(TAB), U(LGUI), END);
+ 244               		.loc 1 215 0
+ 245 002e 80E0      		ldi r24,lo8(__m.5548)
+ 246 0030 90E0      		ldi r25,hi8(__m.5548)
+ 247               	.L27:
+ 248               	/* epilogue start */
+ 225:keyboards/Aaron/xd75/keymaps/default/keymap.c **** };
+ 249               		.loc 1 225 0
+ 250 0032 DF91      		pop r29
+ 251 0034 CF91      		pop r28
+ 252               	.LVL29:
+ 253 0036 0895      		ret
+ 254               		.cfi_endproc
+ 255               	.LFE108:
+ 257               		.section	.progmem.data.__m.5548,"a",@progbits
+ 260               	__m.5548:
+ 261 0000 01        		.byte	1
+ 262 0001 E3        		.byte	-29
+ 263 0002 01        		.byte	1
+ 264 0003 2B        		.byte	43
+ 265 0004 02        		.byte	2
+ 266 0005 2B        		.byte	43
+ 267 0006 02        		.byte	2
+ 268 0007 E3        		.byte	-29
+ 269 0008 00        		.byte	0
+ 270               	.global	fn_actions
+ 271               		.section	.progmem.data.fn_actions,"a",@progbits
+ 274               	fn_actions:
+ 275               	.global	keymaps
+ 276               		.section	.progmem.data.keymaps,"a",@progbits
+ 279               	keymaps:
+ 280 0000 3500      		.word	53
+ 281 0002 1E00      		.word	30
+ 282 0004 1F00      		.word	31
+ 283 0006 2000      		.word	32
+ 284 0008 2100      		.word	33
+ 285 000a 2200      		.word	34
+ 286 000c 3800      		.word	56
+ 287 000e 2502      		.word	549
+ 288 0010 2D00      		.word	45
+ 289 0012 2300      		.word	35
+ 290 0014 2400      		.word	36
+ 291 0016 2500      		.word	37
+ 292 0018 2600      		.word	38
+ 293 001a 2700      		.word	39
+ 294 001c 2D00      		.word	45
+ 295 001e 2B00      		.word	43
+ 296 0020 1400      		.word	20
+ 297 0022 1A00      		.word	26
+ 298 0024 0900      		.word	9
+ 299 0026 1300      		.word	19
+ 300 0028 0A00      		.word	10
+ 301 002a 2400      		.word	36
+ 302 002c 2500      		.word	37
+ 303 002e 2600      		.word	38
+ 304 0030 0D00      		.word	13
+ 305 0032 0F00      		.word	15
+ 306 0034 1800      		.word	24
+ 307 0036 1C00      		.word	28
+ 308 0038 3300      		.word	51
+ 309 003a 3100      		.word	49
+ 310 003c 2800      		.word	40
+ 311 003e 0400      		.word	4
+ 312 0040 1500      		.word	21
+ 313 0042 1600      		.word	22
+ 314 0044 1700      		.word	23
+ 315 0046 0700      		.word	7
+ 316 0048 2100      		.word	33
+ 317 004a 2200      		.word	34
+ 318 004c 2300      		.word	35
+ 319 004e 0B00      		.word	11
+ 320 0050 1100      		.word	17
+ 321 0052 0800      		.word	8
+ 322 0054 0C00      		.word	12
+ 323 0056 1200      		.word	18
+ 324 0058 2800      		.word	40
+ 325 005a E100      		.word	225
+ 326 005c 1D00      		.word	29
+ 327 005e 1B00      		.word	27
+ 328 0060 0600      		.word	6
+ 329 0062 1900      		.word	25
+ 330 0064 0500      		.word	5
+ 331 0066 1E00      		.word	30
+ 332 0068 1F00      		.word	31
+ 333 006a 2000      		.word	32
+ 334 006c 0E00      		.word	14
+ 335 006e 1000      		.word	16
+ 336 0070 3600      		.word	54
+ 337 0072 3700      		.word	55
+ 338 0074 3800      		.word	56
+ 339 0076 E100      		.word	225
+ 340 0078 2961      		.word	24873
+ 341 007a E000      		.word	224
+ 342 007c E200      		.word	226
+ 343 007e 0130      		.word	12289
+ 344 0080 0451      		.word	20740
+ 345 0082 2A00      		.word	42
+ 346 0084 2700      		.word	39
+ 347 0086 6300      		.word	99
+ 348 0088 2E02      		.word	558
+ 349 008a 2C00      		.word	44
+ 350 008c 0351      		.word	20739
+ 351 008e 5000      		.word	80
+ 352 0090 4F00      		.word	79
+ 353 0092 5200      		.word	82
+ 354 0094 5100      		.word	81
+ 355 0096 3500      		.word	53
+ 356 0098 1E00      		.word	30
+ 357 009a 1F00      		.word	31
+ 358 009c 2000      		.word	32
+ 359 009e 2100      		.word	33
+ 360 00a0 2200      		.word	34
+ 361 00a2 2300      		.word	35
+ 362 00a4 2400      		.word	36
+ 363 00a6 2500      		.word	37
+ 364 00a8 2600      		.word	38
+ 365 00aa 2700      		.word	39
+ 366 00ac 2D00      		.word	45
+ 367 00ae 2E00      		.word	46
+ 368 00b0 2A00      		.word	42
+ 369 00b2 2A00      		.word	42
+ 370 00b4 2B00      		.word	43
+ 371 00b6 1400      		.word	20
+ 372 00b8 1A00      		.word	26
+ 373 00ba 0900      		.word	9
+ 374 00bc 1300      		.word	19
+ 375 00be 0A00      		.word	10
+ 376 00c0 0D00      		.word	13
+ 377 00c2 0F00      		.word	15
+ 378 00c4 1800      		.word	24
+ 379 00c6 1C00      		.word	28
+ 380 00c8 3300      		.word	51
+ 381 00ca 2F00      		.word	47
+ 382 00cc 3000      		.word	48
+ 383 00ce 3100      		.word	49
+ 384 00d0 4C00      		.word	76
+ 385 00d2 2800      		.word	40
+ 386 00d4 0400      		.word	4
+ 387 00d6 1500      		.word	21
+ 388 00d8 1600      		.word	22
+ 389 00da 1700      		.word	23
+ 390 00dc 0700      		.word	7
+ 391 00de 0B00      		.word	11
+ 392 00e0 1100      		.word	17
+ 393 00e2 0800      		.word	8
+ 394 00e4 0C00      		.word	12
+ 395 00e6 1200      		.word	18
+ 396 00e8 3400      		.word	52
+ 397 00ea 2800      		.word	40
+ 398 00ec 2800      		.word	40
+ 399 00ee 4B00      		.word	75
+ 400 00f0 E100      		.word	225
+ 401 00f2 1D00      		.word	29
+ 402 00f4 1B00      		.word	27
+ 403 00f6 0600      		.word	6
+ 404 00f8 1900      		.word	25
+ 405 00fa 0500      		.word	5
+ 406 00fc 0E00      		.word	14
+ 407 00fe 1000      		.word	16
+ 408 0100 3600      		.word	54
+ 409 0102 3700      		.word	55
+ 410 0104 3800      		.word	56
+ 411 0106 E500      		.word	229
+ 412 0108 E500      		.word	229
+ 413 010a 5200      		.word	82
+ 414 010c 4E00      		.word	78
+ 415 010e 2961      		.word	24873
+ 416 0110 E000      		.word	224
+ 417 0112 E200      		.word	226
+ 418 0114 E300      		.word	227
+ 419 0116 0451      		.word	20740
+ 420 0118 2C00      		.word	44
+ 421 011a 2C00      		.word	44
+ 422 011c 0351      		.word	20739
+ 423 011e E700      		.word	231
+ 424 0120 E600      		.word	230
+ 425 0122 0451      		.word	20740
+ 426 0124 0351      		.word	20739
+ 427 0126 5000      		.word	80
+ 428 0128 5100      		.word	81
+ 429 012a 4F00      		.word	79
+ 430 012c 0000 0000 		.zero	150
+ 430      0000 0000 
+ 430      0000 0000 
+ 430      0000 0000 
+ 430      0000 0000 
+ 431 01c2 0100      		.word	1
+ 432 01c4 3A00      		.word	58
+ 433 01c6 3B00      		.word	59
+ 434 01c8 3C00      		.word	60
+ 435 01ca 3D00      		.word	61
+ 436 01cc 3E00      		.word	62
+ 437 01ce 3F00      		.word	63
+ 438 01d0 4000      		.word	64
+ 439 01d2 4100      		.word	65
+ 440 01d4 4200      		.word	66
+ 441 01d6 4300      		.word	67
+ 442 01d8 4400      		.word	68
+ 443 01da 4500      		.word	69
+ 444 01dc 0100      		.word	1
+ 445 01de C05C      		.word	23744
+ 446 01e0 0100      		.word	1
+ 447 01e2 1E02      		.word	542
+ 448 01e4 1F02      		.word	543
+ 449 01e6 2002      		.word	544
+ 450 01e8 2102      		.word	545
+ 451 01ea 2202      		.word	546
+ 452 01ec 2302      		.word	547
+ 453 01ee 2402      		.word	548
+ 454 01f0 2502      		.word	549
+ 455 01f2 2602      		.word	550
+ 456 01f4 2702      		.word	551
+ 457 01f6 0100      		.word	1
+ 458 01f8 0100      		.word	1
+ 459 01fa C45C      		.word	23748
+ 460 01fc C35C      		.word	23747
+ 461 01fe 0100      		.word	1
+ 462 0200 3A00      		.word	58
+ 463 0202 3B00      		.word	59
+ 464 0204 3C00      		.word	60
+ 465 0206 3D00      		.word	61
+ 466 0208 3E00      		.word	62
+ 467 020a 3F00      		.word	63
+ 468 020c 2D02      		.word	557
+ 469 020e 2E02      		.word	558
+ 470 0210 2F02      		.word	559
+ 471 0212 3002      		.word	560
+ 472 0214 3102      		.word	561
+ 473 0216 0100      		.word	1
+ 474 0218 C65C      		.word	23750
+ 475 021a C55C      		.word	23749
+ 476 021c CB5C      		.word	23755
+ 477 021e CC5C      		.word	23756
+ 478 0220 CD5C      		.word	23757
+ 479 0222 CE5C      		.word	23758
+ 480 0224 CF5C      		.word	23759
+ 481 0226 D05C      		.word	23760
+ 482 0228 D15C      		.word	23761
+ 483 022a D25C      		.word	23762
+ 484 022c 0100      		.word	1
+ 485 022e 0100      		.word	1
+ 486 0230 0100      		.word	1
+ 487 0232 0100      		.word	1
+ 488 0234 0100      		.word	1
+ 489 0236 C85C      		.word	23752
+ 490 0238 C75C      		.word	23751
+ 491 023a C05C      		.word	23744
+ 492 023c C15C      		.word	23745
+ 493 023e C25C      		.word	23746
+ 494 0240 0100      		.word	1
+ 495 0242 0100      		.word	1
+ 496 0244 0100      		.word	1
+ 497 0246 0100      		.word	1
+ 498 0248 0100      		.word	1
+ 499 024a 0100      		.word	1
+ 500 024c 0100      		.word	1
+ 501 024e 0100      		.word	1
+ 502 0250 0100      		.word	1
+ 503 0252 0100      		.word	1
+ 504 0254 0100      		.word	1
+ 505 0256 0100      		.word	1
+ 506 0258 005C      		.word	23552
+ 507 025a 3A00      		.word	58
+ 508 025c 3B00      		.word	59
+ 509 025e 3C00      		.word	60
+ 510 0260 3D00      		.word	61
+ 511 0262 3E00      		.word	62
+ 512 0264 3F00      		.word	63
+ 513 0266 4000      		.word	64
+ 514 0268 4100      		.word	65
+ 515 026a 4200      		.word	66
+ 516 026c 4300      		.word	67
+ 517 026e 4400      		.word	68
+ 518 0270 4500      		.word	69
+ 519 0272 0100      		.word	1
+ 520 0274 0100      		.word	1
+ 521 0276 0100      		.word	1
+ 522 0278 1E00      		.word	30
+ 523 027a 1F00      		.word	31
+ 524 027c 2000      		.word	32
+ 525 027e 2100      		.word	33
+ 526 0280 2200      		.word	34
+ 527 0282 2300      		.word	35
+ 528 0284 2400      		.word	36
+ 529 0286 2500      		.word	37
+ 530 0288 2600      		.word	38
+ 531 028a 2700      		.word	39
+ 532 028c 0100      		.word	1
+ 533 028e 0100      		.word	1
+ 534 0290 0100      		.word	1
+ 535 0292 4900      		.word	73
+ 536 0294 0100      		.word	1
+ 537 0296 3A00      		.word	58
+ 538 0298 3B00      		.word	59
+ 539 029a 3C00      		.word	60
+ 540 029c 3D00      		.word	61
+ 541 029e 3E00      		.word	62
+ 542 02a0 3F00      		.word	63
+ 543 02a2 2D00      		.word	45
+ 544 02a4 2E00      		.word	46
+ 545 02a6 2F00      		.word	47
+ 546 02a8 3000      		.word	48
+ 547 02aa 3100      		.word	49
+ 548 02ac 0100      		.word	1
+ 549 02ae 0100      		.word	1
+ 550 02b0 0100      		.word	1
+ 551 02b2 0100      		.word	1
+ 552 02b4 4000      		.word	64
+ 553 02b6 4100      		.word	65
+ 554 02b8 4200      		.word	66
+ 555 02ba 4300      		.word	67
+ 556 02bc 4400      		.word	68
+ 557 02be 4500      		.word	69
+ 558 02c0 0100      		.word	1
+ 559 02c2 0100      		.word	1
+ 560 02c4 0100      		.word	1
+ 561 02c6 0100      		.word	1
+ 562 02c8 0100      		.word	1
+ 563 02ca 0100      		.word	1
+ 564 02cc 0100      		.word	1
+ 565 02ce 0100      		.word	1
+ 566 02d0 0152      		.word	20993
+ 567 02d2 0052      		.word	20992
+ 568 02d4 0100      		.word	1
+ 569 02d6 0100      		.word	1
+ 570 02d8 0100      		.word	1
+ 571 02da 0100      		.word	1
+ 572 02dc 0100      		.word	1
+ 573 02de 0100      		.word	1
+ 574 02e0 0100      		.word	1
+ 575 02e2 0100      		.word	1
+ 576 02e4 0100      		.word	1
+ 577 02e6 0100      		.word	1
+ 578 02e8 0100      		.word	1
+ 579 02ea 0100      		.word	1
+ 580 02ec 0100      		.word	1
+ 581 02ee 3A00      		.word	58
+ 582 02f0 3B00      		.word	59
+ 583 02f2 3C00      		.word	60
+ 584 02f4 3D00      		.word	61
+ 585 02f6 3E00      		.word	62
+ 586 02f8 3F00      		.word	63
+ 587 02fa 5300      		.word	83
+ 588 02fc 3800      		.word	56
+ 589 02fe 2502      		.word	549
+ 590 0300 4000      		.word	64
+ 591 0302 4100      		.word	65
+ 592 0304 4200      		.word	66
+ 593 0306 4300      		.word	67
+ 594 0308 4400      		.word	68
+ 595 030a 4500      		.word	69
+ 596 030c AF00      		.word	175
+ 597 030e B200      		.word	178
+ 598 0310 B300      		.word	179
+ 599 0312 B100      		.word	177
+ 600 0314 C45C      		.word	23748
+ 601 0316 C35C      		.word	23747
+ 602 0318 5F00      		.word	95
+ 603 031a 6000      		.word	96
+ 604 031c 6100      		.word	97
+ 605 031e 2D00      		.word	45
+ 606 0320 0100      		.word	1
+ 607 0322 0100      		.word	1
+ 608 0324 4600      		.word	70
+ 609 0326 4700      		.word	71
+ 610 0328 4800      		.word	72
+ 611 032a AC00      		.word	172
+ 612 032c AE00      		.word	174
+ 613 032e AB00      		.word	171
+ 614 0330 AD00      		.word	173
+ 615 0332 C65C      		.word	23750
+ 616 0334 C55C      		.word	23749
+ 617 0336 5C00      		.word	92
+ 618 0338 5D00      		.word	93
+ 619 033a 5E00      		.word	94
+ 620 033c 2E02      		.word	558
+ 621 033e 0100      		.word	1
+ 622 0340 005C      		.word	23552
+ 623 0342 0100      		.word	1
+ 624 0344 0100      		.word	1
+ 625 0346 0100      		.word	1
+ 626 0348 AA00      		.word	170
+ 627 034a A800      		.word	168
+ 628 034c A900      		.word	169
+ 629 034e 6500      		.word	101
+ 630 0350 C85C      		.word	23752
+ 631 0352 C75C      		.word	23751
+ 632 0354 5900      		.word	89
+ 633 0356 5A00      		.word	90
+ 634 0358 5B00      		.word	91
+ 635 035a 5800      		.word	88
+ 636 035c 0100      		.word	1
+ 637 035e 0100      		.word	1
+ 638 0360 0100      		.word	1
+ 639 0362 0100      		.word	1
+ 640 0364 0100      		.word	1
+ 641 0366 0100      		.word	1
+ 642 0368 0100      		.word	1
+ 643 036a C05C      		.word	23744
+ 644 036c 0100      		.word	1
+ 645 036e C25C      		.word	23746
+ 646 0370 C15C      		.word	23745
+ 647 0372 6200      		.word	98
+ 648 0374 0100      		.word	1
+ 649 0376 6300      		.word	99
+ 650 0378 5800      		.word	88
+ 651 037a 5800      		.word	88
+ 652 037c 0100      		.word	1
+ 653 037e 0100      		.word	1
+ 654 0380 0100      		.word	1
+ 655 0382 0100      		.word	1
+ 656               		.text
+ 657               	.Letext0:
+ 658               		.file 2 "/usr/lib/avr/include/stdint.h"
+ 659               		.file 3 "./tmk_core/common/keyboard.h"
+ 660               		.file 4 "./tmk_core/common/keycode.h"
+ 661               		.file 5 "./tmk_core/common/action_code.h"
+ 662               		.file 6 "./tmk_core/common/action_macro.h"
+ 663               		.file 7 "./tmk_core/common/action.h"
+ 664               		.file 8 "./tmk_core/common/report.h"
+ 665               		.file 9 "./quantum/quantum_keycodes.h"
+ 666               		.file 10 "./lib/lufa/LUFA/Drivers/USB/Core/USBTask.h"
+ 667               		.file 11 "./tmk_core/common/action_util.h"
+ 668               		.file 12 "./tmk_core/common/eeconfig.h"
+ 669               		.file 13 "./tmk_core/common/action_layer.h"
+ 670               		.file 14 "./quantum/quantum.h"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 keymap.c
+     /tmp/ccT5y2Tw.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccT5y2Tw.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccT5y2Tw.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccT5y2Tw.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccT5y2Tw.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccT5y2Tw.s:13     .text.persistent_default_layer_set:0000000000000000 persistent_default_layer_set
+     /tmp/ccT5y2Tw.s:53     .text.process_record_user:0000000000000000 process_record_user
+     /tmp/ccT5y2Tw.s:195    .text.action_get_macro:0000000000000000 action_get_macro
+     /tmp/ccT5y2Tw.s:260    .progmem.data.__m.5548:0000000000000000 __m.5548
+     /tmp/ccT5y2Tw.s:274    .progmem.data.fn_actions:0000000000000000 fn_actions
+     /tmp/ccT5y2Tw.s:279    .progmem.data.keymaps:0000000000000000 keymaps
+
+UNDEFINED SYMBOLS
+eeconfig_update_default_layer
+default_layer_set
+layer_on
+update_tri_layer
+layer_off
+register_code
+unregister_code
