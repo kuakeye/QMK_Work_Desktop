@@ -10,8 +10,9 @@
   10               		.section	.text.print_set_sendchar,"ax",@progbits
   11               	.global	print_set_sendchar
   13               	print_set_sendchar:
-  14               	.LFB1:
-  15               		.file 1 "./tmk_core/common/print.c"
+  14               	.LVL0:
+  15               	.LFB1:
+  16               		.file 1 "./tmk_core/common/print.c"
    1:./tmk_core/common/print.c **** /* Copyright 2012,2013 Jun Wako <wakojun@gmail.com> */
    2:./tmk_core/common/print.c **** /* Very basic print functions, intended to be used with usb_debug_only.c
    3:./tmk_core/common/print.c ****  * http://www.pjrc.com/teensy/
@@ -49,32 +50,34 @@
   35:./tmk_core/common/print.c **** 
   36:./tmk_core/common/print.c **** void print_set_sendchar(int8_t (*sendchar_func)(uint8_t))
   37:./tmk_core/common/print.c **** {
-  16               		.loc 1 37 0
-  17               		.cfi_startproc
-  18               	.LVL0:
+  17               		.loc 1 37 1 view -0
+  18               		.cfi_startproc
   19               	/* prologue: function */
   20               	/* frame size = 0 */
   21               	/* stack size = 0 */
   22               	.L__stack_usage = 0
   38:./tmk_core/common/print.c ****     xdev_out(sendchar_func);
-  23               		.loc 1 38 0
+  23               		.loc 1 38 5 view .LVU1
   24 0000 9093 0000 		sts xfunc_out+1,r25
   25 0004 8093 0000 		sts xfunc_out,r24
-  26 0008 0895      		ret
-  27               		.cfi_endproc
-  28               	.LFE1:
-  30               		.text
-  31               	.Letext0:
-  32               		.file 2 "c:\\msys32\\home\\683654\\qmk_utils\\avr8-gnu-toolchain\\avr\\include\\stdint.h"
-  33               		.file 3 "./tmk_core/common/avr/xprintf.h"
+  26               	/* epilogue start */
+  39:./tmk_core/common/print.c **** }
+  27               		.loc 1 39 1 is_stmt 0 view .LVU2
+  28 0008 0895      		ret
+  29               		.cfi_endproc
+  30               	.LFE1:
+  32               		.text
+  33               	.Letext0:
+  34               		.file 2 "/usr/local/Cellar/avr-gcc@8/8.3.0_1/avr/include/stdint.h"
+  35               		.file 3 "./tmk_core/common/avr/xprintf.h"
 DEFINED SYMBOLS
-                            *ABS*:00000000 print.c
-C:\msys32\tmp\ccunvxCe.s:2      *ABS*:0000003e __SP_H__
-C:\msys32\tmp\ccunvxCe.s:3      *ABS*:0000003d __SP_L__
-C:\msys32\tmp\ccunvxCe.s:4      *ABS*:0000003f __SREG__
-C:\msys32\tmp\ccunvxCe.s:5      *ABS*:00000000 __tmp_reg__
-C:\msys32\tmp\ccunvxCe.s:6      *ABS*:00000001 __zero_reg__
-C:\msys32\tmp\ccunvxCe.s:13     .text.print_set_sendchar:00000000 print_set_sendchar
+                            *ABS*:0000000000000000 print.c
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cchIOZj1.s:2      *ABS*:000000000000003e __SP_H__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cchIOZj1.s:3      *ABS*:000000000000003d __SP_L__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cchIOZj1.s:4      *ABS*:000000000000003f __SREG__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cchIOZj1.s:5      *ABS*:0000000000000000 __tmp_reg__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cchIOZj1.s:6      *ABS*:0000000000000001 __zero_reg__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cchIOZj1.s:13     .text.print_set_sendchar:0000000000000000 print_set_sendchar
 
 UNDEFINED SYMBOLS
 xfunc_out

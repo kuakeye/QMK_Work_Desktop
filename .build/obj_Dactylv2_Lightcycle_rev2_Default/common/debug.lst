@@ -14,16 +14,17 @@
   16               		.text
   17               	.Letext0:
   18               		.file 1 "./tmk_core/common/debug.h"
-  19               		.file 2 "c:\\msys32\\home\\683654\\qmk_utils\\avr8-gnu-toolchain\\avr\\include\\stdint.h"
-  20               		.file 3 "./tmk_core/common/debug.c"
+  19               		.file 2 "/usr/local/Cellar/avr-gcc@8/8.3.0_1/avr/include/stdint.h"
+  20               		.file 3 "./tmk_core/common/avr/xprintf.h"
+  21               		.file 4 "./tmk_core/common/debug.c"
 DEFINED SYMBOLS
-                            *ABS*:00000000 debug.c
-C:\msys32\tmp\ccaLoeW4.s:2      *ABS*:0000003e __SP_H__
-C:\msys32\tmp\ccaLoeW4.s:3      *ABS*:0000003d __SP_L__
-C:\msys32\tmp\ccaLoeW4.s:4      *ABS*:0000003f __SREG__
-C:\msys32\tmp\ccaLoeW4.s:5      *ABS*:00000000 __tmp_reg__
-C:\msys32\tmp\ccaLoeW4.s:6      *ABS*:00000001 __zero_reg__
-C:\msys32\tmp\ccaLoeW4.s:14     .bss.debug_config:00000000 debug_config
+                            *ABS*:0000000000000000 debug.c
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cctZ0T0a.s:2      *ABS*:000000000000003e __SP_H__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cctZ0T0a.s:3      *ABS*:000000000000003d __SP_L__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cctZ0T0a.s:4      *ABS*:000000000000003f __SREG__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cctZ0T0a.s:5      *ABS*:0000000000000000 __tmp_reg__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cctZ0T0a.s:6      *ABS*:0000000000000001 __zero_reg__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cctZ0T0a.s:14     .bss.debug_config:0000000000000000 debug_config
 
 UNDEFINED SYMBOLS
 __do_clear_bss
