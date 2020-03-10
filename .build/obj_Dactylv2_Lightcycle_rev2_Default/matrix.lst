@@ -234,7 +234,7 @@
  123               		.loc 1 116 5 view .LVU11
  117:keyboards/Dactylv2_Lightcycle/matrix.c **** }
  124               		.loc 1 117 1 is_stmt 0 view .LVU12
- 125 0000 8EE0      		ldi r24,lo8(14)
+ 125 0000 8CE0      		ldi r24,lo8(12)
  126               	/* epilogue start */
  127 0002 0895      		ret
  128               		.cfi_endproc
@@ -602,8 +602,8 @@
  222               	.LBE25:
  383:keyboards/Dactylv2_Lightcycle/matrix.c ****         uint8_t pin = row_pins[x];
  223               		.loc 1 383 5 view .LVU37
- 224 0038 80E0      		ldi r24,hi8(row_pins+7)
- 225 003a A030      		cpi r26,lo8(row_pins+7)
+ 224 0038 80E0      		ldi r24,hi8(row_pins+6)
+ 225 003a A030      		cpi r26,lo8(row_pins+6)
  226 003c B807      		cpc r27,r24
  227 003e 01F4      		brne .L10
  228 0040 A0E0      		ldi r26,lo8(col_pins)
@@ -695,8 +695,8 @@
  296 007c F0E0      		ldi r31,hi8(matrix)
  297 007e A0E0      		ldi r26,lo8(matrix_debouncing)
  298 0080 B0E0      		ldi r27,hi8(matrix_debouncing)
- 299 0082 80E0      		ldi r24,lo8(matrix+14)
- 300 0084 90E0      		ldi r25,hi8(matrix+14)
+ 299 0082 80E0      		ldi r24,lo8(matrix+12)
+ 300 0084 90E0      		ldi r25,hi8(matrix+12)
  301               	.LVL18:
  302               	.L12:
  138:keyboards/Dactylv2_Lightcycle/matrix.c ****         matrix_debouncing[i] = 0;
@@ -821,7 +821,7 @@
  413               		.loc 1 148 33 view .LVU66
  414 002e 8111      		cpse r24,__zero_reg__
  415 0030 00C0      		rjmp .L26
- 416 0032 87E0      		ldi r24,lo8(7)
+ 416 0032 86E0      		ldi r24,lo8(6)
  417 0034 90E0      		ldi r25,0
  418 0036 9A83      		std Y+2,r25
  419 0038 8983      		std Y+1,r24
@@ -1420,9 +1420,9 @@
  673               	.LBE45:
  151:keyboards/Dactylv2_Lightcycle/matrix.c **** #       if (DEBOUNCING_DELAY > 0)
  674               		.loc 1 151 5 discriminator 2 view .LVU140
- 675 0118 B0E0      		ldi r27,lo8(row_pins+7)
+ 675 0118 B0E0      		ldi r27,lo8(row_pins+6)
  676 011a EB16      		cp r14,r27
- 677 011c B0E0      		ldi r27,hi8(row_pins+7)
+ 677 011c B0E0      		ldi r27,hi8(row_pins+6)
  678 011e FB06      		cpc r15,r27
  679 0120 01F0      		breq .+2
  680 0122 00C0      		rjmp .L21
@@ -1476,7 +1476,7 @@
  719               	.LVL43:
  185:keyboards/Dactylv2_Lightcycle/matrix.c ****                 matrix[i+offset] = matrix_debouncing[i+offset];
  720               		.loc 1 185 13 discriminator 3 view .LVU150
- 721 015c 8730      		cpi r24,lo8(7)
+ 721 015c 8630      		cpi r24,lo8(6)
  722 015e 01F4      		brne .L25
  723               	.LBE69:
  188:keyboards/Dactylv2_Lightcycle/matrix.c ****         }
@@ -1577,7 +1577,7 @@
  808 000a C0E0      		ldi r28,0
  809 000c 8823      		tst r24
  810 000e 01F0      		breq .L32
- 811 0010 C7E0      		ldi r28,lo8(7)
+ 811 0010 C6E0      		ldi r28,lo8(6)
  812 0012 D0E0      		ldi r29,0
  813               	.L32:
  814               	.LVL47:
@@ -1619,7 +1619,7 @@
  842               	.LVL51:
  237:keyboards/Dactylv2_Lightcycle/matrix.c ****         matrix[slaveOffset+i] = serial_slave_buffer[i];
  843               		.loc 1 237 5 discriminator 3 view .LVU172
- 844 0032 2730      		cpi r18,7
+ 844 0032 2630      		cpi r18,6
  845 0034 3105      		cpc r19,__zero_reg__
  846 0036 01F4      		brne .L34
  847               	.LVL52:
@@ -1703,7 +1703,7 @@
  910 0026 E0E0      		ldi r30,0
  911 0028 8823      		tst r24
  912 002a 01F0      		breq .L42
- 913 002c E7E0      		ldi r30,lo8(7)
+ 913 002c E6E0      		ldi r30,lo8(6)
  914 002e F0E0      		ldi r31,0
  915               	.L42:
  916               	.LVL57:
@@ -1719,7 +1719,7 @@
  923               	.LBE73:
  260:keyboards/Dactylv2_Lightcycle/matrix.c ****             for (int i = 0; i < ROWS_PER_HAND; ++i) {
  924               		.loc 1 260 62 discriminator 4 view .LVU193
- 925 0034 87E0      		ldi r24,lo8(7)
+ 925 0034 86E0      		ldi r24,lo8(6)
  926 0036 90E0      		ldi r25,0
  927               	.LVL58:
  928               	.L43:
@@ -1790,7 +1790,7 @@
  979 0004 8091 0000 		lds r24,isLeftHand
  277:keyboards/Dactylv2_Lightcycle/matrix.c **** 
  980               		.loc 1 277 35 view .LVU210
- 981 0008 E7E0      		ldi r30,lo8(7)
+ 981 0008 E6E0      		ldi r30,lo8(6)
  982 000a F0E0      		ldi r31,0
  983 000c 8823      		tst r24
  984 000e 01F0      		breq .L48
@@ -1831,7 +1831,7 @@
  1011               	.LVL66:
  284:keyboards/Dactylv2_Lightcycle/matrix.c ****         serial_slave_buffer[i] = matrix[offset+i];
  1012               		.loc 1 284 5 discriminator 3 view .LVU219
- 1013 0028 8730      		cpi r24,7
+ 1013 0028 8630      		cpi r24,6
  1014 002a 9105      		cpc r25,__zero_reg__
  1015 002c 01F4      		brne .L49
  1016               	/* epilogue start */
@@ -2121,7 +2121,7 @@
  1265 0074 8DBF      		out __SP_L__,r24
  1266               	.LCFI38:
  1267               		.cfi_def_cfa_offset 10
- 1268 0076 CE30      		cpi r28,14
+ 1268 0076 CC30      		cpi r28,12
  1269 0078 D105      		cpc r29,__zero_reg__
  1270 007a 01F4      		brne .L57
  1271               	/* epilogue start */
@@ -2200,8 +2200,8 @@
  1335               	.LVL75:
  321:keyboards/Dactylv2_Lightcycle/matrix.c ****         count += bitpop16(matrix[i]);
  1336               		.loc 1 321 5 discriminator 3 view .LVU274
- 1337 001a F0E0      		ldi r31,hi8(matrix+14)
- 1338 001c 0030      		cpi r16,lo8(matrix+14)
+ 1337 001a F0E0      		ldi r31,hi8(matrix+12)
+ 1338 001c 0030      		cpi r16,lo8(matrix+12)
  1339 001e 1F07      		cpc r17,r31
  1340 0020 01F4      		brne .L60
  1341               	.LBE86:
@@ -2246,10 +2246,9 @@
  1381      4243 4445 
  1382               		.section	.bss.matrix,"aw",@nobits
  1385               	matrix:
- 1386 0000 0000 0000 		.zero	14
+ 1386 0000 0000 0000 		.zero	12
  1386      0000 0000 
  1386      0000 0000 
- 1386      0000 
  1387               		.section	.rodata.col_pins,"a"
  1390               	col_pins:
  1391 0000 35        		.byte	53
@@ -2266,73 +2265,71 @@
  1404 0003 31        		.byte	49
  1405 0004 F7        		.byte	-9
  1406 0005 F6        		.byte	-10
- 1407 0006 F5        		.byte	-11
- 1408 0007 0000 0000 		.zero	7
- 1408      0000 00
- 1409               		.section	.bss.error_count,"aw",@nobits
- 1412               	error_count:
- 1413 0000 00        		.zero	1
- 1414               		.section	.bss.matrix_debouncing,"aw",@nobits
- 1417               	matrix_debouncing:
- 1418 0000 0000 0000 		.zero	14
- 1418      0000 0000 
- 1418      0000 0000 
- 1418      0000 
- 1419               		.section	.bss.debouncing,"aw",@nobits
- 1422               	debouncing:
- 1423 0000 00        		.zero	1
- 1424               		.section	.bss.debouncing_time,"aw",@nobits
- 1427               	debouncing_time:
- 1428 0000 0000      		.zero	2
- 1429               		.text
- 1430               	.Letext0:
- 1431               		.file 3 "/usr/local/Cellar/avr-gcc@8/8.3.0_1/avr/include/stdint.h"
- 1432               		.file 4 "./tmk_core/common/debug.h"
- 1433               		.file 5 "./tmk_core/common/avr/xprintf.h"
- 1434               		.file 6 "./tmk_core/common/matrix.h"
- 1435               		.file 7 "keyboards/Dactylv2_Lightcycle/split_util.h"
- 1436               		.file 8 "./drivers/avr/pro_micro.h"
- 1437               		.file 9 "./tmk_core/common/timer.h"
- 1438               		.file 10 "keyboards/Dactylv2_Lightcycle/serial.h"
- 1439               		.file 11 "./tmk_core/common/util.h"
+ 1407 0006 0000 0000 		.zero	6
+ 1407      0000 
+ 1408               		.section	.bss.error_count,"aw",@nobits
+ 1411               	error_count:
+ 1412 0000 00        		.zero	1
+ 1413               		.section	.bss.matrix_debouncing,"aw",@nobits
+ 1416               	matrix_debouncing:
+ 1417 0000 0000 0000 		.zero	12
+ 1417      0000 0000 
+ 1417      0000 0000 
+ 1418               		.section	.bss.debouncing,"aw",@nobits
+ 1421               	debouncing:
+ 1422 0000 00        		.zero	1
+ 1423               		.section	.bss.debouncing_time,"aw",@nobits
+ 1426               	debouncing_time:
+ 1427 0000 0000      		.zero	2
+ 1428               		.text
+ 1429               	.Letext0:
+ 1430               		.file 3 "/usr/local/Cellar/avr-gcc@8/8.3.0_1/avr/include/stdint.h"
+ 1431               		.file 4 "./tmk_core/common/debug.h"
+ 1432               		.file 5 "./tmk_core/common/avr/xprintf.h"
+ 1433               		.file 6 "./tmk_core/common/matrix.h"
+ 1434               		.file 7 "keyboards/Dactylv2_Lightcycle/split_util.h"
+ 1435               		.file 8 "./drivers/avr/pro_micro.h"
+ 1436               		.file 9 "./tmk_core/common/timer.h"
+ 1437               		.file 10 "keyboards/Dactylv2_Lightcycle/serial.h"
+ 1438               		.file 11 "./tmk_core/common/util.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 matrix.c
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccpSi3SL.s:2      *ABS*:000000000000003e __SP_H__
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccpSi3SL.s:3      *ABS*:000000000000003d __SP_L__
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccpSi3SL.s:4      *ABS*:000000000000003f __SREG__
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccpSi3SL.s:5      *ABS*:0000000000000000 __tmp_reg__
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccpSi3SL.s:6      *ABS*:0000000000000001 __zero_reg__
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccpSi3SL.s:13     .text.matrix_init_user:0000000000000000 matrix_init_user
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccpSi3SL.s:13     .text.matrix_init_user:0000000000000000 matrix_init_user.localalias.0
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccpSi3SL.s:32     .text.matrix_init_kb:0000000000000000 matrix_init_kb
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccpSi3SL.s:49     .text.matrix_init_quantum:0000000000000000 matrix_init_quantum
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccpSi3SL.s:66     .text.matrix_scan_user:0000000000000000 matrix_scan_user
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccpSi3SL.s:81     .text.matrix_scan_kb:0000000000000000 matrix_scan_kb
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccpSi3SL.s:98     .text.matrix_scan_quantum:0000000000000000 matrix_scan_quantum
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccpSi3SL.s:115    .text.matrix_rows:0000000000000000 matrix_rows
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccpSi3SL.s:134    .text.matrix_cols:0000000000000000 matrix_cols
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccpSi3SL.s:153    .text.matrix_init:0000000000000000 matrix_init
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccpSi3SL.s:1400   .rodata.row_pins:0000000000000000 row_pins
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccpSi3SL.s:1390   .rodata.col_pins:0000000000000000 col_pins
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccpSi3SL.s:1385   .bss.matrix:0000000000000000 matrix
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccpSi3SL.s:1417   .bss.matrix_debouncing:0000000000000000 matrix_debouncing
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccpSi3SL.s:326    .text._matrix_scan:0000000000000000 _matrix_scan
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccpSi3SL.s:1422   .bss.debouncing:0000000000000000 debouncing
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccpSi3SL.s:1427   .bss.debouncing_time:0000000000000000 debouncing_time
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccpSi3SL.s:787    .text.serial_transaction:0000000000000000 serial_transaction
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccpSi3SL.s:868    .text.matrix_scan:0000000000000000 matrix_scan
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccpSi3SL.s:1412   .bss.error_count:0000000000000000 error_count
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccpSi3SL.s:966    .text.matrix_slave_scan:0000000000000000 matrix_slave_scan
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccpSi3SL.s:1026   .text.matrix_is_modified:0000000000000000 matrix_is_modified
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccpSi3SL.s:1048   .text.matrix_is_on:0000000000000000 matrix_is_on
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccpSi3SL.s:1094   .text.matrix_get_row:0000000000000000 matrix_get_row
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccpSi3SL.s:1121   .text.matrix_print:0000000000000000 matrix_print
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccpSi3SL.s:1380   .progmem.data.__c.2088:0000000000000000 __c.2088
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccpSi3SL.s:1375   .progmem.data.__c.2091:0000000000000000 __c.2091
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccpSi3SL.s:1365   .progmem.data.__c.2095:0000000000000000 __c.2095
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccpSi3SL.s:1370   .progmem.data.__c.2093:0000000000000000 __c.2093
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccpSi3SL.s:1360   .progmem.data.__c.2097:0000000000000000 __c.2097
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccpSi3SL.s:1289   .text.matrix_key_count:0000000000000000 matrix_key_count
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cccGP3Od.s:2      *ABS*:000000000000003e __SP_H__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cccGP3Od.s:3      *ABS*:000000000000003d __SP_L__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cccGP3Od.s:4      *ABS*:000000000000003f __SREG__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cccGP3Od.s:5      *ABS*:0000000000000000 __tmp_reg__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cccGP3Od.s:6      *ABS*:0000000000000001 __zero_reg__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cccGP3Od.s:13     .text.matrix_init_user:0000000000000000 matrix_init_user
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cccGP3Od.s:13     .text.matrix_init_user:0000000000000000 matrix_init_user.localalias.0
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cccGP3Od.s:32     .text.matrix_init_kb:0000000000000000 matrix_init_kb
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cccGP3Od.s:49     .text.matrix_init_quantum:0000000000000000 matrix_init_quantum
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cccGP3Od.s:66     .text.matrix_scan_user:0000000000000000 matrix_scan_user
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cccGP3Od.s:81     .text.matrix_scan_kb:0000000000000000 matrix_scan_kb
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cccGP3Od.s:98     .text.matrix_scan_quantum:0000000000000000 matrix_scan_quantum
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cccGP3Od.s:115    .text.matrix_rows:0000000000000000 matrix_rows
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cccGP3Od.s:134    .text.matrix_cols:0000000000000000 matrix_cols
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cccGP3Od.s:153    .text.matrix_init:0000000000000000 matrix_init
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cccGP3Od.s:1400   .rodata.row_pins:0000000000000000 row_pins
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cccGP3Od.s:1390   .rodata.col_pins:0000000000000000 col_pins
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cccGP3Od.s:1385   .bss.matrix:0000000000000000 matrix
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cccGP3Od.s:1416   .bss.matrix_debouncing:0000000000000000 matrix_debouncing
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cccGP3Od.s:326    .text._matrix_scan:0000000000000000 _matrix_scan
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cccGP3Od.s:1421   .bss.debouncing:0000000000000000 debouncing
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cccGP3Od.s:1426   .bss.debouncing_time:0000000000000000 debouncing_time
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cccGP3Od.s:787    .text.serial_transaction:0000000000000000 serial_transaction
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cccGP3Od.s:868    .text.matrix_scan:0000000000000000 matrix_scan
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cccGP3Od.s:1411   .bss.error_count:0000000000000000 error_count
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cccGP3Od.s:966    .text.matrix_slave_scan:0000000000000000 matrix_slave_scan
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cccGP3Od.s:1026   .text.matrix_is_modified:0000000000000000 matrix_is_modified
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cccGP3Od.s:1048   .text.matrix_is_on:0000000000000000 matrix_is_on
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cccGP3Od.s:1094   .text.matrix_get_row:0000000000000000 matrix_get_row
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cccGP3Od.s:1121   .text.matrix_print:0000000000000000 matrix_print
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cccGP3Od.s:1380   .progmem.data.__c.2088:0000000000000000 __c.2088
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cccGP3Od.s:1375   .progmem.data.__c.2091:0000000000000000 __c.2091
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cccGP3Od.s:1365   .progmem.data.__c.2095:0000000000000000 __c.2095
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cccGP3Od.s:1370   .progmem.data.__c.2093:0000000000000000 __c.2093
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cccGP3Od.s:1360   .progmem.data.__c.2097:0000000000000000 __c.2097
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cccGP3Od.s:1289   .text.matrix_key_count:0000000000000000 matrix_key_count
 
 UNDEFINED SYMBOLS
 debug_config

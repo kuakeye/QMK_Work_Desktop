@@ -1037,7 +1037,7 @@
  578               	.LVL33:
  128:keyboards/Dactylv2_Lightcycle/serial.c ****     serial_write_byte(serial_slave_buffer[i]);
  579               		.loc 1 128 3 discriminator 3 view .LVU143
- 580 0052 C730      		cpi r28,7
+ 580 0052 C630      		cpi r28,6
  581 0054 D105      		cpc r29,__zero_reg__
  582 0056 01F4      		brne .L20
  583               	.LBE97:
@@ -1483,7 +1483,7 @@
  882               	.LVL61:
  197:keyboards/Dactylv2_Lightcycle/serial.c ****     serial_slave_buffer[i] = serial_read_byte();
  883               		.loc 1 197 3 discriminator 3 view .LVU242
- 884 0066 C730      		cpi r28,7
+ 884 0066 C630      		cpi r28,6
  885 0068 D105      		cpc r29,__zero_reg__
  886 006a 01F4      		brne .L28
  887               	.LBE123:
@@ -1568,33 +1568,33 @@
  954               	.global	serial_slave_buffer
  955               		.section	.bss.serial_slave_buffer,"aw",@nobits
  958               	serial_slave_buffer:
- 959 0000 0000 0000 		.zero	7
- 959      0000 00
+ 959 0000 0000 0000 		.zero	6
+ 959      0000 
  960               		.text
  961               	.Letext0:
  962               		.file 3 "/usr/local/Cellar/avr-gcc@8/8.3.0_1/avr/include/stdint.h"
  963               		.file 4 "keyboards/Dactylv2_Lightcycle/serial.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 serial.c
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccyiQ33Z.s:2      *ABS*:000000000000003e __SP_H__
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccyiQ33Z.s:3      *ABS*:000000000000003d __SP_L__
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccyiQ33Z.s:4      *ABS*:000000000000003f __SREG__
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccyiQ33Z.s:5      *ABS*:0000000000000000 __tmp_reg__
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccyiQ33Z.s:6      *ABS*:0000000000000001 __zero_reg__
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccyiQ33Z.s:12     .text.serial_output:0000000000000000 serial_output
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccyiQ33Z.s:32     .text.serial_input:0000000000000000 serial_input
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccyiQ33Z.s:54     .text.serial_high:0000000000000000 serial_high
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccyiQ33Z.s:73     .text.sync_recv:0000000000000000 sync_recv
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccyiQ33Z.s:132    .text.serial_read_byte:0000000000000000 serial_read_byte
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccyiQ33Z.s:235    .text.serial_write_byte:0000000000000000 serial_write_byte
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccyiQ33Z.s:348    .text.sync_send:0000000000000000 sync_send
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccyiQ33Z.s:404    .text.serial_master_init:0000000000000000 serial_master_init
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccyiQ33Z.s:424    .text.serial_slave_init:0000000000000000 serial_slave_init
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccyiQ33Z.s:454    .text.__vector_1:0000000000000000 __vector_1
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccyiQ33Z.s:958    .bss.serial_slave_buffer:0000000000000000 serial_slave_buffer
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccyiQ33Z.s:952    .bss.serial_master_buffer:0000000000000000 serial_master_buffer
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccyiQ33Z.s:946    .bss.status:0000000000000000 status
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccyiQ33Z.s:721    .text.serial_update_buffers:0000000000000000 serial_update_buffers
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccQrMaim.s:2      *ABS*:000000000000003e __SP_H__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccQrMaim.s:3      *ABS*:000000000000003d __SP_L__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccQrMaim.s:4      *ABS*:000000000000003f __SREG__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccQrMaim.s:5      *ABS*:0000000000000000 __tmp_reg__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccQrMaim.s:6      *ABS*:0000000000000001 __zero_reg__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccQrMaim.s:12     .text.serial_output:0000000000000000 serial_output
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccQrMaim.s:32     .text.serial_input:0000000000000000 serial_input
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccQrMaim.s:54     .text.serial_high:0000000000000000 serial_high
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccQrMaim.s:73     .text.sync_recv:0000000000000000 sync_recv
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccQrMaim.s:132    .text.serial_read_byte:0000000000000000 serial_read_byte
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccQrMaim.s:235    .text.serial_write_byte:0000000000000000 serial_write_byte
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccQrMaim.s:348    .text.sync_send:0000000000000000 sync_send
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccQrMaim.s:404    .text.serial_master_init:0000000000000000 serial_master_init
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccQrMaim.s:424    .text.serial_slave_init:0000000000000000 serial_slave_init
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccQrMaim.s:454    .text.__vector_1:0000000000000000 __vector_1
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccQrMaim.s:958    .bss.serial_slave_buffer:0000000000000000 serial_slave_buffer
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccQrMaim.s:952    .bss.serial_master_buffer:0000000000000000 serial_master_buffer
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccQrMaim.s:946    .bss.status:0000000000000000 status
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccQrMaim.s:721    .text.serial_update_buffers:0000000000000000 serial_update_buffers
 
 UNDEFINED SYMBOLS
 __do_clear_bss
