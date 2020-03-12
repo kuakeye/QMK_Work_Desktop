@@ -139,6 +139,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    //`----+----+----+----+----+----'                               `----+----+----+----+----+----'
    //                   `----+----+----+'       `----+----+----'
                               A,B,C,D,A,A,A,A,          DEL,END,HOME,RSFT,
+                                                            A,B,C,D,A,A,A,A,          DEL,END,HOME,RSFT,
+
    //                   `----+----+----+'       `----+----+----'
                               I,J, A,A,A,A,A,A,A,B,             ENT,SPC
    //                   `----+----+----+'       `----+----+----'
@@ -160,6 +162,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 	//`----+----+----+----+----+----'   									 `----+----+----+----+----+----'
    //                   `----+----+----+'       `----+----+----'
                               A,B,C,D,A,A,A,A,          DEL,END,HOME,RSFT,
+                                                            A,B,C,D,A,A,A,A,          DEL,END,HOME,RSFT,
+
    //                   `----+----+----+'       `----+----+----'
                               I,J, A,A,A,A,A,A,A,B,             ENT,SPC
 	   //                   `----+----+----+'       `----+----+----'
@@ -181,6 +185,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 	//`----+----+----+----+----+----'   									 `----+----+----+----+----+----'
    //                   `----+----+----+'       `----+----+----'
                               A,B,C,D,A,A,A,A,          DEL,END,HOME,RSFT,
+                                                            A,B,C,D,A,A,A,A,          DEL,END,HOME,RSFT,
+
    //                   `----+----+----+'       `----+----+----'
                               I,J, A,A,A,A,A,A,A,B,             ENT,SPC
 	   //                   `----+----+----+'       `----+----+----'

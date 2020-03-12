@@ -29,7 +29,8 @@
    L20, L21, L22, L23, L24, L25,        R20, R21, R22, R23, R24, R25, \
    L30, L31, L32, L33, L34,                 R31, R32, R33, R34, R35, \
    L40, L41, L42, L43, KC_1, KC_2,          KC_7, KC_8,            R42, R43, R44, R45, \
-   L50, L51, KC_3,  KC_4, KC_5, KC_6, KC_9,  KC_0, KC_A, KC_B,           R54, R55  \
+   L50, L51, L52, L53, L54, L55, R50, R51, R52, R53, R54, R55, \
+   KC_C, KC_D, KC_E,  KC_F, KC_G, KC_H, KC_I,  KC_J, KC_K, KC_L,           KC_M, KC_N  \
    )\
    { \
    { L00,   L01,   L02,   L03,   L04,   L05 }, \
@@ -37,14 +38,14 @@
    { L20,   L21,   L22,   L23,   L24,   L25 }, \
    { L30,   L31,   L32,   L33,   L34,   L01 }, \
    { L40,   L41,   L42,   L43,   KC_1, KC_2 }, \
-   { L50,   L51,   KC_3,  KC_4, KC_5, KC_6 },  \
+   { L50,   L51,   L52,  L53, L54, L55},  \
       { L50,   L51,   KC_3, KC_4, KC_5, KC_6 },  \
       { R05, R04, R03, R02, R01, R00 }, \
       { R15, R14, R13, R12, R11, R10 }, \
       { R25, R24, R23, R22, R21, R20 }, \
       { R35, R34, R33, R32, R31, KC_7 }, \
       { R42, R43, R44, R45, KC_8, KC_9 }, \
-      { R54, R55, KC_A, KC_B, KC_C, KC_D }, \
+      { R50, R51, R52, R53, R54, R55 }, \
       { KC_1,   KC_2,   KC_3, KC_4, KC_5, KC_6 }  \
    }
 
@@ -74,6 +75,7 @@
    }
 
 */
+
 
 /*#define KEYMAP( \
 	L00, L01, L02, L03, L04, L05,			 R00, R01, R02, R03, R04, R05, \
@@ -106,7 +108,8 @@
    L20, L21, L22, L23, L24, L25,        R20, R21, R22, R23, R24, R25, \
    L30, L31, L32, L33, L34,                 R31, R32, R33, R34, R35, \
    L40, L41, L42, L43, KC_1, KC_2,          KC_7, KC_8,            R42, R43, R44, R45, \
-   L50, L51, KC_3,  KC_4, KC_5, KC_6, KC_9,  KC_0, KC_A, KC_B,           R54, R55  \
+   L50, L51, KC_3,  KC_4, KC_5, KC_6, KC_9,  KC_0, KC_A, KC_B,           R54, R55,  \
+   KC_C, KC_D, KC_E,  KC_F, KC_G, KC_H, KC_I,  KC_J, KC_K, KC_L,           KC_M, KC_N  \
    )\
    { \
    { L00,   L01,   L02,   L03,   L04,   L05 }, \
