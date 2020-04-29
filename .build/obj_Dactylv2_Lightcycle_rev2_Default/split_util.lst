@@ -408,165 +408,169 @@
   21:keyboards/Dactylv2_Lightcycle/split_util.c ****   #ifdef EE_HANDS
   74               		.loc 1 21 13 view .LVU17
   75               	.LBB13:
-  29:keyboards/Dactylv2_Lightcycle/split_util.c ****     #endif
-  76               		.loc 1 29 7 view .LVU18
-  29:keyboards/Dactylv2_Lightcycle/split_util.c ****     #endif
-  77               		.loc 1 29 20 is_stmt 0 view .LVU19
+  27:keyboards/Dactylv2_Lightcycle/split_util.c ****     #else
+  76               		.loc 1 27 7 view .LVU18
+  27:keyboards/Dactylv2_Lightcycle/split_util.c ****     #else
+  77               		.loc 1 27 21 is_stmt 0 view .LVU19
   78 0000 0E94 0000 		call has_usb
   79               	.LVL2:
-  29:keyboards/Dactylv2_Lightcycle/split_util.c ****     #endif
-  80               		.loc 1 29 18 view .LVU20
-  81 0004 8093 0000 		sts isLeftHand,r24
-  82               	.LBE13:
-  83               	.LBE12:
+  27:keyboards/Dactylv2_Lightcycle/split_util.c ****     #else
+  80               		.loc 1 27 7 view .LVU20
+  81 0004 91E0      		ldi r25,lo8(1)
+  82 0006 8927      		eor r24,r25
+  27:keyboards/Dactylv2_Lightcycle/split_util.c ****     #else
+  83               		.loc 1 27 18 view .LVU21
+  84 0008 8093 0000 		sts isLeftHand,r24
+  85               	.LBE13:
+  86               	.LBE12:
   62:keyboards/Dactylv2_Lightcycle/split_util.c **** 
   63:keyboards/Dactylv2_Lightcycle/split_util.c ****    if (has_usb()) {
-  84               		.loc 1 63 4 is_stmt 1 view .LVU21
-  85               		.loc 1 63 8 is_stmt 0 view .LVU22
-  86 0008 0E94 0000 		call has_usb
-  87               	.LVL3:
-  88               		.loc 1 63 7 view .LVU23
-  89 000c 8823      		tst r24
-  90 000e 01F0      		breq .L3
+  87               		.loc 1 63 4 is_stmt 1 view .LVU22
+  88               		.loc 1 63 8 is_stmt 0 view .LVU23
+  89 000c 0E94 0000 		call has_usb
+  90               	.LVL3:
+  91               		.loc 1 63 7 view .LVU24
+  92 0010 8823      		tst r24
+  93 0012 01F0      		breq .L3
   64:keyboards/Dactylv2_Lightcycle/split_util.c ****       keyboard_master_setup();
-  91               		.loc 1 64 7 is_stmt 1 view .LVU24
-  92               	.LBB14:
-  93               	.LBI14:
+  94               		.loc 1 64 7 is_stmt 1 view .LVU25
+  95               	.LBB14:
+  96               	.LBI14:
   34:keyboards/Dactylv2_Lightcycle/split_util.c **** #ifdef USE_I2C
-  94               		.loc 1 34 13 view .LVU25
-  95               	.LBB15:
+  97               		.loc 1 34 13 view .LVU26
+  98               	.LBB15:
   41:keyboards/Dactylv2_Lightcycle/split_util.c **** #endif
-  96               		.loc 1 41 5 view .LVU26
-  97 0010 0E94 0000 		call serial_master_init
-  98               	.LVL4:
-  99               	.L4:
- 100               	.LBE15:
- 101               	.LBE14:
+  99               		.loc 1 41 5 view .LVU27
+ 100 0014 0E94 0000 		call serial_master_init
+ 101               	.LVL4:
+ 102               	.L4:
+ 103               	.LBE15:
+ 104               	.LBE14:
   65:keyboards/Dactylv2_Lightcycle/split_util.c ****    } else {
   66:keyboards/Dactylv2_Lightcycle/split_util.c ****       keyboard_slave_setup();
   67:keyboards/Dactylv2_Lightcycle/split_util.c ****    }
   68:keyboards/Dactylv2_Lightcycle/split_util.c ****    sei();
- 102               		.loc 1 68 4 view .LVU27
- 103               	/* #APP */
- 104               	 ;  68 "keyboards/Dactylv2_Lightcycle/split_util.c" 1
- 105 0014 7894      		sei
- 106               	 ;  0 "" 2
- 107               	/* #NOAPP */
- 108               	/* epilogue start */
+ 105               		.loc 1 68 4 view .LVU28
+ 106               	/* #APP */
+ 107               	 ;  68 "keyboards/Dactylv2_Lightcycle/split_util.c" 1
+ 108 0018 7894      		sei
+ 109               	 ;  0 "" 2
+ 110               	/* #NOAPP */
+ 111               	/* epilogue start */
   69:keyboards/Dactylv2_Lightcycle/split_util.c **** }
- 109               		.loc 1 69 1 is_stmt 0 view .LVU28
- 110 0016 0895      		ret
- 111               	.L3:
+ 112               		.loc 1 69 1 is_stmt 0 view .LVU29
+ 113 001a 0895      		ret
+ 114               	.L3:
   66:keyboards/Dactylv2_Lightcycle/split_util.c ****    }
- 112               		.loc 1 66 7 is_stmt 1 view .LVU29
- 113               	.LBB16:
- 114               	.LBI16:
+ 115               		.loc 1 66 7 is_stmt 1 view .LVU30
+ 116               	.LBB16:
+ 117               	.LBI16:
   45:keyboards/Dactylv2_Lightcycle/split_util.c ****   timer_init();
- 115               		.loc 1 45 13 view .LVU30
- 116               	.LBB17:
+ 118               		.loc 1 45 13 view .LVU31
+ 119               	.LBB17:
   46:keyboards/Dactylv2_Lightcycle/split_util.c **** #ifdef USE_I2C
- 117               		.loc 1 46 3 view .LVU31
- 118 0018 0E94 0000 		call timer_init
- 119               	.LVL5:
+ 120               		.loc 1 46 3 view .LVU32
+ 121 001c 0E94 0000 		call timer_init
+ 122               	.LVL5:
   50:keyboards/Dactylv2_Lightcycle/split_util.c **** #endif
- 120               		.loc 1 50 5 view .LVU32
- 121 001c 0E94 0000 		call serial_slave_init
- 122               	.LVL6:
- 123 0020 00C0      		rjmp .L4
- 124               	.LBE17:
- 125               	.LBE16:
- 126               		.cfi_endproc
- 127               	.LFE18:
- 129               		.section	.text.keyboard_slave_loop,"ax",@progbits
- 130               	.global	keyboard_slave_loop
- 132               	keyboard_slave_loop:
- 133               	.LFB19:
+ 123               		.loc 1 50 5 view .LVU33
+ 124 0020 0E94 0000 		call serial_slave_init
+ 125               	.LVL6:
+ 126 0024 00C0      		rjmp .L4
+ 127               	.LBE17:
+ 128               	.LBE16:
+ 129               		.cfi_endproc
+ 130               	.LFE18:
+ 132               		.section	.text.keyboard_slave_loop,"ax",@progbits
+ 133               	.global	keyboard_slave_loop
+ 135               	keyboard_slave_loop:
+ 136               	.LFB19:
   70:keyboards/Dactylv2_Lightcycle/split_util.c **** 
   71:keyboards/Dactylv2_Lightcycle/split_util.c **** void keyboard_slave_loop(void) {
- 134               		.loc 1 71 32 view -0
- 135               		.cfi_startproc
- 136               	/* prologue: function */
- 137               	/* frame size = 0 */
- 138               	/* stack size = 0 */
- 139               	.L__stack_usage = 0
+ 137               		.loc 1 71 32 view -0
+ 138               		.cfi_startproc
+ 139               	/* prologue: function */
+ 140               	/* frame size = 0 */
+ 141               	/* stack size = 0 */
+ 142               	.L__stack_usage = 0
   72:keyboards/Dactylv2_Lightcycle/split_util.c ****    matrix_init();
- 140               		.loc 1 72 4 view .LVU34
- 141 0000 0E94 0000 		call matrix_init
- 142               	.LVL7:
- 143               	.L6:
+ 143               		.loc 1 72 4 view .LVU35
+ 144 0000 0E94 0000 		call matrix_init
+ 145               	.LVL7:
+ 146               	.L6:
   73:keyboards/Dactylv2_Lightcycle/split_util.c **** 
   74:keyboards/Dactylv2_Lightcycle/split_util.c ****    while (1) {
- 144               		.loc 1 74 4 discriminator 1 view .LVU35
+ 147               		.loc 1 74 4 discriminator 1 view .LVU36
   75:keyboards/Dactylv2_Lightcycle/split_util.c ****       matrix_slave_scan();
- 145               		.loc 1 75 7 discriminator 1 view .LVU36
- 146 0004 0E94 0000 		call matrix_slave_scan
- 147               	.LVL8:
- 148 0008 00C0      		rjmp .L6
- 149               		.cfi_endproc
- 150               	.LFE19:
- 152               		.section	.text.matrix_setup,"ax",@progbits
- 153               	.global	matrix_setup
- 155               	matrix_setup:
- 156               	.LFB20:
+ 148               		.loc 1 75 7 discriminator 1 view .LVU37
+ 149 0004 0E94 0000 		call matrix_slave_scan
+ 150               	.LVL8:
+ 151 0008 00C0      		rjmp .L6
+ 152               		.cfi_endproc
+ 153               	.LFE19:
+ 155               		.section	.text.matrix_setup,"ax",@progbits
+ 156               	.global	matrix_setup
+ 158               	matrix_setup:
+ 159               	.LFB20:
   76:keyboards/Dactylv2_Lightcycle/split_util.c ****    }
   77:keyboards/Dactylv2_Lightcycle/split_util.c **** }
   78:keyboards/Dactylv2_Lightcycle/split_util.c **** 
   79:keyboards/Dactylv2_Lightcycle/split_util.c **** // this code runs before the usb and keyboard is initialized
   80:keyboards/Dactylv2_Lightcycle/split_util.c **** void matrix_setup(void) {
- 157               		.loc 1 80 25 view -0
- 158               		.cfi_startproc
- 159               	/* prologue: function */
- 160               	/* frame size = 0 */
- 161               	/* stack size = 0 */
- 162               	.L__stack_usage = 0
+ 160               		.loc 1 80 25 view -0
+ 161               		.cfi_startproc
+ 162               	/* prologue: function */
+ 163               	/* frame size = 0 */
+ 164               	/* stack size = 0 */
+ 165               	.L__stack_usage = 0
   81:keyboards/Dactylv2_Lightcycle/split_util.c ****     split_keyboard_setup();
- 163               		.loc 1 81 5 view .LVU38
- 164 0000 0E94 0000 		call split_keyboard_setup
- 165               	.LVL9:
+ 166               		.loc 1 81 5 view .LVU39
+ 167 0000 0E94 0000 		call split_keyboard_setup
+ 168               	.LVL9:
   82:keyboards/Dactylv2_Lightcycle/split_util.c **** 
   83:keyboards/Dactylv2_Lightcycle/split_util.c ****     if (!has_usb()) {
- 166               		.loc 1 83 5 view .LVU39
- 167               		.loc 1 83 10 is_stmt 0 view .LVU40
- 168 0004 0E94 0000 		call has_usb
- 169               	.LVL10:
- 170               		.loc 1 83 8 view .LVU41
- 171 0008 8111      		cpse r24,__zero_reg__
- 172 000a 00C0      		rjmp .L7
+ 169               		.loc 1 83 5 view .LVU40
+ 170               		.loc 1 83 10 is_stmt 0 view .LVU41
+ 171 0004 0E94 0000 		call has_usb
+ 172               	.LVL10:
+ 173               		.loc 1 83 8 view .LVU42
+ 174 0008 8111      		cpse r24,__zero_reg__
+ 175 000a 00C0      		rjmp .L7
   84:keyboards/Dactylv2_Lightcycle/split_util.c ****         keyboard_slave_loop();
- 173               		.loc 1 84 9 is_stmt 1 view .LVU42
- 174 000c 0E94 0000 		call keyboard_slave_loop
- 175               	.LVL11:
- 176               	.L7:
- 177               	/* epilogue start */
+ 176               		.loc 1 84 9 is_stmt 1 view .LVU43
+ 177 000c 0E94 0000 		call keyboard_slave_loop
+ 178               	.LVL11:
+ 179               	.L7:
+ 180               	/* epilogue start */
   85:keyboards/Dactylv2_Lightcycle/split_util.c ****     }
   86:keyboards/Dactylv2_Lightcycle/split_util.c **** }
- 178               		.loc 1 86 1 is_stmt 0 view .LVU43
- 179 0010 0895      		ret
- 180               		.cfi_endproc
- 181               	.LFE20:
- 183               	.global	isLeftHand
- 184               		.section	.data.isLeftHand,"aw"
- 187               	isLeftHand:
- 188 0000 01        		.byte	1
- 189               		.text
- 190               	.Letext0:
- 191               		.file 3 "/usr/local/Cellar/avr-gcc@8/8.3.0_1/avr/include/stdint.h"
- 192               		.file 4 "keyboards/Dactylv2_Lightcycle/split_util.h"
- 193               		.file 5 "./tmk_core/common/timer.h"
- 194               		.file 6 "keyboards/Dactylv2_Lightcycle/serial.h"
- 195               		.file 7 "./tmk_core/common/matrix.h"
+ 181               		.loc 1 86 1 is_stmt 0 view .LVU44
+ 182 0010 0895      		ret
+ 183               		.cfi_endproc
+ 184               	.LFE20:
+ 186               	.global	isLeftHand
+ 187               		.section	.data.isLeftHand,"aw"
+ 190               	isLeftHand:
+ 191 0000 01        		.byte	1
+ 192               		.text
+ 193               	.Letext0:
+ 194               		.file 3 "/usr/local/Cellar/avr-gcc@8/8.3.0_1/avr/include/stdint.h"
+ 195               		.file 4 "keyboards/Dactylv2_Lightcycle/split_util.h"
+ 196               		.file 5 "./tmk_core/common/timer.h"
+ 197               		.file 6 "keyboards/Dactylv2_Lightcycle/serial.h"
+ 198               		.file 7 "./tmk_core/common/matrix.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 split_util.c
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccLjfBWh.s:2      *ABS*:000000000000003e __SP_H__
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccLjfBWh.s:3      *ABS*:000000000000003d __SP_L__
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccLjfBWh.s:4      *ABS*:000000000000003f __SREG__
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccLjfBWh.s:5      *ABS*:0000000000000000 __tmp_reg__
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccLjfBWh.s:6      *ABS*:0000000000000001 __zero_reg__
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccLjfBWh.s:13     .text.has_usb:0000000000000000 has_usb
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccLjfBWh.s:63     .text.split_keyboard_setup:0000000000000000 split_keyboard_setup
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccLjfBWh.s:187    .data.isLeftHand:0000000000000000 isLeftHand
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccLjfBWh.s:132    .text.keyboard_slave_loop:0000000000000000 keyboard_slave_loop
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccLjfBWh.s:155    .text.matrix_setup:0000000000000000 matrix_setup
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccISbMag.s:2      *ABS*:000000000000003e __SP_H__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccISbMag.s:3      *ABS*:000000000000003d __SP_L__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccISbMag.s:4      *ABS*:000000000000003f __SREG__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccISbMag.s:5      *ABS*:0000000000000000 __tmp_reg__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccISbMag.s:6      *ABS*:0000000000000001 __zero_reg__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccISbMag.s:13     .text.has_usb:0000000000000000 has_usb
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccISbMag.s:63     .text.split_keyboard_setup:0000000000000000 split_keyboard_setup
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccISbMag.s:190    .data.isLeftHand:0000000000000000 isLeftHand
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccISbMag.s:135    .text.keyboard_slave_loop:0000000000000000 keyboard_slave_loop
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccISbMag.s:158    .text.matrix_setup:0000000000000000 matrix_setup
 
 UNDEFINED SYMBOLS
 serial_master_init
