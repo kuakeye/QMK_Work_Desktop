@@ -956,7 +956,7 @@ END GROUP
 .rela.plt
  *(.rela.plt)
 
-.text           0x0000000000000000     0x5c88
+.text           0x0000000000000000     0x5c84
  *(.vectors)
  .vectors       0x0000000000000000       0xac /usr/local/Cellar/avr-gcc@8/8.3.0_1/lib/avr-gcc/8/gcc/avr/8.3.0/../../../../../../avr/lib/avr5/crtatmega32u4.o
                 0x0000000000000000                __vectors
@@ -1374,622 +1374,622 @@ END GROUP
  .text.has_usb  0x00000000000014c0       0x1a .build/obj_Dactylv2_Lightcycle_rev2_Default/split_util.o
                 0x00000000000014c0                has_usb
  .text.split_keyboard_setup
-                0x00000000000014da       0x26 .build/obj_Dactylv2_Lightcycle_rev2_Default/split_util.o
+                0x00000000000014da       0x22 .build/obj_Dactylv2_Lightcycle_rev2_Default/split_util.o
                 0x00000000000014da                split_keyboard_setup
  .text.keyboard_slave_loop
-                0x0000000000001500        0xa .build/obj_Dactylv2_Lightcycle_rev2_Default/split_util.o
-                0x0000000000001500                keyboard_slave_loop
+                0x00000000000014fc        0xa .build/obj_Dactylv2_Lightcycle_rev2_Default/split_util.o
+                0x00000000000014fc                keyboard_slave_loop
  .text.matrix_setup
-                0x000000000000150a       0x12 .build/obj_Dactylv2_Lightcycle_rev2_Default/split_util.o
-                0x000000000000150a                matrix_setup
+                0x0000000000001506       0x12 .build/obj_Dactylv2_Lightcycle_rev2_Default/split_util.o
+                0x0000000000001506                matrix_setup
  .text.serial_output
-                0x000000000000151c        0x4 .build/obj_Dactylv2_Lightcycle_rev2_Default/serial.o
+                0x0000000000001518        0x4 .build/obj_Dactylv2_Lightcycle_rev2_Default/serial.o
  .text.serial_input
-                0x0000000000001520        0x6 .build/obj_Dactylv2_Lightcycle_rev2_Default/serial.o
+                0x000000000000151c        0x6 .build/obj_Dactylv2_Lightcycle_rev2_Default/serial.o
  .text.serial_high
-                0x0000000000001526        0x4 .build/obj_Dactylv2_Lightcycle_rev2_Default/serial.o
+                0x0000000000001522        0x4 .build/obj_Dactylv2_Lightcycle_rev2_Default/serial.o
  .text.sync_recv
-                0x000000000000152a       0x10 .build/obj_Dactylv2_Lightcycle_rev2_Default/serial.o
+                0x0000000000001526       0x10 .build/obj_Dactylv2_Lightcycle_rev2_Default/serial.o
  .text.serial_read_byte
-                0x000000000000153a       0x24 .build/obj_Dactylv2_Lightcycle_rev2_Default/serial.o
+                0x0000000000001536       0x24 .build/obj_Dactylv2_Lightcycle_rev2_Default/serial.o
  .text.serial_write_byte
-                0x000000000000155e       0x3e .build/obj_Dactylv2_Lightcycle_rev2_Default/serial.o
+                0x000000000000155a       0x3e .build/obj_Dactylv2_Lightcycle_rev2_Default/serial.o
  .text.sync_send
-                0x000000000000159c       0x10 .build/obj_Dactylv2_Lightcycle_rev2_Default/serial.o
+                0x0000000000001598       0x10 .build/obj_Dactylv2_Lightcycle_rev2_Default/serial.o
  .text.serial_master_init
-                0x00000000000015ac        0x8 .build/obj_Dactylv2_Lightcycle_rev2_Default/serial.o
-                0x00000000000015ac                serial_master_init
+                0x00000000000015a8        0x8 .build/obj_Dactylv2_Lightcycle_rev2_Default/serial.o
+                0x00000000000015a8                serial_master_init
  .text.serial_slave_init
-                0x00000000000015b4       0x12 .build/obj_Dactylv2_Lightcycle_rev2_Default/serial.o
-                0x00000000000015b4                serial_slave_init
+                0x00000000000015b0       0x12 .build/obj_Dactylv2_Lightcycle_rev2_Default/serial.o
+                0x00000000000015b0                serial_slave_init
  .text.__vector_1
-                0x00000000000015c6       0xca .build/obj_Dactylv2_Lightcycle_rev2_Default/serial.o
-                0x00000000000015c6                __vector_1
+                0x00000000000015c2       0xca .build/obj_Dactylv2_Lightcycle_rev2_Default/serial.o
+                0x00000000000015c2                __vector_1
  .text.serial_update_buffers
-                0x0000000000001690       0xa2 .build/obj_Dactylv2_Lightcycle_rev2_Default/serial.o
-                0x0000000000001690                serial_update_buffers
+                0x000000000000168c       0xa2 .build/obj_Dactylv2_Lightcycle_rev2_Default/serial.o
+                0x000000000000168c                serial_update_buffers
  .text.matrix_init_kb
-                0x0000000000001732        0x4 .build/obj_Dactylv2_Lightcycle_rev2_Default/keyboards/Dactylv2_Lightcycle/rev2/rev2.o
-                0x0000000000001732                matrix_init_kb
+                0x000000000000172e        0x4 .build/obj_Dactylv2_Lightcycle_rev2_Default/keyboards/Dactylv2_Lightcycle/rev2/rev2.o
+                0x000000000000172e                matrix_init_kb
  .text.cmd_commands
-                0x0000000000001736       0x20 .build/obj_Dactylv2_Lightcycle_rev2_Default/keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.o
-                0x0000000000001736                cmd_commands
- .text.cmd      0x0000000000001756       0x20 .build/obj_Dactylv2_Lightcycle_rev2_Default/keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.o
-                0x0000000000001756                cmd
+                0x0000000000001732       0x20 .build/obj_Dactylv2_Lightcycle_rev2_Default/keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.o
+                0x0000000000001732                cmd_commands
+ .text.cmd      0x0000000000001752       0x20 .build/obj_Dactylv2_Lightcycle_rev2_Default/keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.o
+                0x0000000000001752                cmd
  .text.VirtualDesktop
-                0x0000000000001776       0x1c .build/obj_Dactylv2_Lightcycle_rev2_Default/keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.o
-                0x0000000000001776                VirtualDesktop
+                0x0000000000001772       0x1c .build/obj_Dactylv2_Lightcycle_rev2_Default/keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.o
+                0x0000000000001772                VirtualDesktop
  .text.SLSH_BSLSH
-                0x0000000000001792       0x1e .build/obj_Dactylv2_Lightcycle_rev2_Default/keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.o
-                0x0000000000001792                SLSH_BSLSH
+                0x000000000000178e       0x1e .build/obj_Dactylv2_Lightcycle_rev2_Default/keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.o
+                0x000000000000178e                SLSH_BSLSH
  .text.action_get_macro
-                0x00000000000017b0      0x112 .build/obj_Dactylv2_Lightcycle_rev2_Default/keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.o
-                0x00000000000017b0                action_get_macro
+                0x00000000000017ac      0x112 .build/obj_Dactylv2_Lightcycle_rev2_Default/keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.o
+                0x00000000000017ac                action_get_macro
  .text.matrix_init_user
-                0x00000000000018c2        0x2 .build/obj_Dactylv2_Lightcycle_rev2_Default/keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.o
-                0x00000000000018c2                matrix_init_user
+                0x00000000000018be        0x2 .build/obj_Dactylv2_Lightcycle_rev2_Default/keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.o
+                0x00000000000018be                matrix_init_user
  .text.matrix_scan_user
-                0x00000000000018c4        0x2 .build/obj_Dactylv2_Lightcycle_rev2_Default/keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.o
-                0x00000000000018c4                matrix_scan_user
+                0x00000000000018c0        0x2 .build/obj_Dactylv2_Lightcycle_rev2_Default/keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.o
+                0x00000000000018c0                matrix_scan_user
  .text.process_record_user
-                0x00000000000018c6       0x38 .build/obj_Dactylv2_Lightcycle_rev2_Default/keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.o
-                0x00000000000018c6                process_record_user
+                0x00000000000018c2       0x38 .build/obj_Dactylv2_Lightcycle_rev2_Default/keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.o
+                0x00000000000018c2                process_record_user
  .text.process_action_kb
-                0x00000000000018fe        0x4 .build/obj_Dactylv2_Lightcycle_rev2_Default/quantum/quantum.o
-                0x00000000000018fe                process_action_kb
+                0x00000000000018fa        0x4 .build/obj_Dactylv2_Lightcycle_rev2_Default/quantum/quantum.o
+                0x00000000000018fa                process_action_kb
  .text.process_record_kb
-                0x0000000000001902        0x4 .build/obj_Dactylv2_Lightcycle_rev2_Default/quantum/quantum.o
-                0x0000000000001902                process_record_kb
+                0x00000000000018fe        0x4 .build/obj_Dactylv2_Lightcycle_rev2_Default/quantum/quantum.o
+                0x00000000000018fe                process_record_kb
  .text.reset_keyboard
-                0x0000000000001906       0x26 .build/obj_Dactylv2_Lightcycle_rev2_Default/quantum/quantum.o
-                0x0000000000001906                reset_keyboard
+                0x0000000000001902       0x26 .build/obj_Dactylv2_Lightcycle_rev2_Default/quantum/quantum.o
+                0x0000000000001902                reset_keyboard
  .text.process_record_quantum
-                0x000000000000192c      0x2ee .build/obj_Dactylv2_Lightcycle_rev2_Default/quantum/quantum.o
-                0x000000000000192c                process_record_quantum
+                0x0000000000001928      0x2ee .build/obj_Dactylv2_Lightcycle_rev2_Default/quantum/quantum.o
+                0x0000000000001928                process_record_quantum
  .text.send_char
-                0x0000000000001c1a       0x3c .build/obj_Dactylv2_Lightcycle_rev2_Default/quantum/quantum.o
-                0x0000000000001c1a                send_char
+                0x0000000000001c16       0x3c .build/obj_Dactylv2_Lightcycle_rev2_Default/quantum/quantum.o
+                0x0000000000001c16                send_char
  .text.send_string_with_delay_P
-                0x0000000000001c56       0x74 .build/obj_Dactylv2_Lightcycle_rev2_Default/quantum/quantum.o
-                0x0000000000001c56                send_string_with_delay_P
+                0x0000000000001c52       0x74 .build/obj_Dactylv2_Lightcycle_rev2_Default/quantum/quantum.o
+                0x0000000000001c52                send_string_with_delay_P
  .text.send_string_P
-                0x0000000000001cca        0x6 .build/obj_Dactylv2_Lightcycle_rev2_Default/quantum/quantum.o
-                0x0000000000001cca                send_string_P
+                0x0000000000001cc6        0x6 .build/obj_Dactylv2_Lightcycle_rev2_Default/quantum/quantum.o
+                0x0000000000001cc6                send_string_P
  .text.matrix_init_quantum
-                0x0000000000001cd0        0x4 .build/obj_Dactylv2_Lightcycle_rev2_Default/quantum/quantum.o
-                0x0000000000001cd0                matrix_init_quantum
+                0x0000000000001ccc        0x4 .build/obj_Dactylv2_Lightcycle_rev2_Default/quantum/quantum.o
+                0x0000000000001ccc                matrix_init_quantum
  .text.matrix_scan_quantum
-                0x0000000000001cd4        0x8 .build/obj_Dactylv2_Lightcycle_rev2_Default/quantum/quantum.o
-                0x0000000000001cd4                matrix_scan_quantum
+                0x0000000000001cd0        0x8 .build/obj_Dactylv2_Lightcycle_rev2_Default/quantum/quantum.o
+                0x0000000000001cd0                matrix_scan_quantum
  .text.led_set_user
-                0x0000000000001cdc        0x2 .build/obj_Dactylv2_Lightcycle_rev2_Default/quantum/quantum.o
-                0x0000000000001cdc                led_set_user
+                0x0000000000001cd8        0x2 .build/obj_Dactylv2_Lightcycle_rev2_Default/quantum/quantum.o
+                0x0000000000001cd8                led_set_user
  .text.led_set_kb
-                0x0000000000001cde        0x4 .build/obj_Dactylv2_Lightcycle_rev2_Default/quantum/quantum.o
-                0x0000000000001cde                led_set_kb
- .text.led_set  0x0000000000001ce2        0x4 .build/obj_Dactylv2_Lightcycle_rev2_Default/quantum/quantum.o
-                0x0000000000001ce2                led_set
+                0x0000000000001cda        0x4 .build/obj_Dactylv2_Lightcycle_rev2_Default/quantum/quantum.o
+                0x0000000000001cda                led_set_kb
+ .text.led_set  0x0000000000001cde        0x4 .build/obj_Dactylv2_Lightcycle_rev2_Default/quantum/quantum.o
+                0x0000000000001cde                led_set
  .text.action_function
-                0x0000000000001ce6        0x2 .build/obj_Dactylv2_Lightcycle_rev2_Default/quantum/keymap_common.o
-                0x0000000000001ce6                action_function
+                0x0000000000001ce2        0x2 .build/obj_Dactylv2_Lightcycle_rev2_Default/quantum/keymap_common.o
+                0x0000000000001ce2                action_function
  .text.keymap_key_to_keycode
-                0x0000000000001ce8       0x28 .build/obj_Dactylv2_Lightcycle_rev2_Default/quantum/keymap_common.o
-                0x0000000000001ce8                keymap_key_to_keycode
+                0x0000000000001ce4       0x28 .build/obj_Dactylv2_Lightcycle_rev2_Default/quantum/keymap_common.o
+                0x0000000000001ce4                keymap_key_to_keycode
  .text.keymap_function_id_to_action
-                0x0000000000001d10       0x10 .build/obj_Dactylv2_Lightcycle_rev2_Default/quantum/keymap_common.o
-                0x0000000000001d10                keymap_function_id_to_action
+                0x0000000000001d0c       0x10 .build/obj_Dactylv2_Lightcycle_rev2_Default/quantum/keymap_common.o
+                0x0000000000001d0c                keymap_function_id_to_action
  .text.action_for_key
-                0x0000000000001d20      0x340 .build/obj_Dactylv2_Lightcycle_rev2_Default/quantum/keymap_common.o
-                0x0000000000001d20                action_for_key
+                0x0000000000001d1c      0x340 .build/obj_Dactylv2_Lightcycle_rev2_Default/quantum/keymap_common.o
+                0x0000000000001d1c                action_for_key
  .text.keycode_config
-                0x0000000000002060       0xf6 .build/obj_Dactylv2_Lightcycle_rev2_Default/quantum/keycode_config.o
-                0x0000000000002060                keycode_config
+                0x000000000000205c       0xf6 .build/obj_Dactylv2_Lightcycle_rev2_Default/quantum/keycode_config.o
+                0x000000000000205c                keycode_config
  .text.mod_config
-                0x0000000000002156       0x46 .build/obj_Dactylv2_Lightcycle_rev2_Default/quantum/keycode_config.o
-                0x0000000000002156                mod_config
+                0x0000000000002152       0x46 .build/obj_Dactylv2_Lightcycle_rev2_Default/quantum/keycode_config.o
+                0x0000000000002152                mod_config
  .text.leader_start
-                0x000000000000219c        0x2 .build/obj_Dactylv2_Lightcycle_rev2_Default/quantum/process_keycode/process_leader.o
-                0x000000000000219c                leader_start
+                0x0000000000002198        0x2 .build/obj_Dactylv2_Lightcycle_rev2_Default/quantum/process_keycode/process_leader.o
+                0x0000000000002198                leader_start
  .text.process_leader
-                0x000000000000219e       0x9e .build/obj_Dactylv2_Lightcycle_rev2_Default/quantum/process_keycode/process_leader.o
-                0x000000000000219e                process_leader
+                0x000000000000219a       0x9e .build/obj_Dactylv2_Lightcycle_rev2_Default/quantum/process_keycode/process_leader.o
+                0x000000000000219a                process_leader
  .text.process_tap_dance_action_on_dance_finished.part.0
-                0x000000000000223c       0x36 .build/obj_Dactylv2_Lightcycle_rev2_Default/quantum/process_keycode/process_tap_dance.o
+                0x0000000000002238       0x36 .build/obj_Dactylv2_Lightcycle_rev2_Default/quantum/process_keycode/process_tap_dance.o
  .text.reset_tap_dance
-                0x0000000000002272       0x86 .build/obj_Dactylv2_Lightcycle_rev2_Default/quantum/process_keycode/process_tap_dance.o
-                0x0000000000002272                reset_tap_dance
+                0x000000000000226e       0x86 .build/obj_Dactylv2_Lightcycle_rev2_Default/quantum/process_keycode/process_tap_dance.o
+                0x000000000000226e                reset_tap_dance
  .text.preprocess_tap_dance
-                0x00000000000022f8       0x88 .build/obj_Dactylv2_Lightcycle_rev2_Default/quantum/process_keycode/process_tap_dance.o
-                0x00000000000022f8                preprocess_tap_dance
+                0x00000000000022f4       0x88 .build/obj_Dactylv2_Lightcycle_rev2_Default/quantum/process_keycode/process_tap_dance.o
+                0x00000000000022f4                preprocess_tap_dance
  .text.process_tap_dance
-                0x0000000000002380       0xb4 .build/obj_Dactylv2_Lightcycle_rev2_Default/quantum/process_keycode/process_tap_dance.o
-                0x0000000000002380                process_tap_dance
+                0x000000000000237c       0xb4 .build/obj_Dactylv2_Lightcycle_rev2_Default/quantum/process_keycode/process_tap_dance.o
+                0x000000000000237c                process_tap_dance
  .text.matrix_scan_tap_dance
-                0x0000000000002434       0x9e .build/obj_Dactylv2_Lightcycle_rev2_Default/quantum/process_keycode/process_tap_dance.o
-                0x0000000000002434                matrix_scan_tap_dance
+                0x0000000000002430       0x9e .build/obj_Dactylv2_Lightcycle_rev2_Default/quantum/process_keycode/process_tap_dance.o
+                0x0000000000002430                matrix_scan_tap_dance
  .text.host_set_driver
-                0x00000000000024d2        0xa .build/obj_Dactylv2_Lightcycle_rev2_Default/common/host.o
-                0x00000000000024d2                host_set_driver
+                0x00000000000024ce        0xa .build/obj_Dactylv2_Lightcycle_rev2_Default/common/host.o
+                0x00000000000024ce                host_set_driver
  .text.host_keyboard_leds
-                0x00000000000024dc       0x18 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/host.o
-                0x00000000000024dc                host_keyboard_leds
+                0x00000000000024d8       0x18 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/host.o
+                0x00000000000024d8                host_keyboard_leds
  .text.host_keyboard_send
-                0x00000000000024f4       0x98 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/host.o
-                0x00000000000024f4                host_keyboard_send
+                0x00000000000024f0       0x98 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/host.o
+                0x00000000000024f0                host_keyboard_send
  .text.host_mouse_send
-                0x000000000000258c       0x16 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/host.o
-                0x000000000000258c                host_mouse_send
+                0x0000000000002588       0x16 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/host.o
+                0x0000000000002588                host_mouse_send
  .text.host_system_send
-                0x00000000000025a2       0x2c .build/obj_Dactylv2_Lightcycle_rev2_Default/common/host.o
-                0x00000000000025a2                host_system_send
+                0x000000000000259e       0x2c .build/obj_Dactylv2_Lightcycle_rev2_Default/common/host.o
+                0x000000000000259e                host_system_send
  .text.host_consumer_send
-                0x00000000000025ce       0x2c .build/obj_Dactylv2_Lightcycle_rev2_Default/common/host.o
-                0x00000000000025ce                host_consumer_send
+                0x00000000000025ca       0x2c .build/obj_Dactylv2_Lightcycle_rev2_Default/common/host.o
+                0x00000000000025ca                host_consumer_send
  .text.keyboard_setup
-                0x00000000000025fa        0x4 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/keyboard.o
-                0x00000000000025fa                keyboard_setup
+                0x00000000000025f6        0x4 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/keyboard.o
+                0x00000000000025f6                keyboard_setup
  .text.is_keyboard_master
-                0x00000000000025fe        0x4 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/keyboard.o
-                0x00000000000025fe                is_keyboard_master
+                0x00000000000025fa        0x4 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/keyboard.o
+                0x00000000000025fa                is_keyboard_master
  .text.keyboard_init
-                0x0000000000002602        0xc .build/obj_Dactylv2_Lightcycle_rev2_Default/common/keyboard.o
-                0x0000000000002602                keyboard_init
+                0x00000000000025fe        0xc .build/obj_Dactylv2_Lightcycle_rev2_Default/common/keyboard.o
+                0x00000000000025fe                keyboard_init
  .text.keyboard_set_leds
-                0x000000000000260e       0x50 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/keyboard.o
-                0x000000000000260e                keyboard_set_leds
+                0x000000000000260a       0x50 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/keyboard.o
+                0x000000000000260a                keyboard_set_leds
  .text.keyboard_task
-                0x000000000000265e      0x154 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/keyboard.o
-                0x000000000000265e                keyboard_task
+                0x000000000000265a      0x154 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/keyboard.o
+                0x000000000000265a                keyboard_task
  .text.action_exec
-                0x00000000000027b2       0x54 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action.o
-                0x00000000000027b2                action_exec
+                0x00000000000027ae       0x54 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action.o
+                0x00000000000027ae                action_exec
  .text.process_record_tap_hint
-                0x0000000000002806        0xa .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action.o
-                0x0000000000002806                process_record_tap_hint
+                0x0000000000002802        0xa .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action.o
+                0x0000000000002802                process_record_tap_hint
  .text.register_code
-                0x0000000000002810      0x1b6 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action.o
-                0x0000000000002810                register_code
+                0x000000000000280c      0x1b6 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action.o
+                0x000000000000280c                register_code
  .text.unregister_code
-                0x00000000000029c6       0x9e .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action.o
-                0x00000000000029c6                unregister_code
+                0x00000000000029c2       0x9e .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action.o
+                0x00000000000029c2                unregister_code
  .text.register_mods
-                0x0000000000002a64        0xe .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action.o
-                0x0000000000002a64                register_mods
+                0x0000000000002a60        0xe .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action.o
+                0x0000000000002a60                register_mods
  .text.unregister_mods
-                0x0000000000002a72        0xe .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action.o
-                0x0000000000002a72                unregister_mods
+                0x0000000000002a6e        0xe .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action.o
+                0x0000000000002a6e                unregister_mods
  .text.process_action
-                0x0000000000002a80      0x4b4 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action.o
-                0x0000000000002a80                process_action
+                0x0000000000002a7c      0x4b4 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action.o
+                0x0000000000002a7c                process_action
  .text.process_record
-                0x0000000000002f34       0x54 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action.o
-                0x0000000000002f34                process_record
+                0x0000000000002f30       0x54 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action.o
+                0x0000000000002f30                process_record
  .text.clear_keyboard_but_mods
-                0x0000000000002f88       0x28 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action.o
-                0x0000000000002f88                clear_keyboard_but_mods
+                0x0000000000002f84       0x28 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action.o
+                0x0000000000002f84                clear_keyboard_but_mods
  .text.clear_keyboard
-                0x0000000000002fb0        0x8 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action.o
-                0x0000000000002fb0                clear_keyboard
+                0x0000000000002fac        0x8 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action.o
+                0x0000000000002fac                clear_keyboard
  .text.is_tap_key
-                0x0000000000002fb8       0x42 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action.o
-                0x0000000000002fb8                is_tap_key
+                0x0000000000002fb4       0x42 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action.o
+                0x0000000000002fb4                is_tap_key
  .text.debug_event
-                0x0000000000002ffa       0x1e .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action.o
-                0x0000000000002ffa                debug_event
+                0x0000000000002ff6       0x1e .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action.o
+                0x0000000000002ff6                debug_event
  .text.debug_record
-                0x0000000000003018       0x20 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action.o
-                0x0000000000003018                debug_record
+                0x0000000000003014       0x20 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action.o
+                0x0000000000003014                debug_record
  .text.debug_waiting_buffer
-                0x0000000000003038       0x42 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_tapping.o
+                0x0000000000003034       0x42 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_tapping.o
  .text.debug_tapping_key
-                0x000000000000307a       0x1c .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_tapping.o
+                0x0000000000003076       0x1c .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_tapping.o
  .text.waiting_buffer_typed.isra.1
-                0x0000000000003096       0x40 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_tapping.o
+                0x0000000000003092       0x40 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_tapping.o
  .text.waiting_buffer_scan_tap
-                0x00000000000030d6       0xc8 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_tapping.o
+                0x00000000000030d2       0xc8 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_tapping.o
  .text.process_tapping
-                0x000000000000319e      0x3be .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_tapping.o
+                0x000000000000319a      0x3be .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_tapping.o
  .text.action_tapping_process
-                0x000000000000355c      0x134 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_tapping.o
-                0x000000000000355c                action_tapping_process
+                0x0000000000003558      0x134 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_tapping.o
+                0x0000000000003558                action_tapping_process
  .text.action_macro_play
-                0x0000000000003690       0xf0 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_macro.o
-                0x0000000000003690                action_macro_play
+                0x000000000000368c       0xf0 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_macro.o
+                0x000000000000368c                action_macro_play
  .text.default_layer_state_set_kb
-                0x0000000000003780        0x2 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_layer.o
-                0x0000000000003780                default_layer_state_set_kb
+                0x000000000000377c        0x2 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_layer.o
+                0x000000000000377c                default_layer_state_set_kb
  .text.default_layer_state_set
-                0x0000000000003782       0x18 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_layer.o
+                0x000000000000377e       0x18 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_layer.o
  .text.default_layer_debug
-                0x000000000000379a        0x2 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_layer.o
-                0x000000000000379a                default_layer_debug
+                0x0000000000003796        0x2 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_layer.o
+                0x0000000000003796                default_layer_debug
  .text.default_layer_set
-                0x000000000000379c        0x4 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_layer.o
-                0x000000000000379c                default_layer_set
+                0x0000000000003798        0x4 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_layer.o
+                0x0000000000003798                default_layer_set
  .text.default_layer_or
-                0x00000000000037a0       0x24 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_layer.o
-                0x00000000000037a0                default_layer_or
+                0x000000000000379c       0x24 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_layer.o
+                0x000000000000379c                default_layer_or
  .text.default_layer_and
-                0x00000000000037c4       0x24 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_layer.o
-                0x00000000000037c4                default_layer_and
+                0x00000000000037c0       0x24 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_layer.o
+                0x00000000000037c0                default_layer_and
  .text.default_layer_xor
-                0x00000000000037e8       0x24 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_layer.o
-                0x00000000000037e8                default_layer_xor
+                0x00000000000037e4       0x24 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_layer.o
+                0x00000000000037e4                default_layer_xor
  .text.layer_state_set_user
-                0x000000000000380c        0x4 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_layer.o
-                0x000000000000380c                layer_state_set_user
+                0x0000000000003808        0x4 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_layer.o
+                0x0000000000003808                layer_state_set_user
  .text.layer_state_set_kb
-                0x0000000000003810        0x4 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_layer.o
-                0x0000000000003810                layer_state_set_kb
+                0x000000000000380c        0x4 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_layer.o
+                0x000000000000380c                layer_state_set_kb
  .text.layer_state_set
-                0x0000000000003814       0x18 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_layer.o
-                0x0000000000003814                layer_state_set
+                0x0000000000003810       0x18 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_layer.o
+                0x0000000000003810                layer_state_set
  .text.layer_clear
-                0x000000000000382c        0xa .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_layer.o
-                0x000000000000382c                layer_clear
+                0x0000000000003828        0xa .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_layer.o
+                0x0000000000003828                layer_clear
  .text.layer_move
-                0x0000000000003836       0x2a .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_layer.o
-                0x0000000000003836                layer_move
+                0x0000000000003832       0x2a .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_layer.o
+                0x0000000000003832                layer_move
  .text.layer_on
-                0x0000000000003860       0x42 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_layer.o
-                0x0000000000003860                layer_on
+                0x000000000000385c       0x42 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_layer.o
+                0x000000000000385c                layer_on
  .text.layer_off
-                0x00000000000038a2       0x46 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_layer.o
-                0x00000000000038a2                layer_off
+                0x000000000000389e       0x46 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_layer.o
+                0x000000000000389e                layer_off
  .text.layer_invert
-                0x00000000000038e8       0x42 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_layer.o
-                0x00000000000038e8                layer_invert
+                0x00000000000038e4       0x42 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_layer.o
+                0x00000000000038e4                layer_invert
  .text.layer_or
-                0x000000000000392a       0x24 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_layer.o
-                0x000000000000392a                layer_or
+                0x0000000000003926       0x24 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_layer.o
+                0x0000000000003926                layer_or
  .text.layer_and
-                0x000000000000394e       0x24 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_layer.o
-                0x000000000000394e                layer_and
+                0x000000000000394a       0x24 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_layer.o
+                0x000000000000394a                layer_and
  .text.layer_xor
-                0x0000000000003972       0x24 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_layer.o
-                0x0000000000003972                layer_xor
+                0x000000000000396e       0x24 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_layer.o
+                0x000000000000396e                layer_xor
  .text.layer_debug
-                0x0000000000003996        0x2 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_layer.o
-                0x0000000000003996                layer_debug
+                0x0000000000003992        0x2 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_layer.o
+                0x0000000000003992                layer_debug
  .text.layer_switch_get_layer
-                0x0000000000003998       0x84 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_layer.o
-                0x0000000000003998                layer_switch_get_layer
+                0x0000000000003994       0x84 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_layer.o
+                0x0000000000003994                layer_switch_get_layer
  .text.layer_switch_get_action
-                0x0000000000003a1c       0x14 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_layer.o
-                0x0000000000003a1c                layer_switch_get_action
+                0x0000000000003a18       0x14 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_layer.o
+                0x0000000000003a18                layer_switch_get_action
  .text.store_or_get_action
-                0x0000000000003a30        0x6 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_layer.o
-                0x0000000000003a30                store_or_get_action
- .text.add_key  0x0000000000003a36        0xe .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_util.o
-                0x0000000000003a36                add_key
- .text.del_key  0x0000000000003a44        0xe .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_util.o
-                0x0000000000003a44                del_key
+                0x0000000000003a2c        0x6 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_layer.o
+                0x0000000000003a2c                store_or_get_action
+ .text.add_key  0x0000000000003a32        0xe .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_util.o
+                0x0000000000003a32                add_key
+ .text.del_key  0x0000000000003a40        0xe .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_util.o
+                0x0000000000003a40                del_key
  .text.clear_keys
-                0x0000000000003a52        0xc .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_util.o
-                0x0000000000003a52                clear_keys
+                0x0000000000003a4e        0xc .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_util.o
+                0x0000000000003a4e                clear_keys
  .text.get_oneshot_layer
-                0x0000000000003a5e        0xc .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_util.o
-                0x0000000000003a5e                get_oneshot_layer
+                0x0000000000003a5a        0xc .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_util.o
+                0x0000000000003a5a                get_oneshot_layer
  .text.get_oneshot_layer_state
-                0x0000000000003a6a        0x8 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_util.o
-                0x0000000000003a6a                get_oneshot_layer_state
+                0x0000000000003a66        0x8 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_util.o
+                0x0000000000003a66                get_oneshot_layer_state
  .text.set_oneshot_layer
-                0x0000000000003a72       0x12 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_util.o
-                0x0000000000003a72                set_oneshot_layer
+                0x0000000000003a6e       0x12 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_util.o
+                0x0000000000003a6e                set_oneshot_layer
  .text.clear_oneshot_layer_state
-                0x0000000000003a84       0x2c .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_util.o
-                0x0000000000003a84                clear_oneshot_layer_state
+                0x0000000000003a80       0x2c .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_util.o
+                0x0000000000003a80                clear_oneshot_layer_state
  .text.is_oneshot_layer_active
-                0x0000000000003ab0        0xe .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_util.o
-                0x0000000000003ab0                is_oneshot_layer_active
+                0x0000000000003aac        0xe .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_util.o
+                0x0000000000003aac                is_oneshot_layer_active
  .text.send_keyboard_report
-                0x0000000000003abe       0x66 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_util.o
-                0x0000000000003abe                send_keyboard_report
+                0x0000000000003aba       0x66 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_util.o
+                0x0000000000003aba                send_keyboard_report
  .text.get_mods
-                0x0000000000003b24        0x6 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_util.o
-                0x0000000000003b24                get_mods
+                0x0000000000003b20        0x6 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_util.o
+                0x0000000000003b20                get_mods
  .text.add_mods
-                0x0000000000003b2a        0xc .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_util.o
-                0x0000000000003b2a                add_mods
+                0x0000000000003b26        0xc .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_util.o
+                0x0000000000003b26                add_mods
  .text.del_mods
-                0x0000000000003b36        0xe .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_util.o
-                0x0000000000003b36                del_mods
+                0x0000000000003b32        0xe .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_util.o
+                0x0000000000003b32                del_mods
  .text.clear_mods
-                0x0000000000003b44        0x6 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_util.o
-                0x0000000000003b44                clear_mods
+                0x0000000000003b40        0x6 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_util.o
+                0x0000000000003b40                clear_mods
  .text.get_weak_mods
-                0x0000000000003b4a        0x6 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_util.o
-                0x0000000000003b4a                get_weak_mods
+                0x0000000000003b46        0x6 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_util.o
+                0x0000000000003b46                get_weak_mods
  .text.add_weak_mods
-                0x0000000000003b50        0xc .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_util.o
-                0x0000000000003b50                add_weak_mods
+                0x0000000000003b4c        0xc .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_util.o
+                0x0000000000003b4c                add_weak_mods
  .text.del_weak_mods
-                0x0000000000003b5c        0xe .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_util.o
-                0x0000000000003b5c                del_weak_mods
+                0x0000000000003b58        0xe .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_util.o
+                0x0000000000003b58                del_weak_mods
  .text.clear_weak_mods
-                0x0000000000003b6a        0x6 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_util.o
-                0x0000000000003b6a                clear_weak_mods
+                0x0000000000003b66        0x6 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_util.o
+                0x0000000000003b66                clear_weak_mods
  .text.add_macro_mods
-                0x0000000000003b70        0xc .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_util.o
-                0x0000000000003b70                add_macro_mods
+                0x0000000000003b6c        0xc .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_util.o
+                0x0000000000003b6c                add_macro_mods
  .text.del_macro_mods
-                0x0000000000003b7c        0xe .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_util.o
-                0x0000000000003b7c                del_macro_mods
+                0x0000000000003b78        0xe .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_util.o
+                0x0000000000003b78                del_macro_mods
  .text.clear_macro_mods
-                0x0000000000003b8a        0x6 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_util.o
-                0x0000000000003b8a                clear_macro_mods
+                0x0000000000003b86        0x6 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_util.o
+                0x0000000000003b86                clear_macro_mods
  .text.set_oneshot_mods
-                0x0000000000003b90        0x6 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_util.o
-                0x0000000000003b90                set_oneshot_mods
+                0x0000000000003b8c        0x6 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_util.o
+                0x0000000000003b8c                set_oneshot_mods
  .text.clear_oneshot_mods
-                0x0000000000003b96        0x6 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_util.o
-                0x0000000000003b96                clear_oneshot_mods
+                0x0000000000003b92        0x6 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_util.o
+                0x0000000000003b92                clear_oneshot_mods
  .text.get_oneshot_mods
-                0x0000000000003b9c        0x6 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_util.o
-                0x0000000000003b9c                get_oneshot_mods
+                0x0000000000003b98        0x6 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_util.o
+                0x0000000000003b98                get_oneshot_mods
  .text.print_set_sendchar
-                0x0000000000003ba2        0xa .build/obj_Dactylv2_Lightcycle_rev2_Default/common/print.o
-                0x0000000000003ba2                print_set_sendchar
- .text.bitrev   0x0000000000003bac       0x30 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/util.o
-                0x0000000000003bac                bitrev
+                0x0000000000003b9e        0xa .build/obj_Dactylv2_Lightcycle_rev2_Default/common/print.o
+                0x0000000000003b9e                print_set_sendchar
+ .text.bitrev   0x0000000000003ba8       0x30 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/util.o
+                0x0000000000003ba8                bitrev
  .text.bitrev16
-                0x0000000000003bdc       0x1a .build/obj_Dactylv2_Lightcycle_rev2_Default/common/util.o
-                0x0000000000003bdc                bitrev16
+                0x0000000000003bd8       0x1a .build/obj_Dactylv2_Lightcycle_rev2_Default/common/util.o
+                0x0000000000003bd8                bitrev16
  .text.eeconfig_init
-                0x0000000000003bf6       0x34 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/eeconfig.o
-                0x0000000000003bf6                eeconfig_init
+                0x0000000000003bf2       0x34 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/eeconfig.o
+                0x0000000000003bf2                eeconfig_init
  .text.eeconfig_is_enabled
-                0x0000000000003c2a       0x16 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/eeconfig.o
-                0x0000000000003c2a                eeconfig_is_enabled
+                0x0000000000003c26       0x16 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/eeconfig.o
+                0x0000000000003c26                eeconfig_is_enabled
  .text.eeconfig_read_debug
-                0x0000000000003c40        0x8 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/eeconfig.o
-                0x0000000000003c40                eeconfig_read_debug
+                0x0000000000003c3c        0x8 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/eeconfig.o
+                0x0000000000003c3c                eeconfig_read_debug
  .text.eeconfig_read_default_layer
-                0x0000000000003c48        0x8 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/eeconfig.o
-                0x0000000000003c48                eeconfig_read_default_layer
+                0x0000000000003c44        0x8 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/eeconfig.o
+                0x0000000000003c44                eeconfig_read_default_layer
  .text.eeconfig_read_keymap
-                0x0000000000003c50        0x8 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/eeconfig.o
-                0x0000000000003c50                eeconfig_read_keymap
+                0x0000000000003c4c        0x8 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/eeconfig.o
+                0x0000000000003c4c                eeconfig_read_keymap
  .text.eeconfig_update_keymap
-                0x0000000000003c58        0xa .build/obj_Dactylv2_Lightcycle_rev2_Default/common/eeconfig.o
-                0x0000000000003c58                eeconfig_update_keymap
+                0x0000000000003c54        0xa .build/obj_Dactylv2_Lightcycle_rev2_Default/common/eeconfig.o
+                0x0000000000003c54                eeconfig_update_keymap
  .text.has_anykey
-                0x0000000000003c62       0x1a .build/obj_Dactylv2_Lightcycle_rev2_Default/common/report.o
-                0x0000000000003c62                has_anykey
+                0x0000000000003c5e       0x1a .build/obj_Dactylv2_Lightcycle_rev2_Default/common/report.o
+                0x0000000000003c5e                has_anykey
  .text.add_key_byte
-                0x0000000000003c7c       0x34 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/report.o
-                0x0000000000003c7c                add_key_byte
+                0x0000000000003c78       0x34 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/report.o
+                0x0000000000003c78                add_key_byte
  .text.del_key_byte
-                0x0000000000003cb0       0x1a .build/obj_Dactylv2_Lightcycle_rev2_Default/common/report.o
-                0x0000000000003cb0                del_key_byte
+                0x0000000000003cac       0x1a .build/obj_Dactylv2_Lightcycle_rev2_Default/common/report.o
+                0x0000000000003cac                del_key_byte
  .text.add_key_to_report
-                0x0000000000003cca        0x4 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/report.o
-                0x0000000000003cca                add_key_to_report
+                0x0000000000003cc6        0x4 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/report.o
+                0x0000000000003cc6                add_key_to_report
  .text.del_key_from_report
-                0x0000000000003cce        0x4 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/report.o
-                0x0000000000003cce                del_key_from_report
+                0x0000000000003cca        0x4 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/report.o
+                0x0000000000003cca                del_key_from_report
  .text.clear_keys_from_report
-                0x0000000000003cd2       0x12 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/report.o
-                0x0000000000003cd2                clear_keys_from_report
+                0x0000000000003cce       0x12 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/report.o
+                0x0000000000003cce                clear_keys_from_report
  .text.suspend_power_down
-                0x0000000000003ce4       0x58 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/avr/suspend.o
-                0x0000000000003ce4                suspend_power_down
+                0x0000000000003ce0       0x58 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/avr/suspend.o
+                0x0000000000003ce0                suspend_power_down
  .text.matrix_power_up
-                0x0000000000003d3c        0x2 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/avr/suspend.o
-                0x0000000000003d3c                matrix_power_up
+                0x0000000000003d38        0x2 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/avr/suspend.o
+                0x0000000000003d38                matrix_power_up
  .text.matrix_power_down
-                0x0000000000003d3e        0x2 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/avr/suspend.o
-                0x0000000000003d3e                matrix_power_down
+                0x0000000000003d3a        0x2 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/avr/suspend.o
+                0x0000000000003d3a                matrix_power_down
  .text.suspend_wakeup_condition
-                0x0000000000003d40       0x28 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/avr/suspend.o
-                0x0000000000003d40                suspend_wakeup_condition
+                0x0000000000003d3c       0x28 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/avr/suspend.o
+                0x0000000000003d3c                suspend_wakeup_condition
  .text.suspend_wakeup_init
-                0x0000000000003d68        0xc .build/obj_Dactylv2_Lightcycle_rev2_Default/common/avr/suspend.o
-                0x0000000000003d68                suspend_wakeup_init
+                0x0000000000003d64        0xc .build/obj_Dactylv2_Lightcycle_rev2_Default/common/avr/suspend.o
+                0x0000000000003d64                suspend_wakeup_init
  .text.__vector_12
-                0x0000000000003d74       0x4e .build/obj_Dactylv2_Lightcycle_rev2_Default/common/avr/suspend.o
-                0x0000000000003d74                __vector_12
+                0x0000000000003d70       0x4e .build/obj_Dactylv2_Lightcycle_rev2_Default/common/avr/suspend.o
+                0x0000000000003d70                __vector_12
  .text.timer_init
-                0x0000000000003dc2       0x12 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/avr/timer.o
-                0x0000000000003dc2                timer_init
+                0x0000000000003dbe       0x12 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/avr/timer.o
+                0x0000000000003dbe                timer_init
  .text.timer_read
-                0x0000000000003dd4       0x18 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/avr/timer.o
-                0x0000000000003dd4                timer_read
+                0x0000000000003dd0       0x18 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/avr/timer.o
+                0x0000000000003dd0                timer_read
  .text.timer_read32
-                0x0000000000003dec       0x18 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/avr/timer.o
-                0x0000000000003dec                timer_read32
+                0x0000000000003de8       0x18 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/avr/timer.o
+                0x0000000000003de8                timer_read32
  .text.timer_elapsed
-                0x0000000000003e04       0x54 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/avr/timer.o
-                0x0000000000003e04                timer_elapsed
+                0x0000000000003e00       0x54 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/avr/timer.o
+                0x0000000000003e00                timer_elapsed
  .text.__vector_21
-                0x0000000000003e58       0x48 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/avr/timer.o
-                0x0000000000003e58                __vector_21
+                0x0000000000003e54       0x48 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/avr/timer.o
+                0x0000000000003e54                __vector_21
  .text.bootloader_jump
-                0x0000000000003ea0       0x22 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/avr/bootloader.o
-                0x0000000000003ea0                bootloader_jump
- .text.magic    0x0000000000003ec2       0x32 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/magic.o
-                0x0000000000003ec2                magic
+                0x0000000000003e9c       0x22 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/avr/bootloader.o
+                0x0000000000003e9c                bootloader_jump
+ .text.magic    0x0000000000003ebe       0x32 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/magic.o
+                0x0000000000003ebe                magic
  .text.move_unit
-                0x0000000000003ef4       0x94 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/mousekey.o
+                0x0000000000003ef0       0x94 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/mousekey.o
  .text.wheel_unit
-                0x0000000000003f88       0x72 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/mousekey.o
+                0x0000000000003f84       0x72 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/mousekey.o
  .text.mousekey_on
-                0x0000000000003ffa       0xd0 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/mousekey.o
-                0x0000000000003ffa                mousekey_on
+                0x0000000000003ff6       0xd0 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/mousekey.o
+                0x0000000000003ff6                mousekey_on
  .text.mousekey_off
-                0x00000000000040ca       0xfe .build/obj_Dactylv2_Lightcycle_rev2_Default/common/mousekey.o
-                0x00000000000040ca                mousekey_off
+                0x00000000000040c6       0xfe .build/obj_Dactylv2_Lightcycle_rev2_Default/common/mousekey.o
+                0x00000000000040c6                mousekey_off
  .text.mousekey_send
-                0x00000000000041c8      0x11a .build/obj_Dactylv2_Lightcycle_rev2_Default/common/mousekey.o
-                0x00000000000041c8                mousekey_send
+                0x00000000000041c4      0x11a .build/obj_Dactylv2_Lightcycle_rev2_Default/common/mousekey.o
+                0x00000000000041c4                mousekey_send
  .text.mousekey_task
-                0x00000000000042e2      0x114 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/mousekey.o
-                0x00000000000042e2                mousekey_task
+                0x00000000000042de      0x114 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/mousekey.o
+                0x00000000000042de                mousekey_task
  .text.mousekey_clear
-                0x00000000000043f6       0x18 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/mousekey.o
-                0x00000000000043f6                mousekey_clear
+                0x00000000000043f2       0x18 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/mousekey.o
+                0x00000000000043f2                mousekey_clear
  .text.mousekey_console_help
-                0x000000000000440e       0x2e .build/obj_Dactylv2_Lightcycle_rev2_Default/common/command.o
+                0x000000000000440a       0x2e .build/obj_Dactylv2_Lightcycle_rev2_Default/common/command.o
  .text.mousekey_param_inc
-                0x000000000000443c      0x148 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/command.o
+                0x0000000000004438      0x148 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/command.o
  .text.mousekey_param_dec
-                0x0000000000004584       0xfe .build/obj_Dactylv2_Lightcycle_rev2_Default/common/command.o
+                0x0000000000004580       0xfe .build/obj_Dactylv2_Lightcycle_rev2_Default/common/command.o
  .text.switch_default_layer
-                0x0000000000004682       0x3c .build/obj_Dactylv2_Lightcycle_rev2_Default/common/command.o
+                0x000000000000467e       0x3c .build/obj_Dactylv2_Lightcycle_rev2_Default/common/command.o
  .text.command_common
-                0x00000000000046be      0x202 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/command.o
+                0x00000000000046ba      0x202 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/command.o
  .text.command_extra
-                0x00000000000048c0        0x4 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/command.o
-                0x00000000000048c0                command_extra
+                0x00000000000048bc        0x4 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/command.o
+                0x00000000000048bc                command_extra
  .text.command_console_extra
-                0x00000000000048c4        0x4 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/command.o
-                0x00000000000048c4                command_console_extra
+                0x00000000000048c0        0x4 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/command.o
+                0x00000000000048c0                command_console_extra
  .text.numkey2num
-                0x00000000000048c8       0x16 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/command.o
-                0x00000000000048c8                numkey2num
+                0x00000000000048c4       0x16 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/command.o
+                0x00000000000048c4                numkey2num
  .text.command_proc
-                0x00000000000048de      0x28e .build/obj_Dactylv2_Lightcycle_rev2_Default/common/command.o
-                0x00000000000048de                command_proc
+                0x00000000000048da      0x28e .build/obj_Dactylv2_Lightcycle_rev2_Default/common/command.o
+                0x00000000000048da                command_proc
  .text.keyboard_leds
-                0x0000000000004b6c        0x6 .build/obj_Dactylv2_Lightcycle_rev2_Default/lufa.o
+                0x0000000000004b68        0x6 .build/obj_Dactylv2_Lightcycle_rev2_Default/lufa.o
  .text.sendchar
-                0x0000000000004b72       0xc4 .build/obj_Dactylv2_Lightcycle_rev2_Default/lufa.o
-                0x0000000000004b72                sendchar
+                0x0000000000004b6e       0xc4 .build/obj_Dactylv2_Lightcycle_rev2_Default/lufa.o
+                0x0000000000004b6e                sendchar
  .text.send_consumer
-                0x0000000000004c36       0x74 .build/obj_Dactylv2_Lightcycle_rev2_Default/lufa.o
+                0x0000000000004c32       0x74 .build/obj_Dactylv2_Lightcycle_rev2_Default/lufa.o
  .text.send_system
-                0x0000000000004caa       0x6c .build/obj_Dactylv2_Lightcycle_rev2_Default/lufa.o
+                0x0000000000004ca6       0x6c .build/obj_Dactylv2_Lightcycle_rev2_Default/lufa.o
  .text.send_mouse
-                0x0000000000004d16       0x56 .build/obj_Dactylv2_Lightcycle_rev2_Default/lufa.o
+                0x0000000000004d12       0x56 .build/obj_Dactylv2_Lightcycle_rev2_Default/lufa.o
  .text.send_keyboard
-                0x0000000000004d6c       0x66 .build/obj_Dactylv2_Lightcycle_rev2_Default/lufa.o
+                0x0000000000004d68       0x66 .build/obj_Dactylv2_Lightcycle_rev2_Default/lufa.o
  .text.EVENT_USB_Device_Connect
-                0x0000000000004dd2       0x24 .build/obj_Dactylv2_Lightcycle_rev2_Default/lufa.o
-                0x0000000000004dd2                EVENT_USB_Device_Connect
+                0x0000000000004dce       0x24 .build/obj_Dactylv2_Lightcycle_rev2_Default/lufa.o
+                0x0000000000004dce                EVENT_USB_Device_Connect
  .text.EVENT_USB_Device_Disconnect
-                0x0000000000004df6        0xe .build/obj_Dactylv2_Lightcycle_rev2_Default/lufa.o
-                0x0000000000004df6                EVENT_USB_Device_Disconnect
+                0x0000000000004df2        0xe .build/obj_Dactylv2_Lightcycle_rev2_Default/lufa.o
+                0x0000000000004df2                EVENT_USB_Device_Disconnect
  .text.EVENT_USB_Device_Reset
-                0x0000000000004e04        0x8 .build/obj_Dactylv2_Lightcycle_rev2_Default/lufa.o
-                0x0000000000004e04                EVENT_USB_Device_Reset
+                0x0000000000004e00        0x8 .build/obj_Dactylv2_Lightcycle_rev2_Default/lufa.o
+                0x0000000000004e00                EVENT_USB_Device_Reset
  .text.EVENT_USB_Device_Suspend
-                0x0000000000004e0c        0x8 .build/obj_Dactylv2_Lightcycle_rev2_Default/lufa.o
-                0x0000000000004e0c                EVENT_USB_Device_Suspend
+                0x0000000000004e08        0x8 .build/obj_Dactylv2_Lightcycle_rev2_Default/lufa.o
+                0x0000000000004e08                EVENT_USB_Device_Suspend
  .text.EVENT_USB_Device_WakeUp
-                0x0000000000004e14        0xc .build/obj_Dactylv2_Lightcycle_rev2_Default/lufa.o
-                0x0000000000004e14                EVENT_USB_Device_WakeUp
+                0x0000000000004e10        0xc .build/obj_Dactylv2_Lightcycle_rev2_Default/lufa.o
+                0x0000000000004e10                EVENT_USB_Device_WakeUp
  .text.EVENT_USB_Device_StartOfFrame
-                0x0000000000004e20       0x82 .build/obj_Dactylv2_Lightcycle_rev2_Default/lufa.o
-                0x0000000000004e20                EVENT_USB_Device_StartOfFrame
+                0x0000000000004e1c       0x82 .build/obj_Dactylv2_Lightcycle_rev2_Default/lufa.o
+                0x0000000000004e1c                EVENT_USB_Device_StartOfFrame
  .text.EVENT_USB_Device_ConfigurationChanged
-                0x0000000000004ea2       0x28 .build/obj_Dactylv2_Lightcycle_rev2_Default/lufa.o
-                0x0000000000004ea2                EVENT_USB_Device_ConfigurationChanged
+                0x0000000000004e9e       0x28 .build/obj_Dactylv2_Lightcycle_rev2_Default/lufa.o
+                0x0000000000004e9e                EVENT_USB_Device_ConfigurationChanged
  .text.EVENT_USB_Device_ControlRequest
-                0x0000000000004eca      0x154 .build/obj_Dactylv2_Lightcycle_rev2_Default/lufa.o
-                0x0000000000004eca                EVENT_USB_Device_ControlRequest
+                0x0000000000004ec6      0x154 .build/obj_Dactylv2_Lightcycle_rev2_Default/lufa.o
+                0x0000000000004ec6                EVENT_USB_Device_ControlRequest
  .text.startup.main
-                0x000000000000501e       0x8e .build/obj_Dactylv2_Lightcycle_rev2_Default/lufa.o
-                0x000000000000501e                main
+                0x000000000000501a       0x8e .build/obj_Dactylv2_Lightcycle_rev2_Default/lufa.o
+                0x000000000000501a                main
  .text.CALLBACK_USB_GetDescriptor
-                0x00000000000050ac        0x4 .build/obj_Dactylv2_Lightcycle_rev2_Default/lufa.o
-                0x00000000000050ac                CALLBACK_USB_GetDescriptor
+                0x00000000000050a8        0x4 .build/obj_Dactylv2_Lightcycle_rev2_Default/lufa.o
+                0x00000000000050a8                CALLBACK_USB_GetDescriptor
  .text.get_usb_descriptor
-                0x00000000000050b0       0xba .build/obj_Dactylv2_Lightcycle_rev2_Default/usb_descriptor.o
-                0x00000000000050b0                get_usb_descriptor
+                0x00000000000050ac       0xba .build/obj_Dactylv2_Lightcycle_rev2_Default/usb_descriptor.o
+                0x00000000000050ac                get_usb_descriptor
  .text.set_output_user
-                0x000000000000516a        0x2 .build/obj_Dactylv2_Lightcycle_rev2_Default/outputselect.o
-                0x000000000000516a                set_output_user
+                0x0000000000005166        0x2 .build/obj_Dactylv2_Lightcycle_rev2_Default/outputselect.o
+                0x0000000000005166                set_output_user
  .text.set_output
-                0x000000000000516c       0x10 .build/obj_Dactylv2_Lightcycle_rev2_Default/outputselect.o
-                0x000000000000516c                set_output
+                0x0000000000005168       0x10 .build/obj_Dactylv2_Lightcycle_rev2_Default/outputselect.o
+                0x0000000000005168                set_output
  .text.auto_detect_output
-                0x000000000000517c       0x10 .build/obj_Dactylv2_Lightcycle_rev2_Default/outputselect.o
-                0x000000000000517c                auto_detect_output
+                0x0000000000005178       0x10 .build/obj_Dactylv2_Lightcycle_rev2_Default/outputselect.o
+                0x0000000000005178                auto_detect_output
  .text.where_to_send
-                0x000000000000518c        0xe .build/obj_Dactylv2_Lightcycle_rev2_Default/outputselect.o
-                0x000000000000518c                where_to_send
+                0x0000000000005188        0xe .build/obj_Dactylv2_Lightcycle_rev2_Default/outputselect.o
+                0x0000000000005188                where_to_send
  .text.USB_Device_SendRemoteWakeup
-                0x000000000000519a       0x2c .build/obj_Dactylv2_Lightcycle_rev2_Default/./lib/lufa/LUFA/Drivers/USB/Core/AVR8/Device_AVR8.o
-                0x000000000000519a                USB_Device_SendRemoteWakeup
+                0x0000000000005196       0x2c .build/obj_Dactylv2_Lightcycle_rev2_Default/./lib/lufa/LUFA/Drivers/USB/Core/AVR8/Device_AVR8.o
+                0x0000000000005196                USB_Device_SendRemoteWakeup
  .text.Endpoint_Write_Stream_LE
-                0x00000000000051c6       0x9e .build/obj_Dactylv2_Lightcycle_rev2_Default/./lib/lufa/LUFA/Drivers/USB/Core/AVR8/EndpointStream_AVR8.o
-                0x00000000000051c6                Endpoint_Write_Stream_LE
+                0x00000000000051c2       0x9e .build/obj_Dactylv2_Lightcycle_rev2_Default/./lib/lufa/LUFA/Drivers/USB/Core/AVR8/EndpointStream_AVR8.o
+                0x00000000000051c2                Endpoint_Write_Stream_LE
  .text.Endpoint_Write_Control_Stream_LE
-                0x0000000000005264       0xbc .build/obj_Dactylv2_Lightcycle_rev2_Default/./lib/lufa/LUFA/Drivers/USB/Core/AVR8/EndpointStream_AVR8.o
-                0x0000000000005264                Endpoint_Write_Control_Stream_LE
+                0x0000000000005260       0xbc .build/obj_Dactylv2_Lightcycle_rev2_Default/./lib/lufa/LUFA/Drivers/USB/Core/AVR8/EndpointStream_AVR8.o
+                0x0000000000005260                Endpoint_Write_Control_Stream_LE
  .text.Endpoint_Write_Control_PStream_LE
-                0x0000000000005320       0xbe .build/obj_Dactylv2_Lightcycle_rev2_Default/./lib/lufa/LUFA/Drivers/USB/Core/AVR8/EndpointStream_AVR8.o
-                0x0000000000005320                Endpoint_Write_Control_PStream_LE
+                0x000000000000531c       0xbe .build/obj_Dactylv2_Lightcycle_rev2_Default/./lib/lufa/LUFA/Drivers/USB/Core/AVR8/EndpointStream_AVR8.o
+                0x000000000000531c                Endpoint_Write_Control_PStream_LE
  .text.Endpoint_ConfigureEndpoint_Prv
-                0x00000000000053de       0x68 .build/obj_Dactylv2_Lightcycle_rev2_Default/./lib/lufa/LUFA/Drivers/USB/Core/AVR8/Endpoint_AVR8.o
-                0x00000000000053de                Endpoint_ConfigureEndpoint_Prv
+                0x00000000000053da       0x68 .build/obj_Dactylv2_Lightcycle_rev2_Default/./lib/lufa/LUFA/Drivers/USB/Core/AVR8/Endpoint_AVR8.o
+                0x00000000000053da                Endpoint_ConfigureEndpoint_Prv
  .text.Endpoint_ClearStatusStage
-                0x0000000000005446       0x3e .build/obj_Dactylv2_Lightcycle_rev2_Default/./lib/lufa/LUFA/Drivers/USB/Core/AVR8/Endpoint_AVR8.o
-                0x0000000000005446                Endpoint_ClearStatusStage
+                0x0000000000005442       0x3e .build/obj_Dactylv2_Lightcycle_rev2_Default/./lib/lufa/LUFA/Drivers/USB/Core/AVR8/Endpoint_AVR8.o
+                0x0000000000005442                Endpoint_ClearStatusStage
  .text.Endpoint_WaitUntilReady
-                0x0000000000005484       0x62 .build/obj_Dactylv2_Lightcycle_rev2_Default/./lib/lufa/LUFA/Drivers/USB/Core/AVR8/Endpoint_AVR8.o
-                0x0000000000005484                Endpoint_WaitUntilReady
+                0x0000000000005480       0x62 .build/obj_Dactylv2_Lightcycle_rev2_Default/./lib/lufa/LUFA/Drivers/USB/Core/AVR8/Endpoint_AVR8.o
+                0x0000000000005480                Endpoint_WaitUntilReady
  .text.USB_Disable
-                0x00000000000054e6       0x34 .build/obj_Dactylv2_Lightcycle_rev2_Default/./lib/lufa/LUFA/Drivers/USB/Core/AVR8/USBController_AVR8.o
-                0x00000000000054e6                USB_Disable
+                0x00000000000054e2       0x34 .build/obj_Dactylv2_Lightcycle_rev2_Default/./lib/lufa/LUFA/Drivers/USB/Core/AVR8/USBController_AVR8.o
+                0x00000000000054e2                USB_Disable
  .text.USB_ResetInterface
-                0x000000000000551a       0x86 .build/obj_Dactylv2_Lightcycle_rev2_Default/./lib/lufa/LUFA/Drivers/USB/Core/AVR8/USBController_AVR8.o
-                0x000000000000551a                USB_ResetInterface
+                0x0000000000005516       0x86 .build/obj_Dactylv2_Lightcycle_rev2_Default/./lib/lufa/LUFA/Drivers/USB/Core/AVR8/USBController_AVR8.o
+                0x0000000000005516                USB_ResetInterface
  .text.USB_Init
-                0x00000000000055a0       0x22 .build/obj_Dactylv2_Lightcycle_rev2_Default/./lib/lufa/LUFA/Drivers/USB/Core/AVR8/USBController_AVR8.o
-                0x00000000000055a0                USB_Init
+                0x000000000000559c       0x22 .build/obj_Dactylv2_Lightcycle_rev2_Default/./lib/lufa/LUFA/Drivers/USB/Core/AVR8/USBController_AVR8.o
+                0x000000000000559c                USB_Init
  .text.USB_INT_DisableAllInterrupts
-                0x00000000000055c2       0x10 .build/obj_Dactylv2_Lightcycle_rev2_Default/./lib/lufa/LUFA/Drivers/USB/Core/AVR8/USBInterrupt_AVR8.o
-                0x00000000000055c2                USB_INT_DisableAllInterrupts
+                0x00000000000055be       0x10 .build/obj_Dactylv2_Lightcycle_rev2_Default/./lib/lufa/LUFA/Drivers/USB/Core/AVR8/USBInterrupt_AVR8.o
+                0x00000000000055be                USB_INT_DisableAllInterrupts
  .text.USB_INT_ClearAllInterrupts
-                0x00000000000055d2        0xa .build/obj_Dactylv2_Lightcycle_rev2_Default/./lib/lufa/LUFA/Drivers/USB/Core/AVR8/USBInterrupt_AVR8.o
-                0x00000000000055d2                USB_INT_ClearAllInterrupts
+                0x00000000000055ce        0xa .build/obj_Dactylv2_Lightcycle_rev2_Default/./lib/lufa/LUFA/Drivers/USB/Core/AVR8/USBInterrupt_AVR8.o
+                0x00000000000055ce                USB_INT_ClearAllInterrupts
  .text.__vector_10
-                0x00000000000055dc      0x1a8 .build/obj_Dactylv2_Lightcycle_rev2_Default/./lib/lufa/LUFA/Drivers/USB/Core/AVR8/USBInterrupt_AVR8.o
-                0x00000000000055dc                __vector_10
+                0x00000000000055d8      0x1a8 .build/obj_Dactylv2_Lightcycle_rev2_Default/./lib/lufa/LUFA/Drivers/USB/Core/AVR8/USBInterrupt_AVR8.o
+                0x00000000000055d8                __vector_10
  .text.__vector_11
-                0x0000000000005784       0x88 .build/obj_Dactylv2_Lightcycle_rev2_Default/./lib/lufa/LUFA/Drivers/USB/Core/AVR8/USBInterrupt_AVR8.o
-                0x0000000000005784                __vector_11
+                0x0000000000005780       0x88 .build/obj_Dactylv2_Lightcycle_rev2_Default/./lib/lufa/LUFA/Drivers/USB/Core/AVR8/USBInterrupt_AVR8.o
+                0x0000000000005780                __vector_11
  .text.USB_Device_ProcessControlRequest
-                0x000000000000580c      0x2a4 .build/obj_Dactylv2_Lightcycle_rev2_Default/./lib/lufa/LUFA/Drivers/USB/Core/DeviceStandardReq.o
-                0x000000000000580c                USB_Device_ProcessControlRequest
+                0x0000000000005808      0x2a4 .build/obj_Dactylv2_Lightcycle_rev2_Default/./lib/lufa/LUFA/Drivers/USB/Core/DeviceStandardReq.o
+                0x0000000000005808                USB_Device_ProcessControlRequest
  .text.USB_USBTask
-                0x0000000000005ab0       0x36 .build/obj_Dactylv2_Lightcycle_rev2_Default/./lib/lufa/LUFA/Drivers/USB/Core/USBTask.o
-                0x0000000000005ab0                USB_USBTask
+                0x0000000000005aac       0x36 .build/obj_Dactylv2_Lightcycle_rev2_Default/./lib/lufa/LUFA/Drivers/USB/Core/USBTask.o
+                0x0000000000005aac                USB_USBTask
  .text.libgcc.div
-                0x0000000000005ae6       0x18 /usr/local/Cellar/avr-gcc@8/8.3.0_1/lib/avr-gcc/8/gcc/avr/8.3.0/avr5/libgcc.a(_udivmodqi4.o)
-                0x0000000000005ae6                __udivmodqi4
+                0x0000000000005ae2       0x18 /usr/local/Cellar/avr-gcc@8/8.3.0_1/lib/avr-gcc/8/gcc/avr/8.3.0/avr5/libgcc.a(_udivmodqi4.o)
+                0x0000000000005ae2                __udivmodqi4
  .text.libgcc.div
-                0x0000000000005afe       0x28 /usr/local/Cellar/avr-gcc@8/8.3.0_1/lib/avr-gcc/8/gcc/avr/8.3.0/avr5/libgcc.a(_divmodhi4.o)
-                0x0000000000005afe                __divmodhi4
-                0x0000000000005afe                _div
- .text.libgcc   0x0000000000005b26        0xc /usr/local/Cellar/avr-gcc@8/8.3.0_1/lib/avr-gcc/8/gcc/avr/8.3.0/avr5/libgcc.a(_tablejump2.o)
-                0x0000000000005b26                __tablejump2__
+                0x0000000000005afa       0x28 /usr/local/Cellar/avr-gcc@8/8.3.0_1/lib/avr-gcc/8/gcc/avr/8.3.0/avr5/libgcc.a(_divmodhi4.o)
+                0x0000000000005afa                __divmodhi4
+                0x0000000000005afa                _div
+ .text.libgcc   0x0000000000005b22        0xc /usr/local/Cellar/avr-gcc@8/8.3.0_1/lib/avr-gcc/8/gcc/avr/8.3.0/avr5/libgcc.a(_tablejump2.o)
+                0x0000000000005b22                __tablejump2__
  .text.libgcc.div
-                0x0000000000005b32       0x28 /usr/local/Cellar/avr-gcc@8/8.3.0_1/lib/avr-gcc/8/gcc/avr/8.3.0/avr5/libgcc.a(_udivmodhi4.o)
-                0x0000000000005b32                __udivmodhi4
+                0x0000000000005b2e       0x28 /usr/local/Cellar/avr-gcc@8/8.3.0_1/lib/avr-gcc/8/gcc/avr/8.3.0/avr5/libgcc.a(_udivmodhi4.o)
+                0x0000000000005b2e                __udivmodhi4
  .text.avr-libc
-                0x0000000000005b5a       0x10 /usr/local/Cellar/avr-gcc@8/8.3.0_1/lib/avr-gcc/8/gcc/avr/8.3.0/../../../../../../avr/lib/avr5/libatmega32u4.a(eerd_byte.o)
-                0x0000000000005b5a                eeprom_read_byte
+                0x0000000000005b56       0x10 /usr/local/Cellar/avr-gcc@8/8.3.0_1/lib/avr-gcc/8/gcc/avr/8.3.0/../../../../../../avr/lib/avr5/libatmega32u4.a(eerd_byte.o)
+                0x0000000000005b56                eeprom_read_byte
  .text.avr-libc
-                0x0000000000005b6a        0xc /usr/local/Cellar/avr-gcc@8/8.3.0_1/lib/avr-gcc/8/gcc/avr/8.3.0/../../../../../../avr/lib/avr5/libatmega32u4.a(eerd_word.o)
-                0x0000000000005b6a                eeprom_read_word
+                0x0000000000005b66        0xc /usr/local/Cellar/avr-gcc@8/8.3.0_1/lib/avr-gcc/8/gcc/avr/8.3.0/../../../../../../avr/lib/avr5/libatmega32u4.a(eerd_word.o)
+                0x0000000000005b66                eeprom_read_word
  .text.avr-libc
-                0x0000000000005b76       0x24 /usr/local/Cellar/avr-gcc@8/8.3.0_1/lib/avr-gcc/8/gcc/avr/8.3.0/../../../../../../avr/lib/avr5/libatmega32u4.a(eeupd_byte.o)
-                0x0000000000005b76                eeprom_update_byte
-                0x0000000000005b78                eeprom_update_r18
+                0x0000000000005b72       0x24 /usr/local/Cellar/avr-gcc@8/8.3.0_1/lib/avr-gcc/8/gcc/avr/8.3.0/../../../../../../avr/lib/avr5/libatmega32u4.a(eeupd_byte.o)
+                0x0000000000005b72                eeprom_update_byte
+                0x0000000000005b74                eeprom_update_r18
  .text.avr-libc
-                0x0000000000005b9a        0xc /usr/local/Cellar/avr-gcc@8/8.3.0_1/lib/avr-gcc/8/gcc/avr/8.3.0/../../../../../../avr/lib/avr5/libatmega32u4.a(eeupd_word.o)
-                0x0000000000005b9a                eeprom_update_word
+                0x0000000000005b96        0xc /usr/local/Cellar/avr-gcc@8/8.3.0_1/lib/avr-gcc/8/gcc/avr/8.3.0/../../../../../../avr/lib/avr5/libatmega32u4.a(eeupd_word.o)
+                0x0000000000005b96                eeprom_update_word
  .text.avr-libc
-                0x0000000000005ba6       0x20 /usr/local/Cellar/avr-gcc@8/8.3.0_1/lib/avr-gcc/8/gcc/avr/8.3.0/../../../../../../avr/lib/avr5/libatmega32u4.a(eerd_block.o)
-                0x0000000000005ba6                eeprom_read_block
-                0x0000000000005baa                eeprom_read_blraw
-                0x0000000000005bc6                . = ALIGN (0x2)
+                0x0000000000005ba2       0x20 /usr/local/Cellar/avr-gcc@8/8.3.0_1/lib/avr-gcc/8/gcc/avr/8.3.0/../../../../../../avr/lib/avr5/libatmega32u4.a(eerd_block.o)
+                0x0000000000005ba2                eeprom_read_block
+                0x0000000000005ba6                eeprom_read_blraw
+                0x0000000000005bc2                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x0000000000005bc6        0x0 /usr/local/Cellar/avr-gcc@8/8.3.0_1/lib/avr-gcc/8/gcc/avr/8.3.0/avr5/libgcc.a(_exit.o)
-                0x0000000000005bc6                exit
-                0x0000000000005bc6                _exit
+ .fini9         0x0000000000005bc2        0x0 /usr/local/Cellar/avr-gcc@8/8.3.0_1/lib/avr-gcc/8/gcc/avr/8.3.0/avr5/libgcc.a(_exit.o)
+                0x0000000000005bc2                exit
+                0x0000000000005bc2                _exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -2008,27 +2008,27 @@ END GROUP
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x0000000000005bc6        0x4 /usr/local/Cellar/avr-gcc@8/8.3.0_1/lib/avr-gcc/8/gcc/avr/8.3.0/avr5/libgcc.a(_exit.o)
+ .fini0         0x0000000000005bc2        0x4 /usr/local/Cellar/avr-gcc@8/8.3.0_1/lib/avr-gcc/8/gcc/avr/8.3.0/avr5/libgcc.a(_exit.o)
  *(.fini0)
  *(.hightext)
  *(.hightext*)
  *(.progmemx.*)
-                0x0000000000005bca                . = ALIGN (0x2)
+                0x0000000000005bc6                . = ALIGN (0x2)
  *(.jumptables)
  *(.jumptables*)
  .jumptables.gcc.action_get_macro
-                0x0000000000005bca       0x20 .build/obj_Dactylv2_Lightcycle_rev2_Default/keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.o
+                0x0000000000005bc6       0x20 .build/obj_Dactylv2_Lightcycle_rev2_Default/keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.o
  .jumptables.gcc.process_record_quantum
-                0x0000000000005bea       0x24 .build/obj_Dactylv2_Lightcycle_rev2_Default/quantum/quantum.o
+                0x0000000000005be6       0x24 .build/obj_Dactylv2_Lightcycle_rev2_Default/quantum/quantum.o
  .jumptables.gcc.process_action
-                0x0000000000005c0e       0x4a .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action.o
+                0x0000000000005c0a       0x4a .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action.o
  .jumptables.gcc.is_tap_key
-                0x0000000000005c58       0x1c .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action.o
+                0x0000000000005c54       0x1c .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action.o
  .jumptables.gcc.USB_Device_ProcessControlRequest
-                0x0000000000005c74       0x14 .build/obj_Dactylv2_Lightcycle_rev2_Default/./lib/lufa/LUFA/Drivers/USB/Core/DeviceStandardReq.o
-                0x0000000000005c88                _etext = .
+                0x0000000000005c70       0x14 .build/obj_Dactylv2_Lightcycle_rev2_Default/./lib/lufa/LUFA/Drivers/USB/Core/DeviceStandardReq.o
+                0x0000000000005c84                _etext = .
 
-.data           0x0000000000800100       0x96 load address 0x0000000000005c88
+.data           0x0000000000800100       0x96 load address 0x0000000000005c84
                 0x0000000000800100                PROVIDE (__data_start = .)
  *(.data)
  *(.data*)
@@ -2212,8 +2212,8 @@ END GROUP
                 0x0000000000800262                USB_DeviceState
                 0x0000000000800263                USB_ControlRequest
                 0x000000000080026b                PROVIDE (__bss_end = .)
-                0x0000000000005c88                __data_load_start = LOADADDR (.data)
-                0x0000000000005d1e                __data_load_end = (__data_load_start + SIZEOF (.data))
+                0x0000000000005c84                __data_load_start = LOADADDR (.data)
+                0x0000000000005d1a                __data_load_end = (__data_load_start + SIZEOF (.data))
 
 .noinit         0x000000000080026b        0x4
                 [!provide]                        PROVIDE (__noinit_start = .)
@@ -2516,54 +2516,54 @@ END GROUP
  .debug_abbrev  0x0000000000006530       0x14 /usr/local/Cellar/avr-gcc@8/8.3.0_1/lib/avr-gcc/8/gcc/avr/8.3.0/avr5/libgcc.a(_clear_bss.o)
  .debug_abbrev  0x0000000000006544       0x14 /usr/local/Cellar/avr-gcc@8/8.3.0_1/lib/avr-gcc/8/gcc/avr/8.3.0/avr5/libgcc.a(_udivmodhi4.o)
 
-.debug_line     0x0000000000000000    0x15474
+.debug_line     0x0000000000000000    0x1546c
  *(.debug_line .debug_line.* .debug_line_end)
  .debug_line    0x0000000000000000       0x1d /usr/local/Cellar/avr-gcc@8/8.3.0_1/lib/avr-gcc/8/gcc/avr/8.3.0/../../../../../../avr/lib/avr5/crtatmega32u4.o
  .debug_line    0x000000000000001d      0xbdd .build/obj_Dactylv2_Lightcycle_rev2_Default/matrix.o
- .debug_line    0x0000000000000bfa      0x2ac .build/obj_Dactylv2_Lightcycle_rev2_Default/split_util.o
- .debug_line    0x0000000000000ea6      0xa32 .build/obj_Dactylv2_Lightcycle_rev2_Default/serial.o
- .debug_line    0x00000000000018d8      0x236 .build/obj_Dactylv2_Lightcycle_rev2_Default/keyboards/Dactylv2_Lightcycle/rev2/rev2.o
- .debug_line    0x0000000000001b0e      0x7c4 .build/obj_Dactylv2_Lightcycle_rev2_Default/keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.o
- .debug_line    0x00000000000022d2     0x154e .build/obj_Dactylv2_Lightcycle_rev2_Default/quantum/quantum.o
- .debug_line    0x0000000000003820      0x824 .build/obj_Dactylv2_Lightcycle_rev2_Default/quantum/keymap_common.o
- .debug_line    0x0000000000004044      0x406 .build/obj_Dactylv2_Lightcycle_rev2_Default/quantum/keycode_config.o
- .debug_line    0x000000000000444a      0x3b0 .build/obj_Dactylv2_Lightcycle_rev2_Default/quantum/process_keycode/process_leader.o
- .debug_line    0x00000000000047fa      0x9fa .build/obj_Dactylv2_Lightcycle_rev2_Default/quantum/process_keycode/process_tap_dance.o
- .debug_line    0x00000000000051f4      0x403 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/host.o
- .debug_line    0x00000000000055f7      0x4d5 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/keyboard.o
- .debug_line    0x0000000000005acc     0x1463 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action.o
- .debug_line    0x0000000000006f2f      0xdec .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_tapping.o
- .debug_line    0x0000000000007d1b      0x456 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_macro.o
- .debug_line    0x0000000000008171      0x6b3 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_layer.o
- .debug_line    0x0000000000008824      0x813 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_util.o
- .debug_line    0x0000000000009037       0xbc .build/obj_Dactylv2_Lightcycle_rev2_Default/common/print.o
- .debug_line    0x00000000000090f3       0xa4 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/debug.o
- .debug_line    0x0000000000009197      0x6f4 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/util.o
- .debug_line    0x000000000000988b      0x235 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/eeconfig.o
- .debug_line    0x0000000000009ac0      0x3b7 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/report.o
- .debug_line    0x0000000000009e77      0x445 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/avr/suspend.o
- .debug_line    0x000000000000a2bc      0x4d5 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/avr/timer.o
- .debug_line    0x000000000000a791      0x273 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/avr/bootloader.o
- .debug_line    0x000000000000aa04      0x185 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/magic.o
- .debug_line    0x000000000000ab89      0xfc4 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/mousekey.o
- .debug_line    0x000000000000bb4d     0x1146 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/command.o
- .debug_line    0x000000000000cc93     0x1a8c .build/obj_Dactylv2_Lightcycle_rev2_Default/lufa.o
- .debug_line    0x000000000000e71f      0x39b .build/obj_Dactylv2_Lightcycle_rev2_Default/usb_descriptor.o
- .debug_line    0x000000000000eaba      0x269 .build/obj_Dactylv2_Lightcycle_rev2_Default/outputselect.o
- .debug_line    0x000000000000ed23      0x244 .build/obj_Dactylv2_Lightcycle_rev2_Default/./lib/lufa/LUFA/Drivers/USB/Core/AVR8/Device_AVR8.o
- .debug_line    0x000000000000ef67     0x33ad .build/obj_Dactylv2_Lightcycle_rev2_Default/./lib/lufa/LUFA/Drivers/USB/Core/AVR8/EndpointStream_AVR8.o
- .debug_line    0x0000000000012314      0x99e .build/obj_Dactylv2_Lightcycle_rev2_Default/./lib/lufa/LUFA/Drivers/USB/Core/AVR8/Endpoint_AVR8.o
- .debug_line    0x0000000000012cb2      0x695 .build/obj_Dactylv2_Lightcycle_rev2_Default/./lib/lufa/LUFA/Drivers/USB/Core/AVR8/USBController_AVR8.o
- .debug_line    0x0000000000013347      0xd37 .build/obj_Dactylv2_Lightcycle_rev2_Default/./lib/lufa/LUFA/Drivers/USB/Core/AVR8/USBInterrupt_AVR8.o
- .debug_line    0x000000000001407e      0xd61 .build/obj_Dactylv2_Lightcycle_rev2_Default/./lib/lufa/LUFA/Drivers/USB/Core/DeviceStandardReq.o
- .debug_line    0x0000000000014ddf      0x26e .build/obj_Dactylv2_Lightcycle_rev2_Default/./lib/lufa/LUFA/Drivers/USB/Core/USBTask.o
- .debug_line    0x000000000001504d       0x9d /usr/local/Cellar/avr-gcc@8/8.3.0_1/lib/avr-gcc/8/gcc/avr/8.3.0/avr5/libgcc.a(_udivmodqi4.o)
- .debug_line    0x00000000000150ea       0xc7 /usr/local/Cellar/avr-gcc@8/8.3.0_1/lib/avr-gcc/8/gcc/avr/8.3.0/avr5/libgcc.a(_divmodhi4.o)
- .debug_line    0x00000000000151b1       0x61 /usr/local/Cellar/avr-gcc@8/8.3.0_1/lib/avr-gcc/8/gcc/avr/8.3.0/avr5/libgcc.a(_exit.o)
- .debug_line    0x0000000000015212       0x79 /usr/local/Cellar/avr-gcc@8/8.3.0_1/lib/avr-gcc/8/gcc/avr/8.3.0/avr5/libgcc.a(_tablejump2.o)
- .debug_line    0x000000000001528b       0x97 /usr/local/Cellar/avr-gcc@8/8.3.0_1/lib/avr-gcc/8/gcc/avr/8.3.0/avr5/libgcc.a(_copy_data.o)
- .debug_line    0x0000000000015322       0x85 /usr/local/Cellar/avr-gcc@8/8.3.0_1/lib/avr-gcc/8/gcc/avr/8.3.0/avr5/libgcc.a(_clear_bss.o)
- .debug_line    0x00000000000153a7       0xcd /usr/local/Cellar/avr-gcc@8/8.3.0_1/lib/avr-gcc/8/gcc/avr/8.3.0/avr5/libgcc.a(_udivmodhi4.o)
+ .debug_line    0x0000000000000bfa      0x2a4 .build/obj_Dactylv2_Lightcycle_rev2_Default/split_util.o
+ .debug_line    0x0000000000000e9e      0xa32 .build/obj_Dactylv2_Lightcycle_rev2_Default/serial.o
+ .debug_line    0x00000000000018d0      0x236 .build/obj_Dactylv2_Lightcycle_rev2_Default/keyboards/Dactylv2_Lightcycle/rev2/rev2.o
+ .debug_line    0x0000000000001b06      0x7c4 .build/obj_Dactylv2_Lightcycle_rev2_Default/keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.o
+ .debug_line    0x00000000000022ca     0x154e .build/obj_Dactylv2_Lightcycle_rev2_Default/quantum/quantum.o
+ .debug_line    0x0000000000003818      0x824 .build/obj_Dactylv2_Lightcycle_rev2_Default/quantum/keymap_common.o
+ .debug_line    0x000000000000403c      0x406 .build/obj_Dactylv2_Lightcycle_rev2_Default/quantum/keycode_config.o
+ .debug_line    0x0000000000004442      0x3b0 .build/obj_Dactylv2_Lightcycle_rev2_Default/quantum/process_keycode/process_leader.o
+ .debug_line    0x00000000000047f2      0x9fa .build/obj_Dactylv2_Lightcycle_rev2_Default/quantum/process_keycode/process_tap_dance.o
+ .debug_line    0x00000000000051ec      0x403 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/host.o
+ .debug_line    0x00000000000055ef      0x4d5 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/keyboard.o
+ .debug_line    0x0000000000005ac4     0x1463 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action.o
+ .debug_line    0x0000000000006f27      0xdec .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_tapping.o
+ .debug_line    0x0000000000007d13      0x456 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_macro.o
+ .debug_line    0x0000000000008169      0x6b3 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_layer.o
+ .debug_line    0x000000000000881c      0x813 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/action_util.o
+ .debug_line    0x000000000000902f       0xbc .build/obj_Dactylv2_Lightcycle_rev2_Default/common/print.o
+ .debug_line    0x00000000000090eb       0xa4 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/debug.o
+ .debug_line    0x000000000000918f      0x6f4 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/util.o
+ .debug_line    0x0000000000009883      0x235 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/eeconfig.o
+ .debug_line    0x0000000000009ab8      0x3b7 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/report.o
+ .debug_line    0x0000000000009e6f      0x445 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/avr/suspend.o
+ .debug_line    0x000000000000a2b4      0x4d5 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/avr/timer.o
+ .debug_line    0x000000000000a789      0x273 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/avr/bootloader.o
+ .debug_line    0x000000000000a9fc      0x185 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/magic.o
+ .debug_line    0x000000000000ab81      0xfc4 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/mousekey.o
+ .debug_line    0x000000000000bb45     0x1146 .build/obj_Dactylv2_Lightcycle_rev2_Default/common/command.o
+ .debug_line    0x000000000000cc8b     0x1a8c .build/obj_Dactylv2_Lightcycle_rev2_Default/lufa.o
+ .debug_line    0x000000000000e717      0x39b .build/obj_Dactylv2_Lightcycle_rev2_Default/usb_descriptor.o
+ .debug_line    0x000000000000eab2      0x269 .build/obj_Dactylv2_Lightcycle_rev2_Default/outputselect.o
+ .debug_line    0x000000000000ed1b      0x244 .build/obj_Dactylv2_Lightcycle_rev2_Default/./lib/lufa/LUFA/Drivers/USB/Core/AVR8/Device_AVR8.o
+ .debug_line    0x000000000000ef5f     0x33ad .build/obj_Dactylv2_Lightcycle_rev2_Default/./lib/lufa/LUFA/Drivers/USB/Core/AVR8/EndpointStream_AVR8.o
+ .debug_line    0x000000000001230c      0x99e .build/obj_Dactylv2_Lightcycle_rev2_Default/./lib/lufa/LUFA/Drivers/USB/Core/AVR8/Endpoint_AVR8.o
+ .debug_line    0x0000000000012caa      0x695 .build/obj_Dactylv2_Lightcycle_rev2_Default/./lib/lufa/LUFA/Drivers/USB/Core/AVR8/USBController_AVR8.o
+ .debug_line    0x000000000001333f      0xd37 .build/obj_Dactylv2_Lightcycle_rev2_Default/./lib/lufa/LUFA/Drivers/USB/Core/AVR8/USBInterrupt_AVR8.o
+ .debug_line    0x0000000000014076      0xd61 .build/obj_Dactylv2_Lightcycle_rev2_Default/./lib/lufa/LUFA/Drivers/USB/Core/DeviceStandardReq.o
+ .debug_line    0x0000000000014dd7      0x26e .build/obj_Dactylv2_Lightcycle_rev2_Default/./lib/lufa/LUFA/Drivers/USB/Core/USBTask.o
+ .debug_line    0x0000000000015045       0x9d /usr/local/Cellar/avr-gcc@8/8.3.0_1/lib/avr-gcc/8/gcc/avr/8.3.0/avr5/libgcc.a(_udivmodqi4.o)
+ .debug_line    0x00000000000150e2       0xc7 /usr/local/Cellar/avr-gcc@8/8.3.0_1/lib/avr-gcc/8/gcc/avr/8.3.0/avr5/libgcc.a(_divmodhi4.o)
+ .debug_line    0x00000000000151a9       0x61 /usr/local/Cellar/avr-gcc@8/8.3.0_1/lib/avr-gcc/8/gcc/avr/8.3.0/avr5/libgcc.a(_exit.o)
+ .debug_line    0x000000000001520a       0x79 /usr/local/Cellar/avr-gcc@8/8.3.0_1/lib/avr-gcc/8/gcc/avr/8.3.0/avr5/libgcc.a(_tablejump2.o)
+ .debug_line    0x0000000000015283       0x97 /usr/local/Cellar/avr-gcc@8/8.3.0_1/lib/avr-gcc/8/gcc/avr/8.3.0/avr5/libgcc.a(_copy_data.o)
+ .debug_line    0x000000000001531a       0x85 /usr/local/Cellar/avr-gcc@8/8.3.0_1/lib/avr-gcc/8/gcc/avr/8.3.0/avr5/libgcc.a(_clear_bss.o)
+ .debug_line    0x000000000001539f       0xcd /usr/local/Cellar/avr-gcc@8/8.3.0_1/lib/avr-gcc/8/gcc/avr/8.3.0/avr5/libgcc.a(_udivmodhi4.o)
 
 .debug_frame    0x0000000000000000     0x2944
  *(.debug_frame)
