@@ -153,7 +153,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 		Y,Z,1,2,3,4,       5,6,7,8,9,0,
 		    , EXLM, AT, LCBR, RCBR, PIPE,     								 LT  , 7  , 8  , 9 , PAST   ,MINS,
 	//,----+----+----+----+----+----.   									 ,----+----+----+----+----+----.
-		UNDS, HASH, DLR, LPRN, RPRN, GRV, 									 GT  , 4 , 5  ,6   ,PMNS,    EQL,
+		UNDS, HASH, DLR, LPRN, RPRN, GRV, 									 GT  , 4 , 5  ,6   ,MINS,    EQL,
 	//|----+----+----+----+----+----| 									   |----+----+----+----+----+----|
 		    , PERC, CIRC, LBRC, RBRC, TILDE,								 AMPR  , 1  , 2  , 3  , PPLS,    ,
 	//|----+----+----+----+----+----|									    |----+----+----+----+----+----|
@@ -174,9 +174,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 	//,----+----+----+----+----+----.  								  ,----+----+----+----+----+----.
 	                                Y,Z,1,2,3,4,       5,6,7,8,9,0,
 
-	   ,   ,   ,  MS_U ,   ,   ,  								             LGOFF   ,  LGON , WH_U  ,  ,   ,,
+	   ,   ,   ,  MS_U ,   ,   ,  								        LGOFF   ,  LGON , WH_D  ,  ,   ,,
 	//,----+----+----+----+----+----.  								  ,----+----+----+----+----+----.
-		 ,  , MS_L  ,MS_D ,  MS_R ,   , 							 , WH_L , WH_D  ,  WH_R  ,   , MPLY   ,
+		 ,  , MS_L  ,MS_D ,  MS_R ,   , 							 , WH_R , WH_U  ,  WH_L  ,   , MPLY   ,
 	//|----+----+----+----+----+----|    								|----+----+----+----+----+----|
 		 ,   ,   ,   ,   ,   ,                                           MPRV  ,MNXT ,  VOLD , VOLU,   ,,
 	//|----+----+----+----+----+----| 								   |----+----+----+----+----+----|
