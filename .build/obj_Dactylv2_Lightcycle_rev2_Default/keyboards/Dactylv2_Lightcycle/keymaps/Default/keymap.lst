@@ -168,7 +168,7 @@
  153:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		Y,Z,1,2,3,4,       5,6,7,8,9,0,
  154:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		    , EXLM, AT, LCBR, RCBR, PIPE,     								 LT  , 7  , 8  , 9 , PAST   ,MINS,
  155:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	//,----+----+----+----+----+----.   									 ,----+----+----+----+----+----.
- 156:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		UNDS, HASH, DLR, LPRN, RPRN, GRV, 									 GT  , 4 , 5  ,6   ,PMNS,    EQL,
+ 156:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		UNDS, HASH, DLR, LPRN, RPRN, GRV, 									 GT  , 4 , 5  ,6   ,MINS,    EQL,
  157:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----| 									   |----+----+----+----+----+----|
  158:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		    , PERC, CIRC, LBRC, RBRC, TILDE,								 AMPR  , 1  , 2  , 3  , PPLS,    ,
  159:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|									    |----+----+----+----+----+----|
@@ -189,9 +189,9 @@
  174:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	//,----+----+----+----+----+----.  								  ,----+----+----+----+----+----.
  175:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	                                Y,Z,1,2,3,4,       5,6,7,8,9,0,
  176:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 
- 177:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	   ,   ,   ,  MS_U ,   ,   ,  								             LGOFF   ,  LGON , WH_U  ,  ,   ,,
+ 177:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	   ,   ,   ,  MS_U ,   ,   ,  								        LGOFF   ,  LGON , WH_D  ,  ,   ,,
  178:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	//,----+----+----+----+----+----.  								  ,----+----+----+----+----+----.
- 179:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		 ,  , MS_L  ,MS_D ,  MS_R ,   , 								             , WH_L , WH_D  ,  WH_R  ,   , MPLY   ,
+ 179:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		 ,  , MS_L  ,MS_D ,  MS_R ,   , 							 , WH_R , WH_U  ,  WH_L  ,   , MPLY   ,
  180:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|    								|----+----+----+----+----+----|
  181:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		 ,   ,   ,   ,   ,   ,                                           MPRV  ,MNXT ,  VOLD , VOLU,   ,,
  182:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----| 								   |----+----+----+----+----+----|
@@ -2084,7 +2084,7 @@
  1607 0110 2400      		.word	36
  1608 0112 3602      		.word	566
  1609 0114 2E00      		.word	46
- 1610 0116 5600      		.word	86
+ 1610 0116 2D00      		.word	45
  1611 0118 2300      		.word	35
  1612 011a 2200      		.word	34
  1613 011c 2100      		.word	33
@@ -2164,14 +2164,14 @@
  1687 01b0 0100      		.word	1
  1688 01b2 0100      		.word	1
  1689 01b4 0100      		.word	1
- 1690 01b6 F900      		.word	249
+ 1690 01b6 FA00      		.word	250
  1691 01b8 4C05      		.word	1356
  1692 01ba 0F08      		.word	2063
  1693 01bc AE00      		.word	174
  1694 01be 0100      		.word	1
- 1695 01c0 FC00      		.word	252
- 1696 01c2 FA00      		.word	250
- 1697 01c4 FB00      		.word	251
+ 1695 01c0 FB00      		.word	251
+ 1696 01c2 F900      		.word	249
+ 1697 01c4 FC00      		.word	252
  1698 01c6 0100      		.word	1
  1699 01c8 0100      		.word	1
  1700 01ca 0100      		.word	1
@@ -2221,56 +2221,56 @@
  1744               		.file 22 "./tmk_core/common/eeconfig.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 keymap.c
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc2ZBxn5.s:2      *ABS*:000000000000003e __SP_H__
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc2ZBxn5.s:3      *ABS*:000000000000003d __SP_L__
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc2ZBxn5.s:4      *ABS*:000000000000003f __SREG__
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc2ZBxn5.s:5      *ABS*:0000000000000000 __tmp_reg__
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc2ZBxn5.s:6      *ABS*:0000000000000001 __zero_reg__
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc2ZBxn5.s:13     .text.cmd_commands:0000000000000000 cmd_commands
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc2ZBxn5.s:1112   .progmem.data.__m.3340:0000000000000000 __m.3340
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc2ZBxn5.s:1099   .progmem.data.__m.3342:0000000000000000 __m.3342
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc2ZBxn5.s:1082   .progmem.data.__m.3344:0000000000000000 __m.3344
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc2ZBxn5.s:73     .text.cmd:0000000000000000 cmd
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc2ZBxn5.s:1049   .progmem.data.__m.3350:0000000000000000 __m.3350
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc2ZBxn5.s:960    .progmem.data.__m.3352:0000000000000000 __m.3352
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc2ZBxn5.s:897    .progmem.data.__m.3354:0000000000000000 __m.3354
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc2ZBxn5.s:132    .text.VirtualDesktop:0000000000000000 VirtualDesktop
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc2ZBxn5.s:880    .progmem.data.__m.3364:0000000000000000 __m.3364
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc2ZBxn5.s:863    .progmem.data.__m.3366:0000000000000000 __m.3366
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc2ZBxn5.s:185    .text.SLSH_BSLSH:0000000000000000 SLSH_BSLSH
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc2ZBxn5.s:226    .text.rgblight_toggle:0000000000000000 rgblight_toggle
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc2ZBxn5.s:245    .text.rgblight_step:0000000000000000 rgblight_step
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc2ZBxn5.s:260    .text.rgblight_step_reverse:0000000000000000 rgblight_step_reverse
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc2ZBxn5.s:275    .text.rgblight_increase_hue:0000000000000000 rgblight_increase_hue
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc2ZBxn5.s:290    .text.rgblight_decrease_hue:0000000000000000 rgblight_decrease_hue
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc2ZBxn5.s:305    .text.rgblight_increase_sat:0000000000000000 rgblight_increase_sat
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc2ZBxn5.s:320    .text.rgblight_decrease_sat:0000000000000000 rgblight_decrease_sat
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc2ZBxn5.s:335    .text.rgblight_increase_val:0000000000000000 rgblight_increase_val
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc2ZBxn5.s:350    .text.rgblight_decrease_val:0000000000000000 rgblight_decrease_val
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc2ZBxn5.s:365    .text.rgblight_increase_speed:0000000000000000 rgblight_increase_speed
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc2ZBxn5.s:380    .text.rgblight_decrease_speed:0000000000000000 rgblight_decrease_speed
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc2ZBxn5.s:395    .text.persistent_default_layer_set:0000000000000000 persistent_default_layer_set
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc2ZBxn5.s:436    .text.keyboard_post_init_user:0000000000000000 keyboard_post_init_user
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc2ZBxn5.s:461    .text.action_get_macro:0000000000000000 action_get_macro
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc2ZBxn5.s:1373   .progmem.data.__c.3302:0000000000000000 __c.3302
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc2ZBxn5.s:1368   .progmem.data.__c.3305:0000000000000000 __c.3305
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc2ZBxn5.s:1300   .progmem.data.__c.3319:0000000000000000 __c.3319
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc2ZBxn5.s:1295   .progmem.data.__c.3322:0000000000000000 __c.3322
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc2ZBxn5.s:1125   .progmem.data.__c.3334:0000000000000000 __c.3334
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc2ZBxn5.s:1431   .progmem.data.__m.3296:0000000000000000 __m.3296
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc2ZBxn5.s:1378   .progmem.data.__m.3299:0000000000000000 __m.3299
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc2ZBxn5.s:1345   .progmem.data.__m.3308:0000000000000000 __m.3308
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc2ZBxn5.s:1336   .progmem.data.__m.3312:0000000000000000 __m.3312
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc2ZBxn5.s:1305   .progmem.data.__m.3316:0000000000000000 __m.3316
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc2ZBxn5.s:1240   .progmem.data.__m.3325:0000000000000000 __m.3325
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc2ZBxn5.s:1185   .progmem.data.__m.3328:0000000000000000 __m.3328
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc2ZBxn5.s:1130   .progmem.data.__m.3331:0000000000000000 __m.3331
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc2ZBxn5.s:749    .text.matrix_init_user:0000000000000000 matrix_init_user
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc2ZBxn5.s:766    .text.matrix_scan_user:0000000000000000 matrix_scan_user
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc2ZBxn5.s:781    .text.process_record_user:0000000000000000 process_record_user
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc2ZBxn5.s:858    .progmem.data.__c.3379:0000000000000000 __c.3379
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc2ZBxn5.s:1445   .data.tap_dance_actions:0000000000000000 tap_dance_actions
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc2ZBxn5.s:1470   .progmem.data.keymaps:0000000000000000 keymaps
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:2      *ABS*:000000000000003e __SP_H__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:3      *ABS*:000000000000003d __SP_L__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:4      *ABS*:000000000000003f __SREG__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:5      *ABS*:0000000000000000 __tmp_reg__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:6      *ABS*:0000000000000001 __zero_reg__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:13     .text.cmd_commands:0000000000000000 cmd_commands
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:1112   .progmem.data.__m.3340:0000000000000000 __m.3340
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:1099   .progmem.data.__m.3342:0000000000000000 __m.3342
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:1082   .progmem.data.__m.3344:0000000000000000 __m.3344
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:73     .text.cmd:0000000000000000 cmd
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:1049   .progmem.data.__m.3350:0000000000000000 __m.3350
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:960    .progmem.data.__m.3352:0000000000000000 __m.3352
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:897    .progmem.data.__m.3354:0000000000000000 __m.3354
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:132    .text.VirtualDesktop:0000000000000000 VirtualDesktop
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:880    .progmem.data.__m.3364:0000000000000000 __m.3364
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:863    .progmem.data.__m.3366:0000000000000000 __m.3366
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:185    .text.SLSH_BSLSH:0000000000000000 SLSH_BSLSH
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:226    .text.rgblight_toggle:0000000000000000 rgblight_toggle
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:245    .text.rgblight_step:0000000000000000 rgblight_step
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:260    .text.rgblight_step_reverse:0000000000000000 rgblight_step_reverse
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:275    .text.rgblight_increase_hue:0000000000000000 rgblight_increase_hue
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:290    .text.rgblight_decrease_hue:0000000000000000 rgblight_decrease_hue
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:305    .text.rgblight_increase_sat:0000000000000000 rgblight_increase_sat
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:320    .text.rgblight_decrease_sat:0000000000000000 rgblight_decrease_sat
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:335    .text.rgblight_increase_val:0000000000000000 rgblight_increase_val
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:350    .text.rgblight_decrease_val:0000000000000000 rgblight_decrease_val
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:365    .text.rgblight_increase_speed:0000000000000000 rgblight_increase_speed
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:380    .text.rgblight_decrease_speed:0000000000000000 rgblight_decrease_speed
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:395    .text.persistent_default_layer_set:0000000000000000 persistent_default_layer_set
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:436    .text.keyboard_post_init_user:0000000000000000 keyboard_post_init_user
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:461    .text.action_get_macro:0000000000000000 action_get_macro
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:1373   .progmem.data.__c.3302:0000000000000000 __c.3302
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:1368   .progmem.data.__c.3305:0000000000000000 __c.3305
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:1300   .progmem.data.__c.3319:0000000000000000 __c.3319
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:1295   .progmem.data.__c.3322:0000000000000000 __c.3322
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:1125   .progmem.data.__c.3334:0000000000000000 __c.3334
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:1431   .progmem.data.__m.3296:0000000000000000 __m.3296
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:1378   .progmem.data.__m.3299:0000000000000000 __m.3299
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:1345   .progmem.data.__m.3308:0000000000000000 __m.3308
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:1336   .progmem.data.__m.3312:0000000000000000 __m.3312
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:1305   .progmem.data.__m.3316:0000000000000000 __m.3316
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:1240   .progmem.data.__m.3325:0000000000000000 __m.3325
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:1185   .progmem.data.__m.3328:0000000000000000 __m.3328
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:1130   .progmem.data.__m.3331:0000000000000000 __m.3331
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:749    .text.matrix_init_user:0000000000000000 matrix_init_user
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:766    .text.matrix_scan_user:0000000000000000 matrix_scan_user
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:781    .text.process_record_user:0000000000000000 process_record_user
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:858    .progmem.data.__c.3379:0000000000000000 __c.3379
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:1445   .data.tap_dance_actions:0000000000000000 tap_dance_actions
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:1470   .progmem.data.keymaps:0000000000000000 keymaps
 
 UNDEFINED SYMBOLS
 action_macro_play
