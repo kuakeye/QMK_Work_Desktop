@@ -10,8 +10,9 @@
   10               		.section	.text.default_layer_state_set_kb,"ax",@progbits
   11               		.weak	default_layer_state_set_kb
   13               	default_layer_state_set_kb:
-  14               	.LFB4:
-  15               		.file 1 "./tmk_core/common/action_layer.c"
+  14               	.LVL0:
+  15               	.LFB4:
+  16               		.file 1 "./tmk_core/common/action_layer.c"
    1:./tmk_core/common/action_layer.c **** #include <stdint.h>
    2:./tmk_core/common/action_layer.c **** #include "keyboard.h"
    3:./tmk_core/common/action_layer.c **** #include "action.h"
@@ -35,22 +36,25 @@
   21:./tmk_core/common/action_layer.c ****  */
   22:./tmk_core/common/action_layer.c **** __attribute__((weak))
   23:./tmk_core/common/action_layer.c **** uint32_t default_layer_state_set_kb(uint32_t state) {
-  16               		.loc 1 23 0
-  17               		.cfi_startproc
-  18               	.LVL0:
+  17               		.loc 1 23 53 view -0
+  18               		.cfi_startproc
   19               	/* prologue: function */
   20               	/* frame size = 0 */
   21               	/* stack size = 0 */
   22               	.L__stack_usage = 0
   24:./tmk_core/common/action_layer.c ****     return state;
+  23               		.loc 1 24 5 view .LVU1
+  24               	/* epilogue start */
   25:./tmk_core/common/action_layer.c **** }
-  23               		.loc 1 25 0
-  24 0000 0895      		ret
-  25               		.cfi_endproc
-  26               	.LFE4:
-  28               		.section	.text.default_layer_state_set,"ax",@progbits
-  30               	default_layer_state_set:
-  31               	.LFB5:
+  25               		.loc 1 25 1 is_stmt 0 view .LVU2
+  26 0000 0895      		ret
+  27               		.cfi_endproc
+  28               	.LFE4:
+  30               		.set	default_layer_state_set_kb.localalias.0,default_layer_state_set_kb
+  31               		.section	.text.default_layer_state_set,"ax",@progbits
+  33               	default_layer_state_set:
+  34               	.LVL1:
+  35               	.LFB5:
   26:./tmk_core/common/action_layer.c **** 
   27:./tmk_core/common/action_layer.c **** /** \brief Default Layer State Set
   28:./tmk_core/common/action_layer.c ****  *
@@ -58,36 +62,43 @@
   30:./tmk_core/common/action_layer.c ****  */
   31:./tmk_core/common/action_layer.c **** static void default_layer_state_set(uint32_t state)
   32:./tmk_core/common/action_layer.c **** {
-  32               		.loc 1 32 0
-  33               		.cfi_startproc
-  34               	.LVL1:
-  35               	/* prologue: function */
-  36               	/* frame size = 0 */
-  37               	/* stack size = 0 */
-  38               	.L__stack_usage = 0
+  36               		.loc 1 32 1 is_stmt 1 view -0
+  37               		.cfi_startproc
+  38               	/* prologue: function */
+  39               	/* frame size = 0 */
+  40               	/* stack size = 0 */
+  41               	.L__stack_usage = 0
   33:./tmk_core/common/action_layer.c ****     state = default_layer_state_set_kb(state);
-  39               		.loc 1 33 0
-  40 0000 0E94 0000 		call default_layer_state_set_kb
-  41               	.LVL2:
+  42               		.loc 1 33 5 view .LVU4
+  43               		.loc 1 33 13 is_stmt 0 view .LVU5
+  44 0000 0E94 0000 		call default_layer_state_set_kb
+  45               	.LVL2:
   34:./tmk_core/common/action_layer.c ****     debug("default_layer_state: ");
+  46               		.loc 1 34 35 is_stmt 1 view .LVU6
   35:./tmk_core/common/action_layer.c ****     default_layer_debug(); debug(" to ");
+  47               		.loc 1 35 5 view .LVU7
+  48               		.loc 1 35 41 view .LVU8
   36:./tmk_core/common/action_layer.c ****     default_layer_state = state;
-  42               		.loc 1 36 0
-  43 0004 6093 0000 		sts default_layer_state,r22
-  44 0008 7093 0000 		sts default_layer_state+1,r23
-  45 000c 8093 0000 		sts default_layer_state+2,r24
-  46 0010 9093 0000 		sts default_layer_state+3,r25
+  49               		.loc 1 36 5 view .LVU9
+  50               		.loc 1 36 25 is_stmt 0 view .LVU10
+  51 0004 6093 0000 		sts default_layer_state,r22
+  52 0008 7093 0000 		sts default_layer_state+1,r23
+  53 000c 8093 0000 		sts default_layer_state+2,r24
+  54 0010 9093 0000 		sts default_layer_state+3,r25
   37:./tmk_core/common/action_layer.c ****     default_layer_debug(); debug("\n");
+  55               		.loc 1 37 5 is_stmt 1 view .LVU11
+  56               		.loc 1 37 39 view .LVU12
   38:./tmk_core/common/action_layer.c ****     clear_keyboard_but_mods(); // To avoid stuck keys
-  47               		.loc 1 38 0
-  48 0014 0C94 0000 		jmp clear_keyboard_but_mods
-  49               	.LVL3:
-  50               		.cfi_endproc
-  51               	.LFE5:
-  53               		.section	.text.default_layer_debug,"ax",@progbits
-  54               	.global	default_layer_debug
-  56               	default_layer_debug:
-  57               	.LFB6:
+  57               		.loc 1 38 5 view .LVU13
+  58 0014 0C94 0000 		jmp clear_keyboard_but_mods
+  59               	.LVL3:
+  60               		.loc 1 38 5 is_stmt 0 view .LVU14
+  61               		.cfi_endproc
+  62               	.LFE5:
+  64               		.section	.text.default_layer_debug,"ax",@progbits
+  65               	.global	default_layer_debug
+  67               	default_layer_debug:
+  68               	.LFB6:
   39:./tmk_core/common/action_layer.c **** }
   40:./tmk_core/common/action_layer.c **** 
   41:./tmk_core/common/action_layer.c **** /** \brief Default Layer Print
@@ -96,21 +107,25 @@
   44:./tmk_core/common/action_layer.c ****  */
   45:./tmk_core/common/action_layer.c **** void default_layer_debug(void)
   46:./tmk_core/common/action_layer.c **** {
-  58               		.loc 1 46 0
-  59               		.cfi_startproc
-  60               	/* prologue: function */
-  61               	/* frame size = 0 */
-  62               	/* stack size = 0 */
-  63               	.L__stack_usage = 0
-  64 0000 0895      		ret
-  65               		.cfi_endproc
-  66               	.LFE6:
-  68               		.section	.text.default_layer_set,"ax",@progbits
-  69               	.global	default_layer_set
-  71               	default_layer_set:
-  72               	.LFB7:
+  69               		.loc 1 46 1 is_stmt 1 view -0
+  70               		.cfi_startproc
+  71               	/* prologue: function */
+  72               	/* frame size = 0 */
+  73               	/* stack size = 0 */
+  74               	.L__stack_usage = 0
   47:./tmk_core/common/action_layer.c ****     dprintf("%08lX(%u)", default_layer_state, biton32(default_layer_state));
+  75               		.loc 1 47 76 view .LVU16
+  76               	/* epilogue start */
   48:./tmk_core/common/action_layer.c **** }
+  77               		.loc 1 48 1 is_stmt 0 view .LVU17
+  78 0000 0895      		ret
+  79               		.cfi_endproc
+  80               	.LFE6:
+  82               		.section	.text.default_layer_set,"ax",@progbits
+  83               	.global	default_layer_set
+  85               	default_layer_set:
+  86               	.LVL4:
+  87               	.LFB7:
   49:./tmk_core/common/action_layer.c **** 
   50:./tmk_core/common/action_layer.c **** /** \brief Default Layer Set
   51:./tmk_core/common/action_layer.c ****  *
@@ -118,23 +133,24 @@
   53:./tmk_core/common/action_layer.c ****  */
   54:./tmk_core/common/action_layer.c **** void default_layer_set(uint32_t state)
   55:./tmk_core/common/action_layer.c **** {
-  73               		.loc 1 55 0
-  74               		.cfi_startproc
-  75               	.LVL4:
-  76               	/* prologue: function */
-  77               	/* frame size = 0 */
-  78               	/* stack size = 0 */
-  79               	.L__stack_usage = 0
+  88               		.loc 1 55 1 is_stmt 1 view -0
+  89               		.cfi_startproc
+  90               	/* prologue: function */
+  91               	/* frame size = 0 */
+  92               	/* stack size = 0 */
+  93               	.L__stack_usage = 0
   56:./tmk_core/common/action_layer.c ****     default_layer_state_set(state);
-  80               		.loc 1 56 0
-  81 0000 0C94 0000 		jmp default_layer_state_set
-  82               	.LVL5:
-  83               		.cfi_endproc
-  84               	.LFE7:
-  86               		.section	.text.default_layer_or,"ax",@progbits
-  87               	.global	default_layer_or
-  89               	default_layer_or:
-  90               	.LFB8:
+  94               		.loc 1 56 5 view .LVU19
+  95 0000 0C94 0000 		jmp default_layer_state_set
+  96               	.LVL5:
+  97               		.loc 1 56 5 is_stmt 0 view .LVU20
+  98               		.cfi_endproc
+  99               	.LFE7:
+ 101               		.section	.text.default_layer_or,"ax",@progbits
+ 102               	.global	default_layer_or
+ 104               	default_layer_or:
+ 105               	.LVL6:
+ 106               	.LFB8:
   57:./tmk_core/common/action_layer.c **** }
   58:./tmk_core/common/action_layer.c **** 
   59:./tmk_core/common/action_layer.c **** #ifndef NO_ACTION_LAYER
@@ -144,141 +160,159 @@
   63:./tmk_core/common/action_layer.c ****  */
   64:./tmk_core/common/action_layer.c **** void default_layer_or(uint32_t state)
   65:./tmk_core/common/action_layer.c **** {
-  91               		.loc 1 65 0
-  92               		.cfi_startproc
-  93               	.LVL6:
-  94 0000 0F93      		push r16
-  95               	.LCFI0:
-  96               		.cfi_def_cfa_offset 3
-  97               		.cfi_offset 16, -2
-  98 0002 1F93      		push r17
-  99               	.LCFI1:
- 100               		.cfi_def_cfa_offset 4
- 101               		.cfi_offset 17, -3
- 102               	/* prologue: function */
- 103               	/* frame size = 0 */
- 104               	/* stack size = 2 */
- 105               	.L__stack_usage = 2
+ 107               		.loc 1 65 1 is_stmt 1 view -0
+ 108               		.cfi_startproc
+ 109               		.loc 1 65 1 is_stmt 0 view .LVU22
+ 110 0000 0F93      		push r16
+ 111               	.LCFI0:
+ 112               		.cfi_def_cfa_offset 3
+ 113               		.cfi_offset 16, -2
+ 114 0002 1F93      		push r17
+ 115               	.LCFI1:
+ 116               		.cfi_def_cfa_offset 4
+ 117               		.cfi_offset 17, -3
+ 118               	/* prologue: function */
+ 119               	/* frame size = 0 */
+ 120               	/* stack size = 2 */
+ 121               	.L__stack_usage = 2
   66:./tmk_core/common/action_layer.c ****     default_layer_state_set(default_layer_state | state);
- 106               		.loc 1 66 0
- 107 0004 0091 0000 		lds r16,default_layer_state
- 108 0008 1091 0000 		lds r17,default_layer_state+1
- 109 000c 2091 0000 		lds r18,default_layer_state+2
- 110 0010 3091 0000 		lds r19,default_layer_state+3
- 111 0014 602B      		or r22,r16
- 112 0016 712B      		or r23,r17
- 113 0018 822B      		or r24,r18
- 114 001a 932B      		or r25,r19
- 115               	.LVL7:
- 116               	/* epilogue start */
+ 122               		.loc 1 66 5 is_stmt 1 view .LVU23
+ 123 0004 0091 0000 		lds r16,default_layer_state
+ 124 0008 1091 0000 		lds r17,default_layer_state+1
+ 125 000c 2091 0000 		lds r18,default_layer_state+2
+ 126 0010 3091 0000 		lds r19,default_layer_state+3
+ 127 0014 602B      		or r22,r16
+ 128               	.LVL7:
+ 129               		.loc 1 66 5 is_stmt 0 view .LVU24
+ 130 0016 712B      		or r23,r17
+ 131 0018 822B      		or r24,r18
+ 132 001a 932B      		or r25,r19
+ 133               	/* epilogue start */
   67:./tmk_core/common/action_layer.c **** }
- 117               		.loc 1 67 0
- 118 001c 1F91      		pop r17
- 119 001e 0F91      		pop r16
+ 134               		.loc 1 67 1 view .LVU25
+ 135 001c 1F91      		pop r17
+ 136 001e 0F91      		pop r16
   66:./tmk_core/common/action_layer.c ****     default_layer_state_set(default_layer_state | state);
- 120               		.loc 1 66 0
- 121 0020 0C94 0000 		jmp default_layer_state_set
- 122               	.LVL8:
- 123               		.cfi_endproc
- 124               	.LFE8:
- 126               		.section	.text.default_layer_and,"ax",@progbits
- 127               	.global	default_layer_and
- 129               	default_layer_and:
- 130               	.LFB9:
+ 137               		.loc 1 66 5 view .LVU26
+ 138 0020 0C94 0000 		jmp default_layer_state_set
+ 139               	.LVL8:
+ 140               		.cfi_endproc
+ 141               	.LFE8:
+ 143               		.section	.text.default_layer_and,"ax",@progbits
+ 144               	.global	default_layer_and
+ 146               	default_layer_and:
+ 147               	.LVL9:
+ 148               	.LFB9:
   68:./tmk_core/common/action_layer.c **** /** \brief Default Layer And
   69:./tmk_core/common/action_layer.c ****  *
   70:./tmk_core/common/action_layer.c ****  * FIXME: Needs docs
   71:./tmk_core/common/action_layer.c ****  */
   72:./tmk_core/common/action_layer.c **** void default_layer_and(uint32_t state)
   73:./tmk_core/common/action_layer.c **** {
- 131               		.loc 1 73 0
- 132               		.cfi_startproc
- 133               	.LVL9:
- 134 0000 0F93      		push r16
- 135               	.LCFI2:
- 136               		.cfi_def_cfa_offset 3
- 137               		.cfi_offset 16, -2
- 138 0002 1F93      		push r17
- 139               	.LCFI3:
- 140               		.cfi_def_cfa_offset 4
- 141               		.cfi_offset 17, -3
- 142               	/* prologue: function */
- 143               	/* frame size = 0 */
- 144               	/* stack size = 2 */
- 145               	.L__stack_usage = 2
+ 149               		.loc 1 73 1 is_stmt 1 view -0
+ 150               		.cfi_startproc
+ 151               		.loc 1 73 1 is_stmt 0 view .LVU28
+ 152 0000 0F93      		push r16
+ 153               	.LCFI2:
+ 154               		.cfi_def_cfa_offset 3
+ 155               		.cfi_offset 16, -2
+ 156 0002 1F93      		push r17
+ 157               	.LCFI3:
+ 158               		.cfi_def_cfa_offset 4
+ 159               		.cfi_offset 17, -3
+ 160               	/* prologue: function */
+ 161               	/* frame size = 0 */
+ 162               	/* stack size = 2 */
+ 163               	.L__stack_usage = 2
   74:./tmk_core/common/action_layer.c ****     default_layer_state_set(default_layer_state & state);
- 146               		.loc 1 74 0
- 147 0004 0091 0000 		lds r16,default_layer_state
- 148 0008 1091 0000 		lds r17,default_layer_state+1
- 149 000c 2091 0000 		lds r18,default_layer_state+2
- 150 0010 3091 0000 		lds r19,default_layer_state+3
- 151 0014 6023      		and r22,r16
- 152 0016 7123      		and r23,r17
- 153 0018 8223      		and r24,r18
- 154 001a 9323      		and r25,r19
- 155               	.LVL10:
- 156               	/* epilogue start */
+ 164               		.loc 1 74 5 is_stmt 1 view .LVU29
+ 165 0004 0091 0000 		lds r16,default_layer_state
+ 166 0008 1091 0000 		lds r17,default_layer_state+1
+ 167 000c 2091 0000 		lds r18,default_layer_state+2
+ 168 0010 3091 0000 		lds r19,default_layer_state+3
+ 169 0014 6023      		and r22,r16
+ 170               	.LVL10:
+ 171               		.loc 1 74 5 is_stmt 0 view .LVU30
+ 172 0016 7123      		and r23,r17
+ 173 0018 8223      		and r24,r18
+ 174 001a 9323      		and r25,r19
+ 175               	/* epilogue start */
   75:./tmk_core/common/action_layer.c **** }
- 157               		.loc 1 75 0
- 158 001c 1F91      		pop r17
- 159 001e 0F91      		pop r16
+ 176               		.loc 1 75 1 view .LVU31
+ 177 001c 1F91      		pop r17
+ 178 001e 0F91      		pop r16
   74:./tmk_core/common/action_layer.c ****     default_layer_state_set(default_layer_state & state);
- 160               		.loc 1 74 0
- 161 0020 0C94 0000 		jmp default_layer_state_set
- 162               	.LVL11:
- 163               		.cfi_endproc
- 164               	.LFE9:
- 166               		.section	.text.default_layer_xor,"ax",@progbits
- 167               	.global	default_layer_xor
- 169               	default_layer_xor:
- 170               	.LFB10:
+ 179               		.loc 1 74 5 view .LVU32
+ 180 0020 0C94 0000 		jmp default_layer_state_set
+ 181               	.LVL11:
+ 182               		.cfi_endproc
+ 183               	.LFE9:
+ 185               		.section	.text.default_layer_xor,"ax",@progbits
+ 186               	.global	default_layer_xor
+ 188               	default_layer_xor:
+ 189               	.LVL12:
+ 190               	.LFB10:
   76:./tmk_core/common/action_layer.c **** /** \brief Default Layer Xor
   77:./tmk_core/common/action_layer.c ****  *
   78:./tmk_core/common/action_layer.c ****  * FIXME: Needs docs
   79:./tmk_core/common/action_layer.c ****  */
   80:./tmk_core/common/action_layer.c **** void default_layer_xor(uint32_t state)
   81:./tmk_core/common/action_layer.c **** {
- 171               		.loc 1 81 0
- 172               		.cfi_startproc
- 173               	.LVL12:
- 174 0000 0F93      		push r16
- 175               	.LCFI4:
- 176               		.cfi_def_cfa_offset 3
- 177               		.cfi_offset 16, -2
- 178 0002 1F93      		push r17
- 179               	.LCFI5:
- 180               		.cfi_def_cfa_offset 4
- 181               		.cfi_offset 17, -3
- 182               	/* prologue: function */
- 183               	/* frame size = 0 */
- 184               	/* stack size = 2 */
- 185               	.L__stack_usage = 2
+ 191               		.loc 1 81 1 is_stmt 1 view -0
+ 192               		.cfi_startproc
+ 193               		.loc 1 81 1 is_stmt 0 view .LVU34
+ 194 0000 0F93      		push r16
+ 195               	.LCFI4:
+ 196               		.cfi_def_cfa_offset 3
+ 197               		.cfi_offset 16, -2
+ 198 0002 1F93      		push r17
+ 199               	.LCFI5:
+ 200               		.cfi_def_cfa_offset 4
+ 201               		.cfi_offset 17, -3
+ 202               	/* prologue: function */
+ 203               	/* frame size = 0 */
+ 204               	/* stack size = 2 */
+ 205               	.L__stack_usage = 2
   82:./tmk_core/common/action_layer.c ****     default_layer_state_set(default_layer_state ^ state);
- 186               		.loc 1 82 0
- 187 0004 0091 0000 		lds r16,default_layer_state
- 188 0008 1091 0000 		lds r17,default_layer_state+1
- 189 000c 2091 0000 		lds r18,default_layer_state+2
- 190 0010 3091 0000 		lds r19,default_layer_state+3
- 191 0014 6027      		eor r22,r16
- 192 0016 7127      		eor r23,r17
- 193 0018 8227      		eor r24,r18
- 194 001a 9327      		eor r25,r19
- 195               	.LVL13:
- 196               	/* epilogue start */
+ 206               		.loc 1 82 5 is_stmt 1 view .LVU35
+ 207 0004 0091 0000 		lds r16,default_layer_state
+ 208 0008 1091 0000 		lds r17,default_layer_state+1
+ 209 000c 2091 0000 		lds r18,default_layer_state+2
+ 210 0010 3091 0000 		lds r19,default_layer_state+3
+ 211 0014 6027      		eor r22,r16
+ 212               	.LVL13:
+ 213               		.loc 1 82 5 is_stmt 0 view .LVU36
+ 214 0016 7127      		eor r23,r17
+ 215 0018 8227      		eor r24,r18
+ 216 001a 9327      		eor r25,r19
+ 217               	/* epilogue start */
   83:./tmk_core/common/action_layer.c **** }
- 197               		.loc 1 83 0
- 198 001c 1F91      		pop r17
- 199 001e 0F91      		pop r16
+ 218               		.loc 1 83 1 view .LVU37
+ 219 001c 1F91      		pop r17
+ 220 001e 0F91      		pop r16
   82:./tmk_core/common/action_layer.c ****     default_layer_state_set(default_layer_state ^ state);
- 200               		.loc 1 82 0
- 201 0020 0C94 0000 		jmp default_layer_state_set
- 202               	.LVL14:
- 203               		.cfi_endproc
- 204               	.LFE10:
- 206               		.section	.text.layer_state_set_user,"ax",@progbits
- 207               		.weak	layer_state_set_user
- 209               	layer_state_set_user:
- 210               	.LFB11:
+ 221               		.loc 1 82 5 view .LVU38
+ 222 0020 0C94 0000 		jmp default_layer_state_set
+ 223               	.LVL14:
+ 224               		.cfi_endproc
+ 225               	.LFE10:
+ 227               		.section	.text.layer_state_set_user,"ax",@progbits
+ 228               		.weak	layer_state_set_user
+ 230               	layer_state_set_user:
+ 231               	.LFB31:
+ 232               		.cfi_startproc
+ 233               	/* prologue: function */
+ 234               	/* frame size = 0 */
+ 235               	/* stack size = 0 */
+ 236               	.L__stack_usage = 0
+ 237 0000 0C94 0000 		jmp default_layer_state_set_kb.localalias.0
+ 238               		.cfi_endproc
+ 239               	.LFE31:
+ 241               		.section	.text.layer_state_set_kb,"ax",@progbits
+ 242               		.weak	layer_state_set_kb
+ 244               	layer_state_set_kb:
+ 245               	.LVL15:
+ 246               	.LFB12:
   84:./tmk_core/common/action_layer.c **** #endif
   85:./tmk_core/common/action_layer.c **** 
   86:./tmk_core/common/action_layer.c **** 
@@ -293,23 +327,8 @@
   95:./tmk_core/common/action_layer.c ****  */
   96:./tmk_core/common/action_layer.c **** __attribute__((weak))
   97:./tmk_core/common/action_layer.c **** uint32_t layer_state_set_user(uint32_t state) {
- 211               		.loc 1 97 0
- 212               		.cfi_startproc
- 213               	.LVL15:
- 214               	/* prologue: function */
- 215               	/* frame size = 0 */
- 216               	/* stack size = 0 */
- 217               	.L__stack_usage = 0
   98:./tmk_core/common/action_layer.c ****     return state;
   99:./tmk_core/common/action_layer.c **** }
- 218               		.loc 1 99 0
- 219 0000 0895      		ret
- 220               		.cfi_endproc
- 221               	.LFE11:
- 223               		.section	.text.layer_state_set_kb,"ax",@progbits
- 224               		.weak	layer_state_set_kb
- 226               	layer_state_set_kb:
- 227               	.LFB12:
  100:./tmk_core/common/action_layer.c **** 
  101:./tmk_core/common/action_layer.c **** /** \brief Layer state set keyboard
  102:./tmk_core/common/action_layer.c ****  *
@@ -317,23 +336,25 @@
  104:./tmk_core/common/action_layer.c ****  */
  105:./tmk_core/common/action_layer.c **** __attribute__((weak))
  106:./tmk_core/common/action_layer.c **** uint32_t layer_state_set_kb(uint32_t state) {
- 228               		.loc 1 106 0
- 229               		.cfi_startproc
- 230               	.LVL16:
- 231               	/* prologue: function */
- 232               	/* frame size = 0 */
- 233               	/* stack size = 0 */
- 234               	.L__stack_usage = 0
+ 247               		.loc 1 106 45 is_stmt 1 view -0
+ 248               		.cfi_startproc
+ 249               	/* prologue: function */
+ 250               	/* frame size = 0 */
+ 251               	/* stack size = 0 */
+ 252               	.L__stack_usage = 0
  107:./tmk_core/common/action_layer.c ****     return layer_state_set_user(state);
- 235               		.loc 1 107 0
- 236 0000 0C94 0000 		jmp layer_state_set_user
- 237               	.LVL17:
- 238               		.cfi_endproc
- 239               	.LFE12:
- 241               		.section	.text.layer_state_set,"ax",@progbits
- 242               	.global	layer_state_set
- 244               	layer_state_set:
- 245               	.LFB13:
+ 253               		.loc 1 107 5 view .LVU40
+ 254               		.loc 1 107 12 is_stmt 0 view .LVU41
+ 255 0000 0C94 0000 		jmp layer_state_set_user
+ 256               	.LVL16:
+ 257               		.loc 1 107 12 view .LVU42
+ 258               		.cfi_endproc
+ 259               	.LFE12:
+ 261               		.section	.text.layer_state_set,"ax",@progbits
+ 262               	.global	layer_state_set
+ 264               	layer_state_set:
+ 265               	.LVL17:
+ 266               	.LFB13:
  108:./tmk_core/common/action_layer.c **** }
  109:./tmk_core/common/action_layer.c **** 
  110:./tmk_core/common/action_layer.c **** /** \brief Layer state set
@@ -342,36 +363,43 @@
  113:./tmk_core/common/action_layer.c ****  */
  114:./tmk_core/common/action_layer.c **** void layer_state_set(uint32_t state)
  115:./tmk_core/common/action_layer.c **** {
- 246               		.loc 1 115 0
- 247               		.cfi_startproc
- 248               	.LVL18:
- 249               	/* prologue: function */
- 250               	/* frame size = 0 */
- 251               	/* stack size = 0 */
- 252               	.L__stack_usage = 0
+ 267               		.loc 1 115 1 is_stmt 1 view -0
+ 268               		.cfi_startproc
+ 269               	/* prologue: function */
+ 270               	/* frame size = 0 */
+ 271               	/* stack size = 0 */
+ 272               	.L__stack_usage = 0
  116:./tmk_core/common/action_layer.c ****     state = layer_state_set_kb(state);
- 253               		.loc 1 116 0
- 254 0000 0E94 0000 		call layer_state_set_kb
- 255               	.LVL19:
+ 273               		.loc 1 116 5 view .LVU44
+ 274               		.loc 1 116 13 is_stmt 0 view .LVU45
+ 275 0000 0E94 0000 		call layer_state_set_kb
+ 276               	.LVL18:
  117:./tmk_core/common/action_layer.c ****     dprint("layer_state: ");
+ 277               		.loc 1 117 28 is_stmt 1 view .LVU46
  118:./tmk_core/common/action_layer.c ****     layer_debug(); dprint(" to ");
+ 278               		.loc 1 118 5 view .LVU47
+ 279               		.loc 1 118 34 view .LVU48
  119:./tmk_core/common/action_layer.c ****     layer_state = state;
- 256               		.loc 1 119 0
- 257 0004 6093 0000 		sts layer_state,r22
- 258 0008 7093 0000 		sts layer_state+1,r23
- 259 000c 8093 0000 		sts layer_state+2,r24
- 260 0010 9093 0000 		sts layer_state+3,r25
+ 280               		.loc 1 119 5 view .LVU49
+ 281               		.loc 1 119 17 is_stmt 0 view .LVU50
+ 282 0004 6093 0000 		sts layer_state,r22
+ 283 0008 7093 0000 		sts layer_state+1,r23
+ 284 000c 8093 0000 		sts layer_state+2,r24
+ 285 0010 9093 0000 		sts layer_state+3,r25
  120:./tmk_core/common/action_layer.c ****     layer_debug(); dprintln();
+ 286               		.loc 1 120 5 is_stmt 1 view .LVU51
+ 287               		.loc 1 120 30 view .LVU52
  121:./tmk_core/common/action_layer.c ****     clear_keyboard_but_mods(); // To avoid stuck keys
- 261               		.loc 1 121 0
- 262 0014 0C94 0000 		jmp clear_keyboard_but_mods
- 263               	.LVL20:
- 264               		.cfi_endproc
- 265               	.LFE13:
- 267               		.section	.text.layer_clear,"ax",@progbits
- 268               	.global	layer_clear
- 270               	layer_clear:
- 271               	.LFB14:
+ 288               		.loc 1 121 5 view .LVU53
+ 289 0014 0C94 0000 		jmp clear_keyboard_but_mods
+ 290               	.LVL19:
+ 291               		.loc 1 121 5 is_stmt 0 view .LVU54
+ 292               		.cfi_endproc
+ 293               	.LFE13:
+ 295               		.section	.text.layer_clear,"ax",@progbits
+ 296               	.global	layer_clear
+ 298               	layer_clear:
+ 299               	.LFB14:
  122:./tmk_core/common/action_layer.c **** }
  123:./tmk_core/common/action_layer.c **** 
  124:./tmk_core/common/action_layer.c **** /** \brief Layer clear
@@ -380,25 +408,26 @@
  127:./tmk_core/common/action_layer.c ****  */
  128:./tmk_core/common/action_layer.c **** void layer_clear(void)
  129:./tmk_core/common/action_layer.c **** {
- 272               		.loc 1 129 0
- 273               		.cfi_startproc
- 274               	/* prologue: function */
- 275               	/* frame size = 0 */
- 276               	/* stack size = 0 */
- 277               	.L__stack_usage = 0
+ 300               		.loc 1 129 1 is_stmt 1 view -0
+ 301               		.cfi_startproc
+ 302               	/* prologue: function */
+ 303               	/* frame size = 0 */
+ 304               	/* stack size = 0 */
+ 305               	.L__stack_usage = 0
  130:./tmk_core/common/action_layer.c ****     layer_state_set(0);
- 278               		.loc 1 130 0
- 279 0000 60E0      		ldi r22,0
- 280 0002 70E0      		ldi r23,0
- 281 0004 CB01      		movw r24,r22
- 282 0006 0C94 0000 		jmp layer_state_set
- 283               	.LVL21:
- 284               		.cfi_endproc
- 285               	.LFE14:
- 287               		.section	.text.layer_state_cmp,"ax",@progbits
- 288               	.global	layer_state_cmp
- 290               	layer_state_cmp:
- 291               	.LFB16:
+ 306               		.loc 1 130 5 view .LVU56
+ 307 0000 60E0      		ldi r22,0
+ 308 0002 70E0      		ldi r23,0
+ 309 0004 CB01      		movw r24,r22
+ 310 0006 0C94 0000 		jmp layer_state_set
+ 311               	.LVL20:
+ 312               		.cfi_endproc
+ 313               	.LFE14:
+ 315               		.section	.text.layer_state_cmp,"ax",@progbits
+ 316               	.global	layer_state_cmp
+ 318               	layer_state_cmp:
+ 319               	.LVL21:
+ 320               	.LFB16:
  131:./tmk_core/common/action_layer.c **** }
  132:./tmk_core/common/action_layer.c **** 
  133:./tmk_core/common/action_layer.c **** /** \brief Layer state is
@@ -415,74 +444,84 @@
  144:./tmk_core/common/action_layer.c ****  * FIXME: Needs docs
  145:./tmk_core/common/action_layer.c ****  */
  146:./tmk_core/common/action_layer.c **** bool layer_state_cmp(uint32_t cmp_layer_state, uint8_t layer) {
- 292               		.loc 1 146 0
- 293               		.cfi_startproc
- 294               	.LVL22:
- 295               	/* prologue: function */
- 296               	/* frame size = 0 */
- 297               	/* stack size = 0 */
- 298               	.L__stack_usage = 0
+ 321               		.loc 1 146 63 view -0
+ 322               		.cfi_startproc
+ 323               	/* prologue: function */
+ 324               	/* frame size = 0 */
+ 325               	/* stack size = 0 */
+ 326               	.L__stack_usage = 0
  147:./tmk_core/common/action_layer.c ****     if (!cmp_layer_state) { return layer == 0; }
- 299               		.loc 1 147 0
- 300 0000 6115      		cp r22,__zero_reg__
- 301 0002 7105      		cpc r23,__zero_reg__
- 302 0004 8105      		cpc r24,__zero_reg__
- 303 0006 9105      		cpc r25,__zero_reg__
- 304 0008 01F4      		brne .L13
- 305               		.loc 1 147 0 is_stmt 0 discriminator 1
- 306 000a 81E0      		ldi r24,lo8(1)
- 307 000c 4423      		tst r20
- 308 000e 01F0      		breq .L15
- 309 0010 80E0      		ldi r24,0
- 310 0012 0895      		ret
- 311               	.L13:
+ 327               		.loc 1 147 5 view .LVU58
+ 328               		.loc 1 147 8 is_stmt 0 view .LVU59
+ 329 0000 6115      		cp r22,__zero_reg__
+ 330 0002 7105      		cpc r23,__zero_reg__
+ 331 0004 8105      		cpc r24,__zero_reg__
+ 332 0006 9105      		cpc r25,__zero_reg__
+ 333 0008 01F4      		brne .L13
+ 334               		.loc 1 147 29 is_stmt 1 discriminator 1 view .LVU60
+ 335               		.loc 1 147 42 is_stmt 0 discriminator 1 view .LVU61
+ 336 000a 81E0      		ldi r24,lo8(1)
+ 337 000c 4423      		tst r20
+ 338 000e 01F0      		breq .L12
+ 339 0010 80E0      		ldi r24,0
+ 340 0012 0895      		ret
+ 341               	.L13:
  148:./tmk_core/common/action_layer.c ****     return (cmp_layer_state & (1UL<<layer)) != 0;
- 312               		.loc 1 148 0 is_stmt 1
- 313 0014 DC01      		movw r26,r24
- 314 0016 CB01      		movw r24,r22
- 315 0018 00C0      		rjmp 2f
- 316               		1:
- 317 001a B695      		lsr r27
- 318 001c A795      		ror r26
- 319 001e 9795      		ror r25
- 320 0020 8795      		ror r24
- 321               		2:
- 322 0022 4A95      		dec r20
- 323 0024 02F4      		brpl 1b
- 324 0026 8170      		andi r24,lo8(1)
- 325               	.L15:
+ 342               		.loc 1 148 5 is_stmt 1 view .LVU62
+ 343               		.loc 1 148 45 is_stmt 0 view .LVU63
+ 344 0014 DC01      		movw r26,r24
+ 345 0016 CB01      		movw r24,r22
+ 346 0018 00C0      		rjmp 2f
+ 347               		1:
+ 348 001a B695      		lsr r27
+ 349 001c A795      		ror r26
+ 350 001e 9795      		ror r25
+ 351 0020 8795      		ror r24
+ 352               		2:
+ 353 0022 4A95      		dec r20
+ 354 0024 02F4      		brpl 1b
+ 355 0026 8170      		andi r24,lo8(1)
+ 356               	.L12:
+ 357               	/* epilogue start */
  149:./tmk_core/common/action_layer.c **** }
- 326               		.loc 1 149 0
- 327 0028 0895      		ret
- 328               		.cfi_endproc
- 329               	.LFE16:
- 331               		.section	.text.layer_state_is,"ax",@progbits
- 332               	.global	layer_state_is
- 334               	layer_state_is:
- 335               	.LFB15:
+ 358               		.loc 1 149 1 view .LVU64
+ 359 0028 0895      		ret
+ 360               		.cfi_endproc
+ 361               	.LFE16:
+ 363               		.section	.text.layer_state_is,"ax",@progbits
+ 364               	.global	layer_state_is
+ 366               	layer_state_is:
+ 367               	.LVL22:
+ 368               	.LFB15:
  138:./tmk_core/common/action_layer.c ****     return layer_state_cmp(layer_state, layer);
- 336               		.loc 1 138 0
- 337               		.cfi_startproc
- 338               	.LVL23:
- 339               	/* prologue: function */
- 340               	/* frame size = 0 */
- 341               	/* stack size = 0 */
- 342               	.L__stack_usage = 0
- 343 0000 482F      		mov r20,r24
+ 369               		.loc 1 138 1 is_stmt 1 view -0
+ 370               		.cfi_startproc
+ 371               	/* prologue: function */
+ 372               	/* frame size = 0 */
+ 373               	/* stack size = 0 */
+ 374               	.L__stack_usage = 0
+ 138:./tmk_core/common/action_layer.c ****     return layer_state_cmp(layer_state, layer);
+ 375               		.loc 1 138 1 is_stmt 0 view .LVU66
+ 376 0000 482F      		mov r20,r24
  139:./tmk_core/common/action_layer.c **** }
- 344               		.loc 1 139 0
- 345 0002 6091 0000 		lds r22,layer_state
- 346 0006 7091 0000 		lds r23,layer_state+1
- 347 000a 8091 0000 		lds r24,layer_state+2
- 348 000e 9091 0000 		lds r25,layer_state+3
- 349 0012 0C94 0000 		jmp layer_state_cmp
- 350               	.LVL24:
- 351               		.cfi_endproc
- 352               	.LFE15:
- 354               		.section	.text.layer_move,"ax",@progbits
- 355               	.global	layer_move
- 357               	layer_move:
- 358               	.LFB17:
+ 377               		.loc 1 139 5 is_stmt 1 view .LVU67
+ 139:./tmk_core/common/action_layer.c **** }
+ 378               		.loc 1 139 12 is_stmt 0 view .LVU68
+ 379 0002 6091 0000 		lds r22,layer_state
+ 380 0006 7091 0000 		lds r23,layer_state+1
+ 381 000a 8091 0000 		lds r24,layer_state+2
+ 382 000e 9091 0000 		lds r25,layer_state+3
+ 383 0012 0C94 0000 		jmp layer_state_cmp
+ 384               	.LVL23:
+ 139:./tmk_core/common/action_layer.c **** }
+ 385               		.loc 1 139 12 view .LVU69
+ 386               		.cfi_endproc
+ 387               	.LFE15:
+ 389               		.section	.text.layer_move,"ax",@progbits
+ 390               	.global	layer_move
+ 392               	layer_move:
+ 393               	.LVL24:
+ 394               	.LFB17:
  150:./tmk_core/common/action_layer.c **** 
  151:./tmk_core/common/action_layer.c **** /** \brief Layer move
  152:./tmk_core/common/action_layer.c ****  *
@@ -490,55 +529,58 @@
  154:./tmk_core/common/action_layer.c ****  */
  155:./tmk_core/common/action_layer.c **** void layer_move(uint8_t layer)
  156:./tmk_core/common/action_layer.c **** {
- 359               		.loc 1 156 0
- 360               		.cfi_startproc
- 361               	.LVL25:
- 362 0000 0F93      		push r16
- 363               	.LCFI6:
- 364               		.cfi_def_cfa_offset 3
- 365               		.cfi_offset 16, -2
- 366 0002 1F93      		push r17
- 367               	.LCFI7:
- 368               		.cfi_def_cfa_offset 4
- 369               		.cfi_offset 17, -3
- 370               	/* prologue: function */
- 371               	/* frame size = 0 */
- 372               	/* stack size = 2 */
- 373               	.L__stack_usage = 2
+ 395               		.loc 1 156 1 is_stmt 1 view -0
+ 396               		.cfi_startproc
+ 397               		.loc 1 156 1 is_stmt 0 view .LVU71
+ 398 0000 0F93      		push r16
+ 399               	.LCFI6:
+ 400               		.cfi_def_cfa_offset 3
+ 401               		.cfi_offset 16, -2
+ 402 0002 1F93      		push r17
+ 403               	.LCFI7:
+ 404               		.cfi_def_cfa_offset 4
+ 405               		.cfi_offset 17, -3
+ 406               	/* prologue: function */
+ 407               	/* frame size = 0 */
+ 408               	/* stack size = 2 */
+ 409               	.L__stack_usage = 2
  157:./tmk_core/common/action_layer.c ****     layer_state_set(1UL<<layer);
- 374               		.loc 1 157 0
- 375 0004 41E0      		ldi r20,lo8(1)
- 376 0006 50E0      		ldi r21,0
- 377 0008 60E0      		ldi r22,0
- 378 000a 70E0      		ldi r23,0
- 379 000c 8A01      		movw r16,r20
- 380 000e 9B01      		movw r18,r22
- 381 0010 00C0      		rjmp 2f
- 382               		1:
- 383 0012 000F      		lsl r16
- 384 0014 111F      		rol r17
- 385 0016 221F      		rol r18
- 386 0018 331F      		rol r19
- 387               		2:
- 388 001a 8A95      		dec r24
- 389 001c 02F4      		brpl 1b
- 390 001e C901      		movw r24,r18
- 391 0020 B801      		movw r22,r16
- 392               	/* epilogue start */
+ 410               		.loc 1 157 5 is_stmt 1 view .LVU72
+ 411 0004 41E0      		ldi r20,lo8(1)
+ 412 0006 50E0      		ldi r21,0
+ 413 0008 60E0      		ldi r22,0
+ 414 000a 70E0      		ldi r23,0
+ 415 000c 8A01      		movw r16,r20
+ 416 000e 9B01      		movw r18,r22
+ 417 0010 00C0      		rjmp 2f
+ 418               		1:
+ 419 0012 000F      		lsl r16
+ 420 0014 111F      		rol r17
+ 421 0016 221F      		rol r18
+ 422 0018 331F      		rol r19
+ 423               		2:
+ 424 001a 8A95      		dec r24
+ 425 001c 02F4      		brpl 1b
+ 426 001e C901      		movw r24,r18
+ 427               	.LVL25:
+ 428               		.loc 1 157 5 is_stmt 0 view .LVU73
+ 429 0020 B801      		movw r22,r16
+ 430               	/* epilogue start */
  158:./tmk_core/common/action_layer.c **** }
- 393               		.loc 1 158 0
- 394 0022 1F91      		pop r17
- 395 0024 0F91      		pop r16
+ 431               		.loc 1 158 1 view .LVU74
+ 432 0022 1F91      		pop r17
+ 433 0024 0F91      		pop r16
  157:./tmk_core/common/action_layer.c ****     layer_state_set(1UL<<layer);
- 396               		.loc 1 157 0
- 397 0026 0C94 0000 		jmp layer_state_set
- 398               	.LVL26:
- 399               		.cfi_endproc
- 400               	.LFE17:
- 402               		.section	.text.layer_on,"ax",@progbits
- 403               	.global	layer_on
- 405               	layer_on:
- 406               	.LFB18:
+ 434               		.loc 1 157 5 view .LVU75
+ 435 0026 0C94 0000 		jmp layer_state_set
+ 436               	.LVL26:
+ 437               		.cfi_endproc
+ 438               	.LFE17:
+ 440               		.section	.text.layer_on,"ax",@progbits
+ 441               	.global	layer_on
+ 443               	layer_on:
+ 444               	.LVL27:
+ 445               	.LFB18:
  159:./tmk_core/common/action_layer.c **** 
  160:./tmk_core/common/action_layer.c **** /** \brief Layer on
  161:./tmk_core/common/action_layer.c ****  *
@@ -546,64 +588,68 @@
  163:./tmk_core/common/action_layer.c ****  */
  164:./tmk_core/common/action_layer.c **** void layer_on(uint8_t layer)
  165:./tmk_core/common/action_layer.c **** {
- 407               		.loc 1 165 0
- 408               		.cfi_startproc
- 409               	.LVL27:
- 410 0000 0F93      		push r16
- 411               	.LCFI8:
- 412               		.cfi_def_cfa_offset 3
- 413               		.cfi_offset 16, -2
- 414 0002 1F93      		push r17
- 415               	.LCFI9:
- 416               		.cfi_def_cfa_offset 4
- 417               		.cfi_offset 17, -3
- 418               	/* prologue: function */
- 419               	/* frame size = 0 */
- 420               	/* stack size = 2 */
- 421               	.L__stack_usage = 2
+ 446               		.loc 1 165 1 is_stmt 1 view -0
+ 447               		.cfi_startproc
+ 448               		.loc 1 165 1 is_stmt 0 view .LVU77
+ 449 0000 0F93      		push r16
+ 450               	.LCFI8:
+ 451               		.cfi_def_cfa_offset 3
+ 452               		.cfi_offset 16, -2
+ 453 0002 1F93      		push r17
+ 454               	.LCFI9:
+ 455               		.cfi_def_cfa_offset 4
+ 456               		.cfi_offset 17, -3
+ 457               	/* prologue: function */
+ 458               	/* frame size = 0 */
+ 459               	/* stack size = 2 */
+ 460               	.L__stack_usage = 2
  166:./tmk_core/common/action_layer.c ****     layer_state_set(layer_state | (1UL<<layer));
- 422               		.loc 1 166 0
- 423 0004 41E0      		ldi r20,lo8(1)
- 424 0006 50E0      		ldi r21,0
- 425 0008 60E0      		ldi r22,0
- 426 000a 70E0      		ldi r23,0
- 427 000c 00C0      		rjmp 2f
- 428               		1:
- 429 000e 440F      		lsl r20
- 430 0010 551F      		rol r21
- 431 0012 661F      		rol r22
- 432 0014 771F      		rol r23
- 433               		2:
- 434 0016 8A95      		dec r24
- 435 0018 02F4      		brpl 1b
- 436 001a 8091 0000 		lds r24,layer_state
- 437 001e 9091 0000 		lds r25,layer_state+1
- 438 0022 A091 0000 		lds r26,layer_state+2
- 439 0026 B091 0000 		lds r27,layer_state+3
- 440               	.LVL28:
- 441 002a 8A01      		movw r16,r20
- 442 002c 9B01      		movw r18,r22
- 443 002e 082B      		or r16,r24
- 444 0030 192B      		or r17,r25
- 445 0032 2A2B      		or r18,r26
- 446 0034 3B2B      		or r19,r27
- 447 0036 C901      		movw r24,r18
- 448 0038 B801      		movw r22,r16
- 449               	/* epilogue start */
+ 461               		.loc 1 166 5 is_stmt 1 view .LVU78
+ 462               		.loc 1 166 39 is_stmt 0 view .LVU79
+ 463 0004 41E0      		ldi r20,lo8(1)
+ 464 0006 50E0      		ldi r21,0
+ 465 0008 60E0      		ldi r22,0
+ 466 000a 70E0      		ldi r23,0
+ 467 000c 00C0      		rjmp 2f
+ 468               		1:
+ 469 000e 440F      		lsl r20
+ 470 0010 551F      		rol r21
+ 471 0012 661F      		rol r22
+ 472 0014 771F      		rol r23
+ 473               		2:
+ 474 0016 8A95      		dec r24
+ 475 0018 02F4      		brpl 1b
+ 476               		.loc 1 166 5 view .LVU80
+ 477 001a 8091 0000 		lds r24,layer_state
+ 478 001e 9091 0000 		lds r25,layer_state+1
+ 479 0022 A091 0000 		lds r26,layer_state+2
+ 480 0026 B091 0000 		lds r27,layer_state+3
+ 481               	.LVL28:
+ 482               		.loc 1 166 5 view .LVU81
+ 483 002a 8A01      		movw r16,r20
+ 484 002c 9B01      		movw r18,r22
+ 485 002e 082B      		or r16,r24
+ 486 0030 192B      		or r17,r25
+ 487 0032 2A2B      		or r18,r26
+ 488 0034 3B2B      		or r19,r27
+ 489 0036 C901      		movw r24,r18
+ 490 0038 B801      		movw r22,r16
+ 491               	/* epilogue start */
  167:./tmk_core/common/action_layer.c **** }
- 450               		.loc 1 167 0
- 451 003a 1F91      		pop r17
- 452 003c 0F91      		pop r16
+ 492               		.loc 1 167 1 view .LVU82
+ 493 003a 1F91      		pop r17
+ 494 003c 0F91      		pop r16
  166:./tmk_core/common/action_layer.c ****     layer_state_set(layer_state | (1UL<<layer));
- 453               		.loc 1 166 0
- 454 003e 0C94 0000 		jmp layer_state_set
- 455               	.LVL29:
- 456               		.cfi_endproc
- 457               	.LFE18:
- 459               		.section	.text.layer_off,"ax",@progbits
- 460               	.global	layer_off
- 462               	layer_off:
- 463               	.LFB19:
+ 495               		.loc 1 166 5 view .LVU83
+ 496 003e 0C94 0000 		jmp layer_state_set
+ 497               	.LVL29:
+ 498               		.cfi_endproc
+ 499               	.LFE18:
+ 501               		.section	.text.layer_off,"ax",@progbits
+ 502               	.global	layer_off
+ 504               	layer_off:
+ 505               	.LVL30:
+ 506               	.LFB19:
  168:./tmk_core/common/action_layer.c **** 
  169:./tmk_core/common/action_layer.c **** /** \brief Layer off
  170:./tmk_core/common/action_layer.c ****  *
@@ -611,68 +657,71 @@
  172:./tmk_core/common/action_layer.c ****  */
  173:./tmk_core/common/action_layer.c **** void layer_off(uint8_t layer)
  174:./tmk_core/common/action_layer.c **** {
- 464               		.loc 1 174 0
- 465               		.cfi_startproc
- 466               	.LVL30:
- 467 0000 0F93      		push r16
- 468               	.LCFI10:
- 469               		.cfi_def_cfa_offset 3
- 470               		.cfi_offset 16, -2
- 471 0002 1F93      		push r17
- 472               	.LCFI11:
- 473               		.cfi_def_cfa_offset 4
- 474               		.cfi_offset 17, -3
- 475               	/* prologue: function */
- 476               	/* frame size = 0 */
- 477               	/* stack size = 2 */
- 478               	.L__stack_usage = 2
+ 507               		.loc 1 174 1 is_stmt 1 view -0
+ 508               		.cfi_startproc
+ 509               		.loc 1 174 1 is_stmt 0 view .LVU85
+ 510 0000 0F93      		push r16
+ 511               	.LCFI10:
+ 512               		.cfi_def_cfa_offset 3
+ 513               		.cfi_offset 16, -2
+ 514 0002 1F93      		push r17
+ 515               	.LCFI11:
+ 516               		.cfi_def_cfa_offset 4
+ 517               		.cfi_offset 17, -3
+ 518               	/* prologue: function */
+ 519               	/* frame size = 0 */
+ 520               	/* stack size = 2 */
+ 521               	.L__stack_usage = 2
  175:./tmk_core/common/action_layer.c ****     layer_state_set(layer_state & ~(1UL<<layer));
- 479               		.loc 1 175 0
- 480 0004 41E0      		ldi r20,lo8(1)
- 481 0006 50E0      		ldi r21,0
- 482 0008 60E0      		ldi r22,0
- 483 000a 70E0      		ldi r23,0
- 484 000c 00C0      		rjmp 2f
- 485               		1:
- 486 000e 440F      		lsl r20
- 487 0010 551F      		rol r21
- 488 0012 661F      		rol r22
- 489 0014 771F      		rol r23
- 490               		2:
- 491 0016 8A95      		dec r24
- 492 0018 02F4      		brpl 1b
- 493 001a 4095      		com r20
- 494 001c 5095      		com r21
- 495 001e 6095      		com r22
- 496 0020 7095      		com r23
- 497 0022 8091 0000 		lds r24,layer_state
- 498 0026 9091 0000 		lds r25,layer_state+1
- 499 002a A091 0000 		lds r26,layer_state+2
- 500 002e B091 0000 		lds r27,layer_state+3
- 501               	.LVL31:
- 502 0032 8A01      		movw r16,r20
- 503 0034 9B01      		movw r18,r22
- 504 0036 0823      		and r16,r24
- 505 0038 1923      		and r17,r25
- 506 003a 2A23      		and r18,r26
- 507 003c 3B23      		and r19,r27
- 508 003e C901      		movw r24,r18
- 509 0040 B801      		movw r22,r16
- 510               	/* epilogue start */
+ 522               		.loc 1 175 5 is_stmt 1 view .LVU86
+ 523               		.loc 1 175 40 is_stmt 0 view .LVU87
+ 524 0004 41E0      		ldi r20,lo8(1)
+ 525 0006 50E0      		ldi r21,0
+ 526 0008 60E0      		ldi r22,0
+ 527 000a 70E0      		ldi r23,0
+ 528 000c 00C0      		rjmp 2f
+ 529               		1:
+ 530 000e 440F      		lsl r20
+ 531 0010 551F      		rol r21
+ 532 0012 661F      		rol r22
+ 533 0014 771F      		rol r23
+ 534               		2:
+ 535 0016 8A95      		dec r24
+ 536 0018 02F4      		brpl 1b
+ 537               		.loc 1 175 35 view .LVU88
+ 538 001a CB01      		movw r24,r22
+ 539               	.LVL31:
+ 540               		.loc 1 175 35 view .LVU89
+ 541 001c BA01      		movw r22,r20
+ 542 001e 6095      		com r22
+ 543 0020 7095      		com r23
+ 544 0022 8095      		com r24
+ 545 0024 9095      		com r25
+ 546               		.loc 1 175 5 view .LVU90
+ 547 0026 0091 0000 		lds r16,layer_state
+ 548 002a 1091 0000 		lds r17,layer_state+1
+ 549 002e 2091 0000 		lds r18,layer_state+2
+ 550 0032 3091 0000 		lds r19,layer_state+3
+ 551 0036 6023      		and r22,r16
+ 552 0038 7123      		and r23,r17
+ 553 003a 8223      		and r24,r18
+ 554 003c 9323      		and r25,r19
+ 555               	/* epilogue start */
  176:./tmk_core/common/action_layer.c **** }
- 511               		.loc 1 176 0
- 512 0042 1F91      		pop r17
- 513 0044 0F91      		pop r16
+ 556               		.loc 1 176 1 view .LVU91
+ 557 003e 1F91      		pop r17
+ 558 0040 0F91      		pop r16
  175:./tmk_core/common/action_layer.c ****     layer_state_set(layer_state & ~(1UL<<layer));
- 514               		.loc 1 175 0
- 515 0046 0C94 0000 		jmp layer_state_set
- 516               	.LVL32:
- 517               		.cfi_endproc
- 518               	.LFE19:
- 520               		.section	.text.layer_invert,"ax",@progbits
- 521               	.global	layer_invert
- 523               	layer_invert:
- 524               	.LFB20:
+ 559               		.loc 1 175 5 view .LVU92
+ 560 0042 0C94 0000 		jmp layer_state_set
+ 561               	.LVL32:
+ 562               		.cfi_endproc
+ 563               	.LFE19:
+ 565               		.section	.text.layer_invert,"ax",@progbits
+ 566               	.global	layer_invert
+ 568               	layer_invert:
+ 569               	.LVL33:
+ 570               	.LFB20:
  177:./tmk_core/common/action_layer.c **** 
  178:./tmk_core/common/action_layer.c **** /** \brief Layer invert
  179:./tmk_core/common/action_layer.c ****  *
@@ -680,64 +729,68 @@
  181:./tmk_core/common/action_layer.c ****  */
  182:./tmk_core/common/action_layer.c **** void layer_invert(uint8_t layer)
  183:./tmk_core/common/action_layer.c **** {
- 525               		.loc 1 183 0
- 526               		.cfi_startproc
- 527               	.LVL33:
- 528 0000 0F93      		push r16
- 529               	.LCFI12:
- 530               		.cfi_def_cfa_offset 3
- 531               		.cfi_offset 16, -2
- 532 0002 1F93      		push r17
- 533               	.LCFI13:
- 534               		.cfi_def_cfa_offset 4
- 535               		.cfi_offset 17, -3
- 536               	/* prologue: function */
- 537               	/* frame size = 0 */
- 538               	/* stack size = 2 */
- 539               	.L__stack_usage = 2
+ 571               		.loc 1 183 1 is_stmt 1 view -0
+ 572               		.cfi_startproc
+ 573               		.loc 1 183 1 is_stmt 0 view .LVU94
+ 574 0000 0F93      		push r16
+ 575               	.LCFI12:
+ 576               		.cfi_def_cfa_offset 3
+ 577               		.cfi_offset 16, -2
+ 578 0002 1F93      		push r17
+ 579               	.LCFI13:
+ 580               		.cfi_def_cfa_offset 4
+ 581               		.cfi_offset 17, -3
+ 582               	/* prologue: function */
+ 583               	/* frame size = 0 */
+ 584               	/* stack size = 2 */
+ 585               	.L__stack_usage = 2
  184:./tmk_core/common/action_layer.c ****     layer_state_set(layer_state ^ (1UL<<layer));
- 540               		.loc 1 184 0
- 541 0004 41E0      		ldi r20,lo8(1)
- 542 0006 50E0      		ldi r21,0
- 543 0008 60E0      		ldi r22,0
- 544 000a 70E0      		ldi r23,0
- 545 000c 00C0      		rjmp 2f
- 546               		1:
- 547 000e 440F      		lsl r20
- 548 0010 551F      		rol r21
- 549 0012 661F      		rol r22
- 550 0014 771F      		rol r23
- 551               		2:
- 552 0016 8A95      		dec r24
- 553 0018 02F4      		brpl 1b
- 554 001a 8091 0000 		lds r24,layer_state
- 555 001e 9091 0000 		lds r25,layer_state+1
- 556 0022 A091 0000 		lds r26,layer_state+2
- 557 0026 B091 0000 		lds r27,layer_state+3
- 558               	.LVL34:
- 559 002a 8A01      		movw r16,r20
- 560 002c 9B01      		movw r18,r22
- 561 002e 0827      		eor r16,r24
- 562 0030 1927      		eor r17,r25
- 563 0032 2A27      		eor r18,r26
- 564 0034 3B27      		eor r19,r27
- 565 0036 C901      		movw r24,r18
- 566 0038 B801      		movw r22,r16
- 567               	/* epilogue start */
+ 586               		.loc 1 184 5 is_stmt 1 view .LVU95
+ 587               		.loc 1 184 39 is_stmt 0 view .LVU96
+ 588 0004 41E0      		ldi r20,lo8(1)
+ 589 0006 50E0      		ldi r21,0
+ 590 0008 60E0      		ldi r22,0
+ 591 000a 70E0      		ldi r23,0
+ 592 000c 00C0      		rjmp 2f
+ 593               		1:
+ 594 000e 440F      		lsl r20
+ 595 0010 551F      		rol r21
+ 596 0012 661F      		rol r22
+ 597 0014 771F      		rol r23
+ 598               		2:
+ 599 0016 8A95      		dec r24
+ 600 0018 02F4      		brpl 1b
+ 601               		.loc 1 184 5 view .LVU97
+ 602 001a 8091 0000 		lds r24,layer_state
+ 603 001e 9091 0000 		lds r25,layer_state+1
+ 604 0022 A091 0000 		lds r26,layer_state+2
+ 605 0026 B091 0000 		lds r27,layer_state+3
+ 606               	.LVL34:
+ 607               		.loc 1 184 5 view .LVU98
+ 608 002a 8A01      		movw r16,r20
+ 609 002c 9B01      		movw r18,r22
+ 610 002e 0827      		eor r16,r24
+ 611 0030 1927      		eor r17,r25
+ 612 0032 2A27      		eor r18,r26
+ 613 0034 3B27      		eor r19,r27
+ 614 0036 C901      		movw r24,r18
+ 615 0038 B801      		movw r22,r16
+ 616               	/* epilogue start */
  185:./tmk_core/common/action_layer.c **** }
- 568               		.loc 1 185 0
- 569 003a 1F91      		pop r17
- 570 003c 0F91      		pop r16
+ 617               		.loc 1 185 1 view .LVU99
+ 618 003a 1F91      		pop r17
+ 619 003c 0F91      		pop r16
  184:./tmk_core/common/action_layer.c ****     layer_state_set(layer_state ^ (1UL<<layer));
- 571               		.loc 1 184 0
- 572 003e 0C94 0000 		jmp layer_state_set
- 573               	.LVL35:
- 574               		.cfi_endproc
- 575               	.LFE20:
- 577               		.section	.text.layer_or,"ax",@progbits
- 578               	.global	layer_or
- 580               	layer_or:
- 581               	.LFB21:
+ 620               		.loc 1 184 5 view .LVU100
+ 621 003e 0C94 0000 		jmp layer_state_set
+ 622               	.LVL35:
+ 623               		.cfi_endproc
+ 624               	.LFE20:
+ 626               		.section	.text.layer_or,"ax",@progbits
+ 627               	.global	layer_or
+ 629               	layer_or:
+ 630               	.LVL36:
+ 631               	.LFB21:
  186:./tmk_core/common/action_layer.c **** 
  187:./tmk_core/common/action_layer.c **** /** \brief Layer or
  188:./tmk_core/common/action_layer.c ****  *
@@ -745,141 +798,160 @@
  190:./tmk_core/common/action_layer.c ****  */
  191:./tmk_core/common/action_layer.c **** void layer_or(uint32_t state)
  192:./tmk_core/common/action_layer.c **** {
- 582               		.loc 1 192 0
- 583               		.cfi_startproc
- 584               	.LVL36:
- 585 0000 0F93      		push r16
- 586               	.LCFI14:
- 587               		.cfi_def_cfa_offset 3
- 588               		.cfi_offset 16, -2
- 589 0002 1F93      		push r17
- 590               	.LCFI15:
- 591               		.cfi_def_cfa_offset 4
- 592               		.cfi_offset 17, -3
- 593               	/* prologue: function */
- 594               	/* frame size = 0 */
- 595               	/* stack size = 2 */
- 596               	.L__stack_usage = 2
+ 632               		.loc 1 192 1 is_stmt 1 view -0
+ 633               		.cfi_startproc
+ 634               		.loc 1 192 1 is_stmt 0 view .LVU102
+ 635 0000 0F93      		push r16
+ 636               	.LCFI14:
+ 637               		.cfi_def_cfa_offset 3
+ 638               		.cfi_offset 16, -2
+ 639 0002 1F93      		push r17
+ 640               	.LCFI15:
+ 641               		.cfi_def_cfa_offset 4
+ 642               		.cfi_offset 17, -3
+ 643               	/* prologue: function */
+ 644               	/* frame size = 0 */
+ 645               	/* stack size = 2 */
+ 646               	.L__stack_usage = 2
  193:./tmk_core/common/action_layer.c ****     layer_state_set(layer_state | state);
- 597               		.loc 1 193 0
- 598 0004 0091 0000 		lds r16,layer_state
- 599 0008 1091 0000 		lds r17,layer_state+1
- 600 000c 2091 0000 		lds r18,layer_state+2
- 601 0010 3091 0000 		lds r19,layer_state+3
- 602 0014 602B      		or r22,r16
- 603 0016 712B      		or r23,r17
- 604 0018 822B      		or r24,r18
- 605 001a 932B      		or r25,r19
- 606               	.LVL37:
- 607               	/* epilogue start */
+ 647               		.loc 1 193 5 is_stmt 1 view .LVU103
+ 648 0004 0091 0000 		lds r16,layer_state
+ 649 0008 1091 0000 		lds r17,layer_state+1
+ 650 000c 2091 0000 		lds r18,layer_state+2
+ 651 0010 3091 0000 		lds r19,layer_state+3
+ 652 0014 602B      		or r22,r16
+ 653               	.LVL37:
+ 654               		.loc 1 193 5 is_stmt 0 view .LVU104
+ 655 0016 712B      		or r23,r17
+ 656 0018 822B      		or r24,r18
+ 657 001a 932B      		or r25,r19
+ 658               	/* epilogue start */
  194:./tmk_core/common/action_layer.c **** }
- 608               		.loc 1 194 0
- 609 001c 1F91      		pop r17
- 610 001e 0F91      		pop r16
+ 659               		.loc 1 194 1 view .LVU105
+ 660 001c 1F91      		pop r17
+ 661 001e 0F91      		pop r16
  193:./tmk_core/common/action_layer.c ****     layer_state_set(layer_state | state);
- 611               		.loc 1 193 0
- 612 0020 0C94 0000 		jmp layer_state_set
- 613               	.LVL38:
- 614               		.cfi_endproc
- 615               	.LFE21:
- 617               		.section	.text.layer_and,"ax",@progbits
- 618               	.global	layer_and
- 620               	layer_and:
- 621               	.LFB22:
+ 662               		.loc 1 193 5 view .LVU106
+ 663 0020 0C94 0000 		jmp layer_state_set
+ 664               	.LVL38:
+ 665               		.cfi_endproc
+ 666               	.LFE21:
+ 668               		.section	.text.layer_and,"ax",@progbits
+ 669               	.global	layer_and
+ 671               	layer_and:
+ 672               	.LVL39:
+ 673               	.LFB22:
  195:./tmk_core/common/action_layer.c **** /** \brief Layer and
  196:./tmk_core/common/action_layer.c ****  *
  197:./tmk_core/common/action_layer.c ****  * FIXME: Needs docs
  198:./tmk_core/common/action_layer.c ****  */
  199:./tmk_core/common/action_layer.c **** void layer_and(uint32_t state)
  200:./tmk_core/common/action_layer.c **** {
- 622               		.loc 1 200 0
- 623               		.cfi_startproc
- 624               	.LVL39:
- 625 0000 0F93      		push r16
- 626               	.LCFI16:
- 627               		.cfi_def_cfa_offset 3
- 628               		.cfi_offset 16, -2
- 629 0002 1F93      		push r17
- 630               	.LCFI17:
- 631               		.cfi_def_cfa_offset 4
- 632               		.cfi_offset 17, -3
- 633               	/* prologue: function */
- 634               	/* frame size = 0 */
- 635               	/* stack size = 2 */
- 636               	.L__stack_usage = 2
+ 674               		.loc 1 200 1 is_stmt 1 view -0
+ 675               		.cfi_startproc
+ 676               		.loc 1 200 1 is_stmt 0 view .LVU108
+ 677 0000 0F93      		push r16
+ 678               	.LCFI16:
+ 679               		.cfi_def_cfa_offset 3
+ 680               		.cfi_offset 16, -2
+ 681 0002 1F93      		push r17
+ 682               	.LCFI17:
+ 683               		.cfi_def_cfa_offset 4
+ 684               		.cfi_offset 17, -3
+ 685               	/* prologue: function */
+ 686               	/* frame size = 0 */
+ 687               	/* stack size = 2 */
+ 688               	.L__stack_usage = 2
  201:./tmk_core/common/action_layer.c ****     layer_state_set(layer_state & state);
- 637               		.loc 1 201 0
- 638 0004 0091 0000 		lds r16,layer_state
- 639 0008 1091 0000 		lds r17,layer_state+1
- 640 000c 2091 0000 		lds r18,layer_state+2
- 641 0010 3091 0000 		lds r19,layer_state+3
- 642 0014 6023      		and r22,r16
- 643 0016 7123      		and r23,r17
- 644 0018 8223      		and r24,r18
- 645 001a 9323      		and r25,r19
- 646               	.LVL40:
- 647               	/* epilogue start */
+ 689               		.loc 1 201 5 is_stmt 1 view .LVU109
+ 690 0004 0091 0000 		lds r16,layer_state
+ 691 0008 1091 0000 		lds r17,layer_state+1
+ 692 000c 2091 0000 		lds r18,layer_state+2
+ 693 0010 3091 0000 		lds r19,layer_state+3
+ 694 0014 6023      		and r22,r16
+ 695               	.LVL40:
+ 696               		.loc 1 201 5 is_stmt 0 view .LVU110
+ 697 0016 7123      		and r23,r17
+ 698 0018 8223      		and r24,r18
+ 699 001a 9323      		and r25,r19
+ 700               	/* epilogue start */
  202:./tmk_core/common/action_layer.c **** }
- 648               		.loc 1 202 0
- 649 001c 1F91      		pop r17
- 650 001e 0F91      		pop r16
+ 701               		.loc 1 202 1 view .LVU111
+ 702 001c 1F91      		pop r17
+ 703 001e 0F91      		pop r16
  201:./tmk_core/common/action_layer.c ****     layer_state_set(layer_state & state);
- 651               		.loc 1 201 0
- 652 0020 0C94 0000 		jmp layer_state_set
- 653               	.LVL41:
- 654               		.cfi_endproc
- 655               	.LFE22:
- 657               		.section	.text.layer_xor,"ax",@progbits
- 658               	.global	layer_xor
- 660               	layer_xor:
- 661               	.LFB23:
+ 704               		.loc 1 201 5 view .LVU112
+ 705 0020 0C94 0000 		jmp layer_state_set
+ 706               	.LVL41:
+ 707               		.cfi_endproc
+ 708               	.LFE22:
+ 710               		.section	.text.layer_xor,"ax",@progbits
+ 711               	.global	layer_xor
+ 713               	layer_xor:
+ 714               	.LVL42:
+ 715               	.LFB23:
  203:./tmk_core/common/action_layer.c **** /** \brief Layer xor
  204:./tmk_core/common/action_layer.c ****  *
  205:./tmk_core/common/action_layer.c ****  * FIXME: Needs docs
  206:./tmk_core/common/action_layer.c ****  */
  207:./tmk_core/common/action_layer.c **** void layer_xor(uint32_t state)
  208:./tmk_core/common/action_layer.c **** {
- 662               		.loc 1 208 0
- 663               		.cfi_startproc
- 664               	.LVL42:
- 665 0000 0F93      		push r16
- 666               	.LCFI18:
- 667               		.cfi_def_cfa_offset 3
- 668               		.cfi_offset 16, -2
- 669 0002 1F93      		push r17
- 670               	.LCFI19:
- 671               		.cfi_def_cfa_offset 4
- 672               		.cfi_offset 17, -3
- 673               	/* prologue: function */
- 674               	/* frame size = 0 */
- 675               	/* stack size = 2 */
- 676               	.L__stack_usage = 2
+ 716               		.loc 1 208 1 is_stmt 1 view -0
+ 717               		.cfi_startproc
+ 718               		.loc 1 208 1 is_stmt 0 view .LVU114
+ 719 0000 0F93      		push r16
+ 720               	.LCFI18:
+ 721               		.cfi_def_cfa_offset 3
+ 722               		.cfi_offset 16, -2
+ 723 0002 1F93      		push r17
+ 724               	.LCFI19:
+ 725               		.cfi_def_cfa_offset 4
+ 726               		.cfi_offset 17, -3
+ 727               	/* prologue: function */
+ 728               	/* frame size = 0 */
+ 729               	/* stack size = 2 */
+ 730               	.L__stack_usage = 2
  209:./tmk_core/common/action_layer.c ****     layer_state_set(layer_state ^ state);
- 677               		.loc 1 209 0
- 678 0004 0091 0000 		lds r16,layer_state
- 679 0008 1091 0000 		lds r17,layer_state+1
- 680 000c 2091 0000 		lds r18,layer_state+2
- 681 0010 3091 0000 		lds r19,layer_state+3
- 682 0014 6027      		eor r22,r16
- 683 0016 7127      		eor r23,r17
- 684 0018 8227      		eor r24,r18
- 685 001a 9327      		eor r25,r19
- 686               	.LVL43:
- 687               	/* epilogue start */
+ 731               		.loc 1 209 5 is_stmt 1 view .LVU115
+ 732 0004 0091 0000 		lds r16,layer_state
+ 733 0008 1091 0000 		lds r17,layer_state+1
+ 734 000c 2091 0000 		lds r18,layer_state+2
+ 735 0010 3091 0000 		lds r19,layer_state+3
+ 736 0014 6027      		eor r22,r16
+ 737               	.LVL43:
+ 738               		.loc 1 209 5 is_stmt 0 view .LVU116
+ 739 0016 7127      		eor r23,r17
+ 740 0018 8227      		eor r24,r18
+ 741 001a 9327      		eor r25,r19
+ 742               	/* epilogue start */
  210:./tmk_core/common/action_layer.c **** }
- 688               		.loc 1 210 0
- 689 001c 1F91      		pop r17
- 690 001e 0F91      		pop r16
+ 743               		.loc 1 210 1 view .LVU117
+ 744 001c 1F91      		pop r17
+ 745 001e 0F91      		pop r16
  209:./tmk_core/common/action_layer.c ****     layer_state_set(layer_state ^ state);
- 691               		.loc 1 209 0
- 692 0020 0C94 0000 		jmp layer_state_set
- 693               	.LVL44:
- 694               		.cfi_endproc
- 695               	.LFE23:
- 697               		.section	.text.layer_debug,"ax",@progbits
- 698               	.global	layer_debug
- 700               	layer_debug:
- 701               	.LFB24:
+ 746               		.loc 1 209 5 view .LVU118
+ 747 0020 0C94 0000 		jmp layer_state_set
+ 748               	.LVL44:
+ 749               		.cfi_endproc
+ 750               	.LFE23:
+ 752               		.section	.text.layer_debug,"ax",@progbits
+ 753               	.global	layer_debug
+ 755               	layer_debug:
+ 756               	.LFB29:
+ 757               		.cfi_startproc
+ 758               	/* prologue: function */
+ 759               	/* frame size = 0 */
+ 760               	/* stack size = 0 */
+ 761               	.L__stack_usage = 0
+ 762               	/* epilogue start */
+ 763 0000 0895      		ret
+ 764               		.cfi_endproc
+ 765               	.LFE29:
+ 767               		.section	.text.layer_switch_get_layer,"ax",@progbits
+ 768               	.global	layer_switch_get_layer
+ 770               	layer_switch_get_layer:
+ 771               	.LVL45:
+ 772               	.LFB26:
  211:./tmk_core/common/action_layer.c **** 
  212:./tmk_core/common/action_layer.c **** /** \brief Layer debug printing
  213:./tmk_core/common/action_layer.c ****  *
@@ -887,19 +959,6 @@
  215:./tmk_core/common/action_layer.c ****  */
  216:./tmk_core/common/action_layer.c **** void layer_debug(void)
  217:./tmk_core/common/action_layer.c **** {
- 702               		.loc 1 217 0
- 703               		.cfi_startproc
- 704               	/* prologue: function */
- 705               	/* frame size = 0 */
- 706               	/* stack size = 0 */
- 707               	.L__stack_usage = 0
- 708 0000 0895      		ret
- 709               		.cfi_endproc
- 710               	.LFE24:
- 712               		.section	.text.layer_switch_get_layer,"ax",@progbits
- 713               	.global	layer_switch_get_layer
- 715               	layer_switch_get_layer:
- 716               	.LFB26:
  218:./tmk_core/common/action_layer.c ****     dprintf("%08lX(%u)", layer_state, biton32(layer_state));
  219:./tmk_core/common/action_layer.c **** }
  220:./tmk_core/common/action_layer.c **** #endif
@@ -975,148 +1034,178 @@
  290:./tmk_core/common/action_layer.c ****  */
  291:./tmk_core/common/action_layer.c **** int8_t layer_switch_get_layer(keypos_t key)
  292:./tmk_core/common/action_layer.c **** {
- 717               		.loc 1 292 0
- 718               		.cfi_startproc
- 719               	.LVL45:
- 720               		.loc 1 292 0
- 721 0000 CF92      		push r12
- 722               	.LCFI20:
- 723               		.cfi_def_cfa_offset 3
- 724               		.cfi_offset 12, -2
- 725 0002 DF92      		push r13
- 726               	.LCFI21:
- 727               		.cfi_def_cfa_offset 4
- 728               		.cfi_offset 13, -3
- 729 0004 EF92      		push r14
- 730               	.LCFI22:
- 731               		.cfi_def_cfa_offset 5
- 732               		.cfi_offset 14, -4
- 733 0006 FF92      		push r15
- 734               	.LCFI23:
- 735               		.cfi_def_cfa_offset 6
- 736               		.cfi_offset 15, -5
- 737 0008 0F93      		push r16
- 738               	.LCFI24:
- 739               		.cfi_def_cfa_offset 7
- 740               		.cfi_offset 16, -6
- 741 000a 1F93      		push r17
- 742               	.LCFI25:
- 743               		.cfi_def_cfa_offset 8
- 744               		.cfi_offset 17, -7
- 745 000c CF93      		push r28
- 746               	.LCFI26:
- 747               		.cfi_def_cfa_offset 9
- 748               		.cfi_offset 28, -8
- 749 000e DF93      		push r29
- 750               	.LCFI27:
- 751               		.cfi_def_cfa_offset 10
- 752               		.cfi_offset 29, -9
- 753               	/* prologue: function */
- 754               	/* frame size = 0 */
- 755               	/* stack size = 8 */
- 756               	.L__stack_usage = 8
- 757 0010 8C01      		movw r16,r24
- 758               	.LVL46:
+ 773               		.loc 1 292 1 is_stmt 1 view -0
+ 774               		.cfi_startproc
+ 775               		.loc 1 292 1 is_stmt 0 view .LVU120
+ 776 0000 BF92      		push r11
+ 777               	.LCFI20:
+ 778               		.cfi_def_cfa_offset 3
+ 779               		.cfi_offset 11, -2
+ 780 0002 CF92      		push r12
+ 781               	.LCFI21:
+ 782               		.cfi_def_cfa_offset 4
+ 783               		.cfi_offset 12, -3
+ 784 0004 DF92      		push r13
+ 785               	.LCFI22:
+ 786               		.cfi_def_cfa_offset 5
+ 787               		.cfi_offset 13, -4
+ 788 0006 EF92      		push r14
+ 789               	.LCFI23:
+ 790               		.cfi_def_cfa_offset 6
+ 791               		.cfi_offset 14, -5
+ 792 0008 FF92      		push r15
+ 793               	.LCFI24:
+ 794               		.cfi_def_cfa_offset 7
+ 795               		.cfi_offset 15, -6
+ 796 000a 0F93      		push r16
+ 797               	.LCFI25:
+ 798               		.cfi_def_cfa_offset 8
+ 799               		.cfi_offset 16, -7
+ 800 000c 1F93      		push r17
+ 801               	.LCFI26:
+ 802               		.cfi_def_cfa_offset 9
+ 803               		.cfi_offset 17, -8
+ 804 000e CF93      		push r28
+ 805               	.LCFI27:
+ 806               		.cfi_def_cfa_offset 10
+ 807               		.cfi_offset 28, -9
+ 808 0010 DF93      		push r29
+ 809               	.LCFI28:
+ 810               		.cfi_def_cfa_offset 11
+ 811               		.cfi_offset 29, -10
+ 812               	/* prologue: function */
+ 813               	/* frame size = 0 */
+ 814               	/* stack size = 9 */
+ 815               	.L__stack_usage = 9
+ 816 0012 8C01      		movw r16,r24
  293:./tmk_core/common/action_layer.c **** #ifndef NO_ACTION_LAYER
  294:./tmk_core/common/action_layer.c ****     action_t action;
+ 817               		.loc 1 294 5 is_stmt 1 view .LVU121
  295:./tmk_core/common/action_layer.c ****     action.code = ACTION_TRANSPARENT;
+ 818               		.loc 1 295 5 view .LVU122
+ 819               	.LVL46:
  296:./tmk_core/common/action_layer.c **** 
  297:./tmk_core/common/action_layer.c ****     uint32_t layers = layer_state | default_layer_state;
- 759               		.loc 1 297 0
- 760 0012 C090 0000 		lds r12,default_layer_state
- 761 0016 D090 0000 		lds r13,default_layer_state+1
- 762 001a E090 0000 		lds r14,default_layer_state+2
- 763 001e F090 0000 		lds r15,default_layer_state+3
- 764 0022 8091 0000 		lds r24,layer_state
- 765 0026 9091 0000 		lds r25,layer_state+1
- 766 002a A091 0000 		lds r26,layer_state+2
- 767 002e B091 0000 		lds r27,layer_state+3
- 768               	.LVL47:
- 769 0032 C82A      		or r12,r24
- 770 0034 D92A      		or r13,r25
- 771 0036 EA2A      		or r14,r26
- 772 0038 FB2A      		or r15,r27
- 773               	.LVL48:
- 774 003a CFE1      		ldi r28,lo8(31)
- 775 003c D0E0      		ldi r29,0
- 776               	.LVL49:
- 777               	.L32:
- 778               	.LBB2:
+ 820               		.loc 1 297 5 view .LVU123
+ 821               		.loc 1 297 14 is_stmt 0 view .LVU124
+ 822 0014 C090 0000 		lds r12,layer_state
+ 823 0018 D090 0000 		lds r13,layer_state+1
+ 824 001c E090 0000 		lds r14,layer_state+2
+ 825 0020 F090 0000 		lds r15,layer_state+3
+ 826 0024 8091 0000 		lds r24,default_layer_state
+ 827 0028 9091 0000 		lds r25,default_layer_state+1
+ 828 002c A091 0000 		lds r26,default_layer_state+2
+ 829 0030 B091 0000 		lds r27,default_layer_state+3
+ 830               	.LVL47:
+ 831               		.loc 1 297 14 view .LVU125
+ 832 0034 C82A      		or r12,r24
+ 833 0036 D92A      		or r13,r25
+ 834 0038 EA2A      		or r14,r26
+ 835 003a FB2A      		or r15,r27
+ 836               	.LVL48:
  298:./tmk_core/common/action_layer.c ****     /* check top layer first */
  299:./tmk_core/common/action_layer.c ****     for (int8_t i = 31; i >= 0; i--) {
+ 837               		.loc 1 299 5 is_stmt 1 view .LVU126
+ 838               	.LBB2:
+ 839               		.loc 1 299 10 view .LVU127
+ 840               		.loc 1 299 10 is_stmt 0 view .LVU128
+ 841               	.LBE2:
+ 297:./tmk_core/common/action_layer.c ****     /* check top layer first */
+ 842               		.loc 1 297 14 view .LVU129
+ 843 003c CFE1      		ldi r28,lo8(31)
+ 844 003e D0E0      		ldi r29,0
+ 845               	.LVL49:
+ 846               	.L30:
+ 297:./tmk_core/common/action_layer.c ****     /* check top layer first */
+ 847               		.loc 1 297 14 view .LVU130
+ 848 0040 BC2E      		mov r11,r28
+ 849               	.LVL50:
+ 850               	.LBB3:
  300:./tmk_core/common/action_layer.c ****         if (layers & (1UL<<i)) {
- 779               		.loc 1 300 0
- 780 003e D701      		movw r26,r14
- 781 0040 C601      		movw r24,r12
- 782 0042 0C2E      		mov r0,r28
- 783 0044 00C0      		rjmp 2f
- 784               		1:
- 785 0046 B695      		lsr r27
- 786 0048 A795      		ror r26
- 787 004a 9795      		ror r25
- 788 004c 8795      		ror r24
- 789               		2:
- 790 004e 0A94      		dec r0
- 791 0050 02F4      		brpl 1b
- 792 0052 80FF      		sbrs r24,0
- 793 0054 00C0      		rjmp .L30
+ 851               		.loc 1 300 9 is_stmt 1 view .LVU131
+ 852               		.loc 1 300 13 is_stmt 0 view .LVU132
+ 853 0042 D701      		movw r26,r14
+ 854 0044 C601      		movw r24,r12
+ 855 0046 0C2E      		mov r0,r28
+ 856 0048 00C0      		rjmp 2f
+ 857               		1:
+ 858 004a B695      		lsr r27
+ 859 004c A795      		ror r26
+ 860 004e 9795      		ror r25
+ 861 0050 8795      		ror r24
+ 862               		2:
+ 863 0052 0A94      		dec r0
+ 864 0054 02F4      		brpl 1b
+ 865               		.loc 1 300 12 view .LVU133
+ 866 0056 80FD      		sbrc r24,0
+ 867 0058 00C0      		rjmp .L29
+ 868               	.L32:
+ 869               	.LVL51:
+ 870               		.loc 1 300 12 view .LVU134
+ 871               	.LVL52:
+ 872 005a 2197      		sbiw r28,1
+ 873 005c 00F4      		brcc .L30
+ 874               		.loc 1 300 12 view .LVU135
+ 875               	.LBE3:
  301:./tmk_core/common/action_layer.c ****             action = action_for_key(i, key);
- 794               		.loc 1 301 0
- 795 0056 B801      		movw r22,r16
- 796 0058 8C2F      		mov r24,r28
- 797 005a 0E94 0000 		call action_for_key
- 798               	.LVL50:
  302:./tmk_core/common/action_layer.c ****             if (action.code != ACTION_TRANSPARENT) {
- 799               		.loc 1 302 0
- 800 005e 0197      		sbiw r24,1
- 801 0060 01F4      		brne .L33
- 802               	.LVL51:
- 803               	.L30:
- 804               	.LVL52:
- 805 0062 2197      		sbiw r28,1
- 806 0064 00F4      		brcc .L32
- 807               	.LBE2:
  303:./tmk_core/common/action_layer.c ****                 return i;
  304:./tmk_core/common/action_layer.c ****             }
  305:./tmk_core/common/action_layer.c ****         }
  306:./tmk_core/common/action_layer.c ****     }
  307:./tmk_core/common/action_layer.c ****     /* fall back to layer 0 */
  308:./tmk_core/common/action_layer.c ****     return 0;
- 808               		.loc 1 308 0
- 809 0066 80E0      		ldi r24,0
- 810               	.LBB3:
- 811 0068 00C0      		rjmp .L31
- 812               	.LVL53:
- 813               	.L33:
- 303:./tmk_core/common/action_layer.c ****                 return i;
- 814               		.loc 1 303 0
- 815 006a 8C2F      		mov r24,r28
- 816               	.LVL54:
- 817               	.L31:
- 818               	/* epilogue start */
- 819               	.LBE3:
+ 876               		.loc 1 308 12 view .LVU136
+ 877 005e B12C      		mov r11,__zero_reg__
+ 878               	.LVL53:
+ 879               	.L28:
  309:./tmk_core/common/action_layer.c **** #else
  310:./tmk_core/common/action_layer.c ****     return biton32(default_layer_state);
  311:./tmk_core/common/action_layer.c **** #endif
  312:./tmk_core/common/action_layer.c **** }
- 820               		.loc 1 312 0
- 821 006c DF91      		pop r29
- 822 006e CF91      		pop r28
- 823 0070 1F91      		pop r17
- 824 0072 0F91      		pop r16
- 825               	.LVL55:
- 826 0074 FF90      		pop r15
- 827 0076 EF90      		pop r14
- 828 0078 DF90      		pop r13
- 829 007a CF90      		pop r12
- 830               	.LVL56:
- 831 007c 0895      		ret
- 832               		.cfi_endproc
- 833               	.LFE26:
- 835               		.section	.text.layer_switch_get_action,"ax",@progbits
- 836               	.global	layer_switch_get_action
- 838               	layer_switch_get_action:
- 839               	.LFB27:
+ 880               		.loc 1 312 1 view .LVU137
+ 881 0060 8B2D      		mov r24,r11
+ 882               	/* epilogue start */
+ 883 0062 DF91      		pop r29
+ 884 0064 CF91      		pop r28
+ 885 0066 1F91      		pop r17
+ 886 0068 0F91      		pop r16
+ 887               	.LVL54:
+ 888               		.loc 1 312 1 view .LVU138
+ 889 006a FF90      		pop r15
+ 890 006c EF90      		pop r14
+ 891 006e DF90      		pop r13
+ 892 0070 CF90      		pop r12
+ 893               	.LVL55:
+ 894               		.loc 1 312 1 view .LVU139
+ 895 0072 BF90      		pop r11
+ 896 0074 0895      		ret
+ 897               	.LVL56:
+ 898               	.L29:
+ 899               	.LBB4:
+ 301:./tmk_core/common/action_layer.c ****             action = action_for_key(i, key);
+ 900               		.loc 1 301 13 is_stmt 1 view .LVU140
+ 301:./tmk_core/common/action_layer.c ****             action = action_for_key(i, key);
+ 901               		.loc 1 301 22 is_stmt 0 view .LVU141
+ 902 0076 B801      		movw r22,r16
+ 903 0078 8C2F      		mov r24,r28
+ 904 007a 0E94 0000 		call action_for_key
+ 905               	.LVL57:
+ 302:./tmk_core/common/action_layer.c ****                 return i;
+ 906               		.loc 1 302 13 is_stmt 1 view .LVU142
+ 302:./tmk_core/common/action_layer.c ****                 return i;
+ 907               		.loc 1 302 16 is_stmt 0 view .LVU143
+ 908 007e 0197      		sbiw r24,1
+ 909 0080 01F0      		breq .L32
+ 910 0082 00C0      		rjmp .L28
+ 911               	.LBE4:
+ 912               		.cfi_endproc
+ 913               	.LFE26:
+ 915               		.section	.text.layer_switch_get_action,"ax",@progbits
+ 916               	.global	layer_switch_get_action
+ 918               	layer_switch_get_action:
+ 919               	.LVL58:
+ 920               	.LFB27:
  313:./tmk_core/common/action_layer.c **** 
  314:./tmk_core/common/action_layer.c **** /** \brief Layer switch get layer
  315:./tmk_core/common/action_layer.c ****  *
@@ -1124,108 +1213,118 @@
  317:./tmk_core/common/action_layer.c ****  */
  318:./tmk_core/common/action_layer.c **** action_t layer_switch_get_action(keypos_t key)
  319:./tmk_core/common/action_layer.c **** {
- 840               		.loc 1 319 0
- 841               		.cfi_startproc
- 842               	.LVL57:
- 843 0000 CF93      		push r28
- 844               	.LCFI28:
- 845               		.cfi_def_cfa_offset 3
- 846               		.cfi_offset 28, -2
- 847 0002 DF93      		push r29
- 848               	.LCFI29:
- 849               		.cfi_def_cfa_offset 4
- 850               		.cfi_offset 29, -3
- 851               	/* prologue: function */
- 852               	/* frame size = 0 */
- 853               	/* stack size = 2 */
- 854               	.L__stack_usage = 2
- 855 0004 EC01      		movw r28,r24
+ 921               		.loc 1 319 1 is_stmt 1 view -0
+ 922               		.cfi_startproc
+ 923               		.loc 1 319 1 is_stmt 0 view .LVU145
+ 924 0000 CF93      		push r28
+ 925               	.LCFI29:
+ 926               		.cfi_def_cfa_offset 3
+ 927               		.cfi_offset 28, -2
+ 928 0002 DF93      		push r29
+ 929               	.LCFI30:
+ 930               		.cfi_def_cfa_offset 4
+ 931               		.cfi_offset 29, -3
+ 932               	/* prologue: function */
+ 933               	/* frame size = 0 */
+ 934               	/* stack size = 2 */
+ 935               	.L__stack_usage = 2
+ 936 0004 EC01      		movw r28,r24
  320:./tmk_core/common/action_layer.c ****     return action_for_key(layer_switch_get_layer(key), key);
- 856               		.loc 1 320 0
- 857 0006 0E94 0000 		call layer_switch_get_layer
- 858               	.LVL58:
- 859 000a BE01      		movw r22,r28
- 860 000c 0E94 0000 		call action_for_key
- 861               	.LVL59:
- 862               	/* epilogue start */
+ 937               		.loc 1 320 5 is_stmt 1 view .LVU146
+ 938               		.loc 1 320 27 is_stmt 0 view .LVU147
+ 939 0006 0E94 0000 		call layer_switch_get_layer
+ 940               	.LVL59:
+ 941               		.loc 1 320 12 view .LVU148
+ 942 000a BE01      		movw r22,r28
+ 943               	/* epilogue start */
  321:./tmk_core/common/action_layer.c **** }
- 863               		.loc 1 321 0
- 864 0010 DF91      		pop r29
- 865 0012 CF91      		pop r28
- 866               	.LVL60:
- 867 0014 0895      		ret
- 868               		.cfi_endproc
- 869               	.LFE27:
- 871               		.section	.text.store_or_get_action,"ax",@progbits
- 872               	.global	store_or_get_action
- 874               	store_or_get_action:
- 875               	.LFB25:
+ 944               		.loc 1 321 1 view .LVU149
+ 945 000c DF91      		pop r29
+ 946 000e CF91      		pop r28
+ 947               	.LVL60:
+ 320:./tmk_core/common/action_layer.c ****     return action_for_key(layer_switch_get_layer(key), key);
+ 948               		.loc 1 320 12 view .LVU150
+ 949 0010 0C94 0000 		jmp action_for_key
+ 950               	.LVL61:
+ 951               		.cfi_endproc
+ 952               	.LFE27:
+ 954               		.section	.text.store_or_get_action,"ax",@progbits
+ 955               	.global	store_or_get_action
+ 957               	store_or_get_action:
+ 958               	.LVL62:
+ 959               	.LFB25:
  265:./tmk_core/common/action_layer.c **** #if !defined(NO_ACTION_LAYER) && defined(PREVENT_STUCK_MODIFIERS)
- 876               		.loc 1 265 0
- 877               		.cfi_startproc
- 878               	.LVL61:
- 879               	/* prologue: function */
- 880               	/* frame size = 0 */
- 881               	/* stack size = 0 */
- 882               	.L__stack_usage = 0
- 883 0000 CB01      		movw r24,r22
- 884               	.LVL62:
+ 960               		.loc 1 265 1 is_stmt 1 view -0
+ 961               		.cfi_startproc
+ 962               	/* prologue: function */
+ 963               	/* frame size = 0 */
+ 964               	/* stack size = 0 */
+ 965               	.L__stack_usage = 0
+ 265:./tmk_core/common/action_layer.c **** #if !defined(NO_ACTION_LAYER) && defined(PREVENT_STUCK_MODIFIERS)
+ 966               		.loc 1 265 1 is_stmt 0 view .LVU152
+ 967 0000 CB01      		movw r24,r22
+ 968               	.LVL63:
  282:./tmk_core/common/action_layer.c **** #endif
- 885               		.loc 1 282 0
- 886 0002 0E94 0000 		call layer_switch_get_action
- 887               	.LVL63:
- 284:./tmk_core/common/action_layer.c **** 
- 888               		.loc 1 284 0
- 889 0006 0895      		ret
- 890               		.cfi_endproc
- 891               	.LFE25:
- 893               	.global	layer_state
- 894               		.section	.bss.layer_state,"aw",@nobits
- 897               	layer_state:
- 898 0000 0000 0000 		.zero	4
- 899               	.global	default_layer_state
- 900               		.section	.bss.default_layer_state,"aw",@nobits
- 903               	default_layer_state:
- 904 0000 0000 0000 		.zero	4
- 905               		.text
- 906               	.Letext0:
- 907               		.file 2 "c:\\msys32\\home\\683654\\qmk_utils\\avr8-gnu-toolchain\\avr\\include\\stdint.h"
- 908               		.file 3 "./tmk_core/common/keyboard.h"
- 909               		.file 4 "./tmk_core/common/action_code.h"
- 910               		.file 5 "./tmk_core/common/action.h"
+ 969               		.loc 1 282 5 is_stmt 1 view .LVU153
+ 282:./tmk_core/common/action_layer.c **** #endif
+ 970               		.loc 1 282 12 is_stmt 0 view .LVU154
+ 971 0002 0C94 0000 		jmp layer_switch_get_action
+ 972               	.LVL64:
+ 282:./tmk_core/common/action_layer.c **** #endif
+ 973               		.loc 1 282 12 view .LVU155
+ 974               		.cfi_endproc
+ 975               	.LFE25:
+ 977               	.global	layer_state
+ 978               		.section	.bss.layer_state,"aw",@nobits
+ 981               	layer_state:
+ 982 0000 0000 0000 		.zero	4
+ 983               	.global	default_layer_state
+ 984               		.section	.bss.default_layer_state,"aw",@nobits
+ 987               	default_layer_state:
+ 988 0000 0000 0000 		.zero	4
+ 989               		.text
+ 990               	.Letext0:
+ 991               		.file 2 "/usr/local/Cellar/avr-gcc@8/8.3.0_1/avr/include/stdint.h"
+ 992               		.file 3 "./tmk_core/common/keyboard.h"
+ 993               		.file 4 "./tmk_core/common/action_code.h"
+ 994               		.file 5 "./tmk_core/common/action_layer.h"
+ 995               		.file 6 "./tmk_core/common/avr/xprintf.h"
+ 996               		.file 7 "./tmk_core/common/debug.h"
+ 997               		.file 8 "./tmk_core/common/action.h"
 DEFINED SYMBOLS
-                            *ABS*:00000000 action_layer.c
-C:\msys32\tmp\ccLNHYzk.s:2      *ABS*:0000003e __SP_H__
-C:\msys32\tmp\ccLNHYzk.s:3      *ABS*:0000003d __SP_L__
-C:\msys32\tmp\ccLNHYzk.s:4      *ABS*:0000003f __SREG__
-C:\msys32\tmp\ccLNHYzk.s:5      *ABS*:00000000 __tmp_reg__
-C:\msys32\tmp\ccLNHYzk.s:6      *ABS*:00000001 __zero_reg__
-C:\msys32\tmp\ccLNHYzk.s:13     .text.default_layer_state_set_kb:00000000 default_layer_state_set_kb
-C:\msys32\tmp\ccLNHYzk.s:30     .text.default_layer_state_set:00000000 default_layer_state_set
-C:\msys32\tmp\ccLNHYzk.s:903    .bss.default_layer_state:00000000 default_layer_state
-C:\msys32\tmp\ccLNHYzk.s:56     .text.default_layer_debug:00000000 default_layer_debug
-C:\msys32\tmp\ccLNHYzk.s:71     .text.default_layer_set:00000000 default_layer_set
-C:\msys32\tmp\ccLNHYzk.s:89     .text.default_layer_or:00000000 default_layer_or
-C:\msys32\tmp\ccLNHYzk.s:129    .text.default_layer_and:00000000 default_layer_and
-C:\msys32\tmp\ccLNHYzk.s:169    .text.default_layer_xor:00000000 default_layer_xor
-C:\msys32\tmp\ccLNHYzk.s:209    .text.layer_state_set_user:00000000 layer_state_set_user
-C:\msys32\tmp\ccLNHYzk.s:226    .text.layer_state_set_kb:00000000 layer_state_set_kb
-C:\msys32\tmp\ccLNHYzk.s:244    .text.layer_state_set:00000000 layer_state_set
-C:\msys32\tmp\ccLNHYzk.s:897    .bss.layer_state:00000000 layer_state
-C:\msys32\tmp\ccLNHYzk.s:270    .text.layer_clear:00000000 layer_clear
-C:\msys32\tmp\ccLNHYzk.s:290    .text.layer_state_cmp:00000000 layer_state_cmp
-C:\msys32\tmp\ccLNHYzk.s:334    .text.layer_state_is:00000000 layer_state_is
-C:\msys32\tmp\ccLNHYzk.s:357    .text.layer_move:00000000 layer_move
-C:\msys32\tmp\ccLNHYzk.s:405    .text.layer_on:00000000 layer_on
-C:\msys32\tmp\ccLNHYzk.s:462    .text.layer_off:00000000 layer_off
-C:\msys32\tmp\ccLNHYzk.s:523    .text.layer_invert:00000000 layer_invert
-C:\msys32\tmp\ccLNHYzk.s:580    .text.layer_or:00000000 layer_or
-C:\msys32\tmp\ccLNHYzk.s:620    .text.layer_and:00000000 layer_and
-C:\msys32\tmp\ccLNHYzk.s:660    .text.layer_xor:00000000 layer_xor
-C:\msys32\tmp\ccLNHYzk.s:700    .text.layer_debug:00000000 layer_debug
-C:\msys32\tmp\ccLNHYzk.s:715    .text.layer_switch_get_layer:00000000 layer_switch_get_layer
-C:\msys32\tmp\ccLNHYzk.s:838    .text.layer_switch_get_action:00000000 layer_switch_get_action
-C:\msys32\tmp\ccLNHYzk.s:874    .text.store_or_get_action:00000000 store_or_get_action
+                            *ABS*:0000000000000000 action_layer.c
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccgkJb1w.s:2      *ABS*:000000000000003e __SP_H__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccgkJb1w.s:3      *ABS*:000000000000003d __SP_L__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccgkJb1w.s:4      *ABS*:000000000000003f __SREG__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccgkJb1w.s:5      *ABS*:0000000000000000 __tmp_reg__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccgkJb1w.s:6      *ABS*:0000000000000001 __zero_reg__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccgkJb1w.s:13     .text.default_layer_state_set_kb:0000000000000000 default_layer_state_set_kb
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccgkJb1w.s:13     .text.default_layer_state_set_kb:0000000000000000 default_layer_state_set_kb.localalias.0
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccgkJb1w.s:33     .text.default_layer_state_set:0000000000000000 default_layer_state_set
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccgkJb1w.s:987    .bss.default_layer_state:0000000000000000 default_layer_state
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccgkJb1w.s:67     .text.default_layer_debug:0000000000000000 default_layer_debug
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccgkJb1w.s:85     .text.default_layer_set:0000000000000000 default_layer_set
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccgkJb1w.s:104    .text.default_layer_or:0000000000000000 default_layer_or
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccgkJb1w.s:146    .text.default_layer_and:0000000000000000 default_layer_and
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccgkJb1w.s:188    .text.default_layer_xor:0000000000000000 default_layer_xor
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccgkJb1w.s:230    .text.layer_state_set_user:0000000000000000 layer_state_set_user
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccgkJb1w.s:244    .text.layer_state_set_kb:0000000000000000 layer_state_set_kb
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccgkJb1w.s:264    .text.layer_state_set:0000000000000000 layer_state_set
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccgkJb1w.s:981    .bss.layer_state:0000000000000000 layer_state
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccgkJb1w.s:298    .text.layer_clear:0000000000000000 layer_clear
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccgkJb1w.s:318    .text.layer_state_cmp:0000000000000000 layer_state_cmp
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccgkJb1w.s:366    .text.layer_state_is:0000000000000000 layer_state_is
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccgkJb1w.s:392    .text.layer_move:0000000000000000 layer_move
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccgkJb1w.s:443    .text.layer_on:0000000000000000 layer_on
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccgkJb1w.s:504    .text.layer_off:0000000000000000 layer_off
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccgkJb1w.s:568    .text.layer_invert:0000000000000000 layer_invert
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccgkJb1w.s:629    .text.layer_or:0000000000000000 layer_or
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccgkJb1w.s:671    .text.layer_and:0000000000000000 layer_and
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccgkJb1w.s:713    .text.layer_xor:0000000000000000 layer_xor
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccgkJb1w.s:755    .text.layer_debug:0000000000000000 layer_debug
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccgkJb1w.s:770    .text.layer_switch_get_layer:0000000000000000 layer_switch_get_layer
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccgkJb1w.s:918    .text.layer_switch_get_action:0000000000000000 layer_switch_get_action
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccgkJb1w.s:957    .text.store_or_get_action:0000000000000000 store_or_get_action
 
 UNDEFINED SYMBOLS
 clear_keyboard_but_mods
