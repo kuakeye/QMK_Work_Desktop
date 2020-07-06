@@ -10,7 +10,7 @@ extern keymap_config_t keymap_config;
 #define _LOWER 3
 #define _RAISE 4
 #define _FN3 5
-//#define _FN4 6
+#define _WINDOWSWITCH 6
 #define _ADJUST 16
 enum {
 	TD_CPY_PST = 0,
@@ -52,6 +52,27 @@ enum custom_keycodes {
 #define KC_UNDO LCTL(KC_Z) //undo
 #define KC_LGOFF LGUI(KC_L) //log out of comp
 #define KC_LGON LCTL(LALT(KC_DEL)) //log into comp
+
+// Windows virtual desktop switching functions. Downloaded software called SylphyHornEx
+#define KC_WS0 LCTL(LGUI(KC_0))
+#define KC_WS1 LCTL(LGUI(KC_1))
+#define KC_WS2 LCTL(LGUI(KC_2))
+#define KC_WS3 LCTL(LGUI(KC_3))
+#define KC_WS4 LCTL(LGUI(KC_4))
+#define KC_WS5 LCTL(LGUI(KC_5))
+#define KC_WS6 LCTL(LGUI(KC_6))
+#define KC_WS7 LCTL(LGUI(KC_7))
+#define KC_WS8 LCTL(LGUI(KC_8))
+#define KC_WS9 LCTL(LGUI(KC_9))
+#define KC_WSL LCTL(LGUI(KC_LEFT))
+#define KC_WSR LCTL(LGUI(KC_RIGHT))
+#define KC_WSWAPL LCTL(LGUI(LSFT(KC_LEFT))) // swap desktop with left one (move this desktop to the left)
+#define KC_WSWAPR LCTL(LGUI(LSFT(KC_RIGHT))) // swap desktop with right one (move this desktop to the right)
+#define KC_WSPIN LCTL(LGUI(LALT(KC_P))) // pin active window to all desktops
+#define KC_WSNEW LCTL(LGUI(KC_D)) // move active window to created new desktop
+#define KC_WSRNAME LCTL(LGUI(KC_R)) // rename current desktop
+
+
 #define KC_LAYER2 MO(_COLEMAK)
 #define KC_LAYER3 LT(_DVORAK, KC_SCLN)
 #define KC_LAYER4 MO(_WINDOWSWITCH)
@@ -138,9 +159,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
       ESC , Z  , X  , C  , V  , B  ,                                N  , M  ,COMM,DOT,SLSH,RSFT,
    //|----+----+----+----+----+----|                              |----+----+----+----+----+----|
       LCTRL,UNDO,LALT,LGUI, LAYER2  ,                                 LAYER2, LEFT, DOWN, UP, RIGHT,
-   //|----+----+----+----+----+----|                              |----+----+----+----+----+----|
 //	//							`----+----+----+'			`----+----+----'
-									   PGDN,PGUP,END,HOME,			 LGUI/*very bottom*/, RCTRL,ENT, SPC/*close thumb cluster right*/,
+							 PGDN,PGUP,END,HOME,		    LGUI, RCTRL,ENT, LAYER4,
 //	//							`----+----+----+'			`----+----+----'
 									   DEL,LSFT,			ENT,SPC
 //	//							`----+----+----+'			`----+----+----'
@@ -161,7 +181,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 		    ,     ,     ,     ,      ,                                  ,  0 , DOT, PSLS,    ,
 	//|----+----+----+----+----+----| 									   |----+----+----+----+----+----|
 //	//							`----+----+----+'			`----+----+----'
-									   PGDN,PGUP,END,HOME,			 LGUI, RCTRL,ENT, SPC,
+							 PGDN,PGUP,END,HOME,		    LGUI, RCTRL,ENT, LAYER4,
 //	//							`----+----+----+'			`----+----+----'
 									   DEL,LSFT,			ENT,SPC
 //	//							`----+----+----+'			`----+----+----'
@@ -182,9 +202,30 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 	   ,   ,    ,    ,    ,    ,				                            ,    ,    ,    ,
 	//|----+----+----+----+----+----|    							   |----+----+----+----+----+----|
 //	//							`----+----+----+'			`----+----+----'
-									  PGDN,PGUP,END,HOME,			 LGUI, RCTRL,ENT, SPC,
+							 PGDN,PGUP,END,HOME,		    LGUI, RCTRL,ENT, LAYER4,
 //	//							`----+----+----+'			`----+----+----'
-									   DEL,LSFT,			BTN2,BTN1
+									   BTN2,BTN1,			BTN2,BTN1
+//	//							`----+----+----+'			`----+----+----'
+//
+//	//							`----+----+----+'			`----+----+----'
+
+	),
+
+		[_WINDOWSWITCH] = KC_KEYMAP(
+	Y,Z,1,2,3,4,       5,6,7,8,9,0,
+	//|----+----+----+----+----+----|  								   |----+----+----+----+----+----|                                
+	   ,   ,    ,    ,WSRNAME,     ,  								            , WS7, WS8, WS9,WSPIN,WSNEW,
+	//|----+----+----+----+----+----|  								   |----+----+----+----+----+----|
+	   ,   ,    ,    ,    ,    , 	                                        , WS4, WS5, WS6, WSL, WSR,
+	//|----+----+----+----+----+----|    							   |----+----+----+----+----+----|
+	   ,   ,    ,    ,    ,    ,                                            , WS1, WS2, WS3,WSWAPL,WSWAPR,
+	//|----+----+----+----+----+----| 								   |----+----+----+----+----+----|
+	   ,   ,    ,    ,    ,    ,				                            ,   ,WS0,   ,
+	//|----+----+----+----+----+----|    							   |----+----+----+----+----+----|
+//	//							`----+----+----+'			`----+----+----'
+							 PGDN,PGUP,END,HOME,		    LGUI, RCTRL,ENT, LAYER4,
+//	//							`----+----+----+'			`----+----+----'
+									   BTN2,BTN1,			BTN2,BTN1
 //	//							`----+----+----+'			`----+----+----'
 //
 //	//							`----+----+----+'			`----+----+----'
