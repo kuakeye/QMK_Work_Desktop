@@ -18,6 +18,7 @@ enum {
 	TD_SLSH,
 	TD_VRDSK
 };
+
 enum custom_keycodes {
 	COLEMAK = SAFE_RANGE,
 	QWERTY,
@@ -186,7 +187,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //	//							`----+----+----+'			`----+----+----'
 									   PGDN,PGUP,END,HOME,			 LGUI, RCTRL,ENT, SPC,
 //	//							`----+----+----+'			`----+----+----'
-									   DEL,LSFT,			ENT,SPC
+									   DEL,LSFT,			BTN2,BTN1
 //	//							`----+----+----+'			`----+----+----'
 //
 //	//							`----+----+----+'			`----+----+----'

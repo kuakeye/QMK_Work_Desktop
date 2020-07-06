@@ -201,7 +201,7 @@
  186:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** //	//							`----+----+----+'			`----+----+----'
  187:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 									   PGDN,PGUP,END,HOME,			 LGUI, RCTRL,ENT, SPC,
  188:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** //	//							`----+----+----+'			`----+----+----'
- 189:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 									   DEL,LSFT,			ENT,SPC
+ 189:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 									   DEL,LSFT,			BTN2,BTN1
  190:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** //	//							`----+----+----+'			`----+----+----'
  191:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** //
  192:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** //	//							`----+----+----+'			`----+----+----'
@@ -2191,8 +2191,8 @@
  1714 01e6 2C00      		.word	44
  1715 01e8 0000      		.word	0
  1716 01ea 0000      		.word	0
- 1717 01ec 2800      		.word	40
- 1718 01ee 2C00      		.word	44
+ 1717 01ec F500      		.word	245
+ 1718 01ee F400      		.word	244
  1719 01f0 0000      		.word	0
  1720 01f2 0000      		.word	0
  1721 01f4 0000      		.word	0
@@ -2221,56 +2221,56 @@
  1744               		.file 22 "./tmk_core/common/eeconfig.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 keymap.c
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:2      *ABS*:000000000000003e __SP_H__
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:3      *ABS*:000000000000003d __SP_L__
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:4      *ABS*:000000000000003f __SREG__
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:5      *ABS*:0000000000000000 __tmp_reg__
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:6      *ABS*:0000000000000001 __zero_reg__
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:13     .text.cmd_commands:0000000000000000 cmd_commands
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:1112   .progmem.data.__m.3340:0000000000000000 __m.3340
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:1099   .progmem.data.__m.3342:0000000000000000 __m.3342
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:1082   .progmem.data.__m.3344:0000000000000000 __m.3344
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:73     .text.cmd:0000000000000000 cmd
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:1049   .progmem.data.__m.3350:0000000000000000 __m.3350
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:960    .progmem.data.__m.3352:0000000000000000 __m.3352
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:897    .progmem.data.__m.3354:0000000000000000 __m.3354
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:132    .text.VirtualDesktop:0000000000000000 VirtualDesktop
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:880    .progmem.data.__m.3364:0000000000000000 __m.3364
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:863    .progmem.data.__m.3366:0000000000000000 __m.3366
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:185    .text.SLSH_BSLSH:0000000000000000 SLSH_BSLSH
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:226    .text.rgblight_toggle:0000000000000000 rgblight_toggle
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:245    .text.rgblight_step:0000000000000000 rgblight_step
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:260    .text.rgblight_step_reverse:0000000000000000 rgblight_step_reverse
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:275    .text.rgblight_increase_hue:0000000000000000 rgblight_increase_hue
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:290    .text.rgblight_decrease_hue:0000000000000000 rgblight_decrease_hue
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:305    .text.rgblight_increase_sat:0000000000000000 rgblight_increase_sat
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:320    .text.rgblight_decrease_sat:0000000000000000 rgblight_decrease_sat
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:335    .text.rgblight_increase_val:0000000000000000 rgblight_increase_val
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:350    .text.rgblight_decrease_val:0000000000000000 rgblight_decrease_val
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:365    .text.rgblight_increase_speed:0000000000000000 rgblight_increase_speed
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:380    .text.rgblight_decrease_speed:0000000000000000 rgblight_decrease_speed
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:395    .text.persistent_default_layer_set:0000000000000000 persistent_default_layer_set
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:436    .text.keyboard_post_init_user:0000000000000000 keyboard_post_init_user
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:461    .text.action_get_macro:0000000000000000 action_get_macro
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:1373   .progmem.data.__c.3302:0000000000000000 __c.3302
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:1368   .progmem.data.__c.3305:0000000000000000 __c.3305
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:1300   .progmem.data.__c.3319:0000000000000000 __c.3319
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:1295   .progmem.data.__c.3322:0000000000000000 __c.3322
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:1125   .progmem.data.__c.3334:0000000000000000 __c.3334
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:1431   .progmem.data.__m.3296:0000000000000000 __m.3296
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:1378   .progmem.data.__m.3299:0000000000000000 __m.3299
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:1345   .progmem.data.__m.3308:0000000000000000 __m.3308
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:1336   .progmem.data.__m.3312:0000000000000000 __m.3312
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:1305   .progmem.data.__m.3316:0000000000000000 __m.3316
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:1240   .progmem.data.__m.3325:0000000000000000 __m.3325
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:1185   .progmem.data.__m.3328:0000000000000000 __m.3328
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:1130   .progmem.data.__m.3331:0000000000000000 __m.3331
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:749    .text.matrix_init_user:0000000000000000 matrix_init_user
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:766    .text.matrix_scan_user:0000000000000000 matrix_scan_user
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:781    .text.process_record_user:0000000000000000 process_record_user
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:858    .progmem.data.__c.3379:0000000000000000 __c.3379
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:1445   .data.tap_dance_actions:0000000000000000 tap_dance_actions
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccWNsmoH.s:1470   .progmem.data.keymaps:0000000000000000 keymaps
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccKQMYuo.s:2      *ABS*:000000000000003e __SP_H__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccKQMYuo.s:3      *ABS*:000000000000003d __SP_L__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccKQMYuo.s:4      *ABS*:000000000000003f __SREG__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccKQMYuo.s:5      *ABS*:0000000000000000 __tmp_reg__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccKQMYuo.s:6      *ABS*:0000000000000001 __zero_reg__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccKQMYuo.s:13     .text.cmd_commands:0000000000000000 cmd_commands
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccKQMYuo.s:1112   .progmem.data.__m.3340:0000000000000000 __m.3340
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccKQMYuo.s:1099   .progmem.data.__m.3342:0000000000000000 __m.3342
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccKQMYuo.s:1082   .progmem.data.__m.3344:0000000000000000 __m.3344
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccKQMYuo.s:73     .text.cmd:0000000000000000 cmd
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccKQMYuo.s:1049   .progmem.data.__m.3350:0000000000000000 __m.3350
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccKQMYuo.s:960    .progmem.data.__m.3352:0000000000000000 __m.3352
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccKQMYuo.s:897    .progmem.data.__m.3354:0000000000000000 __m.3354
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccKQMYuo.s:132    .text.VirtualDesktop:0000000000000000 VirtualDesktop
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccKQMYuo.s:880    .progmem.data.__m.3364:0000000000000000 __m.3364
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccKQMYuo.s:863    .progmem.data.__m.3366:0000000000000000 __m.3366
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccKQMYuo.s:185    .text.SLSH_BSLSH:0000000000000000 SLSH_BSLSH
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccKQMYuo.s:226    .text.rgblight_toggle:0000000000000000 rgblight_toggle
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccKQMYuo.s:245    .text.rgblight_step:0000000000000000 rgblight_step
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccKQMYuo.s:260    .text.rgblight_step_reverse:0000000000000000 rgblight_step_reverse
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccKQMYuo.s:275    .text.rgblight_increase_hue:0000000000000000 rgblight_increase_hue
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccKQMYuo.s:290    .text.rgblight_decrease_hue:0000000000000000 rgblight_decrease_hue
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccKQMYuo.s:305    .text.rgblight_increase_sat:0000000000000000 rgblight_increase_sat
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccKQMYuo.s:320    .text.rgblight_decrease_sat:0000000000000000 rgblight_decrease_sat
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccKQMYuo.s:335    .text.rgblight_increase_val:0000000000000000 rgblight_increase_val
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccKQMYuo.s:350    .text.rgblight_decrease_val:0000000000000000 rgblight_decrease_val
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccKQMYuo.s:365    .text.rgblight_increase_speed:0000000000000000 rgblight_increase_speed
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccKQMYuo.s:380    .text.rgblight_decrease_speed:0000000000000000 rgblight_decrease_speed
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccKQMYuo.s:395    .text.persistent_default_layer_set:0000000000000000 persistent_default_layer_set
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccKQMYuo.s:436    .text.keyboard_post_init_user:0000000000000000 keyboard_post_init_user
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccKQMYuo.s:461    .text.action_get_macro:0000000000000000 action_get_macro
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccKQMYuo.s:1373   .progmem.data.__c.3302:0000000000000000 __c.3302
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccKQMYuo.s:1368   .progmem.data.__c.3305:0000000000000000 __c.3305
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccKQMYuo.s:1300   .progmem.data.__c.3319:0000000000000000 __c.3319
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccKQMYuo.s:1295   .progmem.data.__c.3322:0000000000000000 __c.3322
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccKQMYuo.s:1125   .progmem.data.__c.3334:0000000000000000 __c.3334
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccKQMYuo.s:1431   .progmem.data.__m.3296:0000000000000000 __m.3296
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccKQMYuo.s:1378   .progmem.data.__m.3299:0000000000000000 __m.3299
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccKQMYuo.s:1345   .progmem.data.__m.3308:0000000000000000 __m.3308
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccKQMYuo.s:1336   .progmem.data.__m.3312:0000000000000000 __m.3312
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccKQMYuo.s:1305   .progmem.data.__m.3316:0000000000000000 __m.3316
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccKQMYuo.s:1240   .progmem.data.__m.3325:0000000000000000 __m.3325
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccKQMYuo.s:1185   .progmem.data.__m.3328:0000000000000000 __m.3328
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccKQMYuo.s:1130   .progmem.data.__m.3331:0000000000000000 __m.3331
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccKQMYuo.s:749    .text.matrix_init_user:0000000000000000 matrix_init_user
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccKQMYuo.s:766    .text.matrix_scan_user:0000000000000000 matrix_scan_user
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccKQMYuo.s:781    .text.process_record_user:0000000000000000 process_record_user
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccKQMYuo.s:858    .progmem.data.__c.3379:0000000000000000 __c.3379
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccKQMYuo.s:1445   .data.tap_dance_actions:0000000000000000 tap_dance_actions
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccKQMYuo.s:1470   .progmem.data.keymaps:0000000000000000 keymaps
 
 UNDEFINED SYMBOLS
 action_macro_play

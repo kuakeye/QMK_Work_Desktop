@@ -1,2 +1,2 @@
-#define QMK_VERSION "f124a2-dirty"
-#define QMK_BUILDDATE "2020-05-02-14:32:55"
+#define QMK_VERSION "14f6db-dirty"
+#define QMK_BUILDDATE "2020-05-02-20:49:24"
