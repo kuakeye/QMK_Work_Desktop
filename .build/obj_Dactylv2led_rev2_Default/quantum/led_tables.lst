@@ -8,7 +8,7 @@
    8               	.Ltext0:
    9               		.cfi_sections	.debug_frame
   10               	.global	LED_BREATHING_TABLE
-  11               		.section	.progmem.data.LED_BREATHING_TABLE,"a",@progbits
+  11               		.section	.progmem.data.LED_BREATHING_TABLE,"a"
   14               	LED_BREATHING_TABLE:
   15 0000 00        		.byte	0
   16 0001 00        		.byte	0
@@ -267,7 +267,7 @@
  269 00fe 00        		.byte	0
  270 00ff 00        		.byte	0
  271               	.global	CIE1931_CURVE
- 272               		.section	.progmem.data.CIE1931_CURVE,"a",@progbits
+ 272               		.section	.progmem.data.CIE1931_CURVE,"a"
  275               	CIE1931_CURVE:
  276 0000 00        		.byte	0
  277 0001 00        		.byte	0
@@ -527,16 +527,17 @@
  531 00ff FF        		.byte	-1
  532               		.text
  533               	.Letext0:
- 534               		.file 1 "quantum/led_tables.c"
- 535               		.file 2 "/usr/lib/avr/include/stdint.h"
+ 534               		.file 1 "quantum/led_tables.h"
+ 535               		.file 2 "quantum/led_tables.c"
+ 536               		.file 3 "/usr/local/Cellar/avr-gcc@8/8.3.0_1/avr/include/stdint.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 led_tables.c
-     /tmp/cci08dfn.s:2      *ABS*:000000000000003e __SP_H__
-     /tmp/cci08dfn.s:3      *ABS*:000000000000003d __SP_L__
-     /tmp/cci08dfn.s:4      *ABS*:000000000000003f __SREG__
-     /tmp/cci08dfn.s:5      *ABS*:0000000000000000 __tmp_reg__
-     /tmp/cci08dfn.s:6      *ABS*:0000000000000001 __zero_reg__
-     /tmp/cci08dfn.s:14     .progmem.data.LED_BREATHING_TABLE:0000000000000000 LED_BREATHING_TABLE
-     /tmp/cci08dfn.s:275    .progmem.data.CIE1931_CURVE:0000000000000000 CIE1931_CURVE
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc9iabhv.s:2      *ABS*:000000000000003e __SP_H__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc9iabhv.s:3      *ABS*:000000000000003d __SP_L__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc9iabhv.s:4      *ABS*:000000000000003f __SREG__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc9iabhv.s:5      *ABS*:0000000000000000 __tmp_reg__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc9iabhv.s:6      *ABS*:0000000000000001 __zero_reg__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc9iabhv.s:14     .progmem.data.LED_BREATHING_TABLE:0000000000000000 LED_BREATHING_TABLE
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc9iabhv.s:275    .progmem.data.CIE1931_CURVE:0000000000000000 CIE1931_CURVE
 
 NO UNDEFINED SYMBOLS

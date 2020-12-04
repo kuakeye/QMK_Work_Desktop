@@ -54,15 +54,20 @@
   40:lib/lufa/LUFA/Drivers/USB/Core/AVR8/Device_AVR8.c **** 
   41:lib/lufa/LUFA/Drivers/USB/Core/AVR8/Device_AVR8.c **** void USB_Device_SendRemoteWakeup(void)
   42:lib/lufa/LUFA/Drivers/USB/Core/AVR8/Device_AVR8.c **** {
-  16               		.loc 1 42 0
+  16               		.loc 1 42 1 view -0
   17               		.cfi_startproc
   18               	/* prologue: function */
   19               	/* frame size = 0 */
   20               	/* stack size = 0 */
   21               	.L__stack_usage = 0
-  22               	.LBB8:
-  23               	.LBB9:
-  24               		.file 2 "lib/lufa/LUFA/Drivers/USB/Core/AVR8/../AVR8/../AVR8/USBController_AVR8.h"
+  43:lib/lufa/LUFA/Drivers/USB/Core/AVR8/Device_AVR8.c **** 	if (!(USB_Options & USB_OPT_MANUAL_PLL))
+  22               		.loc 1 43 2 view .LVU1
+  44:lib/lufa/LUFA/Drivers/USB/Core/AVR8/Device_AVR8.c **** 	{
+  45:lib/lufa/LUFA/Drivers/USB/Core/AVR8/Device_AVR8.c **** 		USB_PLL_On();
+  23               		.loc 1 45 3 view .LVU2
+  24               	.LBB8:
+  25               	.LBI8:
+  26               		.file 2 "lib/lufa/LUFA/Drivers/USB/Core/AVR8/../AVR8/../AVR8/USBController_AVR8.h"
    1:lib/lufa/LUFA/Drivers/USB/Core/AVR8/../AVR8/../AVR8/USBController_AVR8.h **** /*
    2:lib/lufa/LUFA/Drivers/USB/Core/AVR8/../AVR8/../AVR8/USBController_AVR8.h ****              LUFA Library
    3:lib/lufa/LUFA/Drivers/USB/Core/AVR8/../AVR8/../AVR8/USBController_AVR8.h ****      Copyright (C) Dean Camera, 2017.
@@ -391,28 +396,26 @@
  326:lib/lufa/LUFA/Drivers/USB/Core/AVR8/../AVR8/../AVR8/USBController_AVR8.h **** 		/* Inline Functions: */
  327:lib/lufa/LUFA/Drivers/USB/Core/AVR8/../AVR8/../AVR8/USBController_AVR8.h **** 			static inline void USB_PLL_On(void) ATTR_ALWAYS_INLINE;
  328:lib/lufa/LUFA/Drivers/USB/Core/AVR8/../AVR8/../AVR8/USBController_AVR8.h **** 			static inline void USB_PLL_On(void)
+  27               		.loc 2 328 23 view .LVU3
+  28               	.LBB9:
  329:lib/lufa/LUFA/Drivers/USB/Core/AVR8/../AVR8/../AVR8/USBController_AVR8.h **** 			{
  330:lib/lufa/LUFA/Drivers/USB/Core/AVR8/../AVR8/../AVR8/USBController_AVR8.h **** 				PLLCSR = USB_PLL_PSC;
-  25               		.loc 2 330 0
-  26 0000 80E1      		ldi r24,lo8(16)
-  27 0002 89BD      		out 0x29,r24
+  29               		.loc 2 330 5 view .LVU4
+  30               		.loc 2 330 12 is_stmt 0 view .LVU5
+  31 0000 80E1      		ldi r24,lo8(16)
+  32 0002 89BD      		out 0x29,r24
  331:lib/lufa/LUFA/Drivers/USB/Core/AVR8/../AVR8/../AVR8/USBController_AVR8.h **** 				PLLCSR = (USB_PLL_PSC | (1 << PLLE));
-  28               		.loc 2 331 0
-  29 0004 82E1      		ldi r24,lo8(18)
-  30 0006 89BD      		out 0x29,r24
-  31               	.L3:
-  32               	.LBE9:
-  33               	.LBE8:
-  43:lib/lufa/LUFA/Drivers/USB/Core/AVR8/Device_AVR8.c **** 	if (!(USB_Options & USB_OPT_MANUAL_PLL))
-  44:lib/lufa/LUFA/Drivers/USB/Core/AVR8/Device_AVR8.c **** 	{
-  45:lib/lufa/LUFA/Drivers/USB/Core/AVR8/Device_AVR8.c **** 		USB_PLL_On();
+  33               		.loc 2 331 5 is_stmt 1 view .LVU6
+  34               		.loc 2 331 12 is_stmt 0 view .LVU7
+  35 0004 82E1      		ldi r24,lo8(18)
+  36 0006 89BD      		out 0x29,r24
+  37               	.L2:
+  38               	.LBE9:
+  39               	.LBE8:
   46:lib/lufa/LUFA/Drivers/USB/Core/AVR8/Device_AVR8.c **** 		while (!(USB_PLL_IsReady()));
-  34               		.loc 1 46 0 discriminator 1
-  35 0008 09B4      		in __tmp_reg__,0x29
-  36 000a 00FE      		sbrs __tmp_reg__,0
-  37 000c 00C0      		rjmp .L3
-  38               	.LBB10:
-  39               	.LBB11:
+  40               		.loc 1 46 31 is_stmt 1 discriminator 1 view .LVU8
+  41               	.LBB10:
+  42               	.LBI10:
  332:lib/lufa/LUFA/Drivers/USB/Core/AVR8/../AVR8/../AVR8/USBController_AVR8.h **** 			}
  333:lib/lufa/LUFA/Drivers/USB/Core/AVR8/../AVR8/../AVR8/USBController_AVR8.h **** 
  334:lib/lufa/LUFA/Drivers/USB/Core/AVR8/../AVR8/../AVR8/USBController_AVR8.h **** 			static inline void USB_PLL_Off(void) ATTR_ALWAYS_INLINE;
@@ -423,8 +426,23 @@
  339:lib/lufa/LUFA/Drivers/USB/Core/AVR8/../AVR8/../AVR8/USBController_AVR8.h **** 
  340:lib/lufa/LUFA/Drivers/USB/Core/AVR8/../AVR8/../AVR8/USBController_AVR8.h **** 			static inline bool USB_PLL_IsReady(void) ATTR_WARN_UNUSED_RESULT ATTR_ALWAYS_INLINE;
  341:lib/lufa/LUFA/Drivers/USB/Core/AVR8/../AVR8/../AVR8/USBController_AVR8.h **** 			static inline bool USB_PLL_IsReady(void)
+  43               		.loc 2 341 23 discriminator 1 view .LVU9
+  44               	.LBB11:
  342:lib/lufa/LUFA/Drivers/USB/Core/AVR8/../AVR8/../AVR8/USBController_AVR8.h **** 			{
  343:lib/lufa/LUFA/Drivers/USB/Core/AVR8/../AVR8/../AVR8/USBController_AVR8.h **** 				return ((PLLCSR & (1 << PLOCK)) ? true : false);
+  45               		.loc 2 343 5 discriminator 1 view .LVU10
+  46               	.LBE11:
+  47               	.LBE10:
+  48               		.loc 1 46 9 is_stmt 0 discriminator 1 view .LVU11
+  49 0008 09B4      		in __tmp_reg__,0x29
+  50 000a 00FE      		sbrs __tmp_reg__,0
+  51 000c 00C0      		rjmp .L2
+  47:lib/lufa/LUFA/Drivers/USB/Core/AVR8/Device_AVR8.c **** 	}
+  48:lib/lufa/LUFA/Drivers/USB/Core/AVR8/Device_AVR8.c **** 
+  49:lib/lufa/LUFA/Drivers/USB/Core/AVR8/Device_AVR8.c **** 	USB_CLK_Unfreeze();
+  52               		.loc 1 49 2 is_stmt 1 view .LVU12
+  53               	.LBB12:
+  54               	.LBI12:
  344:lib/lufa/LUFA/Drivers/USB/Core/AVR8/../AVR8/../AVR8/USBController_AVR8.h **** 			}
  345:lib/lufa/LUFA/Drivers/USB/Core/AVR8/../AVR8/../AVR8/USBController_AVR8.h **** 
  346:lib/lufa/LUFA/Drivers/USB/Core/AVR8/../AVR8/../AVR8/USBController_AVR8.h **** 			static inline void USB_REG_On(void) ATTR_ALWAYS_INLINE;
@@ -469,45 +487,52 @@
  385:lib/lufa/LUFA/Drivers/USB/Core/AVR8/../AVR8/../AVR8/USBController_AVR8.h **** 
  386:lib/lufa/LUFA/Drivers/USB/Core/AVR8/../AVR8/../AVR8/USBController_AVR8.h **** 			static inline void USB_CLK_Unfreeze(void) ATTR_ALWAYS_INLINE;
  387:lib/lufa/LUFA/Drivers/USB/Core/AVR8/../AVR8/../AVR8/USBController_AVR8.h **** 			static inline void USB_CLK_Unfreeze(void)
+  55               		.loc 2 387 23 view .LVU13
+  56               	.LBB13:
  388:lib/lufa/LUFA/Drivers/USB/Core/AVR8/../AVR8/../AVR8/USBController_AVR8.h **** 			{
  389:lib/lufa/LUFA/Drivers/USB/Core/AVR8/../AVR8/../AVR8/USBController_AVR8.h **** 				USBCON &= ~(1 << FRZCLK);
-  40               		.loc 2 389 0
-  41 000e 8091 D800 		lds r24,216
-  42 0012 8F7D      		andi r24,lo8(-33)
-  43 0014 8093 D800 		sts 216,r24
-  44               	.LBE11:
-  45               	.LBE10:
-  47:lib/lufa/LUFA/Drivers/USB/Core/AVR8/Device_AVR8.c **** 	}
-  48:lib/lufa/LUFA/Drivers/USB/Core/AVR8/Device_AVR8.c **** 
-  49:lib/lufa/LUFA/Drivers/USB/Core/AVR8/Device_AVR8.c **** 	USB_CLK_Unfreeze();
+  57               		.loc 2 389 5 view .LVU14
+  58               		.loc 2 389 12 is_stmt 0 view .LVU15
+  59 000e 8091 D800 		lds r24,216
+  60 0012 8F7D      		andi r24,lo8(-33)
+  61 0014 8093 D800 		sts 216,r24
+  62               	.LBE13:
+  63               	.LBE12:
   50:lib/lufa/LUFA/Drivers/USB/Core/AVR8/Device_AVR8.c **** 
   51:lib/lufa/LUFA/Drivers/USB/Core/AVR8/Device_AVR8.c **** 	UDCON |= (1 << RMWKUP);
-  46               		.loc 1 51 0
-  47 0018 8091 E000 		lds r24,224
-  48 001c 8260      		ori r24,lo8(2)
-  49 001e 8093 E000 		sts 224,r24
-  50               	.L5:
+  64               		.loc 1 51 2 is_stmt 1 view .LVU16
+  65               		.loc 1 51 8 is_stmt 0 view .LVU17
+  66 0018 8091 E000 		lds r24,224
+  67 001c 8260      		ori r24,lo8(2)
+  68 001e 8093 E000 		sts 224,r24
   52:lib/lufa/LUFA/Drivers/USB/Core/AVR8/Device_AVR8.c **** 	while (UDCON & (1 << RMWKUP));
-  51               		.loc 1 52 0 discriminator 1
-  52 0022 8091 E000 		lds r24,224
-  53 0026 81FD      		sbrc r24,1
-  54 0028 00C0      		rjmp .L5
-  55               	/* epilogue start */
+  69               		.loc 1 52 2 is_stmt 1 view .LVU18
+  70               	.L3:
+  71               		.loc 1 52 31 discriminator 1 view .LVU19
+  72               		.loc 1 52 9 is_stmt 0 discriminator 1 view .LVU20
+  73 0022 8091 E000 		lds r24,224
+  74               		.loc 1 52 8 discriminator 1 view .LVU21
+  75 0026 81FD      		sbrc r24,1
+  76 0028 00C0      		rjmp .L3
+  77               	/* epilogue start */
   53:lib/lufa/LUFA/Drivers/USB/Core/AVR8/Device_AVR8.c **** }
-  56               		.loc 1 53 0
-  57 002a 0895      		ret
-  58               		.cfi_endproc
-  59               	.LFE85:
-  61               		.text
-  62               	.Letext0:
-  63               		.file 3 "/usr/lib/avr/include/stdint.h"
+  78               		.loc 1 53 1 view .LVU22
+  79 002a 0895      		ret
+  80               		.cfi_endproc
+  81               	.LFE85:
+  83               		.text
+  84               	.Letext0:
+  85               		.file 3 "/usr/local/Cellar/avr-gcc@8/8.3.0_1/avr/include/stdint.h"
+  86               		.file 4 "lib/lufa/LUFA/Drivers/USB/Core/AVR8/../AVR8/../AVR8/../StdRequestType.h"
+  87               		.file 5 "lib/lufa/LUFA/Drivers/USB/Core/AVR8/../AVR8/../AVR8/../DeviceStandardReq.h"
+  88               		.file 6 "lib/lufa/LUFA/Drivers/USB/Core/AVR8/../AVR8/../AVR8/../USBTask.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 Device_AVR8.c
-     /tmp/ccb03ESW.s:2      *ABS*:000000000000003e __SP_H__
-     /tmp/ccb03ESW.s:3      *ABS*:000000000000003d __SP_L__
-     /tmp/ccb03ESW.s:4      *ABS*:000000000000003f __SREG__
-     /tmp/ccb03ESW.s:5      *ABS*:0000000000000000 __tmp_reg__
-     /tmp/ccb03ESW.s:6      *ABS*:0000000000000001 __zero_reg__
-     /tmp/ccb03ESW.s:13     .text.USB_Device_SendRemoteWakeup:0000000000000000 USB_Device_SendRemoteWakeup
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccpyaRWJ.s:2      *ABS*:000000000000003e __SP_H__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccpyaRWJ.s:3      *ABS*:000000000000003d __SP_L__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccpyaRWJ.s:4      *ABS*:000000000000003f __SREG__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccpyaRWJ.s:5      *ABS*:0000000000000000 __tmp_reg__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccpyaRWJ.s:6      *ABS*:0000000000000001 __zero_reg__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccpyaRWJ.s:13     .text.USB_Device_SendRemoteWakeup:0000000000000000 USB_Device_SendRemoteWakeup
 
 NO UNDEFINED SYMBOLS

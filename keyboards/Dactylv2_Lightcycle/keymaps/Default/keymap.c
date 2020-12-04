@@ -51,7 +51,7 @@ enum custom_keycodes {
 
 #define KC_UNDO LCTL(KC_Z) //undo
 #define KC_LGOFF LGUI(KC_L) //log out of comp
-#define KC_LGON LCTL(LALT(KC_DEL)) //log into comp
+#define KC_LGON LCTL(LALT(KC_DEL)) //log into work comp
 
 // Windows virtual desktop switching functions. Downloaded software called SylphyHornEx
 #define KC_WS0 LCTL(LGUI(KC_0))
@@ -68,6 +68,8 @@ enum custom_keycodes {
 #define KC_WSR LCTL(LGUI(KC_RIGHT))
 #define KC_WSWAPL LCTL(LGUI(LSFT(KC_LEFT))) // swap desktop with left one (move this desktop to the left)
 #define KC_WSWAPR LCTL(LGUI(LSFT(KC_RIGHT))) // swap desktop with right one (move this desktop to the right)
+#define KC_WSMAWL LGUI(LALT(KC_LEFT)) // move active window to desktop on the left
+#define KC_WSMAWR LGUI(LALT(KC_RIGHT)) // move active window to desktop on the Right
 #define KC_WSPIN LCTL(LGUI(LALT(KC_P))) // pin active window to all desktops
 #define KC_WSNEW LCTL(LGUI(KC_D)) // move active window to created new desktop
 #define KC_WSRNAME LCTL(LGUI(KC_R)) // rename current desktop
@@ -118,40 +120,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                          |Backsp|GUI   |------|       |------|    1   |    2 |
  *                          |  acs |TAB   |   3  |       | 3    |        |      |
  *                         `--------------------'       `----------------------'
- 
- 
-  	
  */
  
  //FOR adjust layer push and hold X3(raise) and LUP (lower).
  //x3= lower when held and Equal ("=") when pressed
  //ESCT is control when held ans Esc when pressed
  //GUIT is window+tab.  only works on win 10
-//		[_QWERTY] = KC_KEYMAP(
-//	//,----+----+----+----+----+----.										,----+----+----+----+----+----.
-//		TAB , Q  , W  , E  , R  , T  ,     									  Y  , U  , I  , O , P  ,BSLS,
-//	//,----+----+----+----+----+----.										,----+----+----+----+----+----.
-//		BSPC, A  , S  , D  , F  , G ,    									  H  , J  , K  , L  ,SCLN,QUOT,
-//	//|----+----+----+----+----+----|   									|----+----+----+----+----+----|
-//		ESC , Z  , X  , C  , V  , B  ,										  N  , M  ,COMM,DOT,SLSH,RSFT,
-//	//|----+----+----+----+----+----|										|----+----+----+----+----+----|
-//		LCTRL,UNDO,LALT,LGUI, A  ,										      A, RIGHT, DOWN, UP, LEFT,
-//	//|----+----+----+----+----+----|										|----+----+----+----+----+----|
-//	//`----+----+----+----+----+----'   									 `----+----+----+----+----+----'
-//	//							`----+----+----+'			`----+----+----'
-//									   A,LALT,HOME,END,			 LGUI, RCTRL,ENT, SPC,
-//	//							`----+----+----+'			`----+----+----'
-//									   LSFT,DEL,			PGUP,PGDN
-//	//							`----+----+----+'			`----+----+----'
-//
-//	//							`----+----+----+'			`----+----+----'
-//
-//	),
-//
 
-      [_QWERTY] = KC_KEYMAP(
+
+      [_QWERTY] = KC_KEYMAP(Y,Z,1,2,3,4,       5,6,7,8,9,0, //dummy values for lightcycle (Dactyl Mule)
    //,----+----+----+----+----+----.                              ,----+----+----+----+----+----.
-      Y,Z,1,2,3,4,       5,6,7,8,9,0,
       TAB ,  Q  , W  , E  , R  , T  ,                                Y  , U  , I  , O , P  ,BSLS,
    //,----+----+----+----+----+----.                              ,----+----+----+----+----+----.
       BSPC, A  , S  , D  , F  , G ,                                 H  , J  , K  , L  ,LAYER3,QUOT,
@@ -160,7 +138,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    //|----+----+----+----+----+----|                              |----+----+----+----+----+----|
       LCTRL,UNDO,LALT,LGUI, LAYER2  ,                                 LAYER2, LEFT, DOWN, UP, RIGHT,
 //	//							`----+----+----+'			`----+----+----'
-							 PGDN,PGUP,END,HOME,		    LGUI, RCTRL,ENT, LAYER4,
+							 PGDN,PGUP,LALT,LAYER4,		   RALT , LAYER4,HOME, END,
 //	//							`----+----+----+'			`----+----+----'
 									   DEL,LSFT,			ENT,SPC
 //	//							`----+----+----+'			`----+----+----'
@@ -169,19 +147,18 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
    ),
 
-			[_COLEMAK] = KC_KEYMAP(
+			[_COLEMAK] = KC_KEYMAP(Y,Z,1,2,3,4,       5,6,7,8,9,0, //dummy values for lightcycle (Dactyl Mule)
 	//,----+----+----+----+----+----. 									   ,----+----+----+----+----+----.
-		Y,Z,1,2,3,4,       5,6,7,8,9,0,
 		    , EXLM, AT, LCBR, RCBR, PIPE,     								 LT  , 7  , 8  , 9 , PAST   ,MINS,
 	//,----+----+----+----+----+----.   									 ,----+----+----+----+----+----.
-		UNDS, HASH, DLR, LPRN, RPRN, GRV, 									 GT  , 4 , 5  ,6   ,MINS,    EQL,
+	   UNDS, HASH, DLR, LPRN, RPRN, GRV, 									 GT  , 4 , 5  ,6   ,MINS,    EQL,
 	//|----+----+----+----+----+----| 									   |----+----+----+----+----+----|
-		    , PERC, CIRC, LBRC, RBRC, TILDE,								 AMPR  , 1  , 2  , 3  , PPLS,    ,
+		   , PERC, CIRC, LBRC, RBRC, TILDE,								 AMPR  , 1  , 2  , 3  , PPLS,    ,
 	//|----+----+----+----+----+----|									    |----+----+----+----+----+----|
 		    ,     ,     ,     ,      ,                                  ,  0 , DOT, PSLS,    ,
 	//|----+----+----+----+----+----| 									   |----+----+----+----+----+----|
 //	//							`----+----+----+'			`----+----+----'
-							 PGDN,PGUP,END,HOME,		    LGUI, RCTRL,ENT, LAYER4,
+							 PGDN,PGUP,LALT,LAYER4,		   RALT , LAYER4,END, HOME,
 //	//							`----+----+----+'			`----+----+----'
 									   DEL,LSFT,			ENT,SPC
 //	//							`----+----+----+'			`----+----+----'
@@ -190,8 +167,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 	),
 
-	[_DVORAK] = KC_KEYMAP(
-	Y,Z,1,2,3,4,       5,6,7,8,9,0,
+	[_DVORAK] = KC_KEYMAP(Y,Z,1,2,3,4,       5,6,7,8,9,0, //dummy values for lightcycle (Dactyl Mule)
 	//|----+----+----+----+----+----|  								   |----+----+----+----+----+----|                                
 	   ,   ,    ,MS_U,   ,     ,  								       LGOFF,LGON,WH_D,    ,    ,    ,
 	//|----+----+----+----+----+----|  								   |----+----+----+----+----+----|
@@ -202,30 +178,28 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 	   ,   ,    ,    ,    ,    ,				                            ,    ,    ,    ,
 	//|----+----+----+----+----+----|    							   |----+----+----+----+----+----|
 //	//							`----+----+----+'			`----+----+----'
-							 PGDN,PGUP,END,HOME,		    LGUI, RCTRL,ENT, LAYER4,
+							 PGDN,PGUP,LALT,LAYER4,		   RALT , LAYER4,END, HOME,
 //	//							`----+----+----+'			`----+----+----'
 									   BTN2,BTN1,			BTN2,BTN1
 //	//							`----+----+----+'			`----+----+----'
 //
 //	//							`----+----+----+'			`----+----+----'
-
 	),
 
-		[_WINDOWSWITCH] = KC_KEYMAP(
-	Y,Z,1,2,3,4,       5,6,7,8,9,0,
+		[_WINDOWSWITCH] = KC_KEYMAP(Y,Z,1,2,3,4,       5,6,7,8,9,0, //dummy values for lightcycle (Dactyl Mule)
 	//|----+----+----+----+----+----|  								   |----+----+----+----+----+----|                                
-	   ,   ,    ,    ,WSRNAME,     ,  								            , WS7, WS8, WS9,WSPIN,WSNEW,
+	  WSNEW,WSPIN,WS7, WS8,WS9,WSRNAME,  								        , WS7, WS8, WS9,WSPIN,WSNEW,
 	//|----+----+----+----+----+----|  								   |----+----+----+----+----+----|
-	   ,   ,    ,    ,    ,    , 	                                        , WS4, WS5, WS6, WSL, WSR,
+	   WSL , WSR, WS4, WS5, WS6,    , 	                                        , WS4, WS5, WS6, WSL, WSR,
 	//|----+----+----+----+----+----|    							   |----+----+----+----+----+----|
-	   ,   ,    ,    ,    ,    ,                                            , WS1, WS2, WS3,WSWAPL,WSWAPR,
+	WSWAPL,WSWAPR,WS1,WS2 ,WS3,     ,                                      , WS1, WS2, WS3,WSWAPL,WSWAPR,
 	//|----+----+----+----+----+----| 								   |----+----+----+----+----+----|
-	   ,   ,    ,    ,    ,    ,				                            ,   ,WS0,   ,
+	WSMAWL,WSMAWR,    ,WS0,    ,    ,				                              WS0,    ,WSMAWL,WSMAWR,
 	//|----+----+----+----+----+----|    							   |----+----+----+----+----+----|
 //	//							`----+----+----+'			`----+----+----'
-							 PGDN,PGUP,END,HOME,		    LGUI, RCTRL,ENT, LAYER4,
+							 PGDN,PGUP,LALT,LAYER4,		   RALT , LAYER4,END, HOME,
 //	//							`----+----+----+'			`----+----+----'
-									   BTN2,BTN1,			BTN2,BTN1
+									   DEL,LSFT,			ENT,SPC
 //	//							`----+----+----+'			`----+----+----'
 //
 //	//							`----+----+----+'			`----+----+----'
@@ -254,7 +228,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 		ESC ,EXLM, AT ,HASH,DLR ,PERC,     CIRC,AMPR,ASTR,LPRN,RPRN,    ,
 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|
 		DEL ,MPRV,MNXT,VOLU,PGUP,UNDS,     EQL ,HOME,    ,    ,    ,BSLS,
-	//|----+----+----+----+----+----|    |----+----+----+----+----+----|88
+	//|----+----+----+----+----+----|    |----+----+----+----+----+----|
 		LSFT,MSTP,MPLY,VOLD,PGDN,MINS,     PLUS,END,COMM ,    ,UP ,    ,
 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|
 		,    ,    , X3 ,    ,    ,         ,    ,    ,LEFT,DOWN,RIGHT,    

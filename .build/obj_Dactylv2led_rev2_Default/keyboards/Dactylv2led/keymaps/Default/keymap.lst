@@ -10,8 +10,9 @@
   10               		.section	.text.cmd_commands,"ax",@progbits
   11               	.global	cmd_commands
   13               	cmd_commands:
-  14               	.LFB15:
-  15               		.file 1 "keyboards/Dactylv2led/keymaps/Default/keymap.c"
+  14               	.LVL0:
+  15               	.LFB19:
+  16               		.file 1 "keyboards/Dactylv2led/keymaps/Default/keymap.c"
    1:keyboards/Dactylv2led/keymaps/Default/keymap.c **** #include "Dactyl.h"
    2:keyboards/Dactylv2led/keymaps/Default/keymap.c **** #include "action_layer.h"
    3:keyboards/Dactylv2led/keymaps/Default/keymap.c **** #include "eeconfig.h"
@@ -327,103 +328,153 @@
  313:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 
  314:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 
  315:keyboards/Dactylv2led/keymaps/Default/keymap.c **** void cmd_commands(qk_tap_dance_state_t *state, void *user_data) {
-  16               		.loc 1 315 0
-  17               		.cfi_startproc
-  18               	.LVL0:
+  17               		.loc 1 315 65 view -0
+  18               		.cfi_startproc
   19               	/* prologue: function */
   20               	/* frame size = 0 */
   21               	/* stack size = 0 */
   22               	.L__stack_usage = 0
  316:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 	if (state->count == 1) {
-  23               		.loc 1 316 0
-  24 0000 FC01      		movw r30,r24
-  25 0002 8081      		ld r24,Z
-  26               	.LVL1:
-  27 0004 8130      		cpi r24,lo8(1)
-  28 0006 01F4      		brne .L2
+  23               		.loc 1 316 2 view .LVU1
+  24               		.loc 1 316 11 is_stmt 0 view .LVU2
+  25 0000 FC01      		movw r30,r24
+  26 0002 8081      		ld r24,Z
+  27               	.LVL1:
+  28               		.loc 1 316 5 view .LVU3
+  29 0004 8130      		cpi r24,lo8(1)
+  30 0006 01F4      		brne .L2
  317:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		action_macro_play(MACRO(D(LCTRL), T(C), U(LCTRL),END));
-  29               		.loc 1 317 0
-  30 0008 80E0      		ldi r24,lo8(__m.3346)
-  31 000a 90E0      		ldi r25,hi8(__m.3346)
-  32 000c 00C0      		rjmp .L4
-  33               	.L2:
+  31               		.loc 1 317 3 is_stmt 1 view .LVU4
+  32               	.LBB2:
+  33               		.loc 1 317 21 view .LVU5
+  34               		.loc 1 317 21 view .LVU6
+  35               	.LBE2:
+  36               		.loc 1 317 3 is_stmt 0 view .LVU7
+  37 0008 80E0      		ldi r24,lo8(__m.3446)
+  38 000a 90E0      		ldi r25,hi8(__m.3446)
+  39               	.L4:
  318:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 	}
  319:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 	else if (state->count ==2){
-  34               		.loc 1 319 0
-  35 000e 8230      		cpi r24,lo8(2)
-  36 0010 01F4      		brne .L3
  320:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		action_macro_play(MACRO(D(LCTRL), T(V), U(LCTRL),END));
-  37               		.loc 1 320 0
-  38 0012 80E0      		ldi r24,lo8(__m.3348)
-  39 0014 90E0      		ldi r25,hi8(__m.3348)
-  40 0016 00C0      		rjmp .L4
-  41               	.L3:
  321:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 	}
  322:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 	else {
  323:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		action_macro_play(MACRO(D(LCTRL), T(A), T(C), U(LCTRL),END));
-  42               		.loc 1 323 0
-  43 0018 80E0      		ldi r24,lo8(__m.3350)
-  44 001a 90E0      		ldi r25,hi8(__m.3350)
-  45               	.L4:
-  46 001c 0C94 0000 		jmp action_macro_play
-  47               	.LVL2:
-  48               		.cfi_endproc
-  49               	.LFE15:
-  51               		.section	.text.cmd,"ax",@progbits
-  52               	.global	cmd
-  54               	cmd:
-  55               	.LFB16:
+  40               		.loc 1 323 3 view .LVU8
+  41 000c 0C94 0000 		jmp action_macro_play
+  42               	.LVL2:
+  43               	.L2:
+ 319:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		action_macro_play(MACRO(D(LCTRL), T(V), U(LCTRL),END));
+  44               		.loc 1 319 7 is_stmt 1 view .LVU9
+ 319:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		action_macro_play(MACRO(D(LCTRL), T(V), U(LCTRL),END));
+  45               		.loc 1 319 10 is_stmt 0 view .LVU10
+  46 0010 8230      		cpi r24,lo8(2)
+  47 0012 01F4      		brne .L3
+ 320:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 	}
+  48               		.loc 1 320 3 is_stmt 1 view .LVU11
+  49               	.LBB3:
+ 320:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 	}
+  50               		.loc 1 320 21 view .LVU12
+ 320:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 	}
+  51               		.loc 1 320 21 view .LVU13
+  52               	.LBE3:
+ 320:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 	}
+  53               		.loc 1 320 3 is_stmt 0 view .LVU14
+  54 0014 80E0      		ldi r24,lo8(__m.3448)
+  55 0016 90E0      		ldi r25,hi8(__m.3448)
+  56 0018 00C0      		rjmp .L4
+  57               	.L3:
+  58               		.loc 1 323 3 is_stmt 1 view .LVU15
+  59               	.LBB4:
+  60               		.loc 1 323 21 view .LVU16
+  61               		.loc 1 323 21 view .LVU17
+  62               	.LBE4:
+  63               		.loc 1 323 3 is_stmt 0 view .LVU18
+  64 001a 80E0      		ldi r24,lo8(__m.3450)
+  65 001c 90E0      		ldi r25,hi8(__m.3450)
+  66 001e 00C0      		rjmp .L4
+  67               		.cfi_endproc
+  68               	.LFE19:
+  70               		.section	.text.cmd,"ax",@progbits
+  71               	.global	cmd
+  73               	cmd:
+  74               	.LVL3:
+  75               	.LFB20:
  324:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 	}
  325:keyboards/Dactylv2led/keymaps/Default/keymap.c **** }
  326:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 
  327:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 
  328:keyboards/Dactylv2led/keymaps/Default/keymap.c **** void cmd(qk_tap_dance_state_t *state, void *user_data) {
-  56               		.loc 1 328 0
-  57               		.cfi_startproc
-  58               	.LVL3:
-  59               	/* prologue: function */
-  60               	/* frame size = 0 */
-  61               	/* stack size = 0 */
-  62               	.L__stack_usage = 0
+  76               		.loc 1 328 56 is_stmt 1 view -0
+  77               		.cfi_startproc
+  78               	/* prologue: function */
+  79               	/* frame size = 0 */
+  80               	/* stack size = 0 */
+  81               	.L__stack_usage = 0
  329:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 	if(state->count==1){
-  63               		.loc 1 329 0
-  64 0000 FC01      		movw r30,r24
-  65 0002 8081      		ld r24,Z
-  66               	.LVL4:
-  67 0004 8130      		cpi r24,lo8(1)
-  68 0006 01F4      		brne .L7
+  82               		.loc 1 329 2 view .LVU20
+  83               		.loc 1 329 10 is_stmt 0 view .LVU21
+  84 0000 FC01      		movw r30,r24
+  85 0002 8081      		ld r24,Z
+  86               	.LVL4:
+  87               		.loc 1 329 4 view .LVU22
+  88 0004 8130      		cpi r24,lo8(1)
+  89 0006 01F4      		brne .L6
  330:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		action_macro_play(MACRO(D(LGUI), T(R),W(255), U(LGUI),W(255), T(C), T(M), T(D), T(ENTER),END));
-  69               		.loc 1 330 0
-  70 0008 80E0      		ldi r24,lo8(__m.3356)
-  71 000a 90E0      		ldi r25,hi8(__m.3356)
-  72 000c 00C0      		rjmp .L9
-  73               	.L7:
+  90               		.loc 1 330 3 is_stmt 1 view .LVU23
+  91               	.LBB5:
+  92               		.loc 1 330 21 view .LVU24
+  93               		.loc 1 330 21 view .LVU25
+  94               	.LBE5:
+  95               		.loc 1 330 3 is_stmt 0 view .LVU26
+  96 0008 80E0      		ldi r24,lo8(__m.3456)
+  97 000a 90E0      		ldi r25,hi8(__m.3456)
+  98               	.L8:
  331:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 	}
  332:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 	else if (state->count == 2) {
-  74               		.loc 1 332 0
-  75 000e 8230      		cpi r24,lo8(2)
-  76 0010 01F4      		brne .L8
  333:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		action_macro_play(MACRO(D(LGUI), T(R), U(LGUI), T(C), T(M), T(D), T(ENTER),W(255),W(255), T(I), T
-  77               		.loc 1 333 0
-  78 0012 80E0      		ldi r24,lo8(__m.3358)
-  79 0014 90E0      		ldi r25,hi8(__m.3358)
-  80 0016 00C0      		rjmp .L9
-  81               	.L8:
  334:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 	}
  335:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 	else{
  336:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		action_macro_play(MACRO(D(LGUI), T(R),W(255), U(LGUI),W(255), T(C), T(M), T(D), T(ENTER), W(255),
-  82               		.loc 1 336 0
-  83 0018 80E0      		ldi r24,lo8(__m.3360)
-  84 001a 90E0      		ldi r25,hi8(__m.3360)
-  85               	.L9:
-  86 001c 0C94 0000 		jmp action_macro_play
-  87               	.LVL5:
-  88               		.cfi_endproc
-  89               	.LFE16:
-  91               		.section	.text.VirtualDesktop,"ax",@progbits
-  92               	.global	VirtualDesktop
-  94               	VirtualDesktop:
-  95               	.LFB18:
+  99               		.loc 1 336 3 view .LVU27
+ 100 000c 0C94 0000 		jmp action_macro_play
+ 101               	.LVL5:
+ 102               	.L6:
+ 332:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		action_macro_play(MACRO(D(LGUI), T(R), U(LGUI), T(C), T(M), T(D), T(ENTER),W(255),W(255), T(I), T
+ 103               		.loc 1 332 7 is_stmt 1 view .LVU28
+ 332:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		action_macro_play(MACRO(D(LGUI), T(R), U(LGUI), T(C), T(M), T(D), T(ENTER),W(255),W(255), T(I), T
+ 104               		.loc 1 332 10 is_stmt 0 view .LVU29
+ 105 0010 8230      		cpi r24,lo8(2)
+ 106 0012 01F4      		brne .L7
+ 333:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 	}
+ 107               		.loc 1 333 3 is_stmt 1 view .LVU30
+ 108               	.LBB6:
+ 333:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 	}
+ 109               		.loc 1 333 21 view .LVU31
+ 333:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 	}
+ 110               		.loc 1 333 21 view .LVU32
+ 111               	.LBE6:
+ 333:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 	}
+ 112               		.loc 1 333 3 is_stmt 0 view .LVU33
+ 113 0014 80E0      		ldi r24,lo8(__m.3458)
+ 114 0016 90E0      		ldi r25,hi8(__m.3458)
+ 115 0018 00C0      		rjmp .L8
+ 116               	.L7:
+ 117               		.loc 1 336 3 is_stmt 1 view .LVU34
+ 118               	.LBB7:
+ 119               		.loc 1 336 21 view .LVU35
+ 120               		.loc 1 336 21 view .LVU36
+ 121               	.LBE7:
+ 122               		.loc 1 336 3 is_stmt 0 view .LVU37
+ 123 001a 80E0      		ldi r24,lo8(__m.3460)
+ 124 001c 90E0      		ldi r25,hi8(__m.3460)
+ 125 001e 00C0      		rjmp .L8
+ 126               		.cfi_endproc
+ 127               	.LFE20:
+ 129               		.section	.text.VirtualDesktop,"ax",@progbits
+ 130               	.global	VirtualDesktop
+ 132               	VirtualDesktop:
+ 133               	.LVL6:
+ 134               	.LFB22:
  337:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 	}
  338:keyboards/Dactylv2led/keymaps/Default/keymap.c **** }
  339:keyboards/Dactylv2led/keymaps/Default/keymap.c **** void SLSH_BSLSH(qk_tap_dance_state_t *state, void *user_data) {
@@ -437,413 +488,515 @@
  347:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 	}
  348:keyboards/Dactylv2led/keymaps/Default/keymap.c **** }
  349:keyboards/Dactylv2led/keymaps/Default/keymap.c **** void VirtualDesktop(qk_tap_dance_state_t *state, void *user_data) {
-  96               		.loc 1 349 0
-  97               		.cfi_startproc
-  98               	.LVL6:
-  99               	/* prologue: function */
- 100               	/* frame size = 0 */
- 101               	/* stack size = 0 */
- 102               	.L__stack_usage = 0
+ 135               		.loc 1 349 67 is_stmt 1 view -0
+ 136               		.cfi_startproc
+ 137               	/* prologue: function */
+ 138               	/* frame size = 0 */
+ 139               	/* stack size = 0 */
+ 140               	.L__stack_usage = 0
  350:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 	if (state->count == 1) 
- 103               		.loc 1 350 0
- 104 0000 FC01      		movw r30,r24
- 105 0002 8081      		ld r24,Z
- 106               	.LVL7:
- 107 0004 8130      		cpi r24,lo8(1)
- 108 0006 01F4      		brne .L11
+ 141               		.loc 1 350 2 view .LVU39
+ 142               		.loc 1 350 11 is_stmt 0 view .LVU40
+ 143 0000 FC01      		movw r30,r24
+ 144 0002 8081      		ld r24,Z
+ 145               	.LVL7:
+ 146               		.loc 1 350 5 view .LVU41
+ 147 0004 8130      		cpi r24,lo8(1)
+ 148 0006 01F4      		brne .L10
  351:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		action_macro_play(MACRO(D(LGUI),D(LCTRL),T(LEFT),U(LCTRL),U(LGUI),END));
- 109               		.loc 1 351 0
- 110 0008 80E0      		ldi r24,lo8(__m.3370)
- 111 000a 90E0      		ldi r25,hi8(__m.3370)
- 112 000c 00C0      		rjmp .L13
- 113               	.L11:
+ 149               		.loc 1 351 3 is_stmt 1 view .LVU42
+ 150               	.LBB8:
+ 151               		.loc 1 351 21 view .LVU43
+ 152               		.loc 1 351 21 view .LVU44
+ 153               	.LBE8:
+ 154               		.loc 1 351 3 is_stmt 0 view .LVU45
+ 155 0008 80E0      		ldi r24,lo8(__m.3470)
+ 156 000a 90E0      		ldi r25,hi8(__m.3470)
+ 157               	.L12:
  352:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 	else if(state->count==2)
- 114               		.loc 1 352 0
- 115 000e 8230      		cpi r24,lo8(2)
- 116 0010 01F4      		brne .L10
  353:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		action_macro_play(MACRO(D(LGUI),D(LCTRL),T(RIGHT),U(LCTRL),U(LGUI),END));
- 117               		.loc 1 353 0
- 118 0012 80E0      		ldi r24,lo8(__m.3372)
- 119 0014 90E0      		ldi r25,hi8(__m.3372)
- 120               	.L13:
- 121 0016 0C94 0000 		jmp action_macro_play
- 122               	.LVL8:
- 123               	.L10:
- 124 001a 0895      		ret
- 125               		.cfi_endproc
- 126               	.LFE18:
- 128               		.section	.text.SLSH_BSLSH,"ax",@progbits
- 129               	.global	SLSH_BSLSH
- 131               	SLSH_BSLSH:
- 132               	.LFB17:
- 339:keyboards/Dactylv2led/keymaps/Default/keymap.c **** void SLSH_BSLSH(qk_tap_dance_state_t *state, void *user_data) {
- 133               		.loc 1 339 0
- 134               		.cfi_startproc
- 135               	.LVL9:
- 136               	/* prologue: function */
- 137               	/* frame size = 0 */
- 138               	/* stack size = 0 */
- 139               	.L__stack_usage = 0
- 340:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 	if (state->count == 1) {
- 140               		.loc 1 340 0
- 141 0000 FC01      		movw r30,r24
- 142 0002 8081      		ld r24,Z
- 143               	.LVL10:
- 144 0004 8130      		cpi r24,lo8(1)
- 145 0006 01F4      		brne .L15
- 341:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		register_code (KC_SLSH);
- 146               		.loc 1 341 0
- 147 0008 88E3      		ldi r24,lo8(56)
- 148 000a 0E94 0000 		call register_code
- 149               	.LVL11:
- 342:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		unregister_code (KC_SLSH);
- 150               		.loc 1 342 0
- 151 000e 88E3      		ldi r24,lo8(56)
- 152 0010 00C0      		rjmp .L16
- 153               	.LVL12:
- 154               	.L15:
- 345:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		register_code (KC_BSLS);
- 155               		.loc 1 345 0
- 156 0012 81E3      		ldi r24,lo8(49)
- 157 0014 0E94 0000 		call register_code
- 158               	.LVL13:
- 346:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		unregister_code (KC_BSLS);
- 159               		.loc 1 346 0
- 160 0018 81E3      		ldi r24,lo8(49)
- 161               	.L16:
- 162 001a 0C94 0000 		jmp unregister_code
- 163               	.LVL14:
- 164               		.cfi_endproc
- 165               	.LFE17:
- 167               		.section	.text.persistent_default_layer_set,"ax",@progbits
- 168               	.global	persistent_default_layer_set
- 170               	persistent_default_layer_set:
- 171               	.LFB13:
- 233:keyboards/Dactylv2led/keymaps/Default/keymap.c **** void persistent_default_layer_set(uint16_t default_layer) {
- 172               		.loc 1 233 0
- 173               		.cfi_startproc
- 174               	.LVL15:
- 175 0000 CF93      		push r28
- 176               	.LCFI0:
- 177               		.cfi_def_cfa_offset 3
- 178               		.cfi_offset 28, -2
- 179 0002 DF93      		push r29
- 180               	.LCFI1:
- 181               		.cfi_def_cfa_offset 4
- 182               		.cfi_offset 29, -3
- 183               	/* prologue: function */
- 184               	/* frame size = 0 */
- 185               	/* stack size = 2 */
- 186               	.L__stack_usage = 2
- 187 0004 EC01      		movw r28,r24
- 234:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 	eeconfig_update_default_layer(default_layer);
- 188               		.loc 1 234 0
- 189 0006 0E94 0000 		call eeconfig_update_default_layer
- 190               	.LVL16:
- 235:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 	default_layer_set(default_layer);
- 191               		.loc 1 235 0
- 192 000a BE01      		movw r22,r28
- 193 000c 80E0      		ldi r24,0
- 194 000e 90E0      		ldi r25,0
- 195               	/* epilogue start */
- 236:keyboards/Dactylv2led/keymaps/Default/keymap.c **** }
- 196               		.loc 1 236 0
- 197 0010 DF91      		pop r29
- 198 0012 CF91      		pop r28
- 199               	.LVL17:
- 235:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 	default_layer_set(default_layer);
- 200               		.loc 1 235 0
- 201 0014 0C94 0000 		jmp default_layer_set
- 202               	.LVL18:
- 203               		.cfi_endproc
- 204               	.LFE13:
- 206               		.section	.text.action_get_macro,"ax",@progbits
- 207               	.global	action_get_macro
- 209               	action_get_macro:
- 210               	.LFB14:
- 246:keyboards/Dactylv2led/keymaps/Default/keymap.c **** const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) {
- 211               		.loc 1 246 0
- 212               		.cfi_startproc
- 213               	.LVL19:
- 214               	/* prologue: function */
- 215               	/* frame size = 0 */
- 216               	/* stack size = 0 */
- 217               	.L__stack_usage = 0
- 218 0000 DC01      		movw r26,r24
- 248:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 	switch (id) {
- 219               		.loc 1 248 0
- 220 0002 462F      		mov r20,r22
- 221               	.LVL20:
- 222 0004 50E0      		ldi r21,0
- 223 0006 4031      		cpi r20,16
- 224 0008 5105      		cpc r21,__zero_reg__
- 225 000a 00F0      		brlo .+2
- 226 000c 00C0      		rjmp .L47
- 227 000e 4050      		subi r20,lo8(-(gs(.L21)))
- 228 0010 5040      		sbci r21,hi8(-(gs(.L21)))
- 229 0012 FA01      		movw r30,r20
- 230 0014 0C94 0000 		jmp __tablejump2__
- 231               		.section	.progmem.gcc_sw_table.action_get_macro,"a",@progbits
- 232               		.p2align	1
- 233               	.L21:
- 234 0000 0000      		.word gs(.L20)
- 235 0002 0000      		.word gs(.L22)
- 236 0004 0000      		.word gs(.L23)
- 237 0006 0000      		.word gs(.L24)
- 238 0008 0000      		.word gs(.L25)
- 239 000a 0000      		.word gs(.L26)
- 240 000c 0000      		.word gs(.L27)
- 241 000e 0000      		.word gs(.L47)
- 242 0010 0000      		.word gs(.L47)
- 243 0012 0000      		.word gs(.L47)
- 244 0014 0000      		.word gs(.L28)
- 245 0016 0000      		.word gs(.L29)
- 246 0018 0000      		.word gs(.L30)
- 247 001a 0000      		.word gs(.L31)
- 248 001c 0000      		.word gs(.L32)
- 249 001e 0000      		.word gs(.L33)
- 250               		.section	.text.action_get_macro
- 251               	.L20:
- 250:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		if (record->event.pressed) {
- 252               		.loc 1 250 0
- 253 0018 1296      		adiw r26,2
- 254 001a 8C91      		ld r24,X
- 255 001c 1297      		sbiw r26,2
- 256               	.LVL21:
- 257 001e 8111      		cpse r24,__zero_reg__
- 258 0020 00C0      		rjmp .L38
- 259               	.L22:
- 254:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		if (record->event.pressed) {
- 260               		.loc 1 254 0
- 261 0022 1296      		adiw r26,2
- 262 0024 8C91      		ld r24,X
- 263 0026 1297      		sbiw r26,2
- 264 0028 8111      		cpse r24,__zero_reg__
- 265 002a 00C0      		rjmp .L39
- 266               	.L23:
- 260:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		if (record->event.pressed) {
- 267               		.loc 1 260 0
- 268 002c 1296      		adiw r26,2
- 269 002e 8C91      		ld r24,X
- 270 0030 1297      		sbiw r26,2
- 271 0032 8823      		tst r24
- 272 0034 01F0      		breq .L24
- 261:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			SEND_STRING("email");// auto send email
- 273               		.loc 1 261 0
- 274 0036 80E0      		ldi r24,lo8(__c.3308)
- 275 0038 90E0      		ldi r25,hi8(__c.3308)
- 276 003a 00C0      		rjmp .L66
- 277               	.L24:
- 265:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		if (record->event.pressed) {
- 278               		.loc 1 265 0
- 279 003c 1296      		adiw r26,2
- 280 003e 8C91      		ld r24,X
- 281 0040 1297      		sbiw r26,2
- 282 0042 8823      		tst r24
- 283 0044 01F0      		breq .L25
- 266:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			SEND_STRING("www.support.xerox.com"SS_TAP(X_ENTER));
- 284               		.loc 1 266 0
- 285 0046 80E0      		ldi r24,lo8(__c.3311)
- 286 0048 90E0      		ldi r25,hi8(__c.3311)
- 287 004a 00C0      		rjmp .L66
- 288               	.L25:
- 270:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		if(record->event.pressed) {
- 289               		.loc 1 270 0
- 290 004c 1296      		adiw r26,2
- 291 004e 8C91      		ld r24,X
- 292 0050 1297      		sbiw r26,2
- 293 0052 8111      		cpse r24,__zero_reg__
- 294 0054 00C0      		rjmp .L40
- 295               	.L26:
- 275:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			return  MACRO_TAP_HOLD_LAYER(record, MACRO(TYPE(KC_X), END), _LOWER);	
- 296               		.loc 1 275 0
- 297 0056 1296      		adiw r26,2
- 298 0058 9C91      		ld r25,X
- 299 005a 1297      		sbiw r26,2
- 300 005c 1596      		adiw r26,5
- 301 005e 8C91      		ld r24,X
- 302 0060 9923      		tst r25
- 303 0062 01F0      		breq .L34
- 275:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			return  MACRO_TAP_HOLD_LAYER(record, MACRO(TYPE(KC_X), END), _LOWER);	
- 304               		.loc 1 275 0 is_stmt 0 discriminator 1
- 305 0064 982F      		mov r25,r24
- 306 0066 9295      		swap r25
- 307 0068 9F70      		andi r25,lo8(15)
- 308 006a 01F0      		breq .L35
- 275:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			return  MACRO_TAP_HOLD_LAYER(record, MACRO(TYPE(KC_X), END), _LOWER);	
- 309               		.loc 1 275 0 discriminator 4
- 310 006c 80FF      		sbrs r24,0
- 311 006e 00C0      		rjmp .L47
- 312               	.L35:
- 313               	.LBB2:
- 275:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			return  MACRO_TAP_HOLD_LAYER(record, MACRO(TYPE(KC_X), END), _LOWER);	
- 314               		.loc 1 275 0 discriminator 3
- 315 0070 83E0      		ldi r24,lo8(3)
- 316 0072 0E94 0000 		call layer_on
- 317               	.LVL22:
- 318 0076 00C0      		rjmp .L47
- 319               	.LVL23:
- 320               	.L34:
- 321               	.LBE2:
- 275:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			return  MACRO_TAP_HOLD_LAYER(record, MACRO(TYPE(KC_X), END), _LOWER);	
- 322               		.loc 1 275 0 discriminator 2
- 323 0078 982F      		mov r25,r24
- 324 007a 9295      		swap r25
- 325 007c 9F70      		andi r25,lo8(15)
- 326 007e 01F0      		breq .L36
- 275:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			return  MACRO_TAP_HOLD_LAYER(record, MACRO(TYPE(KC_X), END), _LOWER);	
- 327               		.loc 1 275 0 discriminator 6
- 328 0080 80FF      		sbrs r24,0
- 329 0082 00C0      		rjmp .L42
- 330               	.L36:
- 331               	.LBB3:
- 275:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			return  MACRO_TAP_HOLD_LAYER(record, MACRO(TYPE(KC_X), END), _LOWER);	
- 332               		.loc 1 275 0 discriminator 7
- 333 0084 83E0      		ldi r24,lo8(3)
- 334 0086 0E94 0000 		call layer_off
- 335               	.LVL24:
- 336 008a 00C0      		rjmp .L47
- 337               	.LVL25:
- 338               	.L27:
- 339               	.LBE3:
- 278:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			if(record->event.pressed) 
- 340               		.loc 1 278 0 is_stmt 1
- 341 008c 1296      		adiw r26,2
- 342 008e 8C91      		ld r24,X
- 343 0090 1297      		sbiw r26,2
- 344               	.LVL26:
- 345 0092 8111      		cpse r24,__zero_reg__
- 346 0094 00C0      		rjmp .L43
- 347               	.L28:
- 282:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		if(record->event.pressed) {
- 348               		.loc 1 282 0
- 349 0096 1296      		adiw r26,2
- 350 0098 8C91      		ld r24,X
- 351 009a 1297      		sbiw r26,2
- 352 009c 8823      		tst r24
- 353 009e 01F0      		breq .L29
- 283:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		SEND_STRING(""); //send string
- 354               		.loc 1 283 0
- 355 00a0 80E0      		ldi r24,lo8(__c.3325)
- 356 00a2 90E0      		ldi r25,hi8(__c.3325)
- 357 00a4 00C0      		rjmp .L66
- 358               	.L29:
- 287:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		if(record->event.pressed) {
- 359               		.loc 1 287 0
- 360 00a6 1296      		adiw r26,2
- 361 00a8 8C91      		ld r24,X
- 362 00aa 1297      		sbiw r26,2
- 363 00ac 8823      		tst r24
- 364 00ae 01F0      		breq .L30
- 288:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			SEND_STRING("ipconfig /all");
- 365               		.loc 1 288 0
- 366 00b0 80E0      		ldi r24,lo8(__c.3328)
- 367 00b2 90E0      		ldi r25,hi8(__c.3328)
- 368 00b4 00C0      		rjmp .L66
- 369               	.L30:
- 292:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 	if(record->event.pressed) 
- 370               		.loc 1 292 0
- 371 00b6 1296      		adiw r26,2
- 372 00b8 8C91      		ld r24,X
- 373 00ba 1297      		sbiw r26,2
- 374 00bc 8111      		cpse r24,__zero_reg__
- 375 00be 00C0      		rjmp .L44
- 376               	.L31:
- 296:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 	if(record->event.pressed) 
- 377               		.loc 1 296 0
- 378 00c0 1296      		adiw r26,2
- 379 00c2 8C91      		ld r24,X
- 380 00c4 1297      		sbiw r26,2
- 381 00c6 8111      		cpse r24,__zero_reg__
- 382 00c8 00C0      		rjmp .L45
- 383               	.L32:
- 300:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 	if(record->event.pressed) 
- 384               		.loc 1 300 0
- 385 00ca 1296      		adiw r26,2
- 386 00cc 8C91      		ld r24,X
- 387 00ce 1297      		sbiw r26,2
- 388 00d0 8111      		cpse r24,__zero_reg__
- 389 00d2 00C0      		rjmp .L46
- 390               	.L33:
- 304:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 	if(record->event.pressed) 
- 391               		.loc 1 304 0
- 392 00d4 1296      		adiw r26,2
- 393 00d6 8C91      		ld r24,X
- 394 00d8 8823      		tst r24
- 395 00da 01F0      		breq .L47
- 305:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		SEND_STRING("username"SS_TAP(X_TAB)"pass"SS_TAP(X_TAB)SS_TAP(X_ENTER));//allows sending password 
- 396               		.loc 1 305 0
- 397 00dc 80E0      		ldi r24,lo8(__c.3340)
- 398 00de 90E0      		ldi r25,hi8(__c.3340)
- 399               	.L66:
- 400 00e0 0E94 0000 		call send_string_P
- 401               	.LVL27:
- 402 00e4 00C0      		rjmp .L47
- 403               	.LVL28:
- 404               	.L38:
- 251:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			return MACRO(D(LGUI), T(TAB), U(LGUI), END);
- 405               		.loc 1 251 0
- 406 00e6 80E0      		ldi r24,lo8(__m.3302)
- 407 00e8 90E0      		ldi r25,hi8(__m.3302)
- 408 00ea 0895      		ret
- 409               	.L39:
- 257:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			return MACRO(I(10), T(A), T(D), T(M), T(I), T(N), W(75), T(TAB), T(1), T(1),T(1), T(1), T(ENTER)
- 410               		.loc 1 257 0
- 411 00ec 80E0      		ldi r24,lo8(__m.3305)
- 412 00ee 90E0      		ldi r25,hi8(__m.3305)
- 413 00f0 0895      		ret
- 414               	.L40:
- 271:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			return MACRO(I(10), D(LCTRL), T(T), T(V), T(ENTER), U(LCTRL), END);
- 415               		.loc 1 271 0
- 416 00f2 80E0      		ldi r24,lo8(__m.3314)
- 417 00f4 90E0      		ldi r25,hi8(__m.3314)
- 418 00f6 0895      		ret
- 419               	.L42:
- 275:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			return  MACRO_TAP_HOLD_LAYER(record, MACRO(TYPE(KC_X), END), _LOWER);	
- 420               		.loc 1 275 0
- 421 00f8 80E0      		ldi r24,lo8(__m.3318)
- 422 00fa 90E0      		ldi r25,hi8(__m.3318)
- 423 00fc 0895      		ret
- 424               	.L43:
- 279:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			return MACRO(I(10), T(0), T(C), T(TAB), T(TAB), T(A), T(TAB), END);
- 425               		.loc 1 279 0
- 426 00fe 80E0      		ldi r24,lo8(__m.3322)
- 427 0100 90E0      		ldi r25,hi8(__m.3322)
- 428 0102 0895      		ret
- 429               	.L44:
- 293:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		return MACRO( I(10),T(TAB), T(O), T(P), T(TAB),T(ENTER), T(TAB),T(TAB),T(TAB),T(Z),T(R),T(TAB),T(
- 430               		.loc 1 293 0
- 431 0104 80E0      		ldi r24,lo8(__m.3331)
- 432 0106 90E0      		ldi r25,hi8(__m.3331)
- 433 0108 0895      		ret
- 434               	.L45:
- 297:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		return MACRO( I(10),T(TAB), T(O), T(T), T(TAB),T(ENTER), T(TAB),T(TAB),T(TAB),T(Z),T(R),T(TAB),T(
- 435               		.loc 1 297 0
- 436 010a 80E0      		ldi r24,lo8(__m.3334)
- 437 010c 90E0      		ldi r25,hi8(__m.3334)
- 438 010e 0895      		ret
- 439               	.L46:
- 301:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		return MACRO( I(10),T(TAB), T(I), T(N), T(TAB),T(ENTER), T(TAB),T(TAB),T(TAB),T(I),T(N),T(TAB),T(
- 440               		.loc 1 301 0
- 441 0110 80E0      		ldi r24,lo8(__m.3337)
- 442 0112 90E0      		ldi r25,hi8(__m.3337)
- 443 0114 0895      		ret
- 444               	.LVL29:
- 445               	.L47:
- 275:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			return  MACRO_TAP_HOLD_LAYER(record, MACRO(TYPE(KC_X), END), _LOWER);	
- 446               		.loc 1 275 0
- 447 0116 80E0      		ldi r24,0
- 448 0118 90E0      		ldi r25,0
- 311:keyboards/Dactylv2led/keymaps/Default/keymap.c **** }
- 449               		.loc 1 311 0
- 450 011a 0895      		ret
- 451               		.cfi_endproc
- 452               	.LFE14:
- 454               		.section	.text.matrix_init_user,"ax",@progbits
- 455               	.global	matrix_init_user
- 457               	matrix_init_user:
- 458               	.LFB19:
+ 158               		.loc 1 353 3 view .LVU46
+ 159 000c 0C94 0000 		jmp action_macro_play
+ 160               	.LVL8:
+ 161               	.L10:
+ 352:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 	else if(state->count==2)
+ 162               		.loc 1 352 7 is_stmt 1 view .LVU47
+ 352:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 	else if(state->count==2)
+ 163               		.loc 1 352 9 is_stmt 0 view .LVU48
+ 164 0010 8230      		cpi r24,lo8(2)
+ 165 0012 01F4      		brne .L9
+ 166               		.loc 1 353 3 is_stmt 1 view .LVU49
+ 167               	.LBB9:
+ 168               		.loc 1 353 21 view .LVU50
+ 169               		.loc 1 353 21 view .LVU51
+ 170               	.LBE9:
+ 171               		.loc 1 353 3 is_stmt 0 view .LVU52
+ 172 0014 80E0      		ldi r24,lo8(__m.3472)
+ 173 0016 90E0      		ldi r25,hi8(__m.3472)
+ 174 0018 00C0      		rjmp .L12
+ 175               	.L9:
+ 176               	/* epilogue start */
  354:keyboards/Dactylv2led/keymaps/Default/keymap.c **** }
+ 177               		.loc 1 354 1 view .LVU53
+ 178 001a 0895      		ret
+ 179               		.cfi_endproc
+ 180               	.LFE22:
+ 182               		.section	.text.SLSH_BSLSH,"ax",@progbits
+ 183               	.global	SLSH_BSLSH
+ 185               	SLSH_BSLSH:
+ 186               	.LVL9:
+ 187               	.LFB21:
+ 339:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 	if (state->count == 1) {
+ 188               		.loc 1 339 63 is_stmt 1 view -0
+ 189               		.cfi_startproc
+ 190               	/* prologue: function */
+ 191               	/* frame size = 0 */
+ 192               	/* stack size = 0 */
+ 193               	.L__stack_usage = 0
+ 340:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		register_code (KC_SLSH);
+ 194               		.loc 1 340 2 view .LVU55
+ 340:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		register_code (KC_SLSH);
+ 195               		.loc 1 340 5 is_stmt 0 view .LVU56
+ 196 0000 FC01      		movw r30,r24
+ 197 0002 8081      		ld r24,Z
+ 198               	.LVL10:
+ 340:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		register_code (KC_SLSH);
+ 199               		.loc 1 340 5 view .LVU57
+ 200 0004 8130      		cpi r24,lo8(1)
+ 201 0006 01F4      		brne .L14
+ 341:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		unregister_code (KC_SLSH);
+ 202               		.loc 1 341 3 is_stmt 1 view .LVU58
+ 203 0008 88E3      		ldi r24,lo8(56)
+ 204 000a 0E94 0000 		call register_code
+ 205               	.LVL11:
+ 342:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 	}
+ 206               		.loc 1 342 3 view .LVU59
+ 207 000e 88E3      		ldi r24,lo8(56)
+ 208               	.L15:
+ 346:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 	}
+ 209               		.loc 1 346 3 is_stmt 0 view .LVU60
+ 210 0010 0C94 0000 		jmp unregister_code
+ 211               	.LVL12:
+ 212               	.L14:
+ 345:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		unregister_code (KC_BSLS);
+ 213               		.loc 1 345 3 is_stmt 1 view .LVU61
+ 214 0014 81E3      		ldi r24,lo8(49)
+ 215 0016 0E94 0000 		call register_code
+ 216               	.LVL13:
+ 346:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 	}
+ 217               		.loc 1 346 3 view .LVU62
+ 218 001a 81E3      		ldi r24,lo8(49)
+ 219 001c 00C0      		rjmp .L15
+ 220               		.cfi_endproc
+ 221               	.LFE21:
+ 223               		.section	.text.persistent_default_layer_set,"ax",@progbits
+ 224               	.global	persistent_default_layer_set
+ 226               	persistent_default_layer_set:
+ 227               	.LVL14:
+ 228               	.LFB17:
+ 233:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 	eeconfig_update_default_layer(default_layer);
+ 229               		.loc 1 233 59 view -0
+ 230               		.cfi_startproc
+ 233:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 	eeconfig_update_default_layer(default_layer);
+ 231               		.loc 1 233 59 is_stmt 0 view .LVU64
+ 232 0000 CF93      		push r28
+ 233               	.LCFI0:
+ 234               		.cfi_def_cfa_offset 3
+ 235               		.cfi_offset 28, -2
+ 236 0002 DF93      		push r29
+ 237               	.LCFI1:
+ 238               		.cfi_def_cfa_offset 4
+ 239               		.cfi_offset 29, -3
+ 240               	/* prologue: function */
+ 241               	/* frame size = 0 */
+ 242               	/* stack size = 2 */
+ 243               	.L__stack_usage = 2
+ 244 0004 EC01      		movw r28,r24
+ 234:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 	default_layer_set(default_layer);
+ 245               		.loc 1 234 2 is_stmt 1 view .LVU65
+ 246 0006 0E94 0000 		call eeconfig_update_default_layer
+ 247               	.LVL15:
+ 235:keyboards/Dactylv2led/keymaps/Default/keymap.c **** }
+ 248               		.loc 1 235 2 view .LVU66
+ 249 000a BE01      		movw r22,r28
+ 250 000c 90E0      		ldi r25,0
+ 251 000e 80E0      		ldi r24,0
+ 252               	/* epilogue start */
+ 236:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 
+ 253               		.loc 1 236 1 is_stmt 0 view .LVU67
+ 254 0010 DF91      		pop r29
+ 255 0012 CF91      		pop r28
+ 256               	.LVL16:
+ 235:keyboards/Dactylv2led/keymaps/Default/keymap.c **** }
+ 257               		.loc 1 235 2 view .LVU68
+ 258 0014 0C94 0000 		jmp default_layer_set
+ 259               	.LVL17:
+ 235:keyboards/Dactylv2led/keymaps/Default/keymap.c **** }
+ 260               		.loc 1 235 2 view .LVU69
+ 261               		.cfi_endproc
+ 262               	.LFE17:
+ 264               		.section	.text.action_get_macro,"ax",@progbits
+ 265               	.global	action_get_macro
+ 267               	action_get_macro:
+ 268               	.LVL18:
+ 269               	.LFB18:
+ 246:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 	
+ 270               		.loc 1 246 79 is_stmt 1 view -0
+ 271               		.cfi_startproc
+ 272               	/* prologue: function */
+ 273               	/* frame size = 0 */
+ 274               	/* stack size = 0 */
+ 275               	.L__stack_usage = 0
+ 246:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 	
+ 276               		.loc 1 246 79 is_stmt 0 view .LVU71
+ 277 0000 DC01      		movw r26,r24
+ 248:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 	case 0:
+ 278               		.loc 1 248 2 is_stmt 1 view .LVU72
+ 279 0002 6031      		cpi r22,lo8(16)
+ 280 0004 00F4      		brsh .L46
+ 281 0006 E62F      		mov r30,r22
+ 282 0008 F0E0      		ldi r31,0
+ 283 000a E050      		subi r30,lo8(-(gs(.L20)))
+ 284 000c F040      		sbci r31,hi8(-(gs(.L20)))
+ 285 000e 0C94 0000 		jmp __tablejump2__
+ 286               		.section	.jumptables.gcc.action_get_macro,"a",@progbits
+ 287               		.p2align	1
+ 288               	.L20:
+ 289 0000 0000      		.word gs(.L32)
+ 290 0002 0000      		.word gs(.L31)
+ 291 0004 0000      		.word gs(.L30)
+ 292 0006 0000      		.word gs(.L29)
+ 293 0008 0000      		.word gs(.L28)
+ 294 000a 0000      		.word gs(.L27)
+ 295 000c 0000      		.word gs(.L26)
+ 296 000e 0000      		.word gs(.L46)
+ 297 0010 0000      		.word gs(.L46)
+ 298 0012 0000      		.word gs(.L46)
+ 299 0014 0000      		.word gs(.L25)
+ 300 0016 0000      		.word gs(.L24)
+ 301 0018 0000      		.word gs(.L23)
+ 302 001a 0000      		.word gs(.L22)
+ 303 001c 0000      		.word gs(.L21)
+ 304 001e 0000      		.word gs(.L19)
+ 305               		.section	.text.action_get_macro
+ 306               	.L32:
+ 250:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			return MACRO(D(LGUI), T(TAB), U(LGUI), END);
+ 307               		.loc 1 250 3 view .LVU73
+ 250:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			return MACRO(D(LGUI), T(TAB), U(LGUI), END);
+ 308               		.loc 1 250 6 is_stmt 0 view .LVU74
+ 309 0012 1296      		adiw r26,2
+ 310 0014 8C91      		ld r24,X
+ 311 0016 1297      		sbiw r26,2
+ 312               	.LVL19:
+ 250:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			return MACRO(D(LGUI), T(TAB), U(LGUI), END);
+ 313               		.loc 1 250 6 view .LVU75
+ 314 0018 8111      		cpse r24,__zero_reg__
+ 315 001a 00C0      		rjmp .L37
+ 316               	.L31:
+ 254:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		//	SEND_STRING("admin"SS_TAP(X_TAB)"1111"SS_TAP(X_ENTER));
+ 317               		.loc 1 254 3 is_stmt 1 view .LVU76
+ 254:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		//	SEND_STRING("admin"SS_TAP(X_TAB)"1111"SS_TAP(X_ENTER));
+ 318               		.loc 1 254 6 is_stmt 0 view .LVU77
+ 319 001c 1296      		adiw r26,2
+ 320 001e 8C91      		ld r24,X
+ 321 0020 1297      		sbiw r26,2
+ 322 0022 8111      		cpse r24,__zero_reg__
+ 323 0024 00C0      		rjmp .L38
+ 324               	.L30:
+ 260:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			SEND_STRING("email");// auto send email
+ 325               		.loc 1 260 3 is_stmt 1 view .LVU78
+ 260:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			SEND_STRING("email");// auto send email
+ 326               		.loc 1 260 6 is_stmt 0 view .LVU79
+ 327 0026 1296      		adiw r26,2
+ 328 0028 8C91      		ld r24,X
+ 329 002a 1297      		sbiw r26,2
+ 330 002c 8823      		tst r24
+ 331 002e 01F0      		breq .L29
+ 261:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			return false;	break;
+ 332               		.loc 1 261 4 is_stmt 1 view .LVU80
+ 333               	.LBB10:
+ 261:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			return false;	break;
+ 334               		.loc 1 261 4 view .LVU81
+ 261:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			return false;	break;
+ 335               		.loc 1 261 4 view .LVU82
+ 336               	.LBE10:
+ 337 0030 80E0      		ldi r24,lo8(__c.3408)
+ 338 0032 90E0      		ldi r25,hi8(__c.3408)
+ 339               	.L65:
+ 266:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 						return false;	break;
+ 340               		.loc 1 266 4 is_stmt 0 view .LVU83
+ 341 0034 0E94 0000 		call send_string_P
+ 342               	.LVL20:
+ 267:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		}
+ 343               		.loc 1 267 7 is_stmt 1 view .LVU84
+ 344               	.L46:
+ 275:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		}
+ 345               		.loc 1 275 12 is_stmt 0 view .LVU85
+ 346 0038 90E0      		ldi r25,0
+ 347 003a 80E0      		ldi r24,0
+ 348               	/* epilogue start */
+ 311:keyboards/Dactylv2led/keymaps/Default/keymap.c **** //return MACRO_NONE;
+ 349               		.loc 1 311 1 view .LVU86
+ 350 003c 0895      		ret
+ 351               	.LVL21:
+ 352               	.L29:
+ 262:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		}
+ 353               		.loc 1 262 18 is_stmt 1 view .LVU87
+ 265:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			SEND_STRING("www.support.xerox.com"SS_TAP(X_ENTER));
+ 354               		.loc 1 265 3 view .LVU88
+ 265:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			SEND_STRING("www.support.xerox.com"SS_TAP(X_ENTER));
+ 355               		.loc 1 265 6 is_stmt 0 view .LVU89
+ 356 003e 1296      		adiw r26,2
+ 357 0040 8C91      		ld r24,X
+ 358 0042 1297      		sbiw r26,2
+ 359 0044 8823      		tst r24
+ 360 0046 01F0      		breq .L28
+ 266:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 						return false;	break;
+ 361               		.loc 1 266 4 is_stmt 1 view .LVU90
+ 362               	.LBB11:
+ 266:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 						return false;	break;
+ 363               		.loc 1 266 4 view .LVU91
+ 266:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 						return false;	break;
+ 364               		.loc 1 266 4 view .LVU92
+ 365               	.LBE11:
+ 366 0048 80E0      		ldi r24,lo8(__c.3411)
+ 367 004a 90E0      		ldi r25,hi8(__c.3411)
+ 368 004c 00C0      		rjmp .L65
+ 369               	.L28:
+ 267:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		}
+ 370               		.loc 1 267 21 view .LVU93
+ 270:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			return MACRO(I(10), D(LCTRL), T(T), T(V), T(ENTER), U(LCTRL), END);
+ 371               		.loc 1 270 3 view .LVU94
+ 270:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			return MACRO(I(10), D(LCTRL), T(T), T(V), T(ENTER), U(LCTRL), END);
+ 372               		.loc 1 270 5 is_stmt 0 view .LVU95
+ 373 004e 1296      		adiw r26,2
+ 374 0050 8C91      		ld r24,X
+ 375 0052 1297      		sbiw r26,2
+ 376 0054 8111      		cpse r24,__zero_reg__
+ 377 0056 00C0      		rjmp .L39
+ 378               	.L27:
+ 275:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		}
+ 379               		.loc 1 275 4 is_stmt 1 view .LVU96
+ 380 0058 1596      		adiw r26,5
+ 381 005a 8C91      		ld r24,X
+ 382 005c 1597      		sbiw r26,5
+ 383 005e 982F      		mov r25,r24
+ 384 0060 907F      		andi r25,lo8(-16)
+ 275:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		}
+ 385               		.loc 1 275 12 is_stmt 0 view .LVU97
+ 386 0062 1296      		adiw r26,2
+ 387 0064 2C91      		ld r18,X
+ 388 0066 2223      		tst r18
+ 389 0068 01F0      		breq .L33
+ 275:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		}
+ 390               		.loc 1 275 12 discriminator 1 view .LVU98
+ 391 006a 9923      		tst r25
+ 392 006c 01F0      		breq .L34
+ 275:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		}
+ 393               		.loc 1 275 12 discriminator 4 view .LVU99
+ 394 006e 80FF      		sbrs r24,0
+ 395 0070 00C0      		rjmp .L46
+ 396               	.L34:
+ 397               	.LBB12:
+ 275:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		}
+ 398               		.loc 1 275 12 is_stmt 1 discriminator 5 view .LVU100
+ 399 0072 83E0      		ldi r24,lo8(3)
+ 400 0074 0E94 0000 		call layer_on
+ 401               	.LVL22:
+ 275:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		}
+ 402               		.loc 1 275 12 discriminator 5 view .LVU101
+ 403 0078 00C0      		rjmp .L46
+ 404               	.LVL23:
+ 405               	.L33:
+ 275:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		}
+ 406               		.loc 1 275 12 is_stmt 0 discriminator 5 view .LVU102
+ 407               	.LBE12:
+ 275:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		}
+ 408               		.loc 1 275 12 discriminator 2 view .LVU103
+ 409 007a 9923      		tst r25
+ 410 007c 01F0      		breq .L35
+ 275:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		}
+ 411               		.loc 1 275 12 discriminator 10 view .LVU104
+ 412 007e 80FF      		sbrs r24,0
+ 413 0080 00C0      		rjmp .L41
+ 414               	.L35:
+ 415               	.LBB13:
+ 275:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		}
+ 416               		.loc 1 275 12 is_stmt 1 discriminator 13 view .LVU105
+ 417 0082 83E0      		ldi r24,lo8(3)
+ 418 0084 0E94 0000 		call layer_off
+ 419               	.LVL24:
+ 275:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		}
+ 420               		.loc 1 275 12 discriminator 13 view .LVU106
+ 421 0088 00C0      		rjmp .L46
+ 422               	.LVL25:
+ 423               	.L26:
+ 275:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		}
+ 424               		.loc 1 275 12 is_stmt 0 discriminator 13 view .LVU107
+ 425               	.LBE13:
+ 278:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			return MACRO(I(10), T(0), T(C), T(TAB), T(TAB), T(A), T(TAB), END);
+ 426               		.loc 1 278 4 is_stmt 1 view .LVU108
+ 278:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			return MACRO(I(10), T(0), T(C), T(TAB), T(TAB), T(A), T(TAB), END);
+ 427               		.loc 1 278 6 is_stmt 0 view .LVU109
+ 428 008a 1296      		adiw r26,2
+ 429 008c 8C91      		ld r24,X
+ 430 008e 1297      		sbiw r26,2
+ 431               	.LVL26:
+ 278:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			return MACRO(I(10), T(0), T(C), T(TAB), T(TAB), T(A), T(TAB), END);
+ 432               		.loc 1 278 6 view .LVU110
+ 433 0090 8111      		cpse r24,__zero_reg__
+ 434 0092 00C0      		rjmp .L42
+ 435               	.L25:
+ 282:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		SEND_STRING(""); //send string
+ 436               		.loc 1 282 3 is_stmt 1 view .LVU111
+ 282:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		SEND_STRING(""); //send string
+ 437               		.loc 1 282 5 is_stmt 0 view .LVU112
+ 438 0094 1296      		adiw r26,2
+ 439 0096 8C91      		ld r24,X
+ 440 0098 1297      		sbiw r26,2
+ 441 009a 8823      		tst r24
+ 442 009c 01F0      		breq .L24
+ 283:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			return false; break;}
+ 443               		.loc 1 283 3 is_stmt 1 view .LVU113
+ 444               	.LBB14:
+ 283:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			return false; break;}
+ 445               		.loc 1 283 3 view .LVU114
+ 283:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			return false; break;}
+ 446               		.loc 1 283 3 view .LVU115
+ 447               	.LBE14:
+ 448 009e 80E0      		ldi r24,lo8(__c.3425)
+ 449 00a0 90E0      		ldi r25,hi8(__c.3425)
+ 450 00a2 00C0      		rjmp .L65
+ 451               	.L24:
+ 284:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 	}		
+ 452               		.loc 1 284 18 view .LVU116
+ 287:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			SEND_STRING("ipconfig /all");
+ 453               		.loc 1 287 3 view .LVU117
+ 287:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			SEND_STRING("ipconfig /all");
+ 454               		.loc 1 287 5 is_stmt 0 view .LVU118
+ 455 00a4 1296      		adiw r26,2
+ 456 00a6 8C91      		ld r24,X
+ 457 00a8 1297      		sbiw r26,2
+ 458 00aa 8823      		tst r24
+ 459 00ac 01F0      		breq .L23
+ 288:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 					return false; break;}
+ 460               		.loc 1 288 4 is_stmt 1 view .LVU119
+ 461               	.LBB15:
+ 288:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 					return false; break;}
+ 462               		.loc 1 288 4 view .LVU120
+ 288:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 					return false; break;}
+ 463               		.loc 1 288 4 view .LVU121
+ 464               	.LBE15:
+ 465 00ae 80E0      		ldi r24,lo8(__c.3428)
+ 466 00b0 90E0      		ldi r25,hi8(__c.3428)
+ 467 00b2 00C0      		rjmp .L65
+ 468               	.L23:
+ 289:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 	}
+ 469               		.loc 1 289 20 view .LVU122
+ 292:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		return MACRO( I(10),T(TAB), T(O), T(P), T(TAB),T(ENTER), T(TAB),T(TAB),T(TAB),T(Z),T(R),T(TAB),T(
+ 470               		.loc 1 292 2 view .LVU123
+ 292:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		return MACRO( I(10),T(TAB), T(O), T(P), T(TAB),T(ENTER), T(TAB),T(TAB),T(TAB),T(Z),T(R),T(TAB),T(
+ 471               		.loc 1 292 4 is_stmt 0 view .LVU124
+ 472 00b4 1296      		adiw r26,2
+ 473 00b6 8C91      		ld r24,X
+ 474 00b8 1297      		sbiw r26,2
+ 475 00ba 8111      		cpse r24,__zero_reg__
+ 476 00bc 00C0      		rjmp .L43
+ 477               	.L22:
+ 296:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		return MACRO( I(10),T(TAB), T(O), T(T), T(TAB),T(ENTER), T(TAB),T(TAB),T(TAB),T(Z),T(R),T(TAB),T(
+ 478               		.loc 1 296 2 is_stmt 1 view .LVU125
+ 296:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		return MACRO( I(10),T(TAB), T(O), T(T), T(TAB),T(ENTER), T(TAB),T(TAB),T(TAB),T(Z),T(R),T(TAB),T(
+ 479               		.loc 1 296 4 is_stmt 0 view .LVU126
+ 480 00be 1296      		adiw r26,2
+ 481 00c0 8C91      		ld r24,X
+ 482 00c2 1297      		sbiw r26,2
+ 483 00c4 8111      		cpse r24,__zero_reg__
+ 484 00c6 00C0      		rjmp .L44
+ 485               	.L21:
+ 300:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		return MACRO( I(10),T(TAB), T(I), T(N), T(TAB),T(ENTER), T(TAB),T(TAB),T(TAB),T(I),T(N),T(TAB),T(
+ 486               		.loc 1 300 2 is_stmt 1 view .LVU127
+ 300:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		return MACRO( I(10),T(TAB), T(I), T(N), T(TAB),T(ENTER), T(TAB),T(TAB),T(TAB),T(I),T(N),T(TAB),T(
+ 487               		.loc 1 300 4 is_stmt 0 view .LVU128
+ 488 00c8 1296      		adiw r26,2
+ 489 00ca 8C91      		ld r24,X
+ 490 00cc 1297      		sbiw r26,2
+ 491 00ce 8111      		cpse r24,__zero_reg__
+ 492 00d0 00C0      		rjmp .L45
+ 493               	.L19:
+ 304:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		SEND_STRING("username"SS_TAP(X_TAB)"pass"SS_TAP(X_TAB)SS_TAP(X_ENTER));//allows sending password 
+ 494               		.loc 1 304 2 is_stmt 1 view .LVU129
+ 304:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		SEND_STRING("username"SS_TAP(X_TAB)"pass"SS_TAP(X_TAB)SS_TAP(X_ENTER));//allows sending password 
+ 495               		.loc 1 304 4 is_stmt 0 view .LVU130
+ 496 00d2 1296      		adiw r26,2
+ 497 00d4 8C91      		ld r24,X
+ 498 00d6 8823      		tst r24
+ 499 00d8 01F4      		brne .+2
+ 500 00da 00C0      		rjmp .L46
+ 305:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		return false; break;
+ 501               		.loc 1 305 3 is_stmt 1 view .LVU131
+ 502               	.LBB16:
+ 305:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		return false; break;
+ 503               		.loc 1 305 3 view .LVU132
+ 305:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		return false; break;
+ 504               		.loc 1 305 3 view .LVU133
+ 505               	.LBE16:
+ 506 00dc 80E0      		ldi r24,lo8(__c.3440)
+ 507 00de 90E0      		ldi r25,hi8(__c.3440)
+ 508 00e0 00C0      		rjmp .L65
+ 509               	.L37:
+ 251:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		}
+ 510               		.loc 1 251 11 is_stmt 0 view .LVU134
+ 511 00e2 80E0      		ldi r24,lo8(__m.3402)
+ 512 00e4 90E0      		ldi r25,hi8(__m.3402)
+ 513 00e6 0895      		ret
+ 514               	.L38:
+ 257:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		}
+ 515               		.loc 1 257 11 view .LVU135
+ 516 00e8 80E0      		ldi r24,lo8(__m.3405)
+ 517 00ea 90E0      		ldi r25,hi8(__m.3405)
+ 518 00ec 0895      		ret
+ 519               	.L39:
+ 271:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		}
+ 520               		.loc 1 271 11 view .LVU136
+ 521 00ee 80E0      		ldi r24,lo8(__m.3414)
+ 522 00f0 90E0      		ldi r25,hi8(__m.3414)
+ 523 00f2 0895      		ret
+ 524               	.L41:
+ 275:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		}
+ 525               		.loc 1 275 12 view .LVU137
+ 526 00f4 80E0      		ldi r24,lo8(__m.3418)
+ 527 00f6 90E0      		ldi r25,hi8(__m.3418)
+ 528 00f8 0895      		ret
+ 529               	.L42:
+ 279:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		}
+ 530               		.loc 1 279 11 view .LVU138
+ 531 00fa 80E0      		ldi r24,lo8(__m.3422)
+ 532 00fc 90E0      		ldi r25,hi8(__m.3422)
+ 533 00fe 0895      		ret
+ 534               	.L43:
+ 293:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 	}	
+ 535               		.loc 1 293 10 view .LVU139
+ 536 0100 80E0      		ldi r24,lo8(__m.3431)
+ 537 0102 90E0      		ldi r25,hi8(__m.3431)
+ 538 0104 0895      		ret
+ 539               	.L44:
+ 297:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 	}	
+ 540               		.loc 1 297 10 view .LVU140
+ 541 0106 80E0      		ldi r24,lo8(__m.3434)
+ 542 0108 90E0      		ldi r25,hi8(__m.3434)
+ 543 010a 0895      		ret
+ 544               	.L45:
+ 301:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 	}	
+ 545               		.loc 1 301 10 view .LVU141
+ 546 010c 80E0      		ldi r24,lo8(__m.3437)
+ 547 010e 90E0      		ldi r25,hi8(__m.3437)
+ 548 0110 0895      		ret
+ 549               		.cfi_endproc
+ 550               	.LFE18:
+ 552               		.section	.text.matrix_init_user,"ax",@progbits
+ 553               	.global	matrix_init_user
+ 555               	matrix_init_user:
+ 556               	.LFB23:
  355:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 	
  356:keyboards/Dactylv2led/keymaps/Default/keymap.c **** qk_tap_dance_action_t tap_dance_actions[] = {
  357:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 	
@@ -855,152 +1008,99 @@
  363:keyboards/Dactylv2led/keymaps/Default/keymap.c **** };
  364:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 
  365:keyboards/Dactylv2led/keymaps/Default/keymap.c **** void matrix_init_user(void) {
- 459               		.loc 1 365 0
- 460               		.cfi_startproc
- 461               	/* prologue: function */
- 462               	/* frame size = 0 */
- 463               	/* stack size = 0 */
- 464               	.L__stack_usage = 0
- 465 0000 0895      		ret
- 466               		.cfi_endproc
- 467               	.LFE19:
- 469               		.section	.text.matrix_scan_user,"ax",@progbits
- 470               	.global	matrix_scan_user
- 472               	matrix_scan_user:
- 473               	.LFB20:
+ 557               		.loc 1 365 29 is_stmt 1 view -0
+ 558               		.cfi_startproc
+ 559               	/* prologue: function */
+ 560               	/* frame size = 0 */
+ 561               	/* stack size = 0 */
+ 562               	.L__stack_usage = 0
  366:keyboards/Dactylv2led/keymaps/Default/keymap.c **** }
+ 563               		.loc 1 366 1 view .LVU143
+ 564               	/* epilogue start */
+ 565 0000 0895      		ret
+ 566               		.cfi_endproc
+ 567               	.LFE23:
+ 569               		.section	.text.matrix_scan_user,"ax",@progbits
+ 570               	.global	matrix_scan_user
+ 572               	matrix_scan_user:
+ 573               	.LFB27:
+ 574               		.cfi_startproc
+ 575               	/* prologue: function */
+ 576               	/* frame size = 0 */
+ 577               	/* stack size = 0 */
+ 578               	.L__stack_usage = 0
+ 579               	/* epilogue start */
+ 580 0000 0895      		ret
+ 581               		.cfi_endproc
+ 582               	.LFE27:
+ 584               		.section	.text.process_record_user,"ax",@progbits
+ 585               	.global	process_record_user
+ 587               	process_record_user:
+ 588               	.LVL27:
+ 589               	.LFB25:
  367:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 
  368:keyboards/Dactylv2led/keymaps/Default/keymap.c **** void matrix_scan_user(void) {
- 474               		.loc 1 368 0
- 475               		.cfi_startproc
- 476               	/* prologue: function */
- 477               	/* frame size = 0 */
- 478               	/* stack size = 0 */
- 479               	.L__stack_usage = 0
- 480 0000 0895      		ret
- 481               		.cfi_endproc
- 482               	.LFE20:
- 484               		.section	.text.process_record_user,"ax",@progbits
- 485               	.global	process_record_user
- 487               	process_record_user:
- 488               	.LFB21:
  369:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 	
  370:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 	
  371:keyboards/Dactylv2led/keymaps/Default/keymap.c **** }
  372:keyboards/Dactylv2led/keymaps/Default/keymap.c **** bool process_record_user(uint16_t keycode, keyrecord_t *record) {
- 489               		.loc 1 372 0
- 490               		.cfi_startproc
- 491               	.LVL30:
- 492               		.loc 1 372 0
- 493 0000 CF93      		push r28
- 494               	.LCFI2:
- 495               		.cfi_def_cfa_offset 3
- 496               		.cfi_offset 28, -2
- 497               	/* prologue: function */
- 498               	/* frame size = 0 */
- 499               	/* stack size = 1 */
- 500               	.L__stack_usage = 1
- 501 0002 FB01      		movw r30,r22
+ 590               		.loc 1 372 65 view -0
+ 591               		.cfi_startproc
+ 592               		.loc 1 372 65 is_stmt 0 view .LVU145
+ 593 0000 CF93      		push r28
+ 594               	.LCFI2:
+ 595               		.cfi_def_cfa_offset 3
+ 596               		.cfi_offset 28, -2
+ 597               	/* prologue: function */
+ 598               	/* frame size = 0 */
+ 599               	/* stack size = 1 */
+ 600               	.L__stack_usage = 1
+ 601 0002 FB01      		movw r30,r22
  373:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 	switch (keycode) {
- 502               		.loc 1 373 0
- 503 0004 8C3D      		cpi r24,-36
- 504 0006 2CE5      		ldi r18,92
- 505 0008 9207      		cpc r25,r18
- 506 000a 01F0      		breq .L71
- 507 000c 00F4      		brsh .L72
- 508 000e 8A3D      		cpi r24,-38
- 509 0010 2CE5      		ldi r18,92
- 510 0012 9207      		cpc r25,r18
- 511 0014 01F0      		breq .L73
- 512 0016 8B3D      		cpi r24,-37
- 513 0018 9C45      		sbci r25,92
- 514 001a 01F0      		breq .L74
- 515 001c 00C0      		rjmp .L81
- 516               	.L72:
- 517 001e 8E3D      		cpi r24,-34
- 518 0020 2CE5      		ldi r18,92
- 519 0022 9207      		cpc r25,r18
- 520 0024 01F0      		breq .L75
- 521 0026 00F0      		brlo .L76
- 522 0028 803E      		cpi r24,-32
- 523 002a 9C45      		sbci r25,92
- 524 002c 01F0      		breq .L77
- 525 002e 00C0      		rjmp .L81
- 526               	.L74:
+ 602               		.loc 1 373 2 is_stmt 1 view .LVU146
+ 603 0004 8C3D      		cpi r24,-36
+ 604 0006 2CE5      		ldi r18,92
+ 605 0008 9207      		cpc r25,r18
+ 606 000a 01F0      		breq .L69
+ 607 000c 00F4      		brsh .L70
+ 608 000e 8A3D      		cpi r24,-38
+ 609 0010 2CE5      		ldi r18,92
+ 610 0012 9207      		cpc r25,r18
+ 611 0014 01F0      		breq .L71
+ 612 0016 8B3D      		cpi r24,-37
+ 613 0018 9C45      		sbci r25,92
+ 614 001a 01F0      		breq .L72
+ 615               	.L89:
  374:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 	case QWERTY:
  375:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		if (record->event.pressed) {
- 527               		.loc 1 375 0
- 528 0030 C281      		ldd r28,Z+2
- 529 0032 CC23      		tst r28
- 530 0034 01F0      		breq .L70
  376:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			#ifdef AUDIO_ENABLE
  377:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			PLAY_NOTE_ARRAY(tone_qwerty, false, 0);
  378:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			#endif
  379:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			persistent_default_layer_set(1UL<<_QWERTY);
- 531               		.loc 1 379 0
- 532 0036 81E0      		ldi r24,lo8(1)
- 533 0038 90E0      		ldi r25,0
- 534               	.LVL31:
- 535 003a 00C0      		rjmp .L92
- 536               	.LVL32:
- 537               	.L73:
  380:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		}
  381:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		return false;
  382:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		break;
  383:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 	case COLEMAK:
  384:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		if (record->event.pressed) {
- 538               		.loc 1 384 0
- 539 003c C281      		ldd r28,Z+2
- 540 003e CC23      		tst r28
- 541 0040 01F0      		breq .L70
  385:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			#ifdef AUDIO_ENABLE
  386:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			PLAY_NOTE_ARRAY(tone_colemak, false, 0);
  387:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			#endif
  388:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			persistent_default_layer_set(1UL<<_COLEMAK);
- 542               		.loc 1 388 0
- 543 0042 82E0      		ldi r24,lo8(2)
- 544 0044 90E0      		ldi r25,0
- 545               	.LVL33:
- 546               	.L92:
- 547 0046 0E94 0000 		call persistent_default_layer_set
- 548               	.LVL34:
- 549 004a 00C0      		rjmp .L91
- 550               	.LVL35:
- 551               	.L71:
  389:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		}
  390:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		return false;
  391:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		break;
  392:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 	case DVORAK:
  393:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		if (record->event.pressed) {
- 552               		.loc 1 393 0
- 553 004c C281      		ldd r28,Z+2
- 554 004e CC23      		tst r28
- 555 0050 01F0      		breq .L70
  394:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			#ifdef AUDIO_ENABLE
  395:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			PLAY_NOTE_ARRAY(tone_dvorak, false, 0);
  396:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			#endif
  397:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			persistent_default_layer_set(1UL<<_DVORAK);
- 556               		.loc 1 397 0
- 557 0052 84E0      		ldi r24,lo8(4)
- 558 0054 90E0      		ldi r25,0
- 559               	.LVL36:
- 560 0056 00C0      		rjmp .L92
- 561               	.LVL37:
- 562               	.L76:
  398:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		}
  399:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		return false;
  400:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		break;
  401:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 	case LOWER:
  402:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		if (record->event.pressed) {
- 563               		.loc 1 402 0
- 564 0058 C281      		ldd r28,Z+2
  403:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			layer_on(_LOWER);
- 565               		.loc 1 403 0
- 566 005a 83E0      		ldi r24,lo8(3)
- 567               	.LVL38:
- 568 005c 00C0      		rjmp .L95
- 569               	.LVL39:
- 570               	.L75:
  404:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			update_tri_layer(_LOWER, _RAISE, _ADJUST);
  405:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		} else {
  406:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			layer_off(_LOWER);
@@ -1010,1243 +1110,1361 @@
  410:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		break;
  411:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 	case RAISE:
  412:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		if (record->event.pressed) {
- 571               		.loc 1 412 0
- 572 005e C281      		ldd r28,Z+2
  413:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			layer_on(_RAISE);
- 573               		.loc 1 413 0
- 574 0060 84E0      		ldi r24,lo8(4)
- 575               	.LVL40:
- 576               	.L95:
- 412:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		if (record->event.pressed) {
- 577               		.loc 1 412 0
- 578 0062 CC23      		tst r28
- 579 0064 01F0      		breq .L79
- 580               		.loc 1 413 0
- 581 0066 0E94 0000 		call layer_on
- 582               	.LVL41:
  414:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			update_tri_layer(_LOWER, _RAISE, _ADJUST);
- 583               		.loc 1 414 0
- 584 006a 40E1      		ldi r20,lo8(16)
- 585 006c 64E0      		ldi r22,lo8(4)
- 586 006e 83E0      		ldi r24,lo8(3)
- 587 0070 0E94 0000 		call update_tri_layer
- 588               	.LVL42:
- 589 0074 00C0      		rjmp .L91
- 590               	.LVL43:
- 591               	.L79:
  415:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		} else {
  416:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			layer_off(_RAISE);
- 592               		.loc 1 416 0
- 593 0076 0E94 0000 		call layer_off
- 594               	.LVL44:
  417:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			update_tri_layer(_LOWER, _RAISE, _ADJUST);
- 595               		.loc 1 417 0
- 596 007a 40E1      		ldi r20,lo8(16)
- 597 007c 64E0      		ldi r22,lo8(4)
- 598 007e 83E0      		ldi r24,lo8(3)
- 599 0080 0E94 0000 		call update_tri_layer
- 600               	.LVL45:
- 601 0084 00C0      		rjmp .L70
- 602               	.LVL46:
- 603               	.L77:
  418:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		}
  419:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		return false;
  420:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		break;
  421:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 	case ADJUST:
  422:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		if (record->event.pressed) {
- 604               		.loc 1 422 0
- 605 0086 C281      		ldd r28,Z+2
  423:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			layer_on(_ADJUST);
- 606               		.loc 1 423 0
- 607 0088 80E1      		ldi r24,lo8(16)
- 608               	.LVL47:
- 422:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		if (record->event.pressed) {
- 609               		.loc 1 422 0
- 610 008a CC23      		tst r28
- 611 008c 01F0      		breq .L80
- 612               		.loc 1 423 0
- 613 008e 0E94 0000 		call layer_on
- 614               	.LVL48:
- 615               	.L91:
  424:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		} else {
  425:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			layer_off(_ADJUST);
  426:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		}
  427:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		return false;
- 616               		.loc 1 427 0
- 617 0092 C0E0      		ldi r28,0
- 618 0094 00C0      		rjmp .L70
- 619               	.LVL49:
- 620               	.L80:
- 425:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			layer_off(_ADJUST);
- 621               		.loc 1 425 0
- 622 0096 0E94 0000 		call layer_off
- 623               	.LVL50:
- 624 009a 00C0      		rjmp .L70
- 625               	.LVL51:
- 626               	.L81:
  428:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		break;
  429:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 	}
  430:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 	return true;
- 627               		.loc 1 430 0
- 628 009c C1E0      		ldi r28,lo8(1)
- 629               	.LVL52:
- 630               	.L70:
+ 616               		.loc 1 430 9 is_stmt 0 view .LVU147
+ 617 001c C1E0      		ldi r28,lo8(1)
+ 618               	.LVL28:
+ 619               	.L68:
  431:keyboards/Dactylv2led/keymaps/Default/keymap.c **** }
- 631               		.loc 1 431 0
- 632 009e 8C2F      		mov r24,r28
- 633               	/* epilogue start */
- 634 00a0 CF91      		pop r28
- 635 00a2 0895      		ret
- 636               		.cfi_endproc
- 637               	.LFE21:
- 639               		.section	.progmem.data.__m.3372,"a",@progbits
- 642               	__m.3372:
- 643 0000 01        		.byte	1
- 644 0001 E3        		.byte	-29
- 645 0002 01        		.byte	1
- 646 0003 E0        		.byte	-32
- 647 0004 01        		.byte	1
- 648 0005 4F        		.byte	79
- 649 0006 02        		.byte	2
- 650 0007 4F        		.byte	79
- 651 0008 02        		.byte	2
- 652 0009 E0        		.byte	-32
- 653 000a 02        		.byte	2
- 654 000b E3        		.byte	-29
- 655 000c 00        		.byte	0
- 656               		.section	.progmem.data.__m.3370,"a",@progbits
- 659               	__m.3370:
- 660 0000 01        		.byte	1
- 661 0001 E3        		.byte	-29
- 662 0002 01        		.byte	1
- 663 0003 E0        		.byte	-32
- 664 0004 01        		.byte	1
- 665 0005 50        		.byte	80
- 666 0006 02        		.byte	2
- 667 0007 50        		.byte	80
- 668 0008 02        		.byte	2
- 669 0009 E0        		.byte	-32
- 670 000a 02        		.byte	2
- 671 000b E3        		.byte	-29
- 672 000c 00        		.byte	0
- 673               		.section	.progmem.data.__m.3360,"a",@progbits
- 676               	__m.3360:
- 677 0000 01        		.byte	1
- 678 0001 E3        		.byte	-29
- 679 0002 01        		.byte	1
- 680 0003 15        		.byte	21
- 681 0004 02        		.byte	2
- 682 0005 15        		.byte	21
- 683 0006 74        		.byte	116
- 684 0007 FF        		.byte	-1
- 685 0008 02        		.byte	2
- 686 0009 E3        		.byte	-29
- 687 000a 74        		.byte	116
- 688 000b FF        		.byte	-1
- 689 000c 01        		.byte	1
- 690 000d 06        		.byte	6
- 691 000e 02        		.byte	2
- 692 000f 06        		.byte	6
- 693 0010 01        		.byte	1
- 694 0011 10        		.byte	16
- 695 0012 02        		.byte	2
- 696 0013 10        		.byte	16
- 697 0014 01        		.byte	1
- 698 0015 07        		.byte	7
- 699 0016 02        		.byte	2
- 700 0017 07        		.byte	7
- 701 0018 01        		.byte	1
- 702 0019 28        		.byte	40
- 703 001a 02        		.byte	2
- 704 001b 28        		.byte	40
- 705 001c 74        		.byte	116
- 706 001d FF        		.byte	-1
- 707 001e 01        		.byte	1
- 708 001f 13        		.byte	19
- 709 0020 02        		.byte	2
- 710 0021 13        		.byte	19
- 711 0022 01        		.byte	1
- 712 0023 0C        		.byte	12
- 713 0024 02        		.byte	2
- 714 0025 0C        		.byte	12
- 715 0026 01        		.byte	1
- 716 0027 11        		.byte	17
- 717 0028 02        		.byte	2
- 718 0029 11        		.byte	17
- 719 002a 01        		.byte	1
- 720 002b 0A        		.byte	10
- 721 002c 02        		.byte	2
- 722 002d 0A        		.byte	10
- 723 002e 01        		.byte	1
- 724 002f 2C        		.byte	44
- 725 0030 02        		.byte	2
- 726 0031 2C        		.byte	44
- 727 0032 01        		.byte	1
- 728 0033 E0        		.byte	-32
- 729 0034 01        		.byte	1
- 730 0035 19        		.byte	25
- 731 0036 02        		.byte	2
- 732 0037 19        		.byte	25
- 733 0038 02        		.byte	2
- 734 0039 E0        		.byte	-32
- 735 003a 00        		.byte	0
- 736               		.section	.progmem.data.__m.3358,"a",@progbits
- 739               	__m.3358:
- 740 0000 01        		.byte	1
- 741 0001 E3        		.byte	-29
- 742 0002 01        		.byte	1
- 743 0003 15        		.byte	21
- 744 0004 02        		.byte	2
- 745 0005 15        		.byte	21
- 746 0006 02        		.byte	2
- 747 0007 E3        		.byte	-29
- 748 0008 01        		.byte	1
- 749 0009 06        		.byte	6
- 750 000a 02        		.byte	2
- 751 000b 06        		.byte	6
- 752 000c 01        		.byte	1
- 753 000d 10        		.byte	16
- 754 000e 02        		.byte	2
- 755 000f 10        		.byte	16
- 756 0010 01        		.byte	1
- 757 0011 07        		.byte	7
- 758 0012 02        		.byte	2
- 759 0013 07        		.byte	7
- 760 0014 01        		.byte	1
- 761 0015 28        		.byte	40
- 762 0016 02        		.byte	2
- 763 0017 28        		.byte	40
- 764 0018 74        		.byte	116
- 765 0019 FF        		.byte	-1
- 766 001a 74        		.byte	116
- 767 001b FF        		.byte	-1
- 768 001c 01        		.byte	1
- 769 001d 0C        		.byte	12
- 770 001e 02        		.byte	2
- 771 001f 0C        		.byte	12
- 772 0020 01        		.byte	1
- 773 0021 13        		.byte	19
- 774 0022 02        		.byte	2
- 775 0023 13        		.byte	19
- 776 0024 01        		.byte	1
- 777 0025 06        		.byte	6
- 778 0026 02        		.byte	2
- 779 0027 06        		.byte	6
- 780 0028 01        		.byte	1
- 781 0029 12        		.byte	18
- 782 002a 02        		.byte	2
- 783 002b 12        		.byte	18
- 784 002c 01        		.byte	1
- 785 002d 11        		.byte	17
- 786 002e 02        		.byte	2
- 787 002f 11        		.byte	17
- 788 0030 01        		.byte	1
- 789 0031 09        		.byte	9
- 790 0032 02        		.byte	2
- 791 0033 09        		.byte	9
- 792 0034 01        		.byte	1
- 793 0035 0C        		.byte	12
- 794 0036 02        		.byte	2
- 795 0037 0C        		.byte	12
- 796 0038 01        		.byte	1
- 797 0039 0A        		.byte	10
- 798 003a 02        		.byte	2
- 799 003b 0A        		.byte	10
- 800 003c 01        		.byte	1
- 801 003d 2C        		.byte	44
- 802 003e 02        		.byte	2
- 803 003f 2C        		.byte	44
- 804 0040 01        		.byte	1
- 805 0041 38        		.byte	56
- 806 0042 02        		.byte	2
- 807 0043 38        		.byte	56
- 808 0044 01        		.byte	1
- 809 0045 04        		.byte	4
- 810 0046 02        		.byte	2
- 811 0047 04        		.byte	4
- 812 0048 01        		.byte	1
- 813 0049 0F        		.byte	15
- 814 004a 02        		.byte	2
- 815 004b 0F        		.byte	15
- 816 004c 01        		.byte	1
- 817 004d 0F        		.byte	15
- 818 004e 02        		.byte	2
- 819 004f 0F        		.byte	15
- 820 0050 01        		.byte	1
- 821 0051 28        		.byte	40
- 822 0052 02        		.byte	2
- 823 0053 28        		.byte	40
- 824 0054 00        		.byte	0
- 825               		.section	.progmem.data.__m.3356,"a",@progbits
- 828               	__m.3356:
- 829 0000 01        		.byte	1
- 830 0001 E3        		.byte	-29
- 831 0002 01        		.byte	1
- 832 0003 15        		.byte	21
- 833 0004 02        		.byte	2
- 834 0005 15        		.byte	21
- 835 0006 74        		.byte	116
- 836 0007 FF        		.byte	-1
- 837 0008 02        		.byte	2
- 838 0009 E3        		.byte	-29
- 839 000a 74        		.byte	116
- 840 000b FF        		.byte	-1
- 841 000c 01        		.byte	1
- 842 000d 06        		.byte	6
- 843 000e 02        		.byte	2
- 844 000f 06        		.byte	6
- 845 0010 01        		.byte	1
- 846 0011 10        		.byte	16
- 847 0012 02        		.byte	2
- 848 0013 10        		.byte	16
- 849 0014 01        		.byte	1
- 850 0015 07        		.byte	7
- 851 0016 02        		.byte	2
- 852 0017 07        		.byte	7
- 853 0018 01        		.byte	1
- 854 0019 28        		.byte	40
- 855 001a 02        		.byte	2
- 856 001b 28        		.byte	40
- 857 001c 00        		.byte	0
- 858               		.section	.progmem.data.__m.3350,"a",@progbits
- 861               	__m.3350:
- 862 0000 01        		.byte	1
- 863 0001 E0        		.byte	-32
- 864 0002 01        		.byte	1
- 865 0003 04        		.byte	4
- 866 0004 02        		.byte	2
- 867 0005 04        		.byte	4
- 868 0006 01        		.byte	1
- 869 0007 06        		.byte	6
- 870 0008 02        		.byte	2
- 871 0009 06        		.byte	6
- 872 000a 02        		.byte	2
- 873 000b E0        		.byte	-32
- 874 000c 00        		.byte	0
- 875               		.section	.progmem.data.__m.3348,"a",@progbits
- 878               	__m.3348:
- 879 0000 01        		.byte	1
- 880 0001 E0        		.byte	-32
- 881 0002 01        		.byte	1
- 882 0003 19        		.byte	25
- 883 0004 02        		.byte	2
- 884 0005 19        		.byte	25
- 885 0006 02        		.byte	2
- 886 0007 E0        		.byte	-32
- 887 0008 00        		.byte	0
- 888               		.section	.progmem.data.__m.3346,"a",@progbits
- 891               	__m.3346:
- 892 0000 01        		.byte	1
- 893 0001 E0        		.byte	-32
- 894 0002 01        		.byte	1
- 895 0003 06        		.byte	6
- 896 0004 02        		.byte	2
- 897 0005 06        		.byte	6
- 898 0006 02        		.byte	2
- 899 0007 E0        		.byte	-32
- 900 0008 00        		.byte	0
- 901               		.section	.progmem.data.__c.3340,"a",@progbits
- 904               	__c.3340:
- 905 0000 7573 6572 		.string	"username\001+pass\001+\001("
- 905      6E61 6D65 
- 905      012B 7061 
- 905      7373 012B 
- 905      0128 00
- 906               		.section	.progmem.data.__m.3337,"a",@progbits
- 909               	__m.3337:
- 910 0000 75        		.byte	117
- 911 0001 0A        		.byte	10
- 912 0002 01        		.byte	1
- 913 0003 2B        		.byte	43
- 914 0004 02        		.byte	2
- 915 0005 2B        		.byte	43
- 916 0006 01        		.byte	1
- 917 0007 0C        		.byte	12
- 918 0008 02        		.byte	2
- 919 0009 0C        		.byte	12
- 920 000a 01        		.byte	1
- 921 000b 11        		.byte	17
- 922 000c 02        		.byte	2
- 923 000d 11        		.byte	17
- 924 000e 01        		.byte	1
- 925 000f 2B        		.byte	43
- 926 0010 02        		.byte	2
- 927 0011 2B        		.byte	43
- 928 0012 01        		.byte	1
- 929 0013 28        		.byte	40
- 930 0014 02        		.byte	2
- 931 0015 28        		.byte	40
- 932 0016 01        		.byte	1
- 933 0017 2B        		.byte	43
- 934 0018 02        		.byte	2
- 935 0019 2B        		.byte	43
- 936 001a 01        		.byte	1
- 937 001b 2B        		.byte	43
- 938 001c 02        		.byte	2
- 939 001d 2B        		.byte	43
- 940 001e 01        		.byte	1
- 941 001f 2B        		.byte	43
- 942 0020 02        		.byte	2
- 943 0021 2B        		.byte	43
- 944 0022 01        		.byte	1
- 945 0023 0C        		.byte	12
- 946 0024 02        		.byte	2
- 947 0025 0C        		.byte	12
- 948 0026 01        		.byte	1
- 949 0027 11        		.byte	17
- 950 0028 02        		.byte	2
- 951 0029 11        		.byte	17
- 952 002a 01        		.byte	1
- 953 002b 2B        		.byte	43
- 954 002c 02        		.byte	2
- 955 002d 2B        		.byte	43
- 956 002e 01        		.byte	1
- 957 002f 28        		.byte	40
- 958 0030 02        		.byte	2
- 959 0031 28        		.byte	40
- 960 0032 00        		.byte	0
- 961               		.section	.progmem.data.__m.3334,"a",@progbits
- 964               	__m.3334:
- 965 0000 75        		.byte	117
- 966 0001 0A        		.byte	10
- 967 0002 01        		.byte	1
- 968 0003 2B        		.byte	43
- 969 0004 02        		.byte	2
- 970 0005 2B        		.byte	43
- 971 0006 01        		.byte	1
- 972 0007 12        		.byte	18
- 973 0008 02        		.byte	2
- 974 0009 12        		.byte	18
- 975 000a 01        		.byte	1
- 976 000b 17        		.byte	23
- 977 000c 02        		.byte	2
- 978 000d 17        		.byte	23
- 979 000e 01        		.byte	1
- 980 000f 2B        		.byte	43
- 981 0010 02        		.byte	2
- 982 0011 2B        		.byte	43
- 983 0012 01        		.byte	1
- 984 0013 28        		.byte	40
- 985 0014 02        		.byte	2
- 986 0015 28        		.byte	40
- 987 0016 01        		.byte	1
- 988 0017 2B        		.byte	43
- 989 0018 02        		.byte	2
- 990 0019 2B        		.byte	43
- 991 001a 01        		.byte	1
- 992 001b 2B        		.byte	43
- 993 001c 02        		.byte	2
- 994 001d 2B        		.byte	43
- 995 001e 01        		.byte	1
- 996 001f 2B        		.byte	43
- 997 0020 02        		.byte	2
- 998 0021 2B        		.byte	43
- 999 0022 01        		.byte	1
- 1000 0023 1D        		.byte	29
- 1001 0024 02        		.byte	2
- 1002 0025 1D        		.byte	29
- 1003 0026 01        		.byte	1
- 1004 0027 15        		.byte	21
- 1005 0028 02        		.byte	2
- 1006 0029 15        		.byte	21
- 1007 002a 01        		.byte	1
- 1008 002b 2B        		.byte	43
- 1009 002c 02        		.byte	2
- 1010 002d 2B        		.byte	43
- 1011 002e 01        		.byte	1
- 1012 002f 28        		.byte	40
- 1013 0030 02        		.byte	2
- 1014 0031 28        		.byte	40
- 1015 0032 00        		.byte	0
- 1016               		.section	.progmem.data.__m.3331,"a",@progbits
- 1019               	__m.3331:
- 1020 0000 75        		.byte	117
- 1021 0001 0A        		.byte	10
- 1022 0002 01        		.byte	1
- 1023 0003 2B        		.byte	43
- 1024 0004 02        		.byte	2
- 1025 0005 2B        		.byte	43
- 1026 0006 01        		.byte	1
- 1027 0007 12        		.byte	18
- 1028 0008 02        		.byte	2
- 1029 0009 12        		.byte	18
- 1030 000a 01        		.byte	1
- 1031 000b 13        		.byte	19
- 1032 000c 02        		.byte	2
- 1033 000d 13        		.byte	19
- 1034 000e 01        		.byte	1
- 1035 000f 2B        		.byte	43
- 1036 0010 02        		.byte	2
- 1037 0011 2B        		.byte	43
- 1038 0012 01        		.byte	1
- 1039 0013 28        		.byte	40
- 1040 0014 02        		.byte	2
- 1041 0015 28        		.byte	40
- 1042 0016 01        		.byte	1
- 1043 0017 2B        		.byte	43
- 1044 0018 02        		.byte	2
- 1045 0019 2B        		.byte	43
- 1046 001a 01        		.byte	1
- 1047 001b 2B        		.byte	43
- 1048 001c 02        		.byte	2
- 1049 001d 2B        		.byte	43
- 1050 001e 01        		.byte	1
- 1051 001f 2B        		.byte	43
- 1052 0020 02        		.byte	2
- 1053 0021 2B        		.byte	43
- 1054 0022 01        		.byte	1
- 1055 0023 1D        		.byte	29
- 1056 0024 02        		.byte	2
- 1057 0025 1D        		.byte	29
- 1058 0026 01        		.byte	1
- 1059 0027 15        		.byte	21
- 1060 0028 02        		.byte	2
- 1061 0029 15        		.byte	21
- 1062 002a 01        		.byte	1
- 1063 002b 2B        		.byte	43
- 1064 002c 02        		.byte	2
- 1065 002d 2B        		.byte	43
- 1066 002e 01        		.byte	1
- 1067 002f 28        		.byte	40
- 1068 0030 02        		.byte	2
- 1069 0031 28        		.byte	40
- 1070 0032 00        		.byte	0
- 1071               		.section	.progmem.data.__c.3328,"a",@progbits
- 1074               	__c.3328:
- 1075 0000 6970 636F 		.string	"ipconfig /all"
- 1075      6E66 6967 
- 1075      202F 616C 
- 1075      6C00 
- 1076               		.section	.progmem.data.__c.3325,"a",@progbits
- 1079               	__c.3325:
- 1080 0000 00        		.zero	1
- 1081               		.section	.progmem.data.__m.3322,"a",@progbits
- 1084               	__m.3322:
- 1085 0000 75        		.byte	117
- 1086 0001 0A        		.byte	10
- 1087 0002 01        		.byte	1
- 1088 0003 27        		.byte	39
- 1089 0004 02        		.byte	2
- 1090 0005 27        		.byte	39
- 1091 0006 01        		.byte	1
- 1092 0007 06        		.byte	6
- 1093 0008 02        		.byte	2
- 1094 0009 06        		.byte	6
- 1095 000a 01        		.byte	1
- 1096 000b 2B        		.byte	43
- 1097 000c 02        		.byte	2
- 1098 000d 2B        		.byte	43
- 1099 000e 01        		.byte	1
- 1100 000f 2B        		.byte	43
- 1101 0010 02        		.byte	2
- 1102 0011 2B        		.byte	43
- 1103 0012 01        		.byte	1
- 1104 0013 04        		.byte	4
- 1105 0014 02        		.byte	2
- 1106 0015 04        		.byte	4
- 1107 0016 01        		.byte	1
- 1108 0017 2B        		.byte	43
- 1109 0018 02        		.byte	2
- 1110 0019 2B        		.byte	43
- 1111 001a 00        		.byte	0
- 1112               		.section	.progmem.data.__m.3318,"a",@progbits
- 1115               	__m.3318:
- 1116 0000 01        		.byte	1
- 1117 0001 1B        		.byte	27
- 1118 0002 02        		.byte	2
- 1119 0003 1B        		.byte	27
- 1120 0004 00        		.byte	0
- 1121               		.section	.progmem.data.__m.3314,"a",@progbits
- 1124               	__m.3314:
- 1125 0000 75        		.byte	117
- 1126 0001 0A        		.byte	10
- 1127 0002 01        		.byte	1
- 1128 0003 E0        		.byte	-32
- 1129 0004 01        		.byte	1
- 1130 0005 17        		.byte	23
- 1131 0006 02        		.byte	2
- 1132 0007 17        		.byte	23
- 1133 0008 01        		.byte	1
- 1134 0009 19        		.byte	25
- 1135 000a 02        		.byte	2
- 1136 000b 19        		.byte	25
- 1137 000c 01        		.byte	1
- 1138 000d 28        		.byte	40
- 1139 000e 02        		.byte	2
- 1140 000f 28        		.byte	40
- 1141 0010 02        		.byte	2
- 1142 0011 E0        		.byte	-32
- 1143 0012 00        		.byte	0
- 1144               		.section	.progmem.data.__c.3311,"a",@progbits
- 1147               	__c.3311:
- 1148 0000 7777 772E 		.string	"www.support.xerox.com\001("
- 1148      7375 7070 
- 1148      6F72 742E 
- 1148      7865 726F 
- 1148      782E 636F 
- 1149               		.section	.progmem.data.__c.3308,"a",@progbits
- 1152               	__c.3308:
- 1153 0000 656D 6169 		.string	"email"
- 1153      6C00 
- 1154               		.section	.progmem.data.__m.3305,"a",@progbits
- 1157               	__m.3305:
- 1158 0000 75        		.byte	117
- 1159 0001 0A        		.byte	10
- 1160 0002 01        		.byte	1
- 1161 0003 04        		.byte	4
- 1162 0004 02        		.byte	2
- 1163 0005 04        		.byte	4
- 1164 0006 01        		.byte	1
- 1165 0007 07        		.byte	7
- 1166 0008 02        		.byte	2
- 1167 0009 07        		.byte	7
- 1168 000a 01        		.byte	1
- 1169 000b 10        		.byte	16
- 1170 000c 02        		.byte	2
- 1171 000d 10        		.byte	16
- 1172 000e 01        		.byte	1
- 1173 000f 0C        		.byte	12
- 1174 0010 02        		.byte	2
- 1175 0011 0C        		.byte	12
- 1176 0012 01        		.byte	1
- 1177 0013 11        		.byte	17
- 1178 0014 02        		.byte	2
- 1179 0015 11        		.byte	17
- 1180 0016 74        		.byte	116
- 1181 0017 4B        		.byte	75
- 1182 0018 01        		.byte	1
- 1183 0019 2B        		.byte	43
- 1184 001a 02        		.byte	2
- 1185 001b 2B        		.byte	43
- 1186 001c 01        		.byte	1
- 1187 001d 1E        		.byte	30
- 1188 001e 02        		.byte	2
- 1189 001f 1E        		.byte	30
- 1190 0020 01        		.byte	1
- 1191 0021 1E        		.byte	30
- 1192 0022 02        		.byte	2
- 1193 0023 1E        		.byte	30
- 1194 0024 01        		.byte	1
- 1195 0025 1E        		.byte	30
- 1196 0026 02        		.byte	2
- 1197 0027 1E        		.byte	30
- 1198 0028 01        		.byte	1
- 1199 0029 1E        		.byte	30
- 1200 002a 02        		.byte	2
- 1201 002b 1E        		.byte	30
- 1202 002c 01        		.byte	1
- 1203 002d 28        		.byte	40
- 1204 002e 02        		.byte	2
- 1205 002f 28        		.byte	40
- 1206 0030 00        		.byte	0
- 1207               		.section	.progmem.data.__m.3302,"a",@progbits
- 1210               	__m.3302:
- 1211 0000 01        		.byte	1
- 1212 0001 E3        		.byte	-29
- 1213 0002 01        		.byte	1
- 1214 0003 2B        		.byte	43
- 1215 0004 02        		.byte	2
- 1216 0005 2B        		.byte	43
- 1217 0006 02        		.byte	2
- 1218 0007 E3        		.byte	-29
- 1219 0008 00        		.byte	0
- 1220               	.global	tap_dance_actions
- 1221               		.section	.data.tap_dance_actions,"aw",@progbits
- 1224               	tap_dance_actions:
- 1225 0000 0000      		.word	0
- 1226 0002 0000      		.word	gs(cmd_commands)
- 1227 0004 0000      		.word	0
- 1228 0006 0000 0000 		.zero	12
- 1228      0000 0000 
- 1228      0000 0000 
- 1229 0012 0000      		.word	0
- 1230 0014 0000      		.word	0
- 1231 0016 0000      		.word	gs(cmd)
- 1232 0018 0000      		.word	0
- 1233 001a 0000 0000 		.zero	12
- 1233      0000 0000 
- 1233      0000 0000 
- 1234 0026 0000      		.word	0
- 1235 0028 0000      		.word	0
- 1236 002a 0000      		.word	gs(SLSH_BSLSH)
- 1237 002c 0000      		.word	0
- 1238 002e 0000 0000 		.zero	12
- 1238      0000 0000 
- 1238      0000 0000 
- 1239 003a 0000      		.word	0
- 1240 003c 0000      		.word	0
- 1241 003e 0000      		.word	gs(VirtualDesktop)
- 1242 0040 0000      		.word	0
- 1243 0042 0000 0000 		.zero	12
- 1243      0000 0000 
- 1243      0000 0000 
- 1244 004e 0000      		.word	0
- 1245               	.global	keymaps
- 1246               		.section	.progmem.data.keymaps,"a",@progbits
- 1249               	keymaps:
- 1250 0000 2E00      		.word	46
- 1251 0002 1E00      		.word	30
- 1252 0004 1F00      		.word	31
- 1253 0006 2000      		.word	32
- 1254 0008 2100      		.word	33
- 1255 000a 2200      		.word	34
- 1256 000c 2B00      		.word	43
- 1257 000e 1400      		.word	20
- 1258 0010 1A00      		.word	26
- 1259 0012 0800      		.word	8
- 1260 0014 1500      		.word	21
- 1261 0016 1700      		.word	23
- 1262 0018 2800      		.word	40
- 1263 001a 0400      		.word	4
- 1264 001c 1600      		.word	22
- 1265 001e 0700      		.word	7
- 1266 0020 0900      		.word	9
- 1267 0022 0A00      		.word	10
- 1268 0024 E100      		.word	225
- 1269 0026 1D00      		.word	29
- 1270 0028 1B00      		.word	27
- 1271 002a 0600      		.word	6
- 1272 002c 1900      		.word	25
- 1273 002e 0500      		.word	5
- 1274 0030 2961      		.word	24873
- 1275 0032 E200      		.word	226
- 1276 0034 E300      		.word	227
- 1277 0036 5000      		.word	80
- 1278 0038 4F00      		.word	79
- 1279 003a 0100      		.word	1
- 1280 003c DD5C      		.word	23773
- 1281 003e E000      		.word	224
- 1282 0040 4E00      		.word	78
- 1283 0042 4B00      		.word	75
- 1284 0044 0000      		.word	0
- 1285 0046 0000      		.word	0
- 1286 0048 E100      		.word	225
- 1287 004a 2A00      		.word	42
- 1288 004c 0000      		.word	0
- 1289 004e 0000      		.word	0
- 1290 0050 0000      		.word	0
- 1291 0052 0000      		.word	0
- 1292 0054 2D00      		.word	45
- 1293 0056 2700      		.word	39
- 1294 0058 2600      		.word	38
- 1295 005a 2500      		.word	37
- 1296 005c 2400      		.word	36
- 1297 005e 2300      		.word	35
- 1298 0060 3100      		.word	49
- 1299 0062 1300      		.word	19
- 1300 0064 1200      		.word	18
- 1301 0066 0C00      		.word	12
- 1302 0068 1800      		.word	24
- 1303 006a 1C00      		.word	28
- 1304 006c 2800      		.word	40
- 1305 006e 3300      		.word	51
- 1306 0070 0F00      		.word	15
- 1307 0072 0E00      		.word	14
- 1308 0074 0D00      		.word	13
- 1309 0076 0B00      		.word	11
- 1310 0078 3500      		.word	53
- 1311 007a 3800      		.word	56
- 1312 007c 3700      		.word	55
- 1313 007e 3600      		.word	54
- 1314 0080 1000      		.word	16
- 1315 0082 1100      		.word	17
- 1316 0084 3400      		.word	52
- 1317 0086 5100      		.word	81
- 1318 0088 5200      		.word	82
- 1319 008a 4F00      		.word	79
- 1320 008c 5000      		.word	80
- 1321 008e 0100      		.word	1
- 1322 0090 DE5C      		.word	23774
- 1323 0092 4C00      		.word	76
- 1324 0094 4A00      		.word	74
- 1325 0096 3500      		.word	53
- 1326 0098 0000      		.word	0
- 1327 009a 0000      		.word	0
- 1328 009c 2800      		.word	40
- 1329 009e 2C00      		.word	44
- 1330 00a0 0000      		.word	0
- 1331 00a2 0000      		.word	0
- 1332 00a4 0000      		.word	0
- 1333 00a6 0000      		.word	0
- 1334 00a8 2E00      		.word	46
- 1335 00aa 1E00      		.word	30
- 1336 00ac 1F00      		.word	31
- 1337 00ae 2000      		.word	32
- 1338 00b0 2100      		.word	33
- 1339 00b2 2200      		.word	34
- 1340 00b4 2B45      		.word	17707
- 1341 00b6 1400      		.word	20
- 1342 00b8 1A00      		.word	26
- 1343 00ba 0900      		.word	9
- 1344 00bc 1300      		.word	19
- 1345 00be 0A00      		.word	10
- 1346 00c0 2840      		.word	16424
- 1347 00c2 0400      		.word	4
- 1348 00c4 1500      		.word	21
- 1349 00c6 1600      		.word	22
- 1350 00c8 1700      		.word	23
- 1351 00ca 0700      		.word	7
- 1352 00cc E100      		.word	225
- 1353 00ce 1D00      		.word	29
- 1354 00d0 1B00      		.word	27
- 1355 00d2 0600      		.word	6
- 1356 00d4 1900      		.word	25
- 1357 00d6 0500      		.word	5
- 1358 00d8 2961      		.word	24873
- 1359 00da E200      		.word	226
- 1360 00dc E300      		.word	227
- 1361 00de 5000      		.word	80
- 1362 00e0 4F00      		.word	79
- 1363 00e2 2A00      		.word	42
- 1364 00e4 DD5C      		.word	23773
- 1365 00e6 E000      		.word	224
- 1366 00e8 4E00      		.word	78
- 1367 00ea 4B00      		.word	75
- 1368 00ec 0000      		.word	0
- 1369 00ee 0000      		.word	0
- 1370 00f0 E100      		.word	225
- 1371 00f2 2A00      		.word	42
- 1372 00f4 0000      		.word	0
- 1373 00f6 0000      		.word	0
- 1374 00f8 0000      		.word	0
- 1375 00fa 0000      		.word	0
- 1376 00fc 2D00      		.word	45
- 1377 00fe 2700      		.word	39
- 1378 0100 2600      		.word	38
- 1379 0102 2500      		.word	37
- 1380 0104 2400      		.word	36
- 1381 0106 2300      		.word	35
- 1382 0108 3100      		.word	49
- 1383 010a 3300      		.word	51
- 1384 010c 1C00      		.word	28
- 1385 010e 1800      		.word	24
- 1386 0110 0F00      		.word	15
- 1387 0112 0D00      		.word	13
- 1388 0114 2800      		.word	40
- 1389 0116 1200      		.word	18
- 1390 0118 0C00      		.word	12
- 1391 011a 0800      		.word	8
- 1392 011c 1100      		.word	17
- 1393 011e 0B00      		.word	11
- 1394 0120 3500      		.word	53
- 1395 0122 3800      		.word	56
- 1396 0124 3700      		.word	55
- 1397 0126 3600      		.word	54
- 1398 0128 1000      		.word	16
- 1399 012a 0E00      		.word	14
- 1400 012c 3400      		.word	52
- 1401 012e 5100      		.word	81
- 1402 0130 5200      		.word	82
- 1403 0132 4F00      		.word	79
- 1404 0134 5000      		.word	80
- 1405 0136 2C00      		.word	44
- 1406 0138 DE5C      		.word	23774
- 1407 013a 4C00      		.word	76
- 1408 013c 4A00      		.word	74
- 1409 013e 3500      		.word	53
- 1410 0140 0000      		.word	0
- 1411 0142 0000      		.word	0
- 1412 0144 2800      		.word	40
- 1413 0146 2C00      		.word	44
- 1414 0148 0000      		.word	0
- 1415 014a 0000      		.word	0
- 1416 014c 0000      		.word	0
- 1417 014e 0000      		.word	0
- 1418 0150 2E00      		.word	46
- 1419 0152 1E00      		.word	30
- 1420 0154 1F00      		.word	31
- 1421 0156 2000      		.word	32
- 1422 0158 2100      		.word	33
- 1423 015a 2200      		.word	34
- 1424 015c 2B00      		.word	43
- 1425 015e 3400      		.word	52
- 1426 0160 3600      		.word	54
- 1427 0162 3700      		.word	55
- 1428 0164 1300      		.word	19
- 1429 0166 1C00      		.word	28
- 1430 0168 2961      		.word	24873
- 1431 016a 0400      		.word	4
- 1432 016c 1200      		.word	18
- 1433 016e 0800      		.word	8
- 1434 0170 1800      		.word	24
- 1435 0172 0C00      		.word	12
- 1436 0174 E100      		.word	225
- 1437 0176 3300      		.word	51
- 1438 0178 1400      		.word	20
- 1439 017a 0D00      		.word	13
- 1440 017c 0E00      		.word	14
- 1441 017e 1B00      		.word	27
- 1442 0180 2B45      		.word	17707
- 1443 0182 E000      		.word	224
- 1444 0184 E200      		.word	226
- 1445 0186 E300      		.word	227
- 1446 0188 DD5C      		.word	23773
- 1447 018a 2C00      		.word	44
- 1448 018c DD5C      		.word	23773
- 1449 018e E000      		.word	224
- 1450 0190 4E00      		.word	78
- 1451 0192 4B00      		.word	75
- 1452 0194 0000      		.word	0
- 1453 0196 0000      		.word	0
- 1454 0198 E100      		.word	225
- 1455 019a 2A00      		.word	42
- 1456 019c 0000      		.word	0
- 1457 019e 0000      		.word	0
- 1458 01a0 0000      		.word	0
- 1459 01a2 0000      		.word	0
- 1460 01a4 2D00      		.word	45
- 1461 01a6 2700      		.word	39
- 1462 01a8 2600      		.word	38
- 1463 01aa 2500      		.word	37
- 1464 01ac 2400      		.word	36
- 1465 01ae 2300      		.word	35
- 1466 01b0 2D00      		.word	45
- 1467 01b2 0F00      		.word	15
- 1468 01b4 1500      		.word	21
- 1469 01b6 0600      		.word	6
- 1470 01b8 0A00      		.word	10
- 1471 01ba 0900      		.word	9
- 1472 01bc 3800      		.word	56
- 1473 01be 1600      		.word	22
- 1474 01c0 1100      		.word	17
- 1475 01c2 1700      		.word	23
- 1476 01c4 0B00      		.word	11
- 1477 01c6 0700      		.word	7
- 1478 01c8 2840      		.word	16424
- 1479 01ca 1D00      		.word	29
- 1480 01cc 1900      		.word	25
- 1481 01ce 1A00      		.word	26
- 1482 01d0 1000      		.word	16
- 1483 01d2 0500      		.word	5
- 1484 01d4 4F00      		.word	79
- 1485 01d6 5200      		.word	82
- 1486 01d8 5100      		.word	81
- 1487 01da 5000      		.word	80
- 1488 01dc 5200      		.word	82
- 1489 01de 2A00      		.word	42
- 1490 01e0 DE5C      		.word	23774
- 1491 01e2 4C00      		.word	76
- 1492 01e4 4A00      		.word	74
- 1493 01e6 3500      		.word	53
- 1494 01e8 0000      		.word	0
- 1495 01ea 0000      		.word	0
- 1496 01ec 2800      		.word	40
- 1497 01ee 2C00      		.word	44
- 1498 01f0 0000      		.word	0
- 1499 01f2 0000      		.word	0
- 1500 01f4 0000      		.word	0
- 1501 01f6 0000      		.word	0
- 1502 01f8 0100      		.word	1
- 1503 01fa 3A00      		.word	58
- 1504 01fc 3B00      		.word	59
- 1505 01fe 3C00      		.word	60
- 1506 0200 3D00      		.word	61
- 1507 0202 3E00      		.word	62
- 1508 0204 0100      		.word	1
- 1509 0206 1E02      		.word	542
- 1510 0208 1F02      		.word	543
- 1511 020a 2F02      		.word	559
- 1512 020c 3002      		.word	560
- 1513 020e 3102      		.word	561
- 1514 0210 0100      		.word	1
- 1515 0212 2002      		.word	544
- 1516 0214 2102      		.word	545
- 1517 0216 2602      		.word	550
- 1518 0218 2702      		.word	551
- 1519 021a 3500      		.word	53
- 1520 021c 0100      		.word	1
- 1521 021e 2202      		.word	546
- 1522 0220 2302      		.word	547
- 1523 0222 2F00      		.word	47
- 1524 0224 3000      		.word	48
- 1525 0226 3502      		.word	565
- 1526 0228 005C      		.word	23552
- 1527 022a 0100      		.word	1
- 1528 022c 0100      		.word	1
- 1529 022e 0100      		.word	1
- 1530 0230 0100      		.word	1
- 1531 0232 0100      		.word	1
- 1532 0234 DD5C      		.word	23773
- 1533 0236 E000      		.word	224
- 1534 0238 4E00      		.word	78
- 1535 023a 4B00      		.word	75
- 1536 023c 0000      		.word	0
- 1537 023e 0000      		.word	0
- 1538 0240 E100      		.word	225
- 1539 0242 2A00      		.word	42
- 1540 0244 0000      		.word	0
- 1541 0246 0000      		.word	0
- 1542 0248 0000      		.word	0
- 1543 024a 0000      		.word	0
- 1544 024c 4400      		.word	68
- 1545 024e 4300      		.word	67
- 1546 0250 4200      		.word	66
- 1547 0252 4100      		.word	65
- 1548 0254 4000      		.word	64
- 1549 0256 3F00      		.word	63
- 1550 0258 4500      		.word	69
- 1551 025a 2502      		.word	549
- 1552 025c 2600      		.word	38
- 1553 025e 2500      		.word	37
- 1554 0260 2400      		.word	36
- 1555 0262 5200      		.word	82
- 1556 0264 0100      		.word	1
- 1557 0266 2E02      		.word	558
- 1558 0268 2300      		.word	35
- 1559 026a 2200      		.word	34
- 1560 026c 2100      		.word	33
- 1561 026e 5100      		.word	81
- 1562 0270 0100      		.word	1
- 1563 0272 3100      		.word	49
- 1564 0274 2000      		.word	32
- 1565 0276 1F00      		.word	31
- 1566 0278 1E00      		.word	30
- 1567 027a 2402      		.word	548
- 1568 027c 0100      		.word	1
- 1569 027e 2E00      		.word	46
- 1570 0280 2700      		.word	39
- 1571 0282 3700      		.word	55
- 1572 0284 0100      		.word	1
- 1573 0286 0100      		.word	1
- 1574 0288 DE5C      		.word	23774
- 1575 028a 4C00      		.word	76
- 1576 028c 4A00      		.word	74
- 1577 028e 3500      		.word	53
- 1578 0290 0000      		.word	0
- 1579 0292 0000      		.word	0
- 1580 0294 2800      		.word	40
- 1581 0296 2C00      		.word	44
- 1582 0298 0000      		.word	0
- 1583 029a 0000      		.word	0
- 1584 029c 0000      		.word	0
- 1585 029e 0000      		.word	0
- 1586 02a0 3500      		.word	53
- 1587 02a2 1E00      		.word	30
- 1588 02a4 1F00      		.word	31
- 1589 02a6 2000      		.word	32
- 1590 02a8 2100      		.word	33
- 1591 02aa 2200      		.word	34
- 1592 02ac 2500      		.word	37
- 1593 02ae 1E00      		.word	30
- 1594 02b0 0330      		.word	12291
- 1595 02b2 1E00      		.word	30
- 1596 02b4 1E00      		.word	30
- 1597 02b6 1E00      		.word	30
- 1598 02b8 2500      		.word	37
- 1599 02ba 1E00      		.word	30
- 1600 02bc 1E00      		.word	30
- 1601 02be 1E00      		.word	30
- 1602 02c0 1E00      		.word	30
- 1603 02c2 C15C      		.word	23745
- 1604 02c4 2500      		.word	37
- 1605 02c6 1E00      		.word	30
- 1606 02c8 1E00      		.word	30
- 1607 02ca 1E00      		.word	30
- 1608 02cc 1E00      		.word	30
- 1609 02ce C05C      		.word	23744
- 1610 02d0 005C      		.word	23552
- 1611 02d2 1E00      		.word	30
- 1612 02d4 1E00      		.word	30
- 1613 02d6 1E00      		.word	30
- 1614 02d8 1E00      		.word	30
- 1615 02da 0100      		.word	1
- 1616 02dc DD5C      		.word	23773
- 1617 02de E000      		.word	224
- 1618 02e0 4E00      		.word	78
- 1619 02e2 4B00      		.word	75
- 1620 02e4 0000      		.word	0
- 1621 02e6 0000      		.word	0
- 1622 02e8 E100      		.word	225
- 1623 02ea 2A00      		.word	42
- 1624 02ec 0000      		.word	0
- 1625 02ee 0000      		.word	0
- 1626 02f0 0000      		.word	0
- 1627 02f2 0000      		.word	0
- 1628 02f4 2D00      		.word	45
- 1629 02f6 2700      		.word	39
- 1630 02f8 2600      		.word	38
- 1631 02fa 2500      		.word	37
- 1632 02fc 2400      		.word	36
- 1633 02fe 2300      		.word	35
- 1634 0300 0000      		.word	0
- 1635 0302 5600      		.word	86
- 1636 0304 2300      		.word	35
- 1637 0306 2200      		.word	34
- 1638 0308 2100      		.word	33
- 1639 030a 0000      		.word	0
- 1640 030c 0000      		.word	0
- 1641 030e 5700      		.word	87
- 1642 0310 2000      		.word	32
- 1643 0312 1F00      		.word	31
- 1644 0314 1E00      		.word	30
- 1645 0316 0000      		.word	0
- 1646 0318 0000      		.word	0
- 1647 031a 0000      		.word	0
- 1648 031c 3700      		.word	55
- 1649 031e 2700      		.word	39
- 1650 0320 2700      		.word	39
- 1651 0322 C05C      		.word	23744
- 1652 0324 005C      		.word	23552
- 1653 0326 0000      		.word	0
- 1654 0328 0000      		.word	0
- 1655 032a 5500      		.word	85
- 1656 032c 5400      		.word	84
- 1657 032e 0000      		.word	0
- 1658 0330 DE5C      		.word	23774
- 1659 0332 4C00      		.word	76
- 1660 0334 4A00      		.word	74
- 1661 0336 3500      		.word	53
- 1662 0338 0000      		.word	0
- 1663 033a 0000      		.word	0
- 1664 033c 2800      		.word	40
- 1665 033e 2C00      		.word	44
- 1666 0340 0000      		.word	0
- 1667 0342 0000      		.word	0
- 1668 0344 0000      		.word	0
- 1669 0346 0000      		.word	0
- 1670 0348 0000 0000 		.zero	1848
- 1670      0000 0000 
- 1670      0000 0000 
- 1670      0000 0000 
- 1670      0000 0000 
- 1671 0a80 DB5C      		.word	23771
- 1672 0a82 C05C      		.word	23744
- 1673 0a84 C15C      		.word	23745
- 1674 0a86 C25C      		.word	23746
- 1675 0a88 C45C      		.word	23748
- 1676 0a8a C35C      		.word	23747
- 1677 0a8c CB5C      		.word	23755
- 1678 0a8e CC5C      		.word	23756
- 1679 0a90 CD5C      		.word	23757
- 1680 0a92 CE5C      		.word	23758
- 1681 0a94 0100      		.word	1
- 1682 0a96 0100      		.word	1
- 1683 0a98 CF5C      		.word	23759
- 1684 0a9a D05C      		.word	23760
- 1685 0a9c D15C      		.word	23761
- 1686 0a9e D25C      		.word	23762
- 1687 0aa0 0100      		.word	1
- 1688 0aa2 0100      		.word	1
- 1689 0aa4 0100      		.word	1
- 1690 0aa6 0100      		.word	1
- 1691 0aa8 0100      		.word	1
- 1692 0aaa 0100      		.word	1
- 1693 0aac 0100      		.word	1
- 1694 0aae 0100      		.word	1
- 1695 0ab0 1E00      		.word	30
- 1696 0ab2 1F00      		.word	31
- 1697 0ab4 2000      		.word	32
- 1698 0ab6 2100      		.word	33
- 1699 0ab8 0100      		.word	1
- 1700 0aba 0100      		.word	1
- 1701 0abc 0100      		.word	1
- 1702 0abe 0100      		.word	1
- 1703 0ac0 0100      		.word	1
- 1704 0ac2 0100      		.word	1
- 1705 0ac4 0000      		.word	0
- 1706 0ac6 0000      		.word	0
- 1707 0ac8 0100      		.word	1
- 1708 0aca 0100      		.word	1
- 1709 0acc 0000      		.word	0
- 1710 0ace 0000      		.word	0
- 1711 0ad0 0000      		.word	0
- 1712 0ad2 0000      		.word	0
- 1713 0ad4 0100      		.word	1
- 1714 0ad6 0100      		.word	1
- 1715 0ad8 C75C      		.word	23751
- 1716 0ada C85C      		.word	23752
- 1717 0adc C55C      		.word	23749
- 1718 0ade C65C      		.word	23750
- 1719 0ae0 0100      		.word	1
- 1720 0ae2 0100      		.word	1
- 1721 0ae4 0100      		.word	1
- 1722 0ae6 0100      		.word	1
- 1723 0ae8 0100      		.word	1
- 1724 0aea 0100      		.word	1
- 1725 0aec 0100      		.word	1
- 1726 0aee 0100      		.word	1
- 1727 0af0 0100      		.word	1
- 1728 0af2 0100      		.word	1
- 1729 0af4 0100      		.word	1
- 1730 0af6 0100      		.word	1
- 1731 0af8 0100      		.word	1
- 1732 0afa 0100      		.word	1
- 1733 0afc 0100      		.word	1
- 1734 0afe 0100      		.word	1
- 1735 0b00 0100      		.word	1
- 1736 0b02 0100      		.word	1
- 1737 0b04 0100      		.word	1
- 1738 0b06 0100      		.word	1
- 1739 0b08 2500      		.word	37
- 1740 0b0a 2400      		.word	36
- 1741 0b0c 2300      		.word	35
- 1742 0b0e 2200      		.word	34
- 1743 0b10 0100      		.word	1
- 1744 0b12 0100      		.word	1
- 1745 0b14 0100      		.word	1
- 1746 0b16 0100      		.word	1
- 1747 0b18 0000      		.word	0
- 1748 0b1a 0000      		.word	0
- 1749 0b1c 0100      		.word	1
- 1750 0b1e 0100      		.word	1
- 1751 0b20 0000      		.word	0
- 1752 0b22 0000      		.word	0
- 1753 0b24 0000      		.word	0
- 1754 0b26 0000      		.word	0
- 1755               		.text
- 1756               	.Letext0:
- 1757               		.file 2 "/usr/lib/avr/include/stdint.h"
- 1758               		.file 3 "./tmk_core/common/keyboard.h"
- 1759               		.file 4 "./tmk_core/common/keycode.h"
- 1760               		.file 5 "./tmk_core/common/action_code.h"
- 1761               		.file 6 "./tmk_core/common/action_macro.h"
- 1762               		.file 7 "./tmk_core/common/action.h"
- 1763               		.file 8 "./tmk_core/common/report.h"
- 1764               		.file 9 "./quantum/quantum_keycodes.h"
- 1765               		.file 10 "./quantum/process_keycode/process_tap_dance.h"
- 1766               		.file 11 "./tmk_core/common/action_util.h"
- 1767               		.file 12 "./tmk_core/common/eeconfig.h"
- 1768               		.file 13 "./tmk_core/common/action_layer.h"
- 1769               		.file 14 "./quantum/quantum.h"
+ 620               		.loc 1 431 1 view .LVU148
+ 621 001e 8C2F      		mov r24,r28
+ 622               	/* epilogue start */
+ 623 0020 CF91      		pop r28
+ 624 0022 0895      		ret
+ 625               	.LVL29:
+ 626               	.L70:
+ 373:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 	switch (keycode) {
+ 627               		.loc 1 373 2 view .LVU149
+ 628 0024 8E3D      		cpi r24,-34
+ 629 0026 2CE5      		ldi r18,92
+ 630 0028 9207      		cpc r25,r18
+ 631 002a 01F0      		breq .L74
+ 632 002c 00F0      		brlo .L75
+ 633 002e 803E      		cpi r24,-32
+ 634 0030 9C45      		sbci r25,92
+ 635 0032 01F4      		brne .L89
+ 420:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 	case ADJUST:
+ 636               		.loc 1 420 3 is_stmt 1 view .LVU150
+ 422:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			layer_on(_ADJUST);
+ 637               		.loc 1 422 3 view .LVU151
+ 422:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			layer_on(_ADJUST);
+ 638               		.loc 1 422 20 is_stmt 0 view .LVU152
+ 639 0034 C281      		ldd r28,Z+2
+ 423:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		} else {
+ 640               		.loc 1 423 4 view .LVU153
+ 641 0036 80E1      		ldi r24,lo8(16)
+ 642               	.LVL30:
+ 422:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			layer_on(_ADJUST);
+ 643               		.loc 1 422 6 view .LVU154
+ 644 0038 CC23      		tst r28
+ 645 003a 01F0      		breq .L79
+ 423:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		} else {
+ 646               		.loc 1 423 4 is_stmt 1 view .LVU155
+ 647 003c 0E94 0000 		call layer_on
+ 648               	.LVL31:
+ 423:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		} else {
+ 649               		.loc 1 423 4 is_stmt 0 view .LVU156
+ 650 0040 00C0      		rjmp .L90
+ 651               	.LVL32:
+ 652               	.L72:
+ 375:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			#ifdef AUDIO_ENABLE
+ 653               		.loc 1 375 3 is_stmt 1 view .LVU157
+ 375:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			#ifdef AUDIO_ENABLE
+ 654               		.loc 1 375 20 is_stmt 0 view .LVU158
+ 655 0042 C281      		ldd r28,Z+2
+ 379:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		}
+ 656               		.loc 1 379 4 view .LVU159
+ 657 0044 81E0      		ldi r24,lo8(1)
+ 658 0046 90E0      		ldi r25,0
+ 659               	.LVL33:
+ 375:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			#ifdef AUDIO_ENABLE
+ 660               		.loc 1 375 6 view .LVU160
+ 661 0048 CC23      		tst r28
+ 662 004a 01F0      		breq .L68
+ 663               	.L91:
+ 397:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		}
+ 664               		.loc 1 397 4 view .LVU161
+ 665 004c 0E94 0000 		call persistent_default_layer_set
+ 666               	.LVL34:
+ 667               	.L90:
+ 427:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		break;
+ 668               		.loc 1 427 10 view .LVU162
+ 669 0050 C0E0      		ldi r28,0
+ 670 0052 00C0      		rjmp .L68
+ 671               	.LVL35:
+ 672               	.L71:
+ 382:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 	case COLEMAK:
+ 673               		.loc 1 382 3 is_stmt 1 view .LVU163
+ 384:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			#ifdef AUDIO_ENABLE
+ 674               		.loc 1 384 3 view .LVU164
+ 384:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			#ifdef AUDIO_ENABLE
+ 675               		.loc 1 384 20 is_stmt 0 view .LVU165
+ 676 0054 C281      		ldd r28,Z+2
+ 388:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		}
+ 677               		.loc 1 388 4 view .LVU166
+ 678 0056 82E0      		ldi r24,lo8(2)
+ 679 0058 90E0      		ldi r25,0
+ 680               	.LVL36:
+ 384:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			#ifdef AUDIO_ENABLE
+ 681               		.loc 1 384 6 view .LVU167
+ 682 005a CC23      		tst r28
+ 683 005c 01F0      		breq .L68
+ 684 005e 00C0      		rjmp .L91
+ 685               	.LVL37:
+ 686               	.L69:
+ 391:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 	case DVORAK:
+ 687               		.loc 1 391 3 is_stmt 1 view .LVU168
+ 393:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			#ifdef AUDIO_ENABLE
+ 688               		.loc 1 393 3 view .LVU169
+ 393:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			#ifdef AUDIO_ENABLE
+ 689               		.loc 1 393 20 is_stmt 0 view .LVU170
+ 690 0060 C281      		ldd r28,Z+2
+ 393:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			#ifdef AUDIO_ENABLE
+ 691               		.loc 1 393 6 view .LVU171
+ 692 0062 CC23      		tst r28
+ 693 0064 01F0      		breq .L68
+ 397:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		}
+ 694               		.loc 1 397 4 is_stmt 1 view .LVU172
+ 695 0066 84E0      		ldi r24,lo8(4)
+ 696 0068 90E0      		ldi r25,0
+ 697               	.LVL38:
+ 397:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		}
+ 698               		.loc 1 397 4 is_stmt 0 view .LVU173
+ 699 006a 00C0      		rjmp .L91
+ 700               	.LVL39:
+ 701               	.L75:
+ 400:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 	case LOWER:
+ 702               		.loc 1 400 3 is_stmt 1 view .LVU174
+ 402:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			layer_on(_LOWER);
+ 703               		.loc 1 402 3 view .LVU175
+ 402:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			layer_on(_LOWER);
+ 704               		.loc 1 402 20 is_stmt 0 view .LVU176
+ 705 006c C281      		ldd r28,Z+2
+ 403:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			update_tri_layer(_LOWER, _RAISE, _ADJUST);
+ 706               		.loc 1 403 4 view .LVU177
+ 707 006e 83E0      		ldi r24,lo8(3)
+ 708               	.LVL40:
+ 709               	.L94:
+ 412:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			layer_on(_RAISE);
+ 710               		.loc 1 412 6 view .LVU178
+ 711 0070 CC23      		tst r28
+ 712 0072 01F0      		breq .L78
+ 413:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			update_tri_layer(_LOWER, _RAISE, _ADJUST);
+ 713               		.loc 1 413 4 is_stmt 1 view .LVU179
+ 714 0074 0E94 0000 		call layer_on
+ 715               	.LVL41:
+ 414:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		} else {
+ 716               		.loc 1 414 4 view .LVU180
+ 717 0078 40E1      		ldi r20,lo8(16)
+ 718 007a 64E0      		ldi r22,lo8(4)
+ 719 007c 83E0      		ldi r24,lo8(3)
+ 720 007e 0E94 0000 		call update_tri_layer
+ 721               	.LVL42:
+ 722 0082 00C0      		rjmp .L90
+ 723               	.LVL43:
+ 724               	.L74:
+ 410:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 	case RAISE:
+ 725               		.loc 1 410 3 view .LVU181
+ 412:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			layer_on(_RAISE);
+ 726               		.loc 1 412 3 view .LVU182
+ 412:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			layer_on(_RAISE);
+ 727               		.loc 1 412 20 is_stmt 0 view .LVU183
+ 728 0084 C281      		ldd r28,Z+2
+ 413:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			update_tri_layer(_LOWER, _RAISE, _ADJUST);
+ 729               		.loc 1 413 4 view .LVU184
+ 730 0086 84E0      		ldi r24,lo8(4)
+ 731               	.LVL44:
+ 413:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			update_tri_layer(_LOWER, _RAISE, _ADJUST);
+ 732               		.loc 1 413 4 view .LVU185
+ 733 0088 00C0      		rjmp .L94
+ 734               	.L78:
+ 416:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 			update_tri_layer(_LOWER, _RAISE, _ADJUST);
+ 735               		.loc 1 416 4 is_stmt 1 view .LVU186
+ 736 008a 0E94 0000 		call layer_off
+ 737               	.LVL45:
+ 417:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		}
+ 738               		.loc 1 417 4 view .LVU187
+ 739 008e 40E1      		ldi r20,lo8(16)
+ 740 0090 64E0      		ldi r22,lo8(4)
+ 741 0092 83E0      		ldi r24,lo8(3)
+ 742 0094 0E94 0000 		call update_tri_layer
+ 743               	.LVL46:
+ 744 0098 00C0      		rjmp .L68
+ 745               	.LVL47:
+ 746               	.L79:
+ 425:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		}
+ 747               		.loc 1 425 4 view .LVU188
+ 748 009a 0E94 0000 		call layer_off
+ 749               	.LVL48:
+ 425:keyboards/Dactylv2led/keymaps/Default/keymap.c **** 		}
+ 750               		.loc 1 425 4 is_stmt 0 view .LVU189
+ 751 009e 00C0      		rjmp .L68
+ 752               		.cfi_endproc
+ 753               	.LFE25:
+ 755               		.section	.progmem.data.__m.3472,"a"
+ 758               	__m.3472:
+ 759 0000 01        		.byte	1
+ 760 0001 E3        		.byte	-29
+ 761 0002 01        		.byte	1
+ 762 0003 E0        		.byte	-32
+ 763 0004 01        		.byte	1
+ 764 0005 4F        		.byte	79
+ 765 0006 02        		.byte	2
+ 766 0007 4F        		.byte	79
+ 767 0008 02        		.byte	2
+ 768 0009 E0        		.byte	-32
+ 769 000a 02        		.byte	2
+ 770 000b E3        		.byte	-29
+ 771 000c 00        		.byte	0
+ 772               		.section	.progmem.data.__m.3470,"a"
+ 775               	__m.3470:
+ 776 0000 01        		.byte	1
+ 777 0001 E3        		.byte	-29
+ 778 0002 01        		.byte	1
+ 779 0003 E0        		.byte	-32
+ 780 0004 01        		.byte	1
+ 781 0005 50        		.byte	80
+ 782 0006 02        		.byte	2
+ 783 0007 50        		.byte	80
+ 784 0008 02        		.byte	2
+ 785 0009 E0        		.byte	-32
+ 786 000a 02        		.byte	2
+ 787 000b E3        		.byte	-29
+ 788 000c 00        		.byte	0
+ 789               		.section	.progmem.data.__m.3460,"a"
+ 792               	__m.3460:
+ 793 0000 01        		.byte	1
+ 794 0001 E3        		.byte	-29
+ 795 0002 01        		.byte	1
+ 796 0003 15        		.byte	21
+ 797 0004 02        		.byte	2
+ 798 0005 15        		.byte	21
+ 799 0006 74        		.byte	116
+ 800 0007 FF        		.byte	-1
+ 801 0008 02        		.byte	2
+ 802 0009 E3        		.byte	-29
+ 803 000a 74        		.byte	116
+ 804 000b FF        		.byte	-1
+ 805 000c 01        		.byte	1
+ 806 000d 06        		.byte	6
+ 807 000e 02        		.byte	2
+ 808 000f 06        		.byte	6
+ 809 0010 01        		.byte	1
+ 810 0011 10        		.byte	16
+ 811 0012 02        		.byte	2
+ 812 0013 10        		.byte	16
+ 813 0014 01        		.byte	1
+ 814 0015 07        		.byte	7
+ 815 0016 02        		.byte	2
+ 816 0017 07        		.byte	7
+ 817 0018 01        		.byte	1
+ 818 0019 28        		.byte	40
+ 819 001a 02        		.byte	2
+ 820 001b 28        		.byte	40
+ 821 001c 74        		.byte	116
+ 822 001d FF        		.byte	-1
+ 823 001e 01        		.byte	1
+ 824 001f 13        		.byte	19
+ 825 0020 02        		.byte	2
+ 826 0021 13        		.byte	19
+ 827 0022 01        		.byte	1
+ 828 0023 0C        		.byte	12
+ 829 0024 02        		.byte	2
+ 830 0025 0C        		.byte	12
+ 831 0026 01        		.byte	1
+ 832 0027 11        		.byte	17
+ 833 0028 02        		.byte	2
+ 834 0029 11        		.byte	17
+ 835 002a 01        		.byte	1
+ 836 002b 0A        		.byte	10
+ 837 002c 02        		.byte	2
+ 838 002d 0A        		.byte	10
+ 839 002e 01        		.byte	1
+ 840 002f 2C        		.byte	44
+ 841 0030 02        		.byte	2
+ 842 0031 2C        		.byte	44
+ 843 0032 01        		.byte	1
+ 844 0033 E0        		.byte	-32
+ 845 0034 01        		.byte	1
+ 846 0035 19        		.byte	25
+ 847 0036 02        		.byte	2
+ 848 0037 19        		.byte	25
+ 849 0038 02        		.byte	2
+ 850 0039 E0        		.byte	-32
+ 851 003a 00        		.byte	0
+ 852               		.section	.progmem.data.__m.3458,"a"
+ 855               	__m.3458:
+ 856 0000 01        		.byte	1
+ 857 0001 E3        		.byte	-29
+ 858 0002 01        		.byte	1
+ 859 0003 15        		.byte	21
+ 860 0004 02        		.byte	2
+ 861 0005 15        		.byte	21
+ 862 0006 02        		.byte	2
+ 863 0007 E3        		.byte	-29
+ 864 0008 01        		.byte	1
+ 865 0009 06        		.byte	6
+ 866 000a 02        		.byte	2
+ 867 000b 06        		.byte	6
+ 868 000c 01        		.byte	1
+ 869 000d 10        		.byte	16
+ 870 000e 02        		.byte	2
+ 871 000f 10        		.byte	16
+ 872 0010 01        		.byte	1
+ 873 0011 07        		.byte	7
+ 874 0012 02        		.byte	2
+ 875 0013 07        		.byte	7
+ 876 0014 01        		.byte	1
+ 877 0015 28        		.byte	40
+ 878 0016 02        		.byte	2
+ 879 0017 28        		.byte	40
+ 880 0018 74        		.byte	116
+ 881 0019 FF        		.byte	-1
+ 882 001a 74        		.byte	116
+ 883 001b FF        		.byte	-1
+ 884 001c 01        		.byte	1
+ 885 001d 0C        		.byte	12
+ 886 001e 02        		.byte	2
+ 887 001f 0C        		.byte	12
+ 888 0020 01        		.byte	1
+ 889 0021 13        		.byte	19
+ 890 0022 02        		.byte	2
+ 891 0023 13        		.byte	19
+ 892 0024 01        		.byte	1
+ 893 0025 06        		.byte	6
+ 894 0026 02        		.byte	2
+ 895 0027 06        		.byte	6
+ 896 0028 01        		.byte	1
+ 897 0029 12        		.byte	18
+ 898 002a 02        		.byte	2
+ 899 002b 12        		.byte	18
+ 900 002c 01        		.byte	1
+ 901 002d 11        		.byte	17
+ 902 002e 02        		.byte	2
+ 903 002f 11        		.byte	17
+ 904 0030 01        		.byte	1
+ 905 0031 09        		.byte	9
+ 906 0032 02        		.byte	2
+ 907 0033 09        		.byte	9
+ 908 0034 01        		.byte	1
+ 909 0035 0C        		.byte	12
+ 910 0036 02        		.byte	2
+ 911 0037 0C        		.byte	12
+ 912 0038 01        		.byte	1
+ 913 0039 0A        		.byte	10
+ 914 003a 02        		.byte	2
+ 915 003b 0A        		.byte	10
+ 916 003c 01        		.byte	1
+ 917 003d 2C        		.byte	44
+ 918 003e 02        		.byte	2
+ 919 003f 2C        		.byte	44
+ 920 0040 01        		.byte	1
+ 921 0041 38        		.byte	56
+ 922 0042 02        		.byte	2
+ 923 0043 38        		.byte	56
+ 924 0044 01        		.byte	1
+ 925 0045 04        		.byte	4
+ 926 0046 02        		.byte	2
+ 927 0047 04        		.byte	4
+ 928 0048 01        		.byte	1
+ 929 0049 0F        		.byte	15
+ 930 004a 02        		.byte	2
+ 931 004b 0F        		.byte	15
+ 932 004c 01        		.byte	1
+ 933 004d 0F        		.byte	15
+ 934 004e 02        		.byte	2
+ 935 004f 0F        		.byte	15
+ 936 0050 01        		.byte	1
+ 937 0051 28        		.byte	40
+ 938 0052 02        		.byte	2
+ 939 0053 28        		.byte	40
+ 940 0054 00        		.byte	0
+ 941               		.section	.progmem.data.__m.3456,"a"
+ 944               	__m.3456:
+ 945 0000 01        		.byte	1
+ 946 0001 E3        		.byte	-29
+ 947 0002 01        		.byte	1
+ 948 0003 15        		.byte	21
+ 949 0004 02        		.byte	2
+ 950 0005 15        		.byte	21
+ 951 0006 74        		.byte	116
+ 952 0007 FF        		.byte	-1
+ 953 0008 02        		.byte	2
+ 954 0009 E3        		.byte	-29
+ 955 000a 74        		.byte	116
+ 956 000b FF        		.byte	-1
+ 957 000c 01        		.byte	1
+ 958 000d 06        		.byte	6
+ 959 000e 02        		.byte	2
+ 960 000f 06        		.byte	6
+ 961 0010 01        		.byte	1
+ 962 0011 10        		.byte	16
+ 963 0012 02        		.byte	2
+ 964 0013 10        		.byte	16
+ 965 0014 01        		.byte	1
+ 966 0015 07        		.byte	7
+ 967 0016 02        		.byte	2
+ 968 0017 07        		.byte	7
+ 969 0018 01        		.byte	1
+ 970 0019 28        		.byte	40
+ 971 001a 02        		.byte	2
+ 972 001b 28        		.byte	40
+ 973 001c 00        		.byte	0
+ 974               		.section	.progmem.data.__m.3450,"a"
+ 977               	__m.3450:
+ 978 0000 01        		.byte	1
+ 979 0001 E0        		.byte	-32
+ 980 0002 01        		.byte	1
+ 981 0003 04        		.byte	4
+ 982 0004 02        		.byte	2
+ 983 0005 04        		.byte	4
+ 984 0006 01        		.byte	1
+ 985 0007 06        		.byte	6
+ 986 0008 02        		.byte	2
+ 987 0009 06        		.byte	6
+ 988 000a 02        		.byte	2
+ 989 000b E0        		.byte	-32
+ 990 000c 00        		.byte	0
+ 991               		.section	.progmem.data.__m.3448,"a"
+ 994               	__m.3448:
+ 995 0000 01        		.byte	1
+ 996 0001 E0        		.byte	-32
+ 997 0002 01        		.byte	1
+ 998 0003 19        		.byte	25
+ 999 0004 02        		.byte	2
+ 1000 0005 19        		.byte	25
+ 1001 0006 02        		.byte	2
+ 1002 0007 E0        		.byte	-32
+ 1003 0008 00        		.byte	0
+ 1004               		.section	.progmem.data.__m.3446,"a"
+ 1007               	__m.3446:
+ 1008 0000 01        		.byte	1
+ 1009 0001 E0        		.byte	-32
+ 1010 0002 01        		.byte	1
+ 1011 0003 06        		.byte	6
+ 1012 0004 02        		.byte	2
+ 1013 0005 06        		.byte	6
+ 1014 0006 02        		.byte	2
+ 1015 0007 E0        		.byte	-32
+ 1016 0008 00        		.byte	0
+ 1017               		.section	.progmem.data.__c.3440,"a"
+ 1020               	__c.3440:
+ 1021 0000 7573 6572 		.string	"username\001+pass\001+\001("
+ 1021      6E61 6D65 
+ 1021      012B 7061 
+ 1021      7373 012B 
+ 1021      0128 00
+ 1022               		.section	.progmem.data.__m.3437,"a"
+ 1025               	__m.3437:
+ 1026 0000 75        		.byte	117
+ 1027 0001 0A        		.byte	10
+ 1028 0002 01        		.byte	1
+ 1029 0003 2B        		.byte	43
+ 1030 0004 02        		.byte	2
+ 1031 0005 2B        		.byte	43
+ 1032 0006 01        		.byte	1
+ 1033 0007 0C        		.byte	12
+ 1034 0008 02        		.byte	2
+ 1035 0009 0C        		.byte	12
+ 1036 000a 01        		.byte	1
+ 1037 000b 11        		.byte	17
+ 1038 000c 02        		.byte	2
+ 1039 000d 11        		.byte	17
+ 1040 000e 01        		.byte	1
+ 1041 000f 2B        		.byte	43
+ 1042 0010 02        		.byte	2
+ 1043 0011 2B        		.byte	43
+ 1044 0012 01        		.byte	1
+ 1045 0013 28        		.byte	40
+ 1046 0014 02        		.byte	2
+ 1047 0015 28        		.byte	40
+ 1048 0016 01        		.byte	1
+ 1049 0017 2B        		.byte	43
+ 1050 0018 02        		.byte	2
+ 1051 0019 2B        		.byte	43
+ 1052 001a 01        		.byte	1
+ 1053 001b 2B        		.byte	43
+ 1054 001c 02        		.byte	2
+ 1055 001d 2B        		.byte	43
+ 1056 001e 01        		.byte	1
+ 1057 001f 2B        		.byte	43
+ 1058 0020 02        		.byte	2
+ 1059 0021 2B        		.byte	43
+ 1060 0022 01        		.byte	1
+ 1061 0023 0C        		.byte	12
+ 1062 0024 02        		.byte	2
+ 1063 0025 0C        		.byte	12
+ 1064 0026 01        		.byte	1
+ 1065 0027 11        		.byte	17
+ 1066 0028 02        		.byte	2
+ 1067 0029 11        		.byte	17
+ 1068 002a 01        		.byte	1
+ 1069 002b 2B        		.byte	43
+ 1070 002c 02        		.byte	2
+ 1071 002d 2B        		.byte	43
+ 1072 002e 01        		.byte	1
+ 1073 002f 28        		.byte	40
+ 1074 0030 02        		.byte	2
+ 1075 0031 28        		.byte	40
+ 1076 0032 00        		.byte	0
+ 1077               		.section	.progmem.data.__m.3434,"a"
+ 1080               	__m.3434:
+ 1081 0000 75        		.byte	117
+ 1082 0001 0A        		.byte	10
+ 1083 0002 01        		.byte	1
+ 1084 0003 2B        		.byte	43
+ 1085 0004 02        		.byte	2
+ 1086 0005 2B        		.byte	43
+ 1087 0006 01        		.byte	1
+ 1088 0007 12        		.byte	18
+ 1089 0008 02        		.byte	2
+ 1090 0009 12        		.byte	18
+ 1091 000a 01        		.byte	1
+ 1092 000b 17        		.byte	23
+ 1093 000c 02        		.byte	2
+ 1094 000d 17        		.byte	23
+ 1095 000e 01        		.byte	1
+ 1096 000f 2B        		.byte	43
+ 1097 0010 02        		.byte	2
+ 1098 0011 2B        		.byte	43
+ 1099 0012 01        		.byte	1
+ 1100 0013 28        		.byte	40
+ 1101 0014 02        		.byte	2
+ 1102 0015 28        		.byte	40
+ 1103 0016 01        		.byte	1
+ 1104 0017 2B        		.byte	43
+ 1105 0018 02        		.byte	2
+ 1106 0019 2B        		.byte	43
+ 1107 001a 01        		.byte	1
+ 1108 001b 2B        		.byte	43
+ 1109 001c 02        		.byte	2
+ 1110 001d 2B        		.byte	43
+ 1111 001e 01        		.byte	1
+ 1112 001f 2B        		.byte	43
+ 1113 0020 02        		.byte	2
+ 1114 0021 2B        		.byte	43
+ 1115 0022 01        		.byte	1
+ 1116 0023 1D        		.byte	29
+ 1117 0024 02        		.byte	2
+ 1118 0025 1D        		.byte	29
+ 1119 0026 01        		.byte	1
+ 1120 0027 15        		.byte	21
+ 1121 0028 02        		.byte	2
+ 1122 0029 15        		.byte	21
+ 1123 002a 01        		.byte	1
+ 1124 002b 2B        		.byte	43
+ 1125 002c 02        		.byte	2
+ 1126 002d 2B        		.byte	43
+ 1127 002e 01        		.byte	1
+ 1128 002f 28        		.byte	40
+ 1129 0030 02        		.byte	2
+ 1130 0031 28        		.byte	40
+ 1131 0032 00        		.byte	0
+ 1132               		.section	.progmem.data.__m.3431,"a"
+ 1135               	__m.3431:
+ 1136 0000 75        		.byte	117
+ 1137 0001 0A        		.byte	10
+ 1138 0002 01        		.byte	1
+ 1139 0003 2B        		.byte	43
+ 1140 0004 02        		.byte	2
+ 1141 0005 2B        		.byte	43
+ 1142 0006 01        		.byte	1
+ 1143 0007 12        		.byte	18
+ 1144 0008 02        		.byte	2
+ 1145 0009 12        		.byte	18
+ 1146 000a 01        		.byte	1
+ 1147 000b 13        		.byte	19
+ 1148 000c 02        		.byte	2
+ 1149 000d 13        		.byte	19
+ 1150 000e 01        		.byte	1
+ 1151 000f 2B        		.byte	43
+ 1152 0010 02        		.byte	2
+ 1153 0011 2B        		.byte	43
+ 1154 0012 01        		.byte	1
+ 1155 0013 28        		.byte	40
+ 1156 0014 02        		.byte	2
+ 1157 0015 28        		.byte	40
+ 1158 0016 01        		.byte	1
+ 1159 0017 2B        		.byte	43
+ 1160 0018 02        		.byte	2
+ 1161 0019 2B        		.byte	43
+ 1162 001a 01        		.byte	1
+ 1163 001b 2B        		.byte	43
+ 1164 001c 02        		.byte	2
+ 1165 001d 2B        		.byte	43
+ 1166 001e 01        		.byte	1
+ 1167 001f 2B        		.byte	43
+ 1168 0020 02        		.byte	2
+ 1169 0021 2B        		.byte	43
+ 1170 0022 01        		.byte	1
+ 1171 0023 1D        		.byte	29
+ 1172 0024 02        		.byte	2
+ 1173 0025 1D        		.byte	29
+ 1174 0026 01        		.byte	1
+ 1175 0027 15        		.byte	21
+ 1176 0028 02        		.byte	2
+ 1177 0029 15        		.byte	21
+ 1178 002a 01        		.byte	1
+ 1179 002b 2B        		.byte	43
+ 1180 002c 02        		.byte	2
+ 1181 002d 2B        		.byte	43
+ 1182 002e 01        		.byte	1
+ 1183 002f 28        		.byte	40
+ 1184 0030 02        		.byte	2
+ 1185 0031 28        		.byte	40
+ 1186 0032 00        		.byte	0
+ 1187               		.section	.progmem.data.__c.3428,"a"
+ 1190               	__c.3428:
+ 1191 0000 6970 636F 		.string	"ipconfig /all"
+ 1191      6E66 6967 
+ 1191      202F 616C 
+ 1191      6C00 
+ 1192               		.section	.progmem.data.__c.3425,"a"
+ 1195               	__c.3425:
+ 1196 0000 00        		.zero	1
+ 1197               		.section	.progmem.data.__m.3422,"a"
+ 1200               	__m.3422:
+ 1201 0000 75        		.byte	117
+ 1202 0001 0A        		.byte	10
+ 1203 0002 01        		.byte	1
+ 1204 0003 27        		.byte	39
+ 1205 0004 02        		.byte	2
+ 1206 0005 27        		.byte	39
+ 1207 0006 01        		.byte	1
+ 1208 0007 06        		.byte	6
+ 1209 0008 02        		.byte	2
+ 1210 0009 06        		.byte	6
+ 1211 000a 01        		.byte	1
+ 1212 000b 2B        		.byte	43
+ 1213 000c 02        		.byte	2
+ 1214 000d 2B        		.byte	43
+ 1215 000e 01        		.byte	1
+ 1216 000f 2B        		.byte	43
+ 1217 0010 02        		.byte	2
+ 1218 0011 2B        		.byte	43
+ 1219 0012 01        		.byte	1
+ 1220 0013 04        		.byte	4
+ 1221 0014 02        		.byte	2
+ 1222 0015 04        		.byte	4
+ 1223 0016 01        		.byte	1
+ 1224 0017 2B        		.byte	43
+ 1225 0018 02        		.byte	2
+ 1226 0019 2B        		.byte	43
+ 1227 001a 00        		.byte	0
+ 1228               		.section	.progmem.data.__m.3418,"a"
+ 1231               	__m.3418:
+ 1232 0000 01        		.byte	1
+ 1233 0001 1B        		.byte	27
+ 1234 0002 02        		.byte	2
+ 1235 0003 1B        		.byte	27
+ 1236 0004 00        		.byte	0
+ 1237               		.section	.progmem.data.__m.3414,"a"
+ 1240               	__m.3414:
+ 1241 0000 75        		.byte	117
+ 1242 0001 0A        		.byte	10
+ 1243 0002 01        		.byte	1
+ 1244 0003 E0        		.byte	-32
+ 1245 0004 01        		.byte	1
+ 1246 0005 17        		.byte	23
+ 1247 0006 02        		.byte	2
+ 1248 0007 17        		.byte	23
+ 1249 0008 01        		.byte	1
+ 1250 0009 19        		.byte	25
+ 1251 000a 02        		.byte	2
+ 1252 000b 19        		.byte	25
+ 1253 000c 01        		.byte	1
+ 1254 000d 28        		.byte	40
+ 1255 000e 02        		.byte	2
+ 1256 000f 28        		.byte	40
+ 1257 0010 02        		.byte	2
+ 1258 0011 E0        		.byte	-32
+ 1259 0012 00        		.byte	0
+ 1260               		.section	.progmem.data.__c.3411,"a"
+ 1263               	__c.3411:
+ 1264 0000 7777 772E 		.string	"www.support.xerox.com\001("
+ 1264      7375 7070 
+ 1264      6F72 742E 
+ 1264      7865 726F 
+ 1264      782E 636F 
+ 1265               		.section	.progmem.data.__c.3408,"a"
+ 1268               	__c.3408:
+ 1269 0000 656D 6169 		.string	"email"
+ 1269      6C00 
+ 1270               		.section	.progmem.data.__m.3405,"a"
+ 1273               	__m.3405:
+ 1274 0000 75        		.byte	117
+ 1275 0001 0A        		.byte	10
+ 1276 0002 01        		.byte	1
+ 1277 0003 04        		.byte	4
+ 1278 0004 02        		.byte	2
+ 1279 0005 04        		.byte	4
+ 1280 0006 01        		.byte	1
+ 1281 0007 07        		.byte	7
+ 1282 0008 02        		.byte	2
+ 1283 0009 07        		.byte	7
+ 1284 000a 01        		.byte	1
+ 1285 000b 10        		.byte	16
+ 1286 000c 02        		.byte	2
+ 1287 000d 10        		.byte	16
+ 1288 000e 01        		.byte	1
+ 1289 000f 0C        		.byte	12
+ 1290 0010 02        		.byte	2
+ 1291 0011 0C        		.byte	12
+ 1292 0012 01        		.byte	1
+ 1293 0013 11        		.byte	17
+ 1294 0014 02        		.byte	2
+ 1295 0015 11        		.byte	17
+ 1296 0016 74        		.byte	116
+ 1297 0017 4B        		.byte	75
+ 1298 0018 01        		.byte	1
+ 1299 0019 2B        		.byte	43
+ 1300 001a 02        		.byte	2
+ 1301 001b 2B        		.byte	43
+ 1302 001c 01        		.byte	1
+ 1303 001d 1E        		.byte	30
+ 1304 001e 02        		.byte	2
+ 1305 001f 1E        		.byte	30
+ 1306 0020 01        		.byte	1
+ 1307 0021 1E        		.byte	30
+ 1308 0022 02        		.byte	2
+ 1309 0023 1E        		.byte	30
+ 1310 0024 01        		.byte	1
+ 1311 0025 1E        		.byte	30
+ 1312 0026 02        		.byte	2
+ 1313 0027 1E        		.byte	30
+ 1314 0028 01        		.byte	1
+ 1315 0029 1E        		.byte	30
+ 1316 002a 02        		.byte	2
+ 1317 002b 1E        		.byte	30
+ 1318 002c 01        		.byte	1
+ 1319 002d 28        		.byte	40
+ 1320 002e 02        		.byte	2
+ 1321 002f 28        		.byte	40
+ 1322 0030 00        		.byte	0
+ 1323               		.section	.progmem.data.__m.3402,"a"
+ 1326               	__m.3402:
+ 1327 0000 01        		.byte	1
+ 1328 0001 E3        		.byte	-29
+ 1329 0002 01        		.byte	1
+ 1330 0003 2B        		.byte	43
+ 1331 0004 02        		.byte	2
+ 1332 0005 2B        		.byte	43
+ 1333 0006 02        		.byte	2
+ 1334 0007 E3        		.byte	-29
+ 1335 0008 00        		.byte	0
+ 1336               	.global	tap_dance_actions
+ 1337               		.section	.data.tap_dance_actions,"aw"
+ 1340               	tap_dance_actions:
+ 1341 0000 0000      		.word	0
+ 1342 0002 0000      		.word	gs(cmd_commands)
+ 1343 0004 0000      		.word	0
+ 1344 0006 0000 0000 		.zero	12
+ 1344      0000 0000 
+ 1344      0000 0000 
+ 1345 0012 0000      		.word	0
+ 1346 0014 0000      		.word	0
+ 1347 0016 0000      		.word	gs(cmd)
+ 1348 0018 0000      		.word	0
+ 1349 001a 0000 0000 		.zero	12
+ 1349      0000 0000 
+ 1349      0000 0000 
+ 1350 0026 0000      		.word	0
+ 1351 0028 0000      		.word	0
+ 1352 002a 0000      		.word	gs(SLSH_BSLSH)
+ 1353 002c 0000      		.word	0
+ 1354 002e 0000 0000 		.zero	12
+ 1354      0000 0000 
+ 1354      0000 0000 
+ 1355 003a 0000      		.word	0
+ 1356 003c 0000      		.word	0
+ 1357 003e 0000      		.word	gs(VirtualDesktop)
+ 1358 0040 0000      		.word	0
+ 1359 0042 0000 0000 		.zero	12
+ 1359      0000 0000 
+ 1359      0000 0000 
+ 1360 004e 0000      		.word	0
+ 1361               	.global	keymaps
+ 1362               		.section	.progmem.data.keymaps,"a"
+ 1365               	keymaps:
+ 1366 0000 2E00      		.word	46
+ 1367 0002 1E00      		.word	30
+ 1368 0004 1F00      		.word	31
+ 1369 0006 2000      		.word	32
+ 1370 0008 2100      		.word	33
+ 1371 000a 2200      		.word	34
+ 1372 000c 2B00      		.word	43
+ 1373 000e 1400      		.word	20
+ 1374 0010 1A00      		.word	26
+ 1375 0012 0800      		.word	8
+ 1376 0014 1500      		.word	21
+ 1377 0016 1700      		.word	23
+ 1378 0018 2800      		.word	40
+ 1379 001a 0400      		.word	4
+ 1380 001c 1600      		.word	22
+ 1381 001e 0700      		.word	7
+ 1382 0020 0900      		.word	9
+ 1383 0022 0A00      		.word	10
+ 1384 0024 E100      		.word	225
+ 1385 0026 1D00      		.word	29
+ 1386 0028 1B00      		.word	27
+ 1387 002a 0600      		.word	6
+ 1388 002c 1900      		.word	25
+ 1389 002e 0500      		.word	5
+ 1390 0030 2961      		.word	24873
+ 1391 0032 E200      		.word	226
+ 1392 0034 E300      		.word	227
+ 1393 0036 5000      		.word	80
+ 1394 0038 4F00      		.word	79
+ 1395 003a 0100      		.word	1
+ 1396 003c DD5C      		.word	23773
+ 1397 003e E000      		.word	224
+ 1398 0040 4E00      		.word	78
+ 1399 0042 4B00      		.word	75
+ 1400 0044 0000      		.word	0
+ 1401 0046 0000      		.word	0
+ 1402 0048 E100      		.word	225
+ 1403 004a 2A00      		.word	42
+ 1404 004c 0000      		.word	0
+ 1405 004e 0000      		.word	0
+ 1406 0050 0000      		.word	0
+ 1407 0052 0000      		.word	0
+ 1408 0054 2D00      		.word	45
+ 1409 0056 2700      		.word	39
+ 1410 0058 2600      		.word	38
+ 1411 005a 2500      		.word	37
+ 1412 005c 2400      		.word	36
+ 1413 005e 2300      		.word	35
+ 1414 0060 3100      		.word	49
+ 1415 0062 1300      		.word	19
+ 1416 0064 1200      		.word	18
+ 1417 0066 0C00      		.word	12
+ 1418 0068 1800      		.word	24
+ 1419 006a 1C00      		.word	28
+ 1420 006c 2800      		.word	40
+ 1421 006e 3300      		.word	51
+ 1422 0070 0F00      		.word	15
+ 1423 0072 0E00      		.word	14
+ 1424 0074 0D00      		.word	13
+ 1425 0076 0B00      		.word	11
+ 1426 0078 3500      		.word	53
+ 1427 007a 3800      		.word	56
+ 1428 007c 3700      		.word	55
+ 1429 007e 3600      		.word	54
+ 1430 0080 1000      		.word	16
+ 1431 0082 1100      		.word	17
+ 1432 0084 3400      		.word	52
+ 1433 0086 5100      		.word	81
+ 1434 0088 5200      		.word	82
+ 1435 008a 4F00      		.word	79
+ 1436 008c 5000      		.word	80
+ 1437 008e 0100      		.word	1
+ 1438 0090 DE5C      		.word	23774
+ 1439 0092 4C00      		.word	76
+ 1440 0094 4A00      		.word	74
+ 1441 0096 3500      		.word	53
+ 1442 0098 0000      		.word	0
+ 1443 009a 0000      		.word	0
+ 1444 009c 2800      		.word	40
+ 1445 009e 2C00      		.word	44
+ 1446 00a0 0000      		.word	0
+ 1447 00a2 0000      		.word	0
+ 1448 00a4 0000      		.word	0
+ 1449 00a6 0000      		.word	0
+ 1450 00a8 2E00      		.word	46
+ 1451 00aa 1E00      		.word	30
+ 1452 00ac 1F00      		.word	31
+ 1453 00ae 2000      		.word	32
+ 1454 00b0 2100      		.word	33
+ 1455 00b2 2200      		.word	34
+ 1456 00b4 2B45      		.word	17707
+ 1457 00b6 1400      		.word	20
+ 1458 00b8 1A00      		.word	26
+ 1459 00ba 0900      		.word	9
+ 1460 00bc 1300      		.word	19
+ 1461 00be 0A00      		.word	10
+ 1462 00c0 2840      		.word	16424
+ 1463 00c2 0400      		.word	4
+ 1464 00c4 1500      		.word	21
+ 1465 00c6 1600      		.word	22
+ 1466 00c8 1700      		.word	23
+ 1467 00ca 0700      		.word	7
+ 1468 00cc E100      		.word	225
+ 1469 00ce 1D00      		.word	29
+ 1470 00d0 1B00      		.word	27
+ 1471 00d2 0600      		.word	6
+ 1472 00d4 1900      		.word	25
+ 1473 00d6 0500      		.word	5
+ 1474 00d8 2961      		.word	24873
+ 1475 00da E200      		.word	226
+ 1476 00dc E300      		.word	227
+ 1477 00de 5000      		.word	80
+ 1478 00e0 4F00      		.word	79
+ 1479 00e2 2A00      		.word	42
+ 1480 00e4 DD5C      		.word	23773
+ 1481 00e6 E000      		.word	224
+ 1482 00e8 4E00      		.word	78
+ 1483 00ea 4B00      		.word	75
+ 1484 00ec 0000      		.word	0
+ 1485 00ee 0000      		.word	0
+ 1486 00f0 E100      		.word	225
+ 1487 00f2 2A00      		.word	42
+ 1488 00f4 0000      		.word	0
+ 1489 00f6 0000      		.word	0
+ 1490 00f8 0000      		.word	0
+ 1491 00fa 0000      		.word	0
+ 1492 00fc 2D00      		.word	45
+ 1493 00fe 2700      		.word	39
+ 1494 0100 2600      		.word	38
+ 1495 0102 2500      		.word	37
+ 1496 0104 2400      		.word	36
+ 1497 0106 2300      		.word	35
+ 1498 0108 3100      		.word	49
+ 1499 010a 3300      		.word	51
+ 1500 010c 1C00      		.word	28
+ 1501 010e 1800      		.word	24
+ 1502 0110 0F00      		.word	15
+ 1503 0112 0D00      		.word	13
+ 1504 0114 2800      		.word	40
+ 1505 0116 1200      		.word	18
+ 1506 0118 0C00      		.word	12
+ 1507 011a 0800      		.word	8
+ 1508 011c 1100      		.word	17
+ 1509 011e 0B00      		.word	11
+ 1510 0120 3500      		.word	53
+ 1511 0122 3800      		.word	56
+ 1512 0124 3700      		.word	55
+ 1513 0126 3600      		.word	54
+ 1514 0128 1000      		.word	16
+ 1515 012a 0E00      		.word	14
+ 1516 012c 3400      		.word	52
+ 1517 012e 5100      		.word	81
+ 1518 0130 5200      		.word	82
+ 1519 0132 4F00      		.word	79
+ 1520 0134 5000      		.word	80
+ 1521 0136 2C00      		.word	44
+ 1522 0138 DE5C      		.word	23774
+ 1523 013a 4C00      		.word	76
+ 1524 013c 4A00      		.word	74
+ 1525 013e 3500      		.word	53
+ 1526 0140 0000      		.word	0
+ 1527 0142 0000      		.word	0
+ 1528 0144 2800      		.word	40
+ 1529 0146 2C00      		.word	44
+ 1530 0148 0000      		.word	0
+ 1531 014a 0000      		.word	0
+ 1532 014c 0000      		.word	0
+ 1533 014e 0000      		.word	0
+ 1534 0150 2E00      		.word	46
+ 1535 0152 1E00      		.word	30
+ 1536 0154 1F00      		.word	31
+ 1537 0156 2000      		.word	32
+ 1538 0158 2100      		.word	33
+ 1539 015a 2200      		.word	34
+ 1540 015c 2B00      		.word	43
+ 1541 015e 3400      		.word	52
+ 1542 0160 3600      		.word	54
+ 1543 0162 3700      		.word	55
+ 1544 0164 1300      		.word	19
+ 1545 0166 1C00      		.word	28
+ 1546 0168 2961      		.word	24873
+ 1547 016a 0400      		.word	4
+ 1548 016c 1200      		.word	18
+ 1549 016e 0800      		.word	8
+ 1550 0170 1800      		.word	24
+ 1551 0172 0C00      		.word	12
+ 1552 0174 E100      		.word	225
+ 1553 0176 3300      		.word	51
+ 1554 0178 1400      		.word	20
+ 1555 017a 0D00      		.word	13
+ 1556 017c 0E00      		.word	14
+ 1557 017e 1B00      		.word	27
+ 1558 0180 2B45      		.word	17707
+ 1559 0182 E000      		.word	224
+ 1560 0184 E200      		.word	226
+ 1561 0186 E300      		.word	227
+ 1562 0188 DD5C      		.word	23773
+ 1563 018a 2C00      		.word	44
+ 1564 018c DD5C      		.word	23773
+ 1565 018e E000      		.word	224
+ 1566 0190 4E00      		.word	78
+ 1567 0192 4B00      		.word	75
+ 1568 0194 0000      		.word	0
+ 1569 0196 0000      		.word	0
+ 1570 0198 E100      		.word	225
+ 1571 019a 2A00      		.word	42
+ 1572 019c 0000      		.word	0
+ 1573 019e 0000      		.word	0
+ 1574 01a0 0000      		.word	0
+ 1575 01a2 0000      		.word	0
+ 1576 01a4 2D00      		.word	45
+ 1577 01a6 2700      		.word	39
+ 1578 01a8 2600      		.word	38
+ 1579 01aa 2500      		.word	37
+ 1580 01ac 2400      		.word	36
+ 1581 01ae 2300      		.word	35
+ 1582 01b0 2D00      		.word	45
+ 1583 01b2 0F00      		.word	15
+ 1584 01b4 1500      		.word	21
+ 1585 01b6 0600      		.word	6
+ 1586 01b8 0A00      		.word	10
+ 1587 01ba 0900      		.word	9
+ 1588 01bc 3800      		.word	56
+ 1589 01be 1600      		.word	22
+ 1590 01c0 1100      		.word	17
+ 1591 01c2 1700      		.word	23
+ 1592 01c4 0B00      		.word	11
+ 1593 01c6 0700      		.word	7
+ 1594 01c8 2840      		.word	16424
+ 1595 01ca 1D00      		.word	29
+ 1596 01cc 1900      		.word	25
+ 1597 01ce 1A00      		.word	26
+ 1598 01d0 1000      		.word	16
+ 1599 01d2 0500      		.word	5
+ 1600 01d4 4F00      		.word	79
+ 1601 01d6 5200      		.word	82
+ 1602 01d8 5100      		.word	81
+ 1603 01da 5000      		.word	80
+ 1604 01dc 5200      		.word	82
+ 1605 01de 2A00      		.word	42
+ 1606 01e0 DE5C      		.word	23774
+ 1607 01e2 4C00      		.word	76
+ 1608 01e4 4A00      		.word	74
+ 1609 01e6 3500      		.word	53
+ 1610 01e8 0000      		.word	0
+ 1611 01ea 0000      		.word	0
+ 1612 01ec 2800      		.word	40
+ 1613 01ee 2C00      		.word	44
+ 1614 01f0 0000      		.word	0
+ 1615 01f2 0000      		.word	0
+ 1616 01f4 0000      		.word	0
+ 1617 01f6 0000      		.word	0
+ 1618 01f8 0100      		.word	1
+ 1619 01fa 3A00      		.word	58
+ 1620 01fc 3B00      		.word	59
+ 1621 01fe 3C00      		.word	60
+ 1622 0200 3D00      		.word	61
+ 1623 0202 3E00      		.word	62
+ 1624 0204 0100      		.word	1
+ 1625 0206 1E02      		.word	542
+ 1626 0208 1F02      		.word	543
+ 1627 020a 2F02      		.word	559
+ 1628 020c 3002      		.word	560
+ 1629 020e 3102      		.word	561
+ 1630 0210 0100      		.word	1
+ 1631 0212 2002      		.word	544
+ 1632 0214 2102      		.word	545
+ 1633 0216 2602      		.word	550
+ 1634 0218 2702      		.word	551
+ 1635 021a 3500      		.word	53
+ 1636 021c 0100      		.word	1
+ 1637 021e 2202      		.word	546
+ 1638 0220 2302      		.word	547
+ 1639 0222 2F00      		.word	47
+ 1640 0224 3000      		.word	48
+ 1641 0226 3502      		.word	565
+ 1642 0228 005C      		.word	23552
+ 1643 022a 0100      		.word	1
+ 1644 022c 0100      		.word	1
+ 1645 022e 0100      		.word	1
+ 1646 0230 0100      		.word	1
+ 1647 0232 0100      		.word	1
+ 1648 0234 DD5C      		.word	23773
+ 1649 0236 E000      		.word	224
+ 1650 0238 4E00      		.word	78
+ 1651 023a 4B00      		.word	75
+ 1652 023c 0000      		.word	0
+ 1653 023e 0000      		.word	0
+ 1654 0240 E100      		.word	225
+ 1655 0242 2A00      		.word	42
+ 1656 0244 0000      		.word	0
+ 1657 0246 0000      		.word	0
+ 1658 0248 0000      		.word	0
+ 1659 024a 0000      		.word	0
+ 1660 024c 4400      		.word	68
+ 1661 024e 4300      		.word	67
+ 1662 0250 4200      		.word	66
+ 1663 0252 4100      		.word	65
+ 1664 0254 4000      		.word	64
+ 1665 0256 3F00      		.word	63
+ 1666 0258 4500      		.word	69
+ 1667 025a 2502      		.word	549
+ 1668 025c 2600      		.word	38
+ 1669 025e 2500      		.word	37
+ 1670 0260 2400      		.word	36
+ 1671 0262 5200      		.word	82
+ 1672 0264 0100      		.word	1
+ 1673 0266 2E02      		.word	558
+ 1674 0268 2300      		.word	35
+ 1675 026a 2200      		.word	34
+ 1676 026c 2100      		.word	33
+ 1677 026e 5100      		.word	81
+ 1678 0270 0100      		.word	1
+ 1679 0272 3100      		.word	49
+ 1680 0274 2000      		.word	32
+ 1681 0276 1F00      		.word	31
+ 1682 0278 1E00      		.word	30
+ 1683 027a 2402      		.word	548
+ 1684 027c 0100      		.word	1
+ 1685 027e 2E00      		.word	46
+ 1686 0280 2700      		.word	39
+ 1687 0282 3700      		.word	55
+ 1688 0284 0100      		.word	1
+ 1689 0286 0100      		.word	1
+ 1690 0288 DE5C      		.word	23774
+ 1691 028a 4C00      		.word	76
+ 1692 028c 4A00      		.word	74
+ 1693 028e 3500      		.word	53
+ 1694 0290 0000      		.word	0
+ 1695 0292 0000      		.word	0
+ 1696 0294 2800      		.word	40
+ 1697 0296 2C00      		.word	44
+ 1698 0298 0000      		.word	0
+ 1699 029a 0000      		.word	0
+ 1700 029c 0000      		.word	0
+ 1701 029e 0000      		.word	0
+ 1702 02a0 3500      		.word	53
+ 1703 02a2 1E00      		.word	30
+ 1704 02a4 1F00      		.word	31
+ 1705 02a6 2000      		.word	32
+ 1706 02a8 2100      		.word	33
+ 1707 02aa 2200      		.word	34
+ 1708 02ac 2500      		.word	37
+ 1709 02ae 1E00      		.word	30
+ 1710 02b0 0330      		.word	12291
+ 1711 02b2 1E00      		.word	30
+ 1712 02b4 1E00      		.word	30
+ 1713 02b6 1E00      		.word	30
+ 1714 02b8 2500      		.word	37
+ 1715 02ba 1E00      		.word	30
+ 1716 02bc 1E00      		.word	30
+ 1717 02be 1E00      		.word	30
+ 1718 02c0 1E00      		.word	30
+ 1719 02c2 C15C      		.word	23745
+ 1720 02c4 2500      		.word	37
+ 1721 02c6 1E00      		.word	30
+ 1722 02c8 1E00      		.word	30
+ 1723 02ca 1E00      		.word	30
+ 1724 02cc 1E00      		.word	30
+ 1725 02ce C05C      		.word	23744
+ 1726 02d0 005C      		.word	23552
+ 1727 02d2 1E00      		.word	30
+ 1728 02d4 1E00      		.word	30
+ 1729 02d6 1E00      		.word	30
+ 1730 02d8 1E00      		.word	30
+ 1731 02da 0100      		.word	1
+ 1732 02dc DD5C      		.word	23773
+ 1733 02de E000      		.word	224
+ 1734 02e0 4E00      		.word	78
+ 1735 02e2 4B00      		.word	75
+ 1736 02e4 0000      		.word	0
+ 1737 02e6 0000      		.word	0
+ 1738 02e8 E100      		.word	225
+ 1739 02ea 2A00      		.word	42
+ 1740 02ec 0000      		.word	0
+ 1741 02ee 0000      		.word	0
+ 1742 02f0 0000      		.word	0
+ 1743 02f2 0000      		.word	0
+ 1744 02f4 2D00      		.word	45
+ 1745 02f6 2700      		.word	39
+ 1746 02f8 2600      		.word	38
+ 1747 02fa 2500      		.word	37
+ 1748 02fc 2400      		.word	36
+ 1749 02fe 2300      		.word	35
+ 1750 0300 0000      		.word	0
+ 1751 0302 5600      		.word	86
+ 1752 0304 2300      		.word	35
+ 1753 0306 2200      		.word	34
+ 1754 0308 2100      		.word	33
+ 1755 030a 0000      		.word	0
+ 1756 030c 0000      		.word	0
+ 1757 030e 5700      		.word	87
+ 1758 0310 2000      		.word	32
+ 1759 0312 1F00      		.word	31
+ 1760 0314 1E00      		.word	30
+ 1761 0316 0000      		.word	0
+ 1762 0318 0000      		.word	0
+ 1763 031a 0000      		.word	0
+ 1764 031c 3700      		.word	55
+ 1765 031e 2700      		.word	39
+ 1766 0320 2700      		.word	39
+ 1767 0322 C05C      		.word	23744
+ 1768 0324 005C      		.word	23552
+ 1769 0326 0000      		.word	0
+ 1770 0328 0000      		.word	0
+ 1771 032a 5500      		.word	85
+ 1772 032c 5400      		.word	84
+ 1773 032e 0000      		.word	0
+ 1774 0330 DE5C      		.word	23774
+ 1775 0332 4C00      		.word	76
+ 1776 0334 4A00      		.word	74
+ 1777 0336 3500      		.word	53
+ 1778 0338 0000      		.word	0
+ 1779 033a 0000      		.word	0
+ 1780 033c 2800      		.word	40
+ 1781 033e 2C00      		.word	44
+ 1782 0340 0000      		.word	0
+ 1783 0342 0000      		.word	0
+ 1784 0344 0000      		.word	0
+ 1785 0346 0000      		.word	0
+ 1786 0348 0000 0000 		.zero	1848
+ 1786      0000 0000 
+ 1786      0000 0000 
+ 1786      0000 0000 
+ 1786      0000 0000 
+ 1787 0a80 DB5C      		.word	23771
+ 1788 0a82 C05C      		.word	23744
+ 1789 0a84 C15C      		.word	23745
+ 1790 0a86 C25C      		.word	23746
+ 1791 0a88 C45C      		.word	23748
+ 1792 0a8a C35C      		.word	23747
+ 1793 0a8c CB5C      		.word	23755
+ 1794 0a8e CC5C      		.word	23756
+ 1795 0a90 CD5C      		.word	23757
+ 1796 0a92 CE5C      		.word	23758
+ 1797 0a94 0100      		.word	1
+ 1798 0a96 0100      		.word	1
+ 1799 0a98 CF5C      		.word	23759
+ 1800 0a9a D05C      		.word	23760
+ 1801 0a9c D15C      		.word	23761
+ 1802 0a9e D25C      		.word	23762
+ 1803 0aa0 0100      		.word	1
+ 1804 0aa2 0100      		.word	1
+ 1805 0aa4 0100      		.word	1
+ 1806 0aa6 0100      		.word	1
+ 1807 0aa8 0100      		.word	1
+ 1808 0aaa 0100      		.word	1
+ 1809 0aac 0100      		.word	1
+ 1810 0aae 0100      		.word	1
+ 1811 0ab0 1E00      		.word	30
+ 1812 0ab2 1F00      		.word	31
+ 1813 0ab4 2000      		.word	32
+ 1814 0ab6 2100      		.word	33
+ 1815 0ab8 0100      		.word	1
+ 1816 0aba 0100      		.word	1
+ 1817 0abc 0100      		.word	1
+ 1818 0abe 0100      		.word	1
+ 1819 0ac0 0100      		.word	1
+ 1820 0ac2 0100      		.word	1
+ 1821 0ac4 0000      		.word	0
+ 1822 0ac6 0000      		.word	0
+ 1823 0ac8 0100      		.word	1
+ 1824 0aca 0100      		.word	1
+ 1825 0acc 0000      		.word	0
+ 1826 0ace 0000      		.word	0
+ 1827 0ad0 0000      		.word	0
+ 1828 0ad2 0000      		.word	0
+ 1829 0ad4 0100      		.word	1
+ 1830 0ad6 0100      		.word	1
+ 1831 0ad8 C75C      		.word	23751
+ 1832 0ada C85C      		.word	23752
+ 1833 0adc C55C      		.word	23749
+ 1834 0ade C65C      		.word	23750
+ 1835 0ae0 0100      		.word	1
+ 1836 0ae2 0100      		.word	1
+ 1837 0ae4 0100      		.word	1
+ 1838 0ae6 0100      		.word	1
+ 1839 0ae8 0100      		.word	1
+ 1840 0aea 0100      		.word	1
+ 1841 0aec 0100      		.word	1
+ 1842 0aee 0100      		.word	1
+ 1843 0af0 0100      		.word	1
+ 1844 0af2 0100      		.word	1
+ 1845 0af4 0100      		.word	1
+ 1846 0af6 0100      		.word	1
+ 1847 0af8 0100      		.word	1
+ 1848 0afa 0100      		.word	1
+ 1849 0afc 0100      		.word	1
+ 1850 0afe 0100      		.word	1
+ 1851 0b00 0100      		.word	1
+ 1852 0b02 0100      		.word	1
+ 1853 0b04 0100      		.word	1
+ 1854 0b06 0100      		.word	1
+ 1855 0b08 2500      		.word	37
+ 1856 0b0a 2400      		.word	36
+ 1857 0b0c 2300      		.word	35
+ 1858 0b0e 2200      		.word	34
+ 1859 0b10 0100      		.word	1
+ 1860 0b12 0100      		.word	1
+ 1861 0b14 0100      		.word	1
+ 1862 0b16 0100      		.word	1
+ 1863 0b18 0000      		.word	0
+ 1864 0b1a 0000      		.word	0
+ 1865 0b1c 0100      		.word	1
+ 1866 0b1e 0100      		.word	1
+ 1867 0b20 0000      		.word	0
+ 1868 0b22 0000      		.word	0
+ 1869 0b24 0000      		.word	0
+ 1870 0b26 0000      		.word	0
+ 1871               		.text
+ 1872               	.Letext0:
+ 1873               		.file 2 "/usr/local/Cellar/avr-gcc@8/8.3.0_1/avr/include/stdint.h"
+ 1874               		.file 3 "/usr/local/Cellar/avr-gcc@8/8.3.0_1/lib/avr-gcc/8/gcc/avr/8.3.0/include/stddef.h"
+ 1875               		.file 4 "./tmk_core/common/keyboard.h"
+ 1876               		.file 5 "./tmk_core/common/keycode.h"
+ 1877               		.file 6 "./tmk_core/common/action_code.h"
+ 1878               		.file 7 "./tmk_core/common/action_macro.h"
+ 1879               		.file 8 "./tmk_core/common/action.h"
+ 1880               		.file 9 "./tmk_core/common/report.h"
+ 1881               		.file 10 "./tmk_core/common/host.h"
+ 1882               		.file 11 "./tmk_core/common/debug.h"
+ 1883               		.file 12 "./quantum/keycode_config.h"
+ 1884               		.file 13 "./quantum/quantum_keycodes.h"
+ 1885               		.file 14 "./quantum/keymap.h"
+ 1886               		.file 15 "./quantum/rgblight_types.h"
+ 1887               		.file 16 "./quantum/rgblight.h"
+ 1888               		.file 17 "./tmk_core/common/action_layer.h"
+ 1889               		.file 18 "./tmk_core/common/timer.h"
+ 1890               		.file 19 "./tmk_core/common/action_util.h"
+ 1891               		.file 20 "/usr/local/Cellar/avr-gcc@8/8.3.0_1/avr/include/stdlib.h"
+ 1892               		.file 21 "./quantum/process_keycode/process_tap_dance.h"
+ 1893               		.file 22 "./quantum/quantum.h"
+ 1894               		.file 23 "./tmk_core/common/eeconfig.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 keymap.c
-     /tmp/ccqEz0BV.s:2      *ABS*:000000000000003e __SP_H__
-     /tmp/ccqEz0BV.s:3      *ABS*:000000000000003d __SP_L__
-     /tmp/ccqEz0BV.s:4      *ABS*:000000000000003f __SREG__
-     /tmp/ccqEz0BV.s:5      *ABS*:0000000000000000 __tmp_reg__
-     /tmp/ccqEz0BV.s:6      *ABS*:0000000000000001 __zero_reg__
-     /tmp/ccqEz0BV.s:13     .text.cmd_commands:0000000000000000 cmd_commands
-     /tmp/ccqEz0BV.s:891    .progmem.data.__m.3346:0000000000000000 __m.3346
-     /tmp/ccqEz0BV.s:878    .progmem.data.__m.3348:0000000000000000 __m.3348
-     /tmp/ccqEz0BV.s:861    .progmem.data.__m.3350:0000000000000000 __m.3350
-     /tmp/ccqEz0BV.s:54     .text.cmd:0000000000000000 cmd
-     /tmp/ccqEz0BV.s:828    .progmem.data.__m.3356:0000000000000000 __m.3356
-     /tmp/ccqEz0BV.s:739    .progmem.data.__m.3358:0000000000000000 __m.3358
-     /tmp/ccqEz0BV.s:676    .progmem.data.__m.3360:0000000000000000 __m.3360
-     /tmp/ccqEz0BV.s:94     .text.VirtualDesktop:0000000000000000 VirtualDesktop
-     /tmp/ccqEz0BV.s:659    .progmem.data.__m.3370:0000000000000000 __m.3370
-     /tmp/ccqEz0BV.s:642    .progmem.data.__m.3372:0000000000000000 __m.3372
-     /tmp/ccqEz0BV.s:131    .text.SLSH_BSLSH:0000000000000000 SLSH_BSLSH
-     /tmp/ccqEz0BV.s:170    .text.persistent_default_layer_set:0000000000000000 persistent_default_layer_set
-     /tmp/ccqEz0BV.s:209    .text.action_get_macro:0000000000000000 action_get_macro
-     /tmp/ccqEz0BV.s:1152   .progmem.data.__c.3308:0000000000000000 __c.3308
-     /tmp/ccqEz0BV.s:1147   .progmem.data.__c.3311:0000000000000000 __c.3311
-     /tmp/ccqEz0BV.s:1079   .progmem.data.__c.3325:0000000000000000 __c.3325
-     /tmp/ccqEz0BV.s:1074   .progmem.data.__c.3328:0000000000000000 __c.3328
-     /tmp/ccqEz0BV.s:904    .progmem.data.__c.3340:0000000000000000 __c.3340
-     /tmp/ccqEz0BV.s:1210   .progmem.data.__m.3302:0000000000000000 __m.3302
-     /tmp/ccqEz0BV.s:1157   .progmem.data.__m.3305:0000000000000000 __m.3305
-     /tmp/ccqEz0BV.s:1124   .progmem.data.__m.3314:0000000000000000 __m.3314
-     /tmp/ccqEz0BV.s:1115   .progmem.data.__m.3318:0000000000000000 __m.3318
-     /tmp/ccqEz0BV.s:1084   .progmem.data.__m.3322:0000000000000000 __m.3322
-     /tmp/ccqEz0BV.s:1019   .progmem.data.__m.3331:0000000000000000 __m.3331
-     /tmp/ccqEz0BV.s:964    .progmem.data.__m.3334:0000000000000000 __m.3334
-     /tmp/ccqEz0BV.s:909    .progmem.data.__m.3337:0000000000000000 __m.3337
-     /tmp/ccqEz0BV.s:457    .text.matrix_init_user:0000000000000000 matrix_init_user
-     /tmp/ccqEz0BV.s:472    .text.matrix_scan_user:0000000000000000 matrix_scan_user
-     /tmp/ccqEz0BV.s:487    .text.process_record_user:0000000000000000 process_record_user
-     /tmp/ccqEz0BV.s:1224   .data.tap_dance_actions:0000000000000000 tap_dance_actions
-     /tmp/ccqEz0BV.s:1249   .progmem.data.keymaps:0000000000000000 keymaps
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccBipQdv.s:2      *ABS*:000000000000003e __SP_H__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccBipQdv.s:3      *ABS*:000000000000003d __SP_L__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccBipQdv.s:4      *ABS*:000000000000003f __SREG__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccBipQdv.s:5      *ABS*:0000000000000000 __tmp_reg__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccBipQdv.s:6      *ABS*:0000000000000001 __zero_reg__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccBipQdv.s:13     .text.cmd_commands:0000000000000000 cmd_commands
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccBipQdv.s:1007   .progmem.data.__m.3446:0000000000000000 __m.3446
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccBipQdv.s:994    .progmem.data.__m.3448:0000000000000000 __m.3448
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccBipQdv.s:977    .progmem.data.__m.3450:0000000000000000 __m.3450
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccBipQdv.s:73     .text.cmd:0000000000000000 cmd
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccBipQdv.s:944    .progmem.data.__m.3456:0000000000000000 __m.3456
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccBipQdv.s:855    .progmem.data.__m.3458:0000000000000000 __m.3458
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccBipQdv.s:792    .progmem.data.__m.3460:0000000000000000 __m.3460
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccBipQdv.s:132    .text.VirtualDesktop:0000000000000000 VirtualDesktop
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccBipQdv.s:775    .progmem.data.__m.3470:0000000000000000 __m.3470
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccBipQdv.s:758    .progmem.data.__m.3472:0000000000000000 __m.3472
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccBipQdv.s:185    .text.SLSH_BSLSH:0000000000000000 SLSH_BSLSH
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccBipQdv.s:226    .text.persistent_default_layer_set:0000000000000000 persistent_default_layer_set
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccBipQdv.s:267    .text.action_get_macro:0000000000000000 action_get_macro
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccBipQdv.s:1268   .progmem.data.__c.3408:0000000000000000 __c.3408
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccBipQdv.s:1263   .progmem.data.__c.3411:0000000000000000 __c.3411
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccBipQdv.s:1195   .progmem.data.__c.3425:0000000000000000 __c.3425
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccBipQdv.s:1190   .progmem.data.__c.3428:0000000000000000 __c.3428
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccBipQdv.s:1020   .progmem.data.__c.3440:0000000000000000 __c.3440
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccBipQdv.s:1326   .progmem.data.__m.3402:0000000000000000 __m.3402
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccBipQdv.s:1273   .progmem.data.__m.3405:0000000000000000 __m.3405
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccBipQdv.s:1240   .progmem.data.__m.3414:0000000000000000 __m.3414
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccBipQdv.s:1231   .progmem.data.__m.3418:0000000000000000 __m.3418
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccBipQdv.s:1200   .progmem.data.__m.3422:0000000000000000 __m.3422
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccBipQdv.s:1135   .progmem.data.__m.3431:0000000000000000 __m.3431
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccBipQdv.s:1080   .progmem.data.__m.3434:0000000000000000 __m.3434
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccBipQdv.s:1025   .progmem.data.__m.3437:0000000000000000 __m.3437
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccBipQdv.s:555    .text.matrix_init_user:0000000000000000 matrix_init_user
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccBipQdv.s:572    .text.matrix_scan_user:0000000000000000 matrix_scan_user
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccBipQdv.s:587    .text.process_record_user:0000000000000000 process_record_user
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccBipQdv.s:1340   .data.tap_dance_actions:0000000000000000 tap_dance_actions
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccBipQdv.s:1365   .progmem.data.keymaps:0000000000000000 keymaps
 
 UNDEFINED SYMBOLS
 action_macro_play
@@ -2255,8 +2473,8 @@ unregister_code
 eeconfig_update_default_layer
 default_layer_set
 __tablejump2__
+send_string_P
 layer_on
 layer_off
-send_string_P
 update_tri_layer
 __do_copy_data

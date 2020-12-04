@@ -10,7 +10,7 @@
   10               		.section	.text.matrix_init_kb,"ax",@progbits
   11               	.global	matrix_init_kb
   13               	matrix_init_kb:
-  14               	.LFB13:
+  14               	.LFB17:
   15               		.file 1 "keyboards/Dactylv2led/rev2/rev2.c"
    1:keyboards/Dactylv2led/rev2/rev2.c **** #include "Dactyl.h"
    2:keyboards/Dactylv2led/rev2/rev2.c **** 
@@ -27,7 +27,7 @@
   13:keyboards/Dactylv2led/rev2/rev2.c **** #endif
   14:keyboards/Dactylv2led/rev2/rev2.c **** 
   15:keyboards/Dactylv2led/rev2/rev2.c **** void matrix_init_kb(void) {
-  16               		.loc 1 15 0
+  16               		.loc 1 15 27 view -0
   17               		.cfi_startproc
   18               	/* prologue: function */
   19               	/* frame size = 0 */
@@ -48,42 +48,61 @@
   28:keyboards/Dactylv2led/rev2/rev2.c ****     // PORTB &= ~(1<<0);
   29:keyboards/Dactylv2led/rev2/rev2.c **** 
   30:keyboards/Dactylv2led/rev2/rev2.c **** 	matrix_init_user();
-  22               		.loc 1 30 0
+  22               		.loc 1 30 2 view .LVU1
   23 0000 0C94 0000 		jmp matrix_init_user
   24               	.LVL0:
   25               		.cfi_endproc
-  26               	.LFE13:
+  26               	.LFE17:
   28               		.section	.text.shutdown_user,"ax",@progbits
   29               	.global	shutdown_user
   31               	shutdown_user:
-  32               	.LFB14:
+  32               	.LFB18:
   31:keyboards/Dactylv2led/rev2/rev2.c **** };
   32:keyboards/Dactylv2led/rev2/rev2.c **** 
   33:keyboards/Dactylv2led/rev2/rev2.c **** void shutdown_user(void) {
-  33               		.loc 1 33 0
+  33               		.loc 1 33 26 view -0
   34               		.cfi_startproc
   35               	/* prologue: function */
   36               	/* frame size = 0 */
   37               	/* stack size = 0 */
   38               	.L__stack_usage = 0
-  39 0000 0895      		ret
-  40               		.cfi_endproc
-  41               	.LFE14:
-  43               		.text
-  44               	.Letext0:
-  45               		.file 2 "./tmk_core/common/report.h"
-  46               		.file 3 "/usr/lib/avr/include/stdint.h"
-  47               		.file 4 "./tmk_core/common/action_util.h"
-  48               		.file 5 "./quantum/quantum.h"
+  34:keyboards/Dactylv2led/rev2/rev2.c ****     #ifdef AUDIO_ENABLE
+  35:keyboards/Dactylv2led/rev2/rev2.c ****         PLAY_SONG(tone_goodbye);
+  36:keyboards/Dactylv2led/rev2/rev2.c **** 	_delay_ms(150);
+  37:keyboards/Dactylv2led/rev2/rev2.c **** 	stop_all_notes();
+  38:keyboards/Dactylv2led/rev2/rev2.c ****     #endif
+  39:keyboards/Dactylv2led/rev2/rev2.c **** }
+  39               		.loc 1 39 1 view .LVU3
+  40               	/* epilogue start */
+  41 0000 0895      		ret
+  42               		.cfi_endproc
+  43               	.LFE18:
+  45               		.text
+  46               	.Letext0:
+  47               		.file 2 "/usr/local/Cellar/avr-gcc@8/8.3.0_1/avr/include/stdint.h"
+  48               		.file 3 "/usr/local/Cellar/avr-gcc@8/8.3.0_1/lib/avr-gcc/8/gcc/avr/8.3.0/include/stddef.h"
+  49               		.file 4 "./tmk_core/common/report.h"
+  50               		.file 5 "./tmk_core/common/host.h"
+  51               		.file 6 "./tmk_core/common/debug.h"
+  52               		.file 7 "./quantum/keycode_config.h"
+  53               		.file 8 "./quantum/keymap.h"
+  54               		.file 9 "./quantum/rgblight_types.h"
+  55               		.file 10 "./quantum/rgblight.h"
+  56               		.file 11 "./tmk_core/common/action_layer.h"
+  57               		.file 12 "./tmk_core/common/timer.h"
+  58               		.file 13 "./tmk_core/common/action_util.h"
+  59               		.file 14 "/usr/local/Cellar/avr-gcc@8/8.3.0_1/avr/include/stdlib.h"
+  60               		.file 15 "./quantum/process_keycode/process_tap_dance.h"
+  61               		.file 16 "./quantum/quantum.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 rev2.c
-     /tmp/cclMCSBt.s:2      *ABS*:000000000000003e __SP_H__
-     /tmp/cclMCSBt.s:3      *ABS*:000000000000003d __SP_L__
-     /tmp/cclMCSBt.s:4      *ABS*:000000000000003f __SREG__
-     /tmp/cclMCSBt.s:5      *ABS*:0000000000000000 __tmp_reg__
-     /tmp/cclMCSBt.s:6      *ABS*:0000000000000001 __zero_reg__
-     /tmp/cclMCSBt.s:13     .text.matrix_init_kb:0000000000000000 matrix_init_kb
-     /tmp/cclMCSBt.s:31     .text.shutdown_user:0000000000000000 shutdown_user
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccaSlV6Z.s:2      *ABS*:000000000000003e __SP_H__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccaSlV6Z.s:3      *ABS*:000000000000003d __SP_L__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccaSlV6Z.s:4      *ABS*:000000000000003f __SREG__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccaSlV6Z.s:5      *ABS*:0000000000000000 __tmp_reg__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccaSlV6Z.s:6      *ABS*:0000000000000001 __zero_reg__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccaSlV6Z.s:13     .text.matrix_init_kb:0000000000000000 matrix_init_kb
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccaSlV6Z.s:31     .text.shutdown_user:0000000000000000 shutdown_user
 
 UNDEFINED SYMBOLS
 matrix_init_user

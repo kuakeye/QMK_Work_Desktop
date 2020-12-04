@@ -66,7 +66,7 @@
   51:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 
   52:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** #define KC_UNDO LCTL(KC_Z) //undo
   53:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** #define KC_LGOFF LGUI(KC_L) //log out of comp
-  54:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** #define KC_LGON LCTL(LALT(KC_DEL)) //log into comp
+  54:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** #define KC_LGON LCTL(LALT(KC_DEL)) //log into work comp
   55:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 
   56:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** // Windows virtual desktop switching functions. Downloaded software called SylphyHornEx
   57:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** #define KC_WS0 LCTL(LGUI(KC_0))
@@ -83,388 +83,362 @@
   68:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** #define KC_WSR LCTL(LGUI(KC_RIGHT))
   69:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** #define KC_WSWAPL LCTL(LGUI(LSFT(KC_LEFT))) // swap desktop with left one (move this desktop to the
   70:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** #define KC_WSWAPR LCTL(LGUI(LSFT(KC_RIGHT))) // swap desktop with right one (move this desktop to t
-  71:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** #define KC_WSPIN LCTL(LGUI(LALT(KC_P))) // pin active window to all desktops
-  72:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** #define KC_WSNEW LCTL(LGUI(KC_D)) // move active window to created new desktop
-  73:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** #define KC_WSRNAME LCTL(LGUI(KC_R)) // rename current desktop
-  74:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 
-  75:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 
-  76:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** #define KC_LAYER2 MO(_COLEMAK)
-  77:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** #define KC_LAYER3 LT(_DVORAK, KC_SCLN)
-  78:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** #define KC_LAYER4 MO(_WINDOWSWITCH)
-  79:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 
-  80:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 
-  81:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** #define KC_X9 RGUI(KC_TAB)	//gui tab to switch desktops
-  82:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** #define KC_X10 TD(TD_VRDSK)
-  83:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 
-  84:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 
-  85:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** #define KC_XLgn M(1)
-  86:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** #define KC_EMAL M(2)
-  87:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** #define KC_WWWX M(3)
-  88:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** #define KC_NTAB M(4)
-  89:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** #define KC_0CA M(6)
-  90:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** #define KC_PASS M(10)
-  91:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** #define KC_IPCF M(11)
-  92:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** #define KC_OP M(12)
-  93:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** #define KC_OC M(13)
-  94:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** #define KC_OD M(14)
-  95:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** #define KC_TCLK M(15)
-  96:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** #define KC_ESCT MT(MOD_LCTL, KC_ESC)
-  97:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** #define KC_GUIT M(0)
-  98:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 
-  99:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
- 100:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** /* Keymap 0: Basic layer
- 101:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****  *
- 102:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****  * ,-------------------------------------------.           ,----------------------------------_----
- 103:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****  * |   =    |   1  |   2  |   3  |   4  |   5  |           |   6  |   7  |   8  |   9  |   0  |   -
- 104:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****  * |--------+------+------+------+------+------|           |------+------+------+------+------|----
- 105:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****  * |Tab\FN3 |   Q  |   W  |   F  |   P  |   G  |           |   J  |   L  |   U  |   Y  |   :  |   \
- 106:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****  * |--------+------+------+------+------+----- |           |------+------+------+------+------|----
- 107:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****  * | ENT/ADJ|   A  |   R  |   S  |   T  |   D  |           |   H  |   N  |   E  |   I  |   O  | ENT
- 108:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****  * |--------+------+------+------+------+------|           |------+------+------+------+------|----
- 109:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****  * | LShift |   Z  |   X  |   C  |   V  |   B  |           |   K  |   M  |   ,  |   .  |  /   |RShi
- 110:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****  * `--------+------+------+------+------+------'           `-------+------+------+------+------|---
- 111:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****  * |CTR     |  ALT | GUI  | Left | Right|    1                1   | LEFT | RIGHT|  UP  | DOWN  | ~L
- 112:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****  * `----------------------------------'                          `---------------------------------
- 113:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****  *				6	5		4	   3		2				2		 3		4		5		6
- 114:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****  *                                 ,-------------.       ,-------------.
- 115:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****  *                                 |   6  |   5  |       | 5    |  6     |
- 116:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****  *                          ,------|------|------|       |------+--------+------.
- 117:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****  *                          |   1  |  2    |   4  |       | 4    |        |      |
- 118:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****  *                          |Backsp|GUI   |------|       |------|    1   |    2 |
- 119:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****  *                          |  acs |TAB   |   3  |       | 3    |        |      |
- 120:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****  *                         `--------------------'       `----------------------'
- 121:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****  
- 122:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****  
- 123:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****   	
- 124:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****  */
- 125:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****  
- 126:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****  //FOR adjust layer push and hold X3(raise) and LUP (lower).
- 127:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****  //x3= lower when held and Equal ("=") when pressed
- 128:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****  //ESCT is control when held ans Esc when pressed
- 129:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****  //GUIT is window+tab.  only works on win 10
- 130:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** //		[_QWERTY] = KC_KEYMAP(
- 131:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** //	//,----+----+----+----+----+----.										,----+----+----+----+----+----.
- 132:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** //		TAB , Q  , W  , E  , R  , T  ,     									  Y  , U  , I  , O , P  ,BSLS,
- 133:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** //	//,----+----+----+----+----+----.										,----+----+----+----+----+----.
- 134:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** //		BSPC, A  , S  , D  , F  , G ,    									  H  , J  , K  , L  ,SCLN,QUOT,
- 135:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** //	//|----+----+----+----+----+----|   									|----+----+----+----+----+----|
- 136:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** //		ESC , Z  , X  , C  , V  , B  ,										  N  , M  ,COMM,DOT,SLSH,RSFT,
- 137:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** //	//|----+----+----+----+----+----|										|----+----+----+----+----+----|
- 138:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** //		LCTRL,UNDO,LALT,LGUI, A  ,										      A, RIGHT, DOWN, UP, LEFT,
- 139:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** //	//|----+----+----+----+----+----|										|----+----+----+----+----+----|
- 140:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** //	//`----+----+----+----+----+----'   									 `----+----+----+----+----+----'
- 141:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** //	//							`----+----+----+'			`----+----+----'
- 142:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** //									   A,LALT,HOME,END,			 LGUI, RCTRL,ENT, SPC,
- 143:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** //	//							`----+----+----+'			`----+----+----'
- 144:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** //									   LSFT,DEL,			PGUP,PGDN
- 145:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** //	//							`----+----+----+'			`----+----+----'
- 146:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** //
- 147:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** //	//							`----+----+----+'			`----+----+----'
- 148:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** //
- 149:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** //	),
- 150:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** //
- 151:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 
- 152:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****       [_QWERTY] = KC_KEYMAP(
- 153:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****    //,----+----+----+----+----+----.                              ,----+----+----+----+----+----.
- 154:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****       Y,Z,1,2,3,4,       5,6,7,8,9,0,
- 155:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****       TAB ,  Q  , W  , E  , R  , T  ,                                Y  , U  , I  , O , P  ,BSLS,
- 156:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****    //,----+----+----+----+----+----.                              ,----+----+----+----+----+----.
- 157:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****       BSPC, A  , S  , D  , F  , G ,                                 H  , J  , K  , L  ,LAYER3,QUOT,
- 158:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****    //|----+----+----+----+----+----|                              |----+----+----+----+----+----|
- 159:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****       ESC , Z  , X  , C  , V  , B  ,                                N  , M  ,COMM,DOT,SLSH,RSFT,
- 160:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****    //|----+----+----+----+----+----|                              |----+----+----+----+----+----|
- 161:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****       LCTRL,UNDO,LALT,LGUI, LAYER2  ,                                 LAYER2, LEFT, DOWN, UP, RIGHT
+  71:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** #define KC_WSMAWL LGUI(LALT(KC_LEFT)) // move active window to desktop on the left
+  72:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** #define KC_WSMAWR LGUI(LALT(KC_RIGHT)) // move active window to desktop on the Right
+  73:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** #define KC_WSPIN LCTL(LGUI(LALT(KC_P))) // pin active window to all desktops
+  74:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** #define KC_WSNEW LCTL(LGUI(KC_D)) // move active window to created new desktop
+  75:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** #define KC_WSRNAME LCTL(LGUI(KC_R)) // rename current desktop
+  76:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 
+  77:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 
+  78:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** #define KC_LAYER2 MO(_COLEMAK)
+  79:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** #define KC_LAYER3 LT(_DVORAK, KC_SCLN)
+  80:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** #define KC_LAYER4 MO(_WINDOWSWITCH)
+  81:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 
+  82:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 
+  83:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** #define KC_X9 RGUI(KC_TAB)	//gui tab to switch desktops
+  84:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** #define KC_X10 TD(TD_VRDSK)
+  85:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 
+  86:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 
+  87:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** #define KC_XLgn M(1)
+  88:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** #define KC_EMAL M(2)
+  89:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** #define KC_WWWX M(3)
+  90:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** #define KC_NTAB M(4)
+  91:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** #define KC_0CA M(6)
+  92:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** #define KC_PASS M(10)
+  93:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** #define KC_IPCF M(11)
+  94:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** #define KC_OP M(12)
+  95:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** #define KC_OC M(13)
+  96:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** #define KC_OD M(14)
+  97:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** #define KC_TCLK M(15)
+  98:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** #define KC_ESCT MT(MOD_LCTL, KC_ESC)
+  99:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** #define KC_GUIT M(0)
+ 100:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 
+ 101:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
+ 102:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** /* Keymap 0: Basic layer
+ 103:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****  *
+ 104:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****  * ,-------------------------------------------.           ,----------------------------------_----
+ 105:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****  * |   =    |   1  |   2  |   3  |   4  |   5  |           |   6  |   7  |   8  |   9  |   0  |   -
+ 106:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****  * |--------+------+------+------+------+------|           |------+------+------+------+------|----
+ 107:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****  * |Tab\FN3 |   Q  |   W  |   F  |   P  |   G  |           |   J  |   L  |   U  |   Y  |   :  |   \
+ 108:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****  * |--------+------+------+------+------+----- |           |------+------+------+------+------|----
+ 109:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****  * | ENT/ADJ|   A  |   R  |   S  |   T  |   D  |           |   H  |   N  |   E  |   I  |   O  | ENT
+ 110:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****  * |--------+------+------+------+------+------|           |------+------+------+------+------|----
+ 111:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****  * | LShift |   Z  |   X  |   C  |   V  |   B  |           |   K  |   M  |   ,  |   .  |  /   |RShi
+ 112:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****  * `--------+------+------+------+------+------'           `-------+------+------+------+------|---
+ 113:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****  * |CTR     |  ALT | GUI  | Left | Right|    1                1   | LEFT | RIGHT|  UP  | DOWN  | ~L
+ 114:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****  * `----------------------------------'                          `---------------------------------
+ 115:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****  *				6	5		4	   3		2				2		 3		4		5		6
+ 116:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****  *                                 ,-------------.       ,-------------.
+ 117:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****  *                                 |   6  |   5  |       | 5    |  6     |
+ 118:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****  *                          ,------|------|------|       |------+--------+------.
+ 119:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****  *                          |   1  |  2    |   4  |       | 4    |        |      |
+ 120:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****  *                          |Backsp|GUI   |------|       |------|    1   |    2 |
+ 121:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****  *                          |  acs |TAB   |   3  |       | 3    |        |      |
+ 122:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****  *                         `--------------------'       `----------------------'
+ 123:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****  */
+ 124:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****  
+ 125:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****  //FOR adjust layer push and hold X3(raise) and LUP (lower).
+ 126:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****  //x3= lower when held and Equal ("=") when pressed
+ 127:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****  //ESCT is control when held ans Esc when pressed
+ 128:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****  //GUIT is window+tab.  only works on win 10
+ 129:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 
+ 130:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 
+ 131:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****       [_QWERTY] = KC_KEYMAP(Y,Z,1,2,3,4,       5,6,7,8,9,0, //dummy values for lightcycle (Dactyl M
+ 132:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****    //,----+----+----+----+----+----.                              ,----+----+----+----+----+----.
+ 133:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****       TAB ,  Q  , W  , E  , R  , T  ,                                Y  , U  , I  , O , P  ,BSLS,
+ 134:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****    //,----+----+----+----+----+----.                              ,----+----+----+----+----+----.
+ 135:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****       BSPC, A  , S  , D  , F  , G ,                                 H  , J  , K  , L  ,LAYER3,QUOT,
+ 136:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****    //|----+----+----+----+----+----|                              |----+----+----+----+----+----|
+ 137:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****       ESC , Z  , X  , C  , V  , B  ,                                N  , M  ,COMM,DOT,SLSH,RSFT,
+ 138:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****    //|----+----+----+----+----+----|                              |----+----+----+----+----+----|
+ 139:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****       LCTRL,UNDO,LALT,LGUI, LAYER2  ,                                 LAYER2, LEFT, DOWN, UP, RIGHT
+ 140:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** //	//							`----+----+----+'			`----+----+----'
+ 141:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 							 PGDN,PGUP,LALT,LAYER4,		   RALT , LAYER4,HOME, END,
+ 142:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** //	//							`----+----+----+'			`----+----+----'
+ 143:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 									   DEL,LSFT,			ENT,SPC
+ 144:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** //	//							`----+----+----+'			`----+----+----'
+ 145:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** //
+ 146:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** //	//							`----+----+----+'			`----+----+----'
+ 147:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 
+ 148:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****    ),
+ 149:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 
+ 150:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 			[_COLEMAK] = KC_KEYMAP(Y,Z,1,2,3,4,       5,6,7,8,9,0, //dummy values for lightcycle (Dactyl Mul
+ 151:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	//,----+----+----+----+----+----. 									   ,----+----+----+----+----+----.
+ 152:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		    , EXLM, AT, LCBR, RCBR, PIPE,     								 LT  , 7  , 8  , 9 , PAST   ,MINS,
+ 153:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	//,----+----+----+----+----+----.   									 ,----+----+----+----+----+----.
+ 154:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	   UNDS, HASH, DLR, LPRN, RPRN, GRV, 									 GT  , 4 , 5  ,6   ,MINS,    EQL,
+ 155:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----| 									   |----+----+----+----+----+----|
+ 156:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		   , PERC, CIRC, LBRC, RBRC, TILDE,								 AMPR  , 1  , 2  , 3  , PPLS,    ,
+ 157:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|									    |----+----+----+----+----+----|
+ 158:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		    ,     ,     ,     ,      ,                                  ,  0 , DOT, PSLS,    ,
+ 159:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----| 									   |----+----+----+----+----+----|
+ 160:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** //	//							`----+----+----+'			`----+----+----'
+ 161:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 							 PGDN,PGUP,LALT,LAYER4,		   RALT , LAYER4,END, HOME,
  162:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** //	//							`----+----+----+'			`----+----+----'
- 163:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 							 PGDN,PGUP,END,HOME,		    LGUI, RCTRL,ENT, LAYER4,
+ 163:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 									   DEL,LSFT,			ENT,SPC
  164:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** //	//							`----+----+----+'			`----+----+----'
- 165:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 									   DEL,LSFT,			ENT,SPC
+ 165:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** //
  166:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** //	//							`----+----+----+'			`----+----+----'
- 167:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** //
- 168:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** //	//							`----+----+----+'			`----+----+----'
+ 167:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 
+ 168:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	),
  169:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 
- 170:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****    ),
- 171:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 
- 172:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 			[_COLEMAK] = KC_KEYMAP(
- 173:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	//,----+----+----+----+----+----. 									   ,----+----+----+----+----+----.
- 174:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		Y,Z,1,2,3,4,       5,6,7,8,9,0,
- 175:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		    , EXLM, AT, LCBR, RCBR, PIPE,     								 LT  , 7  , 8  , 9 , PAST   ,MINS,
- 176:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	//,----+----+----+----+----+----.   									 ,----+----+----+----+----+----.
- 177:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		UNDS, HASH, DLR, LPRN, RPRN, GRV, 									 GT  , 4 , 5  ,6   ,MINS,    EQL,
- 178:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----| 									   |----+----+----+----+----+----|
- 179:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		    , PERC, CIRC, LBRC, RBRC, TILDE,								 AMPR  , 1  , 2  , 3  , PPLS,    ,
- 180:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|									    |----+----+----+----+----+----|
- 181:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		    ,     ,     ,     ,      ,                                  ,  0 , DOT, PSLS,    ,
- 182:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----| 									   |----+----+----+----+----+----|
- 183:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** //	//							`----+----+----+'			`----+----+----'
- 184:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 							 PGDN,PGUP,END,HOME,		    LGUI, RCTRL,ENT, LAYER4,
- 185:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** //	//							`----+----+----+'			`----+----+----'
- 186:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 									   DEL,LSFT,			ENT,SPC
- 187:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** //	//							`----+----+----+'			`----+----+----'
- 188:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** //
- 189:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** //	//							`----+----+----+'			`----+----+----'
- 190:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 
- 191:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	),
- 192:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 
- 193:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	[_DVORAK] = KC_KEYMAP(
- 194:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	Y,Z,1,2,3,4,       5,6,7,8,9,0,
- 195:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|  								   |----+----+----+----+----+----|                     
- 196:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	   ,   ,    ,MS_U,   ,     ,  								       LGOFF,LGON,WH_D,    ,    ,    ,
- 197:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|  								   |----+----+----+----+----+----|
- 198:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	   ,   ,MS_L,MS_D,MS_R,    , 	                                        ,WH_R,WH_U,WH_L,    ,MPLY,
- 199:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|    							   |----+----+----+----+----+----|
- 200:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	   ,   ,    ,    ,    ,    ,                                        MPRV,MNXT,VOLD,VOLU,    ,    ,
- 201:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----| 								   |----+----+----+----+----+----|
- 202:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	   ,   ,    ,    ,    ,    ,				                            ,    ,    ,    ,
- 203:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|    							   |----+----+----+----+----+----|
- 204:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** //	//							`----+----+----+'			`----+----+----'
- 205:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 							 PGDN,PGUP,END,HOME,		    LGUI, RCTRL,ENT, LAYER4,
- 206:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** //	//							`----+----+----+'			`----+----+----'
- 207:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 									   BTN2,BTN1,			BTN2,BTN1
- 208:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** //	//							`----+----+----+'			`----+----+----'
- 209:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** //
- 210:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** //	//							`----+----+----+'			`----+----+----'
- 211:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 
- 212:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	),
- 213:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 
- 214:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		[_WINDOWSWITCH] = KC_KEYMAP(
- 215:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	Y,Z,1,2,3,4,       5,6,7,8,9,0,
- 216:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|  								   |----+----+----+----+----+----|                     
- 217:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	   ,   ,    ,    ,WSRNAME,     ,  								            , WS7, WS8, WS9,WSPIN,WSNEW,
- 218:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|  								   |----+----+----+----+----+----|
- 219:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	   ,   ,    ,    ,    ,    , 	                                        , WS4, WS5, WS6, WSL, WSR,
- 220:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|    							   |----+----+----+----+----+----|
- 221:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	   ,   ,    ,    ,    ,    ,                                            , WS1, WS2, WS3,WSWAPL,WSW
- 222:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----| 								   |----+----+----+----+----+----|
- 223:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	   ,   ,    ,    ,    ,    ,				                            ,   ,WS0,   ,
- 224:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|    							   |----+----+----+----+----+----|
- 225:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** //	//							`----+----+----+'			`----+----+----'
- 226:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 							 PGDN,PGUP,END,HOME,		    LGUI, RCTRL,ENT, LAYER4,
- 227:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** //	//							`----+----+----+'			`----+----+----'
- 228:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 									   BTN2,BTN1,			BTN2,BTN1
- 229:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** //	//							`----+----+----+'			`----+----+----'
- 230:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** //
- 231:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** //	//							`----+----+----+'			`----+----+----'
- 232:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 
- 233:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	)
- 234:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 
- 235:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** /*
- 236:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	[_LOWER] = KC_KEYMAP(
- 237:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	//,----+----+----+----+----+----.    ,----+----+----+----+----+----.
- 238:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		ESC , 1  , 2 , 3  , 4  , 5  ,      6  , 7  , 8  , 9  , 0  , EQL ,
- 239:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|
- 240:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		DEL ,CAPP,LEFT,RGHT, UP ,LBRC,     RBRC, P4 , P5 , P6 ,PLUS,PIPE,
- 241:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|
- 242:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 			,CPYP, UP ,    ,DOWN,LCBR,     RCBR, P1 , P2 , P3 ,MINS,    ,11111
- 243:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|
- 244:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 			,LEFT,DOWN,RIGHT,    ,    ,     DEL ,   , P0 ,PDOT,    ,  NLCK, 
- 245:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	//`----+----+----+----+----+----'    `----+----+----+----+----+----'
- 246:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		X0 ,LALT,LGUI, X10, LDWN ,BSPC,     SPC, UP ,QUOT,LEFT, DOWN ,RGHT,
- 247:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	//`----+----+----+----+----+----'    `----+----+----+----+----+----'
- 248:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		X3  , 1  ,REST, 3  ,    , 5  ,      6  ,    , 8  , 9 , 0  ,MINS
- 249:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	//`----+----+----+----+----+----'    `----+----+----+----+----+----'
- 250:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	),
+ 170:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	[_DVORAK] = KC_KEYMAP(Y,Z,1,2,3,4,       5,6,7,8,9,0, //dummy values for lightcycle (Dactyl Mule)
+ 171:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|  								   |----+----+----+----+----+----|                     
+ 172:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	   ,   ,    ,MS_U,   ,     ,  								       LGOFF,LGON,WH_D,    ,    ,    ,
+ 173:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|  								   |----+----+----+----+----+----|
+ 174:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	   ,   ,MS_L,MS_D,MS_R,    , 	                                        ,WH_R,WH_U,WH_L,    ,MPLY,
+ 175:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|    							   |----+----+----+----+----+----|
+ 176:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	   ,   ,    ,    ,    ,    ,                                        MPRV,MNXT,VOLD,VOLU,    ,    ,
+ 177:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----| 								   |----+----+----+----+----+----|
+ 178:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	   ,   ,    ,    ,    ,    ,				                            ,    ,    ,    ,
+ 179:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|    							   |----+----+----+----+----+----|
+ 180:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** //	//							`----+----+----+'			`----+----+----'
+ 181:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 							 PGDN,PGUP,LALT,LAYER4,		   RALT , LAYER4,END, HOME,
+ 182:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** //	//							`----+----+----+'			`----+----+----'
+ 183:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 									   BTN2,BTN1,			BTN2,BTN1
+ 184:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** //	//							`----+----+----+'			`----+----+----'
+ 185:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** //
+ 186:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** //	//							`----+----+----+'			`----+----+----'
+ 187:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	),
+ 188:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 
+ 189:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		[_WINDOWSWITCH] = KC_KEYMAP(Y,Z,1,2,3,4,       5,6,7,8,9,0, //dummy values for lightcycle (Dactyl
+ 190:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|  								   |----+----+----+----+----+----|                     
+ 191:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	  WSNEW,WSPIN,WS7, WS8,WS9,WSRNAME,  								        , WS7, WS8, WS9,WSPIN,WSNEW,
+ 192:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|  								   |----+----+----+----+----+----|
+ 193:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	   WSL , WSR, WS4, WS5, WS6,    , 	                                        , WS4, WS5, WS6, WSL, W
+ 194:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|    							   |----+----+----+----+----+----|
+ 195:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	WSWAPL,WSWAPR,WS1,WS2 ,WS3,     ,                                      , WS1, WS2, WS3,WSWAPL,WSWA
+ 196:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----| 								   |----+----+----+----+----+----|
+ 197:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	WSMAWL,WSMAWR,    ,WS0,    ,    ,				                              WS0,    ,WSMAWL,WSMAWR,
+ 198:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|    							   |----+----+----+----+----+----|
+ 199:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** //	//							`----+----+----+'			`----+----+----'
+ 200:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 							 PGDN,PGUP,LALT,LAYER4,		   RALT , LAYER4,END, HOME,
+ 201:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** //	//							`----+----+----+'			`----+----+----'
+ 202:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 									   DEL,LSFT,			ENT,SPC
+ 203:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** //	//							`----+----+----+'			`----+----+----'
+ 204:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** //
+ 205:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** //	//							`----+----+----+'			`----+----+----'
+ 206:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 
+ 207:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	)
+ 208:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 
+ 209:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** /*
+ 210:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	[_LOWER] = KC_KEYMAP(
+ 211:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	//,----+----+----+----+----+----.    ,----+----+----+----+----+----.
+ 212:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		ESC , 1  , 2 , 3  , 4  , 5  ,      6  , 7  , 8  , 9  , 0  , EQL ,
+ 213:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|
+ 214:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		DEL ,CAPP,LEFT,RGHT, UP ,LBRC,     RBRC, P4 , P5 , P6 ,PLUS,PIPE,
+ 215:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|
+ 216:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 			,CPYP, UP ,    ,DOWN,LCBR,     RCBR, P1 , P2 , P3 ,MINS,    ,11111
+ 217:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|
+ 218:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 			,LEFT,DOWN,RIGHT,    ,    ,     DEL ,   , P0 ,PDOT,    ,  NLCK, 
+ 219:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	//`----+----+----+----+----+----'    `----+----+----+----+----+----'
+ 220:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		X0 ,LALT,LGUI, X10, LDWN ,BSPC,     SPC, UP ,QUOT,LEFT, DOWN ,RGHT,
+ 221:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	//`----+----+----+----+----+----'    `----+----+----+----+----+----'
+ 222:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		X3  , 1  ,REST, 3  ,    , 5  ,      6  ,    , 8  , 9 , 0  ,MINS
+ 223:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	//`----+----+----+----+----+----'    `----+----+----+----+----+----'
+ 224:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	),
+ 225:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 
+ 226:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	[_RAISE] = KC_KEYMAP(
+ 227:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	//,----+----+----+----+----+----.    ,----+----+----+----+----+----.
+ 228:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		ESC ,EXLM, AT ,HASH,DLR ,PERC,     CIRC,AMPR,ASTR,LPRN,RPRN,    ,
+ 229:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|
+ 230:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		DEL ,MPRV,MNXT,VOLU,PGUP,UNDS,     EQL ,HOME,    ,    ,    ,BSLS,
+ 231:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|
+ 232:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		LSFT,MSTP,MPLY,VOLD,PGDN,MINS,     PLUS,END,COMM ,    ,UP ,    ,
+ 233:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|
+ 234:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		,    ,    , X3 ,    ,    ,         ,    ,    ,LEFT,DOWN,RIGHT,    
+ 235:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	//`----+----+----+----+----+----'    `----+----+----+----+----+----'
+ 236:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		X0 ,LALT,LGUI, X10, LDWN ,BSPC,     SPC, UP ,QUOT,LEFT, DOWN ,RGHT,
+ 237:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	//`----+----+----+----+----+----'    `----+----+----+----+----+----'
+ 238:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		X3  , 1  , 2  , 3  ,   , 5  ,      6  ,   , 8  ,REST, 0  ,MINS
+ 239:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	//`----+----+----+----+----+----'    `----+----+----+----+----+----'
+ 240:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	),*/
+ 241:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 
+ 242:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** /*
+ 243:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	[_FN4] = KEYMAP( \
+ 244:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	_______, _______, M(3)   , M(2)     , _______,  M(4)  ,		 _______, _______, _______, _______, ____
+ 245:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	_______, M(6)   , _______, _______  , _______, _______,		 _______, _______, _______, _______, ____
+ 246:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	_______, _______, M(1)   ,TD(TD_CMD), _______, _______,		 _______, _______, _______, _______, KC_U
+ 247:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	M(7)   , M(8)   , M(9)   , _______  , _______, _______,		 _______, _______, _______, KC_LEFT, KC_D
+ 248:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	_______, _______, _______, _______  , _______, _______,		 _______, _______, _______, _______, ____
+ 249:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	_______, _______ , _______, _______  , _______, _______,	 _______, _______, _______, _______, ____
+ 250:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	),*/
  251:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 
- 252:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	[_RAISE] = KC_KEYMAP(
- 253:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	//,----+----+----+----+----+----.    ,----+----+----+----+----+----.
- 254:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		ESC ,EXLM, AT ,HASH,DLR ,PERC,     CIRC,AMPR,ASTR,LPRN,RPRN,    ,
- 255:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|
- 256:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		DEL ,MPRV,MNXT,VOLU,PGUP,UNDS,     EQL ,HOME,    ,    ,    ,BSLS,
- 257:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|88
- 258:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		LSFT,MSTP,MPLY,VOLD,PGDN,MINS,     PLUS,END,COMM ,    ,UP ,    ,
- 259:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	//|----+----+----+----+----+----|    |----+----+----+----+----+----|
- 260:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		,    ,    , X3 ,    ,    ,         ,    ,    ,LEFT,DOWN,RIGHT,    
- 261:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	//`----+----+----+----+----+----'    `----+----+----+----+----+----'
- 262:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		X0 ,LALT,LGUI, X10, LDWN ,BSPC,     SPC, UP ,QUOT,LEFT, DOWN ,RGHT,
- 263:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	//`----+----+----+----+----+----'    `----+----+----+----+----+----'
- 264:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		X3  , 1  , 2  , 3  ,   , 5  ,      6  ,   , 8  ,REST, 0  ,MINS
- 265:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	//`----+----+----+----+----+----'    `----+----+----+----+----+----'
- 266:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	),*/
+ 252:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	/* Adjust (Lower + Raise)
+ 253:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** * ,-----------------------------------------------------------------------------------.
+ 254:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** * |      | Reset|RGB Tg|RGB Md|Hue Up|Hue Dn|Sat Up|Sat Dn|Val Up|Val Dn| RESET|      |
+ 255:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** * |------+------+------+------+------+-------------+------+------+------+------+------|
+ 256:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** * |      |      |      |Aud on|Audoff|AGnorm|AGswap|Qwerty|Colemk|Dvorak|      |      |
+ 257:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** * |------+------+------+------+------+------|------+------+------+------+------+------|
+ 258:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** * |      |      |      |      |      |      |      |      |      |      |      |      |
+ 259:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** * |------+------+------+------+------+------+------+------+------+------+------+------|
+ 260:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** * |      |      |      |      |      |             |      |      |      |      |      |
+ 261:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** * `-----------------------------------------------------------------------------------'
+ 262:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** */
+ 263:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 
+ 264:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 
+ 265:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 
+ 266:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** };
  267:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 
- 268:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** /*
- 269:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	[_FN4] = KEYMAP( \
- 270:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	_______, _______, M(3)   , M(2)     , _______,  M(4)  ,		 _______, _______, _______, _______, ____
- 271:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	_______, M(6)   , _______, _______  , _______, _______,		 _______, _______, _______, _______, ____
- 272:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	_______, _______, M(1)   ,TD(TD_CMD), _______, _______,		 _______, _______, _______, _______, KC_U
- 273:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	M(7)   , M(8)   , M(9)   , _______  , _______, _______,		 _______, _______, _______, KC_LEFT, KC_D
- 274:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	_______, _______, _______, _______  , _______, _______,		 _______, _______, _______, _______, ____
- 275:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	_______, _______ , _______, _______  , _______, _______,	 _______, _______, _______, _______, ____
- 276:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	),*/
- 277:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 
- 278:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	/* Adjust (Lower + Raise)
- 279:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** * ,-----------------------------------------------------------------------------------.
- 280:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** * |      | Reset|RGB Tg|RGB Md|Hue Up|Hue Dn|Sat Up|Sat Dn|Val Up|Val Dn| RESET|      |
- 281:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** * |------+------+------+------+------+-------------+------+------+------+------+------|
- 282:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** * |      |      |      |Aud on|Audoff|AGnorm|AGswap|Qwerty|Colemk|Dvorak|      |      |
- 283:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** * |------+------+------+------+------+------|------+------+------+------+------+------|
- 284:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** * |      |      |      |      |      |      |      |      |      |      |      |      |
- 285:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** * |------+------+------+------+------+------+------+------+------+------+------+------|
- 286:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** * |      |      |      |      |      |             |      |      |      |      |      |
- 287:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** * `-----------------------------------------------------------------------------------'
- 288:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** */
- 289:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 
- 290:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 
- 291:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 
- 292:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** };
- 293:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 
- 294:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** #ifdef AUDIO_ENABLE
- 295:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** float tone_qwerty[][2]     = SONG(QWERTY_SOUND);
- 296:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** float tone_dvorak[][2]     = SONG(DVORAK_SOUND);
- 297:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** float tone_colemak[][2]    = SONG(COLEMAK_SOUND);
- 298:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** #endif
- 299:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 
- 300:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** void persistent_default_layer_set(uint16_t default_layer) {
- 301:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	eeconfig_update_default_layer(default_layer);
- 302:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	default_layer_set(default_layer);
- 303:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** }
- 304:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** // Debug functions
- 305:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** void keyboard_post_init_user(void) {
- 306:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****   // Customise these values to desired behaviour
- 307:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****   debug_enable=true;
- 308:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****   debug_matrix=true;
- 309:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****   //debug_keyboard=true;
- 310:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****   //debug_mouse=true;
- 311:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** }
- 312:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 
- 313:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 
- 314:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** /*
- 315:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** void dance_cln_finished(void){
- 316:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** register_code (KC_LGUI);
- 317:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** register_code(KC_TAB);
- 318:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** unregister_code(KC_TAB);
- 319:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** unregister_code(KC_LGUI); 
- 320:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** }*/
- 321:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 
- 322:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) {
- 323:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	
- 324:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	switch (id) {
- 325:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	case 0:
- 326:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		if (record->event.pressed) {
- 327:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 			return MACRO(D(LGUI), T(TAB), U(LGUI), END);
- 328:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		}
- 329:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	case 1:
- 330:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		if (record->event.pressed) {
- 331:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		//	SEND_STRING("admin"SS_TAP(X_TAB)"1111"SS_TAP(X_ENTER));
- 332:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		//return false;	break;
- 333:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 			return MACRO(I(10), T(A), T(D), T(M), T(I), T(N), W(75), T(TAB), T(1), T(1),T(1), T(1), T(ENTER)
- 334:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		}
- 335:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	case 2:
- 336:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		if (record->event.pressed) {
- 337:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 			SEND_STRING("email");// auto send email
- 338:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 			return false;	break;
- 339:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		}
- 340:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	case 3:
- 341:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		if (record->event.pressed) {
- 342:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 			SEND_STRING("www.support.xerox.com"SS_TAP(X_ENTER));
- 343:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 						return false;	break;
- 344:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		}
- 345:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	case 4:
- 346:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		if(record->event.pressed) {
- 347:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 			return MACRO(I(10), D(LCTRL), T(T), T(V), T(ENTER), U(LCTRL), END);
- 348:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		}
- 349:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		
- 350:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	case 5:{
- 351:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 			return  MACRO_TAP_HOLD_LAYER(record, MACRO(TYPE(KC_X), END), _LOWER);	
- 352:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		}
- 353:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	case 6: {
- 354:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 			if(record->event.pressed) 
- 355:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 			return MACRO(I(10), T(0), T(C), T(TAB), T(TAB), T(A), T(TAB), END);
- 356:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		}
- 357:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	case 10: {
- 358:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		if(record->event.pressed) {
- 359:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		SEND_STRING(""); //send string
- 360:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 			return false; break;}
- 361:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	}		
- 362:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	case 11: {
- 363:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		if(record->event.pressed) {
- 364:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 			SEND_STRING("ipconfig /all");
- 365:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 					return false; break;}
- 366:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	}
- 367:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	case 12: {
- 368:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	if(record->event.pressed) 
- 369:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		return MACRO( I(10),T(TAB), T(O), T(P), T(TAB),T(ENTER), T(TAB),T(TAB),T(TAB),T(Z),T(R),T(TAB),T(
- 370:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	}	
- 371:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		case 13: {
- 372:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	if(record->event.pressed) 
- 373:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		return MACRO( I(10),T(TAB), T(O), T(T), T(TAB),T(ENTER), T(TAB),T(TAB),T(TAB),T(Z),T(R),T(TAB),T(
- 374:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	}	
- 375:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		case 14: {
- 376:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	if(record->event.pressed) 
- 377:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		return MACRO( I(10),T(TAB), T(I), T(N), T(TAB),T(ENTER), T(TAB),T(TAB),T(TAB),T(I),T(N),T(TAB),T(
- 378:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	}	
- 379:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		case 15: {
- 380:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	if(record->event.pressed) 
- 381:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		SEND_STRING("username"SS_TAP(X_TAB)"pass"SS_TAP(X_TAB)SS_TAP(X_ENTER));//allows sending password 
- 382:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		return false; break;
- 383:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	}	
- 384:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		break;
- 385:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	}		
- 386:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	return MACRO_NONE;
- 387:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** }
- 388:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** //return MACRO_NONE;
- 389:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 
- 390:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 
- 391:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** void cmd_commands(qk_tap_dance_state_t *state, void *user_data) {
-  17               		.loc 1 391 65 view -0
+ 268:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** #ifdef AUDIO_ENABLE
+ 269:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** float tone_qwerty[][2]     = SONG(QWERTY_SOUND);
+ 270:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** float tone_dvorak[][2]     = SONG(DVORAK_SOUND);
+ 271:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** float tone_colemak[][2]    = SONG(COLEMAK_SOUND);
+ 272:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** #endif
+ 273:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 
+ 274:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** void persistent_default_layer_set(uint16_t default_layer) {
+ 275:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	eeconfig_update_default_layer(default_layer);
+ 276:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	default_layer_set(default_layer);
+ 277:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** }
+ 278:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** // Debug functions
+ 279:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** void keyboard_post_init_user(void) {
+ 280:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****   // Customise these values to desired behaviour
+ 281:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****   debug_enable=true;
+ 282:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****   debug_matrix=true;
+ 283:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****   //debug_keyboard=true;
+ 284:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****   //debug_mouse=true;
+ 285:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** }
+ 286:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 
+ 287:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 
+ 288:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** /*
+ 289:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** void dance_cln_finished(void){
+ 290:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** register_code (KC_LGUI);
+ 291:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** register_code(KC_TAB);
+ 292:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** unregister_code(KC_TAB);
+ 293:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** unregister_code(KC_LGUI); 
+ 294:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** }*/
+ 295:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 
+ 296:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) {
+ 297:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	
+ 298:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	switch (id) {
+ 299:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	case 0:
+ 300:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		if (record->event.pressed) {
+ 301:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 			return MACRO(D(LGUI), T(TAB), U(LGUI), END);
+ 302:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		}
+ 303:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	case 1:
+ 304:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		if (record->event.pressed) {
+ 305:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		//	SEND_STRING("admin"SS_TAP(X_TAB)"1111"SS_TAP(X_ENTER));
+ 306:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		//return false;	break;
+ 307:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 			return MACRO(I(10), T(A), T(D), T(M), T(I), T(N), W(75), T(TAB), T(1), T(1),T(1), T(1), T(ENTER)
+ 308:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		}
+ 309:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	case 2:
+ 310:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		if (record->event.pressed) {
+ 311:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 			SEND_STRING("email");// auto send email
+ 312:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 			return false;	break;
+ 313:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		}
+ 314:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	case 3:
+ 315:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		if (record->event.pressed) {
+ 316:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 			SEND_STRING("www.support.xerox.com"SS_TAP(X_ENTER));
+ 317:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 						return false;	break;
+ 318:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		}
+ 319:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	case 4:
+ 320:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		if(record->event.pressed) {
+ 321:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 			return MACRO(I(10), D(LCTRL), T(T), T(V), T(ENTER), U(LCTRL), END);
+ 322:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		}
+ 323:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		
+ 324:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	case 5:{
+ 325:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 			return  MACRO_TAP_HOLD_LAYER(record, MACRO(TYPE(KC_X), END), _LOWER);	
+ 326:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		}
+ 327:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	case 6: {
+ 328:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 			if(record->event.pressed) 
+ 329:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 			return MACRO(I(10), T(0), T(C), T(TAB), T(TAB), T(A), T(TAB), END);
+ 330:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		}
+ 331:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	case 10: {
+ 332:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		if(record->event.pressed) {
+ 333:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		SEND_STRING(""); //send string
+ 334:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 			return false; break;}
+ 335:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	}		
+ 336:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	case 11: {
+ 337:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		if(record->event.pressed) {
+ 338:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 			SEND_STRING("ipconfig /all");
+ 339:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 					return false; break;}
+ 340:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	}
+ 341:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	case 12: {
+ 342:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	if(record->event.pressed) 
+ 343:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		return MACRO( I(10),T(TAB), T(O), T(P), T(TAB),T(ENTER), T(TAB),T(TAB),T(TAB),T(Z),T(R),T(TAB),T(
+ 344:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	}	
+ 345:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		case 13: {
+ 346:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	if(record->event.pressed) 
+ 347:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		return MACRO( I(10),T(TAB), T(O), T(T), T(TAB),T(ENTER), T(TAB),T(TAB),T(TAB),T(Z),T(R),T(TAB),T(
+ 348:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	}	
+ 349:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		case 14: {
+ 350:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	if(record->event.pressed) 
+ 351:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		return MACRO( I(10),T(TAB), T(I), T(N), T(TAB),T(ENTER), T(TAB),T(TAB),T(TAB),T(I),T(N),T(TAB),T(
+ 352:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	}	
+ 353:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		case 15: {
+ 354:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	if(record->event.pressed) 
+ 355:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		SEND_STRING("username"SS_TAP(X_TAB)"pass"SS_TAP(X_TAB)SS_TAP(X_ENTER));//allows sending password 
+ 356:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		return false; break;
+ 357:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	}	
+ 358:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		break;
+ 359:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	}		
+ 360:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	return MACRO_NONE;
+ 361:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** }
+ 362:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** //return MACRO_NONE;
+ 363:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 
+ 364:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 
+ 365:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** void cmd_commands(qk_tap_dance_state_t *state, void *user_data) {
+  17               		.loc 1 365 65 view -0
   18               		.cfi_startproc
   19               	/* prologue: function */
   20               	/* frame size = 0 */
   21               	/* stack size = 0 */
   22               	.L__stack_usage = 0
- 392:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	if (state->count == 1) {
-  23               		.loc 1 392 2 view .LVU1
-  24               		.loc 1 392 11 is_stmt 0 view .LVU2
+ 366:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	if (state->count == 1) {
+  23               		.loc 1 366 2 view .LVU1
+  24               		.loc 1 366 11 is_stmt 0 view .LVU2
   25 0000 FC01      		movw r30,r24
   26 0002 8081      		ld r24,Z
   27               	.LVL1:
-  28               		.loc 1 392 5 view .LVU3
+  28               		.loc 1 366 5 view .LVU3
   29 0004 8130      		cpi r24,lo8(1)
   30 0006 01F4      		brne .L2
- 393:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		action_macro_play(MACRO(D(LCTRL), T(C), U(LCTRL),END));
-  31               		.loc 1 393 3 is_stmt 1 view .LVU4
+ 367:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		action_macro_play(MACRO(D(LCTRL), T(C), U(LCTRL),END));
+  31               		.loc 1 367 3 is_stmt 1 view .LVU4
   32               	.LBB2:
-  33               		.loc 1 393 21 view .LVU5
-  34               		.loc 1 393 21 view .LVU6
+  33               		.loc 1 367 21 view .LVU5
+  34               		.loc 1 367 21 view .LVU6
   35               	.LBE2:
-  36               		.loc 1 393 3 is_stmt 0 view .LVU7
+  36               		.loc 1 367 3 is_stmt 0 view .LVU7
   37 0008 80E0      		ldi r24,lo8(__m.3340)
   38 000a 90E0      		ldi r25,hi8(__m.3340)
   39               	.L4:
- 394:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	}
- 395:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	else if (state->count ==2){
- 396:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		action_macro_play(MACRO(D(LCTRL), T(V), U(LCTRL),END));
- 397:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	}
- 398:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	else {
- 399:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		action_macro_play(MACRO(D(LCTRL), T(A), T(C), U(LCTRL),END));
-  40               		.loc 1 399 3 view .LVU8
+ 368:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	}
+ 369:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	else if (state->count ==2){
+ 370:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		action_macro_play(MACRO(D(LCTRL), T(V), U(LCTRL),END));
+ 371:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	}
+ 372:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	else {
+ 373:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		action_macro_play(MACRO(D(LCTRL), T(A), T(C), U(LCTRL),END));
+  40               		.loc 1 373 3 view .LVU8
   41 000c 0C94 0000 		jmp action_macro_play
   42               	.LVL2:
   43               	.L2:
- 395:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		action_macro_play(MACRO(D(LCTRL), T(V), U(LCTRL),END));
-  44               		.loc 1 395 7 is_stmt 1 view .LVU9
- 395:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		action_macro_play(MACRO(D(LCTRL), T(V), U(LCTRL),END));
-  45               		.loc 1 395 10 is_stmt 0 view .LVU10
+ 369:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		action_macro_play(MACRO(D(LCTRL), T(V), U(LCTRL),END));
+  44               		.loc 1 369 7 is_stmt 1 view .LVU9
+ 369:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		action_macro_play(MACRO(D(LCTRL), T(V), U(LCTRL),END));
+  45               		.loc 1 369 10 is_stmt 0 view .LVU10
   46 0010 8230      		cpi r24,lo8(2)
   47 0012 01F4      		brne .L3
- 396:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	}
-  48               		.loc 1 396 3 is_stmt 1 view .LVU11
+ 370:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	}
+  48               		.loc 1 370 3 is_stmt 1 view .LVU11
   49               	.LBB3:
- 396:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	}
-  50               		.loc 1 396 21 view .LVU12
- 396:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	}
-  51               		.loc 1 396 21 view .LVU13
+ 370:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	}
+  50               		.loc 1 370 21 view .LVU12
+ 370:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	}
+  51               		.loc 1 370 21 view .LVU13
   52               	.LBE3:
- 396:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	}
-  53               		.loc 1 396 3 is_stmt 0 view .LVU14
+ 370:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	}
+  53               		.loc 1 370 3 is_stmt 0 view .LVU14
   54 0014 80E0      		ldi r24,lo8(__m.3342)
   55 0016 90E0      		ldi r25,hi8(__m.3342)
   56 0018 00C0      		rjmp .L4
   57               	.L3:
-  58               		.loc 1 399 3 is_stmt 1 view .LVU15
+  58               		.loc 1 373 3 is_stmt 1 view .LVU15
   59               	.LBB4:
-  60               		.loc 1 399 21 view .LVU16
-  61               		.loc 1 399 21 view .LVU17
+  60               		.loc 1 373 21 view .LVU16
+  61               		.loc 1 373 21 view .LVU17
   62               	.LBE4:
-  63               		.loc 1 399 3 is_stmt 0 view .LVU18
+  63               		.loc 1 373 3 is_stmt 0 view .LVU18
   64 001a 80E0      		ldi r24,lo8(__m.3344)
   65 001c 90E0      		ldi r25,hi8(__m.3344)
   66 001e 00C0      		rjmp .L4
@@ -475,72 +449,72 @@
   73               	cmd:
   74               	.LVL3:
   75               	.LFB32:
- 400:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	}
- 401:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** }
- 402:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 
- 403:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 
- 404:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** void cmd(qk_tap_dance_state_t *state, void *user_data) {
-  76               		.loc 1 404 56 is_stmt 1 view -0
+ 374:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	}
+ 375:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** }
+ 376:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 
+ 377:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 
+ 378:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** void cmd(qk_tap_dance_state_t *state, void *user_data) {
+  76               		.loc 1 378 56 is_stmt 1 view -0
   77               		.cfi_startproc
   78               	/* prologue: function */
   79               	/* frame size = 0 */
   80               	/* stack size = 0 */
   81               	.L__stack_usage = 0
- 405:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	if(state->count==1){
-  82               		.loc 1 405 2 view .LVU20
-  83               		.loc 1 405 10 is_stmt 0 view .LVU21
+ 379:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	if(state->count==1){
+  82               		.loc 1 379 2 view .LVU20
+  83               		.loc 1 379 10 is_stmt 0 view .LVU21
   84 0000 FC01      		movw r30,r24
   85 0002 8081      		ld r24,Z
   86               	.LVL4:
-  87               		.loc 1 405 4 view .LVU22
+  87               		.loc 1 379 4 view .LVU22
   88 0004 8130      		cpi r24,lo8(1)
   89 0006 01F4      		brne .L6
- 406:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		action_macro_play(MACRO(D(LGUI), T(R),W(255), U(LGUI),W(255), T(C), T(M), T(D), T(ENTER),END));
-  90               		.loc 1 406 3 is_stmt 1 view .LVU23
+ 380:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		action_macro_play(MACRO(D(LGUI), T(R),W(255), U(LGUI),W(255), T(C), T(M), T(D), T(ENTER),END));
+  90               		.loc 1 380 3 is_stmt 1 view .LVU23
   91               	.LBB5:
-  92               		.loc 1 406 21 view .LVU24
-  93               		.loc 1 406 21 view .LVU25
+  92               		.loc 1 380 21 view .LVU24
+  93               		.loc 1 380 21 view .LVU25
   94               	.LBE5:
-  95               		.loc 1 406 3 is_stmt 0 view .LVU26
+  95               		.loc 1 380 3 is_stmt 0 view .LVU26
   96 0008 80E0      		ldi r24,lo8(__m.3350)
   97 000a 90E0      		ldi r25,hi8(__m.3350)
   98               	.L8:
- 407:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	}
- 408:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	else if (state->count == 2) {
- 409:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		action_macro_play(MACRO(D(LGUI), T(R), U(LGUI), T(C), T(M), T(D), T(ENTER),W(255),W(255), T(I), T
- 410:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	}
- 411:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	else{
- 412:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		action_macro_play(MACRO(D(LGUI), T(R),W(255), U(LGUI),W(255), T(C), T(M), T(D), T(ENTER), W(255),
-  99               		.loc 1 412 3 view .LVU27
+ 381:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	}
+ 382:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	else if (state->count == 2) {
+ 383:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		action_macro_play(MACRO(D(LGUI), T(R), U(LGUI), T(C), T(M), T(D), T(ENTER),W(255),W(255), T(I), T
+ 384:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	}
+ 385:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	else{
+ 386:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		action_macro_play(MACRO(D(LGUI), T(R),W(255), U(LGUI),W(255), T(C), T(M), T(D), T(ENTER), W(255),
+  99               		.loc 1 386 3 view .LVU27
  100 000c 0C94 0000 		jmp action_macro_play
  101               	.LVL5:
  102               	.L6:
- 408:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		action_macro_play(MACRO(D(LGUI), T(R), U(LGUI), T(C), T(M), T(D), T(ENTER),W(255),W(255), T(I), T
- 103               		.loc 1 408 7 is_stmt 1 view .LVU28
- 408:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		action_macro_play(MACRO(D(LGUI), T(R), U(LGUI), T(C), T(M), T(D), T(ENTER),W(255),W(255), T(I), T
- 104               		.loc 1 408 10 is_stmt 0 view .LVU29
+ 382:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		action_macro_play(MACRO(D(LGUI), T(R), U(LGUI), T(C), T(M), T(D), T(ENTER),W(255),W(255), T(I), T
+ 103               		.loc 1 382 7 is_stmt 1 view .LVU28
+ 382:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		action_macro_play(MACRO(D(LGUI), T(R), U(LGUI), T(C), T(M), T(D), T(ENTER),W(255),W(255), T(I), T
+ 104               		.loc 1 382 10 is_stmt 0 view .LVU29
  105 0010 8230      		cpi r24,lo8(2)
  106 0012 01F4      		brne .L7
- 409:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	}
- 107               		.loc 1 409 3 is_stmt 1 view .LVU30
+ 383:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	}
+ 107               		.loc 1 383 3 is_stmt 1 view .LVU30
  108               	.LBB6:
- 409:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	}
- 109               		.loc 1 409 21 view .LVU31
- 409:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	}
- 110               		.loc 1 409 21 view .LVU32
+ 383:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	}
+ 109               		.loc 1 383 21 view .LVU31
+ 383:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	}
+ 110               		.loc 1 383 21 view .LVU32
  111               	.LBE6:
- 409:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	}
- 112               		.loc 1 409 3 is_stmt 0 view .LVU33
+ 383:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	}
+ 112               		.loc 1 383 3 is_stmt 0 view .LVU33
  113 0014 80E0      		ldi r24,lo8(__m.3352)
  114 0016 90E0      		ldi r25,hi8(__m.3352)
  115 0018 00C0      		rjmp .L8
  116               	.L7:
- 117               		.loc 1 412 3 is_stmt 1 view .LVU34
+ 117               		.loc 1 386 3 is_stmt 1 view .LVU34
  118               	.LBB7:
- 119               		.loc 1 412 21 view .LVU35
- 120               		.loc 1 412 21 view .LVU36
+ 119               		.loc 1 386 21 view .LVU35
+ 120               		.loc 1 386 21 view .LVU36
  121               	.LBE7:
- 122               		.loc 1 412 3 is_stmt 0 view .LVU37
+ 122               		.loc 1 386 3 is_stmt 0 view .LVU37
  123 001a 80E0      		ldi r24,lo8(__m.3354)
  124 001c 90E0      		ldi r25,hi8(__m.3354)
  125 001e 00C0      		rjmp .L8
@@ -551,69 +525,69 @@
  132               	VirtualDesktop:
  133               	.LVL6:
  134               	.LFB34:
- 413:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	}
- 414:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** }
- 415:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** void SLSH_BSLSH(qk_tap_dance_state_t *state, void *user_data) {
- 416:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	if (state->count == 1) {
- 417:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		register_code (KC_SLSH);
- 418:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		unregister_code (KC_SLSH);
- 419:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	}
- 420:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	else{
- 421:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		register_code (KC_BSLS);
- 422:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		unregister_code (KC_BSLS);
- 423:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	}
- 424:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** }
- 425:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** void VirtualDesktop(qk_tap_dance_state_t *state, void *user_data) {
- 135               		.loc 1 425 67 is_stmt 1 view -0
+ 387:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	}
+ 388:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** }
+ 389:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** void SLSH_BSLSH(qk_tap_dance_state_t *state, void *user_data) {
+ 390:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	if (state->count == 1) {
+ 391:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		register_code (KC_SLSH);
+ 392:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		unregister_code (KC_SLSH);
+ 393:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	}
+ 394:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	else{
+ 395:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		register_code (KC_BSLS);
+ 396:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		unregister_code (KC_BSLS);
+ 397:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	}
+ 398:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** }
+ 399:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** void VirtualDesktop(qk_tap_dance_state_t *state, void *user_data) {
+ 135               		.loc 1 399 67 is_stmt 1 view -0
  136               		.cfi_startproc
  137               	/* prologue: function */
  138               	/* frame size = 0 */
  139               	/* stack size = 0 */
  140               	.L__stack_usage = 0
- 426:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	if (state->count == 1) 
- 141               		.loc 1 426 2 view .LVU39
- 142               		.loc 1 426 11 is_stmt 0 view .LVU40
+ 400:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	if (state->count == 1) 
+ 141               		.loc 1 400 2 view .LVU39
+ 142               		.loc 1 400 11 is_stmt 0 view .LVU40
  143 0000 FC01      		movw r30,r24
  144 0002 8081      		ld r24,Z
  145               	.LVL7:
- 146               		.loc 1 426 5 view .LVU41
+ 146               		.loc 1 400 5 view .LVU41
  147 0004 8130      		cpi r24,lo8(1)
  148 0006 01F4      		brne .L10
- 427:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		action_macro_play(MACRO(D(LGUI),D(LCTRL),T(LEFT),U(LCTRL),U(LGUI),END));
- 149               		.loc 1 427 3 is_stmt 1 view .LVU42
+ 401:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		action_macro_play(MACRO(D(LGUI),D(LCTRL),T(LEFT),U(LCTRL),U(LGUI),END));
+ 149               		.loc 1 401 3 is_stmt 1 view .LVU42
  150               	.LBB8:
- 151               		.loc 1 427 21 view .LVU43
- 152               		.loc 1 427 21 view .LVU44
+ 151               		.loc 1 401 21 view .LVU43
+ 152               		.loc 1 401 21 view .LVU44
  153               	.LBE8:
- 154               		.loc 1 427 3 is_stmt 0 view .LVU45
+ 154               		.loc 1 401 3 is_stmt 0 view .LVU45
  155 0008 80E0      		ldi r24,lo8(__m.3364)
  156 000a 90E0      		ldi r25,hi8(__m.3364)
  157               	.L12:
- 428:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	else if(state->count==2)
- 429:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		action_macro_play(MACRO(D(LGUI),D(LCTRL),T(RIGHT),U(LCTRL),U(LGUI),END));
- 158               		.loc 1 429 3 view .LVU46
+ 402:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	else if(state->count==2)
+ 403:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		action_macro_play(MACRO(D(LGUI),D(LCTRL),T(RIGHT),U(LCTRL),U(LGUI),END));
+ 158               		.loc 1 403 3 view .LVU46
  159 000c 0C94 0000 		jmp action_macro_play
  160               	.LVL8:
  161               	.L10:
- 428:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	else if(state->count==2)
- 162               		.loc 1 428 7 is_stmt 1 view .LVU47
- 428:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	else if(state->count==2)
- 163               		.loc 1 428 9 is_stmt 0 view .LVU48
+ 402:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	else if(state->count==2)
+ 162               		.loc 1 402 7 is_stmt 1 view .LVU47
+ 402:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	else if(state->count==2)
+ 163               		.loc 1 402 9 is_stmt 0 view .LVU48
  164 0010 8230      		cpi r24,lo8(2)
  165 0012 01F4      		brne .L9
- 166               		.loc 1 429 3 is_stmt 1 view .LVU49
+ 166               		.loc 1 403 3 is_stmt 1 view .LVU49
  167               	.LBB9:
- 168               		.loc 1 429 21 view .LVU50
- 169               		.loc 1 429 21 view .LVU51
+ 168               		.loc 1 403 21 view .LVU50
+ 169               		.loc 1 403 21 view .LVU51
  170               	.LBE9:
- 171               		.loc 1 429 3 is_stmt 0 view .LVU52
+ 171               		.loc 1 403 3 is_stmt 0 view .LVU52
  172 0014 80E0      		ldi r24,lo8(__m.3366)
  173 0016 90E0      		ldi r25,hi8(__m.3366)
  174 0018 00C0      		rjmp .L12
  175               	.L9:
  176               	/* epilogue start */
- 430:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** }
- 177               		.loc 1 430 1 view .LVU53
+ 404:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** }
+ 177               		.loc 1 404 1 view .LVU53
  178 001a 0895      		ret
  179               		.cfi_endproc
  180               	.LFE34:
@@ -622,45 +596,45 @@
  185               	SLSH_BSLSH:
  186               	.LVL9:
  187               	.LFB33:
- 415:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	if (state->count == 1) {
- 188               		.loc 1 415 63 is_stmt 1 view -0
+ 389:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	if (state->count == 1) {
+ 188               		.loc 1 389 63 is_stmt 1 view -0
  189               		.cfi_startproc
  190               	/* prologue: function */
  191               	/* frame size = 0 */
  192               	/* stack size = 0 */
  193               	.L__stack_usage = 0
- 416:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		register_code (KC_SLSH);
- 194               		.loc 1 416 2 view .LVU55
- 416:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		register_code (KC_SLSH);
- 195               		.loc 1 416 5 is_stmt 0 view .LVU56
+ 390:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		register_code (KC_SLSH);
+ 194               		.loc 1 390 2 view .LVU55
+ 390:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		register_code (KC_SLSH);
+ 195               		.loc 1 390 5 is_stmt 0 view .LVU56
  196 0000 FC01      		movw r30,r24
  197 0002 8081      		ld r24,Z
  198               	.LVL10:
- 416:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		register_code (KC_SLSH);
- 199               		.loc 1 416 5 view .LVU57
+ 390:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		register_code (KC_SLSH);
+ 199               		.loc 1 390 5 view .LVU57
  200 0004 8130      		cpi r24,lo8(1)
  201 0006 01F4      		brne .L14
- 417:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		unregister_code (KC_SLSH);
- 202               		.loc 1 417 3 is_stmt 1 view .LVU58
+ 391:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		unregister_code (KC_SLSH);
+ 202               		.loc 1 391 3 is_stmt 1 view .LVU58
  203 0008 88E3      		ldi r24,lo8(56)
  204 000a 0E94 0000 		call register_code
  205               	.LVL11:
- 418:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	}
- 206               		.loc 1 418 3 view .LVU59
+ 392:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	}
+ 206               		.loc 1 392 3 view .LVU59
  207 000e 88E3      		ldi r24,lo8(56)
  208               	.L15:
- 422:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	}
- 209               		.loc 1 422 3 is_stmt 0 view .LVU60
+ 396:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	}
+ 209               		.loc 1 396 3 is_stmt 0 view .LVU60
  210 0010 0C94 0000 		jmp unregister_code
  211               	.LVL12:
  212               	.L14:
- 421:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		unregister_code (KC_BSLS);
- 213               		.loc 1 421 3 is_stmt 1 view .LVU61
+ 395:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		unregister_code (KC_BSLS);
+ 213               		.loc 1 395 3 is_stmt 1 view .LVU61
  214 0014 81E3      		ldi r24,lo8(49)
  215 0016 0E94 0000 		call register_code
  216               	.LVL13:
- 422:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	}
- 217               		.loc 1 422 3 view .LVU62
+ 396:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	}
+ 217               		.loc 1 396 3 view .LVU62
  218 001a 81E3      		ldi r24,lo8(49)
  219 001c 00C0      		rjmp .L15
  220               		.cfi_endproc
@@ -838,11 +812,11 @@
  395               	persistent_default_layer_set:
  396               	.LVL14:
  397               	.LFB28:
- 300:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	eeconfig_update_default_layer(default_layer);
- 398               		.loc 1 300 59 is_stmt 1 view -0
+ 274:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	eeconfig_update_default_layer(default_layer);
+ 398               		.loc 1 274 59 is_stmt 1 view -0
  399               		.cfi_startproc
- 300:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	eeconfig_update_default_layer(default_layer);
- 400               		.loc 1 300 59 is_stmt 0 view .LVU67
+ 274:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	eeconfig_update_default_layer(default_layer);
+ 400               		.loc 1 274 59 is_stmt 0 view .LVU67
  401 0000 CF93      		push r28
  402               	.LCFI0:
  403               		.cfi_def_cfa_offset 3
@@ -856,54 +830,54 @@
  411               	/* stack size = 2 */
  412               	.L__stack_usage = 2
  413 0004 EC01      		movw r28,r24
- 301:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	default_layer_set(default_layer);
- 414               		.loc 1 301 2 is_stmt 1 view .LVU68
+ 275:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	default_layer_set(default_layer);
+ 414               		.loc 1 275 2 is_stmt 1 view .LVU68
  415 0006 0E94 0000 		call eeconfig_update_default_layer
  416               	.LVL15:
- 302:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** }
- 417               		.loc 1 302 2 view .LVU69
+ 276:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** }
+ 417               		.loc 1 276 2 view .LVU69
  418 000a BE01      		movw r22,r28
  419 000c 90E0      		ldi r25,0
  420 000e 80E0      		ldi r24,0
  421               	/* epilogue start */
- 303:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** // Debug functions
- 422               		.loc 1 303 1 is_stmt 0 view .LVU70
+ 277:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** // Debug functions
+ 422               		.loc 1 277 1 is_stmt 0 view .LVU70
  423 0010 DF91      		pop r29
  424 0012 CF91      		pop r28
  425               	.LVL16:
- 302:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** }
- 426               		.loc 1 302 2 view .LVU71
+ 276:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** }
+ 426               		.loc 1 276 2 view .LVU71
  427 0014 0C94 0000 		jmp default_layer_set
  428               	.LVL17:
- 302:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** }
- 429               		.loc 1 302 2 view .LVU72
+ 276:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** }
+ 429               		.loc 1 276 2 view .LVU72
  430               		.cfi_endproc
  431               	.LFE28:
  433               		.section	.text.keyboard_post_init_user,"ax",@progbits
  434               	.global	keyboard_post_init_user
  436               	keyboard_post_init_user:
  437               	.LFB29:
- 305:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****   // Customise these values to desired behaviour
- 438               		.loc 1 305 36 is_stmt 1 view -0
+ 279:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****   // Customise these values to desired behaviour
+ 438               		.loc 1 279 36 is_stmt 1 view -0
  439               		.cfi_startproc
  440               	/* prologue: function */
  441               	/* frame size = 0 */
  442               	/* stack size = 0 */
  443               	.L__stack_usage = 0
- 307:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****   debug_matrix=true;
- 444               		.loc 1 307 3 view .LVU74
- 308:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****   //debug_keyboard=true;
- 445               		.loc 1 308 3 view .LVU75
- 307:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****   debug_matrix=true;
- 446               		.loc 1 307 15 is_stmt 0 view .LVU76
+ 281:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****   debug_matrix=true;
+ 444               		.loc 1 281 3 view .LVU74
+ 282:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****   //debug_keyboard=true;
+ 445               		.loc 1 282 3 view .LVU75
+ 281:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****   debug_matrix=true;
+ 446               		.loc 1 281 15 is_stmt 0 view .LVU76
  447 0000 E0E0      		ldi r30,lo8(debug_config)
  448 0002 F0E0      		ldi r31,hi8(debug_config)
  449 0004 8081      		ld r24,Z
  450 0006 8360      		ori r24,lo8(3)
  451 0008 8083      		st Z,r24
  452               	/* epilogue start */
- 311:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 
- 453               		.loc 1 311 1 view .LVU77
+ 285:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 
+ 453               		.loc 1 285 1 view .LVU77
  454 000a 0895      		ret
  455               		.cfi_endproc
  456               	.LFE29:
@@ -912,18 +886,18 @@
  461               	action_get_macro:
  462               	.LVL18:
  463               	.LFB30:
- 322:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	
- 464               		.loc 1 322 79 is_stmt 1 view -0
+ 296:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	
+ 464               		.loc 1 296 79 is_stmt 1 view -0
  465               		.cfi_startproc
  466               	/* prologue: function */
  467               	/* frame size = 0 */
  468               	/* stack size = 0 */
  469               	.L__stack_usage = 0
- 322:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	
- 470               		.loc 1 322 79 is_stmt 0 view .LVU79
+ 296:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	
+ 470               		.loc 1 296 79 is_stmt 0 view .LVU79
  471 0000 DC01      		movw r26,r24
- 324:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	case 0:
- 472               		.loc 1 324 2 is_stmt 1 view .LVU80
+ 298:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	case 0:
+ 472               		.loc 1 298 2 is_stmt 1 view .LVU80
  473 0002 6031      		cpi r22,lo8(16)
  474 0004 00F4      		brsh .L58
  475 0006 E62F      		mov r30,r22
@@ -952,314 +926,314 @@
  498 001e 0000      		.word gs(.L31)
  499               		.section	.text.action_get_macro
  500               	.L44:
- 326:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 			return MACRO(D(LGUI), T(TAB), U(LGUI), END);
- 501               		.loc 1 326 3 view .LVU81
- 326:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 			return MACRO(D(LGUI), T(TAB), U(LGUI), END);
- 502               		.loc 1 326 6 is_stmt 0 view .LVU82
+ 300:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 			return MACRO(D(LGUI), T(TAB), U(LGUI), END);
+ 501               		.loc 1 300 3 view .LVU81
+ 300:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 			return MACRO(D(LGUI), T(TAB), U(LGUI), END);
+ 502               		.loc 1 300 6 is_stmt 0 view .LVU82
  503 0012 1296      		adiw r26,2
  504 0014 8C91      		ld r24,X
  505 0016 1297      		sbiw r26,2
  506               	.LVL19:
- 326:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 			return MACRO(D(LGUI), T(TAB), U(LGUI), END);
- 507               		.loc 1 326 6 view .LVU83
+ 300:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 			return MACRO(D(LGUI), T(TAB), U(LGUI), END);
+ 507               		.loc 1 300 6 view .LVU83
  508 0018 8111      		cpse r24,__zero_reg__
  509 001a 00C0      		rjmp .L49
  510               	.L43:
- 330:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		//	SEND_STRING("admin"SS_TAP(X_TAB)"1111"SS_TAP(X_ENTER));
- 511               		.loc 1 330 3 is_stmt 1 view .LVU84
- 330:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		//	SEND_STRING("admin"SS_TAP(X_TAB)"1111"SS_TAP(X_ENTER));
- 512               		.loc 1 330 6 is_stmt 0 view .LVU85
+ 304:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		//	SEND_STRING("admin"SS_TAP(X_TAB)"1111"SS_TAP(X_ENTER));
+ 511               		.loc 1 304 3 is_stmt 1 view .LVU84
+ 304:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		//	SEND_STRING("admin"SS_TAP(X_TAB)"1111"SS_TAP(X_ENTER));
+ 512               		.loc 1 304 6 is_stmt 0 view .LVU85
  513 001c 1296      		adiw r26,2
  514 001e 8C91      		ld r24,X
  515 0020 1297      		sbiw r26,2
  516 0022 8111      		cpse r24,__zero_reg__
  517 0024 00C0      		rjmp .L50
  518               	.L42:
- 336:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 			SEND_STRING("email");// auto send email
- 519               		.loc 1 336 3 is_stmt 1 view .LVU86
- 336:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 			SEND_STRING("email");// auto send email
- 520               		.loc 1 336 6 is_stmt 0 view .LVU87
+ 310:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 			SEND_STRING("email");// auto send email
+ 519               		.loc 1 310 3 is_stmt 1 view .LVU86
+ 310:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 			SEND_STRING("email");// auto send email
+ 520               		.loc 1 310 6 is_stmt 0 view .LVU87
  521 0026 1296      		adiw r26,2
  522 0028 8C91      		ld r24,X
  523 002a 1297      		sbiw r26,2
  524 002c 8823      		tst r24
  525 002e 01F0      		breq .L41
- 337:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 			return false;	break;
- 526               		.loc 1 337 4 is_stmt 1 view .LVU88
+ 311:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 			return false;	break;
+ 526               		.loc 1 311 4 is_stmt 1 view .LVU88
  527               	.LBB10:
- 337:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 			return false;	break;
- 528               		.loc 1 337 4 view .LVU89
- 337:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 			return false;	break;
- 529               		.loc 1 337 4 view .LVU90
+ 311:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 			return false;	break;
+ 528               		.loc 1 311 4 view .LVU89
+ 311:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 			return false;	break;
+ 529               		.loc 1 311 4 view .LVU90
  530               	.LBE10:
  531 0030 80E0      		ldi r24,lo8(__c.3302)
  532 0032 90E0      		ldi r25,hi8(__c.3302)
  533               	.L77:
- 342:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 						return false;	break;
- 534               		.loc 1 342 4 is_stmt 0 view .LVU91
+ 316:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 						return false;	break;
+ 534               		.loc 1 316 4 is_stmt 0 view .LVU91
  535 0034 0E94 0000 		call send_string_P
  536               	.LVL20:
- 343:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		}
- 537               		.loc 1 343 7 is_stmt 1 view .LVU92
+ 317:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		}
+ 537               		.loc 1 317 7 is_stmt 1 view .LVU92
  538               	.L58:
- 351:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		}
- 539               		.loc 1 351 12 is_stmt 0 view .LVU93
+ 325:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		}
+ 539               		.loc 1 325 12 is_stmt 0 view .LVU93
  540 0038 90E0      		ldi r25,0
  541 003a 80E0      		ldi r24,0
  542               	/* epilogue start */
- 387:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** //return MACRO_NONE;
- 543               		.loc 1 387 1 view .LVU94
+ 361:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** //return MACRO_NONE;
+ 543               		.loc 1 361 1 view .LVU94
  544 003c 0895      		ret
  545               	.LVL21:
  546               	.L41:
- 338:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		}
- 547               		.loc 1 338 18 is_stmt 1 view .LVU95
- 341:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 			SEND_STRING("www.support.xerox.com"SS_TAP(X_ENTER));
- 548               		.loc 1 341 3 view .LVU96
- 341:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 			SEND_STRING("www.support.xerox.com"SS_TAP(X_ENTER));
- 549               		.loc 1 341 6 is_stmt 0 view .LVU97
+ 312:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		}
+ 547               		.loc 1 312 18 is_stmt 1 view .LVU95
+ 315:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 			SEND_STRING("www.support.xerox.com"SS_TAP(X_ENTER));
+ 548               		.loc 1 315 3 view .LVU96
+ 315:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 			SEND_STRING("www.support.xerox.com"SS_TAP(X_ENTER));
+ 549               		.loc 1 315 6 is_stmt 0 view .LVU97
  550 003e 1296      		adiw r26,2
  551 0040 8C91      		ld r24,X
  552 0042 1297      		sbiw r26,2
  553 0044 8823      		tst r24
  554 0046 01F0      		breq .L40
- 342:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 						return false;	break;
- 555               		.loc 1 342 4 is_stmt 1 view .LVU98
+ 316:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 						return false;	break;
+ 555               		.loc 1 316 4 is_stmt 1 view .LVU98
  556               	.LBB11:
- 342:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 						return false;	break;
- 557               		.loc 1 342 4 view .LVU99
- 342:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 						return false;	break;
- 558               		.loc 1 342 4 view .LVU100
+ 316:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 						return false;	break;
+ 557               		.loc 1 316 4 view .LVU99
+ 316:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 						return false;	break;
+ 558               		.loc 1 316 4 view .LVU100
  559               	.LBE11:
  560 0048 80E0      		ldi r24,lo8(__c.3305)
  561 004a 90E0      		ldi r25,hi8(__c.3305)
  562 004c 00C0      		rjmp .L77
  563               	.L40:
- 343:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		}
- 564               		.loc 1 343 21 view .LVU101
- 346:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 			return MACRO(I(10), D(LCTRL), T(T), T(V), T(ENTER), U(LCTRL), END);
- 565               		.loc 1 346 3 view .LVU102
- 346:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 			return MACRO(I(10), D(LCTRL), T(T), T(V), T(ENTER), U(LCTRL), END);
- 566               		.loc 1 346 5 is_stmt 0 view .LVU103
+ 317:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		}
+ 564               		.loc 1 317 21 view .LVU101
+ 320:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 			return MACRO(I(10), D(LCTRL), T(T), T(V), T(ENTER), U(LCTRL), END);
+ 565               		.loc 1 320 3 view .LVU102
+ 320:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 			return MACRO(I(10), D(LCTRL), T(T), T(V), T(ENTER), U(LCTRL), END);
+ 566               		.loc 1 320 5 is_stmt 0 view .LVU103
  567 004e 1296      		adiw r26,2
  568 0050 8C91      		ld r24,X
  569 0052 1297      		sbiw r26,2
  570 0054 8111      		cpse r24,__zero_reg__
  571 0056 00C0      		rjmp .L51
  572               	.L39:
- 351:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		}
- 573               		.loc 1 351 4 is_stmt 1 view .LVU104
+ 325:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		}
+ 573               		.loc 1 325 4 is_stmt 1 view .LVU104
  574 0058 1596      		adiw r26,5
  575 005a 8C91      		ld r24,X
  576 005c 1597      		sbiw r26,5
  577 005e 982F      		mov r25,r24
  578 0060 907F      		andi r25,lo8(-16)
- 351:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		}
- 579               		.loc 1 351 12 is_stmt 0 view .LVU105
+ 325:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		}
+ 579               		.loc 1 325 12 is_stmt 0 view .LVU105
  580 0062 1296      		adiw r26,2
  581 0064 2C91      		ld r18,X
  582 0066 2223      		tst r18
  583 0068 01F0      		breq .L45
- 351:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		}
- 584               		.loc 1 351 12 discriminator 1 view .LVU106
+ 325:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		}
+ 584               		.loc 1 325 12 discriminator 1 view .LVU106
  585 006a 9923      		tst r25
  586 006c 01F0      		breq .L46
- 351:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		}
- 587               		.loc 1 351 12 discriminator 4 view .LVU107
+ 325:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		}
+ 587               		.loc 1 325 12 discriminator 4 view .LVU107
  588 006e 80FF      		sbrs r24,0
  589 0070 00C0      		rjmp .L58
  590               	.L46:
  591               	.LBB12:
- 351:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		}
- 592               		.loc 1 351 12 is_stmt 1 discriminator 5 view .LVU108
+ 325:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		}
+ 592               		.loc 1 325 12 is_stmt 1 discriminator 5 view .LVU108
  593 0072 83E0      		ldi r24,lo8(3)
  594 0074 0E94 0000 		call layer_on
  595               	.LVL22:
- 351:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		}
- 596               		.loc 1 351 12 discriminator 5 view .LVU109
+ 325:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		}
+ 596               		.loc 1 325 12 discriminator 5 view .LVU109
  597 0078 00C0      		rjmp .L58
  598               	.LVL23:
  599               	.L45:
- 351:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		}
- 600               		.loc 1 351 12 is_stmt 0 discriminator 5 view .LVU110
+ 325:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		}
+ 600               		.loc 1 325 12 is_stmt 0 discriminator 5 view .LVU110
  601               	.LBE12:
- 351:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		}
- 602               		.loc 1 351 12 discriminator 2 view .LVU111
+ 325:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		}
+ 602               		.loc 1 325 12 discriminator 2 view .LVU111
  603 007a 9923      		tst r25
  604 007c 01F0      		breq .L47
- 351:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		}
- 605               		.loc 1 351 12 discriminator 10 view .LVU112
+ 325:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		}
+ 605               		.loc 1 325 12 discriminator 10 view .LVU112
  606 007e 80FF      		sbrs r24,0
  607 0080 00C0      		rjmp .L53
  608               	.L47:
  609               	.LBB13:
- 351:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		}
- 610               		.loc 1 351 12 is_stmt 1 discriminator 13 view .LVU113
+ 325:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		}
+ 610               		.loc 1 325 12 is_stmt 1 discriminator 13 view .LVU113
  611 0082 83E0      		ldi r24,lo8(3)
  612 0084 0E94 0000 		call layer_off
  613               	.LVL24:
- 351:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		}
- 614               		.loc 1 351 12 discriminator 13 view .LVU114
+ 325:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		}
+ 614               		.loc 1 325 12 discriminator 13 view .LVU114
  615 0088 00C0      		rjmp .L58
  616               	.LVL25:
  617               	.L38:
- 351:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		}
- 618               		.loc 1 351 12 is_stmt 0 discriminator 13 view .LVU115
+ 325:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		}
+ 618               		.loc 1 325 12 is_stmt 0 discriminator 13 view .LVU115
  619               	.LBE13:
- 354:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 			return MACRO(I(10), T(0), T(C), T(TAB), T(TAB), T(A), T(TAB), END);
- 620               		.loc 1 354 4 is_stmt 1 view .LVU116
- 354:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 			return MACRO(I(10), T(0), T(C), T(TAB), T(TAB), T(A), T(TAB), END);
- 621               		.loc 1 354 6 is_stmt 0 view .LVU117
+ 328:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 			return MACRO(I(10), T(0), T(C), T(TAB), T(TAB), T(A), T(TAB), END);
+ 620               		.loc 1 328 4 is_stmt 1 view .LVU116
+ 328:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 			return MACRO(I(10), T(0), T(C), T(TAB), T(TAB), T(A), T(TAB), END);
+ 621               		.loc 1 328 6 is_stmt 0 view .LVU117
  622 008a 1296      		adiw r26,2
  623 008c 8C91      		ld r24,X
  624 008e 1297      		sbiw r26,2
  625               	.LVL26:
- 354:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 			return MACRO(I(10), T(0), T(C), T(TAB), T(TAB), T(A), T(TAB), END);
- 626               		.loc 1 354 6 view .LVU118
+ 328:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 			return MACRO(I(10), T(0), T(C), T(TAB), T(TAB), T(A), T(TAB), END);
+ 626               		.loc 1 328 6 view .LVU118
  627 0090 8111      		cpse r24,__zero_reg__
  628 0092 00C0      		rjmp .L54
  629               	.L37:
- 358:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		SEND_STRING(""); //send string
- 630               		.loc 1 358 3 is_stmt 1 view .LVU119
- 358:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		SEND_STRING(""); //send string
- 631               		.loc 1 358 5 is_stmt 0 view .LVU120
+ 332:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		SEND_STRING(""); //send string
+ 630               		.loc 1 332 3 is_stmt 1 view .LVU119
+ 332:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		SEND_STRING(""); //send string
+ 631               		.loc 1 332 5 is_stmt 0 view .LVU120
  632 0094 1296      		adiw r26,2
  633 0096 8C91      		ld r24,X
  634 0098 1297      		sbiw r26,2
  635 009a 8823      		tst r24
  636 009c 01F0      		breq .L36
- 359:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 			return false; break;}
- 637               		.loc 1 359 3 is_stmt 1 view .LVU121
+ 333:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 			return false; break;}
+ 637               		.loc 1 333 3 is_stmt 1 view .LVU121
  638               	.LBB14:
- 359:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 			return false; break;}
- 639               		.loc 1 359 3 view .LVU122
- 359:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 			return false; break;}
- 640               		.loc 1 359 3 view .LVU123
+ 333:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 			return false; break;}
+ 639               		.loc 1 333 3 view .LVU122
+ 333:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 			return false; break;}
+ 640               		.loc 1 333 3 view .LVU123
  641               	.LBE14:
  642 009e 80E0      		ldi r24,lo8(__c.3319)
  643 00a0 90E0      		ldi r25,hi8(__c.3319)
  644 00a2 00C0      		rjmp .L77
  645               	.L36:
- 360:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	}		
- 646               		.loc 1 360 18 view .LVU124
- 363:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 			SEND_STRING("ipconfig /all");
- 647               		.loc 1 363 3 view .LVU125
- 363:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 			SEND_STRING("ipconfig /all");
- 648               		.loc 1 363 5 is_stmt 0 view .LVU126
+ 334:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	}		
+ 646               		.loc 1 334 18 view .LVU124
+ 337:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 			SEND_STRING("ipconfig /all");
+ 647               		.loc 1 337 3 view .LVU125
+ 337:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 			SEND_STRING("ipconfig /all");
+ 648               		.loc 1 337 5 is_stmt 0 view .LVU126
  649 00a4 1296      		adiw r26,2
  650 00a6 8C91      		ld r24,X
  651 00a8 1297      		sbiw r26,2
  652 00aa 8823      		tst r24
  653 00ac 01F0      		breq .L35
- 364:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 					return false; break;}
- 654               		.loc 1 364 4 is_stmt 1 view .LVU127
+ 338:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 					return false; break;}
+ 654               		.loc 1 338 4 is_stmt 1 view .LVU127
  655               	.LBB15:
- 364:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 					return false; break;}
- 656               		.loc 1 364 4 view .LVU128
- 364:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 					return false; break;}
- 657               		.loc 1 364 4 view .LVU129
+ 338:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 					return false; break;}
+ 656               		.loc 1 338 4 view .LVU128
+ 338:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 					return false; break;}
+ 657               		.loc 1 338 4 view .LVU129
  658               	.LBE15:
  659 00ae 80E0      		ldi r24,lo8(__c.3322)
  660 00b0 90E0      		ldi r25,hi8(__c.3322)
  661 00b2 00C0      		rjmp .L77
  662               	.L35:
- 365:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	}
- 663               		.loc 1 365 20 view .LVU130
- 368:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		return MACRO( I(10),T(TAB), T(O), T(P), T(TAB),T(ENTER), T(TAB),T(TAB),T(TAB),T(Z),T(R),T(TAB),T(
- 664               		.loc 1 368 2 view .LVU131
- 368:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		return MACRO( I(10),T(TAB), T(O), T(P), T(TAB),T(ENTER), T(TAB),T(TAB),T(TAB),T(Z),T(R),T(TAB),T(
- 665               		.loc 1 368 4 is_stmt 0 view .LVU132
+ 339:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	}
+ 663               		.loc 1 339 20 view .LVU130
+ 342:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		return MACRO( I(10),T(TAB), T(O), T(P), T(TAB),T(ENTER), T(TAB),T(TAB),T(TAB),T(Z),T(R),T(TAB),T(
+ 664               		.loc 1 342 2 view .LVU131
+ 342:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		return MACRO( I(10),T(TAB), T(O), T(P), T(TAB),T(ENTER), T(TAB),T(TAB),T(TAB),T(Z),T(R),T(TAB),T(
+ 665               		.loc 1 342 4 is_stmt 0 view .LVU132
  666 00b4 1296      		adiw r26,2
  667 00b6 8C91      		ld r24,X
  668 00b8 1297      		sbiw r26,2
  669 00ba 8111      		cpse r24,__zero_reg__
  670 00bc 00C0      		rjmp .L55
  671               	.L34:
- 372:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		return MACRO( I(10),T(TAB), T(O), T(T), T(TAB),T(ENTER), T(TAB),T(TAB),T(TAB),T(Z),T(R),T(TAB),T(
- 672               		.loc 1 372 2 is_stmt 1 view .LVU133
- 372:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		return MACRO( I(10),T(TAB), T(O), T(T), T(TAB),T(ENTER), T(TAB),T(TAB),T(TAB),T(Z),T(R),T(TAB),T(
- 673               		.loc 1 372 4 is_stmt 0 view .LVU134
+ 346:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		return MACRO( I(10),T(TAB), T(O), T(T), T(TAB),T(ENTER), T(TAB),T(TAB),T(TAB),T(Z),T(R),T(TAB),T(
+ 672               		.loc 1 346 2 is_stmt 1 view .LVU133
+ 346:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		return MACRO( I(10),T(TAB), T(O), T(T), T(TAB),T(ENTER), T(TAB),T(TAB),T(TAB),T(Z),T(R),T(TAB),T(
+ 673               		.loc 1 346 4 is_stmt 0 view .LVU134
  674 00be 1296      		adiw r26,2
  675 00c0 8C91      		ld r24,X
  676 00c2 1297      		sbiw r26,2
  677 00c4 8111      		cpse r24,__zero_reg__
  678 00c6 00C0      		rjmp .L56
  679               	.L33:
- 376:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		return MACRO( I(10),T(TAB), T(I), T(N), T(TAB),T(ENTER), T(TAB),T(TAB),T(TAB),T(I),T(N),T(TAB),T(
- 680               		.loc 1 376 2 is_stmt 1 view .LVU135
- 376:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		return MACRO( I(10),T(TAB), T(I), T(N), T(TAB),T(ENTER), T(TAB),T(TAB),T(TAB),T(I),T(N),T(TAB),T(
- 681               		.loc 1 376 4 is_stmt 0 view .LVU136
+ 350:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		return MACRO( I(10),T(TAB), T(I), T(N), T(TAB),T(ENTER), T(TAB),T(TAB),T(TAB),T(I),T(N),T(TAB),T(
+ 680               		.loc 1 350 2 is_stmt 1 view .LVU135
+ 350:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		return MACRO( I(10),T(TAB), T(I), T(N), T(TAB),T(ENTER), T(TAB),T(TAB),T(TAB),T(I),T(N),T(TAB),T(
+ 681               		.loc 1 350 4 is_stmt 0 view .LVU136
  682 00c8 1296      		adiw r26,2
  683 00ca 8C91      		ld r24,X
  684 00cc 1297      		sbiw r26,2
  685 00ce 8111      		cpse r24,__zero_reg__
  686 00d0 00C0      		rjmp .L57
  687               	.L31:
- 380:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		SEND_STRING("username"SS_TAP(X_TAB)"pass"SS_TAP(X_TAB)SS_TAP(X_ENTER));//allows sending password 
- 688               		.loc 1 380 2 is_stmt 1 view .LVU137
- 380:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		SEND_STRING("username"SS_TAP(X_TAB)"pass"SS_TAP(X_TAB)SS_TAP(X_ENTER));//allows sending password 
- 689               		.loc 1 380 4 is_stmt 0 view .LVU138
+ 354:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		SEND_STRING("username"SS_TAP(X_TAB)"pass"SS_TAP(X_TAB)SS_TAP(X_ENTER));//allows sending password 
+ 688               		.loc 1 354 2 is_stmt 1 view .LVU137
+ 354:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		SEND_STRING("username"SS_TAP(X_TAB)"pass"SS_TAP(X_TAB)SS_TAP(X_ENTER));//allows sending password 
+ 689               		.loc 1 354 4 is_stmt 0 view .LVU138
  690 00d2 1296      		adiw r26,2
  691 00d4 8C91      		ld r24,X
  692 00d6 8823      		tst r24
  693 00d8 01F4      		brne .+2
  694 00da 00C0      		rjmp .L58
- 381:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		return false; break;
- 695               		.loc 1 381 3 is_stmt 1 view .LVU139
+ 355:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		return false; break;
+ 695               		.loc 1 355 3 is_stmt 1 view .LVU139
  696               	.LBB16:
- 381:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		return false; break;
- 697               		.loc 1 381 3 view .LVU140
- 381:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		return false; break;
- 698               		.loc 1 381 3 view .LVU141
+ 355:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		return false; break;
+ 697               		.loc 1 355 3 view .LVU140
+ 355:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		return false; break;
+ 698               		.loc 1 355 3 view .LVU141
  699               	.LBE16:
  700 00dc 80E0      		ldi r24,lo8(__c.3334)
  701 00de 90E0      		ldi r25,hi8(__c.3334)
  702 00e0 00C0      		rjmp .L77
  703               	.L49:
- 327:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		}
- 704               		.loc 1 327 11 is_stmt 0 view .LVU142
+ 301:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		}
+ 704               		.loc 1 301 11 is_stmt 0 view .LVU142
  705 00e2 80E0      		ldi r24,lo8(__m.3296)
  706 00e4 90E0      		ldi r25,hi8(__m.3296)
  707 00e6 0895      		ret
  708               	.L50:
- 333:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		}
- 709               		.loc 1 333 11 view .LVU143
+ 307:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		}
+ 709               		.loc 1 307 11 view .LVU143
  710 00e8 80E0      		ldi r24,lo8(__m.3299)
  711 00ea 90E0      		ldi r25,hi8(__m.3299)
  712 00ec 0895      		ret
  713               	.L51:
- 347:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		}
- 714               		.loc 1 347 11 view .LVU144
+ 321:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		}
+ 714               		.loc 1 321 11 view .LVU144
  715 00ee 80E0      		ldi r24,lo8(__m.3308)
  716 00f0 90E0      		ldi r25,hi8(__m.3308)
  717 00f2 0895      		ret
  718               	.L53:
- 351:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		}
- 719               		.loc 1 351 12 view .LVU145
+ 325:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		}
+ 719               		.loc 1 325 12 view .LVU145
  720 00f4 80E0      		ldi r24,lo8(__m.3312)
  721 00f6 90E0      		ldi r25,hi8(__m.3312)
  722 00f8 0895      		ret
  723               	.L54:
- 355:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		}
- 724               		.loc 1 355 11 view .LVU146
+ 329:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 		}
+ 724               		.loc 1 329 11 view .LVU146
  725 00fa 80E0      		ldi r24,lo8(__m.3316)
  726 00fc 90E0      		ldi r25,hi8(__m.3316)
  727 00fe 0895      		ret
  728               	.L55:
- 369:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	}	
- 729               		.loc 1 369 10 view .LVU147
+ 343:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	}	
+ 729               		.loc 1 343 10 view .LVU147
  730 0100 80E0      		ldi r24,lo8(__m.3325)
  731 0102 90E0      		ldi r25,hi8(__m.3325)
  732 0104 0895      		ret
  733               	.L56:
- 373:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	}	
- 734               		.loc 1 373 10 view .LVU148
+ 347:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	}	
+ 734               		.loc 1 347 10 view .LVU148
  735 0106 80E0      		ldi r24,lo8(__m.3328)
  736 0108 90E0      		ldi r25,hi8(__m.3328)
  737 010a 0895      		ret
  738               	.L57:
- 377:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	}	
- 739               		.loc 1 377 10 view .LVU149
+ 351:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	}	
+ 739               		.loc 1 351 10 view .LVU149
  740 010c 80E0      		ldi r24,lo8(__m.3331)
  741 010e 90E0      		ldi r25,hi8(__m.3331)
  742 0110 0895      		ret
@@ -1269,25 +1243,25 @@
  747               	.global	matrix_init_user
  749               	matrix_init_user:
  750               	.LFB35:
- 431:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	
- 432:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** qk_tap_dance_action_t tap_dance_actions[] = {
- 433:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	
- 434:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	//Tap once for Esc, twice for Caps Lock
- 435:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	[TD_CPY_PST] = ACTION_TAP_DANCE_FN(cmd_commands),
- 436:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	[TD_SLSH]= ACTION_TAP_DANCE_FN(SLSH_BSLSH),
- 437:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	[TD_CMD]=ACTION_TAP_DANCE_FN(cmd),
- 438:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	[TD_VRDSK]=ACTION_TAP_DANCE_FN(VirtualDesktop)
- 439:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** };
- 440:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 
- 441:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** void matrix_init_user(void) {
- 751               		.loc 1 441 29 is_stmt 1 view -0
+ 405:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	
+ 406:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** qk_tap_dance_action_t tap_dance_actions[] = {
+ 407:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	
+ 408:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	//Tap once for Esc, twice for Caps Lock
+ 409:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	[TD_CPY_PST] = ACTION_TAP_DANCE_FN(cmd_commands),
+ 410:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	[TD_SLSH]= ACTION_TAP_DANCE_FN(SLSH_BSLSH),
+ 411:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	[TD_CMD]=ACTION_TAP_DANCE_FN(cmd),
+ 412:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	[TD_VRDSK]=ACTION_TAP_DANCE_FN(VirtualDesktop)
+ 413:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** };
+ 414:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 
+ 415:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** void matrix_init_user(void) {
+ 751               		.loc 1 415 29 is_stmt 1 view -0
  752               		.cfi_startproc
  753               	/* prologue: function */
  754               	/* frame size = 0 */
  755               	/* stack size = 0 */
  756               	.L__stack_usage = 0
- 442:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** }
- 757               		.loc 1 442 1 view .LVU151
+ 416:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** }
+ 757               		.loc 1 416 1 view .LVU151
  758               	/* epilogue start */
  759 0000 0895      		ret
  760               		.cfi_endproc
@@ -1310,27 +1284,27 @@
  781               	process_record_user:
  782               	.LVL27:
  783               	.LFB37:
- 443:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 
- 444:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** void matrix_scan_user(void) {
- 445:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	
- 446:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	
- 447:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** }
- 448:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** bool process_record_user(uint16_t keycode, keyrecord_t *record) {
- 784               		.loc 1 448 65 view -0
+ 417:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 
+ 418:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** void matrix_scan_user(void) {
+ 419:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	
+ 420:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** 	
+ 421:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** }
+ 422:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+ 784               		.loc 1 422 65 view -0
  785               		.cfi_startproc
  786               	/* prologue: function */
  787               	/* frame size = 0 */
  788               	/* stack size = 0 */
  789               	.L__stack_usage = 0
- 790               		.loc 1 448 65 is_stmt 0 view .LVU153
+ 790               		.loc 1 422 65 is_stmt 0 view .LVU153
  791 0000 FB01      		movw r30,r22
- 449:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****   // If console is enabled, it will print the matrix position and status of each key pressed
- 450:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** #ifdef CONSOLE_ENABLE
- 451:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****     xprintf("KL: kc: %u, col: %u, row: %u, pressed: %u\n", keycode, record->event.key.col, record->
- 792               		.loc 1 451 5 is_stmt 1 view .LVU154
+ 423:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****   // If console is enabled, it will print the matrix position and status of each key pressed
+ 424:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** #ifdef CONSOLE_ENABLE
+ 425:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****     xprintf("KL: kc: %u, col: %u, row: %u, pressed: %u\n", keycode, record->event.key.col, record->
+ 792               		.loc 1 425 5 is_stmt 1 view .LVU154
  793               	.LBB17:
- 794               		.loc 1 451 5 view .LVU155
- 795               		.loc 1 451 5 view .LVU156
+ 794               		.loc 1 425 5 view .LVU155
+ 795               		.loc 1 425 5 view .LVU156
  796               	.LBE17:
  797 0002 2281      		ldd r18,Z+2
  798 0004 1F92      		push __zero_reg__
@@ -1362,7 +1336,7 @@
  824 0018 80E0      		ldi r24,lo8(__c.3379)
  825 001a 90E0      		ldi r25,hi8(__c.3379)
  826               	.LVL28:
- 827               		.loc 1 451 5 is_stmt 0 view .LVU157
+ 827               		.loc 1 425 5 is_stmt 0 view .LVU157
  828 001c 9F93      		push r25
  829               	.LCFI10:
  830               		.cfi_def_cfa_offset 11
@@ -1371,10 +1345,10 @@
  833               		.cfi_def_cfa_offset 12
  834 0020 0E94 0000 		call __xprintf
  835               	.LVL29:
- 452:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** #endif
- 453:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****   return true;
- 836               		.loc 1 453 3 is_stmt 1 view .LVU158
- 837               		.loc 1 453 10 is_stmt 0 view .LVU159
+ 426:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** #endif
+ 427:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c ****   return true;
+ 836               		.loc 1 427 3 is_stmt 1 view .LVU158
+ 837               		.loc 1 427 10 is_stmt 0 view .LVU159
  838 0024 8DB7      		in r24,__SP_L__
  839 0026 9EB7      		in r25,__SP_H__
  840 0028 0A96      		adiw r24,10
@@ -1385,8 +1359,8 @@
  845 0032 8DBF      		out __SP_L__,r24
  846               	.LCFI12:
  847               		.cfi_def_cfa_offset 2
- 454:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** }
- 848               		.loc 1 454 1 view .LVU160
+ 428:keyboards/Dactylv2_Lightcycle/keymaps/Default/keymap.c **** }
+ 848               		.loc 1 428 1 view .LVU160
  849 0034 81E0      		ldi r24,lo8(1)
  850               	/* epilogue start */
  851 0036 0895      		ret
@@ -2016,8 +1990,8 @@
  1500 003a 0000      		.word	0
  1501 003c 4E00      		.word	78
  1502 003e 4B00      		.word	75
- 1503 0040 4D00      		.word	77
- 1504 0042 4A00      		.word	74
+ 1503 0040 E200      		.word	226
+ 1504 0042 0651      		.word	20742
  1505 0044 0000      		.word	0
  1506 0046 0000      		.word	0
  1507 0048 4C00      		.word	76
@@ -2056,10 +2030,10 @@
  1540 008a 5000      		.word	80
  1541 008c 0151      		.word	20737
  1542 008e 0000      		.word	0
- 1543 0090 E300      		.word	227
- 1544 0092 E400      		.word	228
- 1545 0094 2800      		.word	40
- 1546 0096 0651      		.word	20742
+ 1543 0090 E600      		.word	230
+ 1544 0092 0651      		.word	20742
+ 1545 0094 4A00      		.word	74
+ 1546 0096 4D00      		.word	77
  1547 0098 0000      		.word	0
  1548 009a 0000      		.word	0
  1549 009c 2800      		.word	40
@@ -2100,8 +2074,8 @@
  1584 00e2 0000      		.word	0
  1585 00e4 4E00      		.word	78
  1586 00e6 4B00      		.word	75
- 1587 00e8 4D00      		.word	77
- 1588 00ea 4A00      		.word	74
+ 1587 00e8 E200      		.word	226
+ 1588 00ea 0651      		.word	20742
  1589 00ec 0000      		.word	0
  1590 00ee 0000      		.word	0
  1591 00f0 4C00      		.word	76
@@ -2140,10 +2114,10 @@
  1624 0132 2700      		.word	39
  1625 0134 0100      		.word	1
  1626 0136 0000      		.word	0
- 1627 0138 E300      		.word	227
- 1628 013a E400      		.word	228
- 1629 013c 2800      		.word	40
- 1630 013e 0651      		.word	20742
+ 1627 0138 E600      		.word	230
+ 1628 013a 0651      		.word	20742
+ 1629 013c 4D00      		.word	77
+ 1630 013e 4A00      		.word	74
  1631 0140 0000      		.word	0
  1632 0142 0000      		.word	0
  1633 0144 2800      		.word	40
@@ -2184,8 +2158,8 @@
  1668 018a 0000      		.word	0
  1669 018c 4E00      		.word	78
  1670 018e 4B00      		.word	75
- 1671 0190 4D00      		.word	77
- 1672 0192 4A00      		.word	74
+ 1671 0190 E200      		.word	226
+ 1672 0192 0651      		.word	20742
  1673 0194 0000      		.word	0
  1674 0196 0000      		.word	0
  1675 0198 F500      		.word	245
@@ -2224,10 +2198,10 @@
  1708 01da 0100      		.word	1
  1709 01dc 0100      		.word	1
  1710 01de 0000      		.word	0
- 1711 01e0 E300      		.word	227
- 1712 01e2 E400      		.word	228
- 1713 01e4 2800      		.word	40
- 1714 01e6 0651      		.word	20742
+ 1711 01e0 E600      		.word	230
+ 1712 01e2 0651      		.word	20742
+ 1713 01e4 4D00      		.word	77
+ 1714 01e6 4A00      		.word	74
  1715 01e8 0000      		.word	0
  1716 01ea 0000      		.word	0
  1717 01ec F500      		.word	245
@@ -2247,38 +2221,38 @@
  1727 03f6 1F00      		.word	31
  1728 03f8 2000      		.word	32
  1729 03fa 2100      		.word	33
- 1730 03fc 0100      		.word	1
- 1731 03fe 0100      		.word	1
- 1732 0400 0100      		.word	1
- 1733 0402 0100      		.word	1
- 1734 0404 1509      		.word	2325
- 1735 0406 0100      		.word	1
- 1736 0408 0100      		.word	1
- 1737 040a 0100      		.word	1
- 1738 040c 0100      		.word	1
- 1739 040e 0100      		.word	1
- 1740 0410 0100      		.word	1
+ 1730 03fc 0709      		.word	2311
+ 1731 03fe 130D      		.word	3347
+ 1732 0400 2409      		.word	2340
+ 1733 0402 2509      		.word	2341
+ 1734 0404 2609      		.word	2342
+ 1735 0406 1509      		.word	2325
+ 1736 0408 5009      		.word	2384
+ 1737 040a 4F09      		.word	2383
+ 1738 040c 2109      		.word	2337
+ 1739 040e 2209      		.word	2338
+ 1740 0410 2309      		.word	2339
  1741 0412 0100      		.word	1
- 1742 0414 0100      		.word	1
- 1743 0416 0100      		.word	1
- 1744 0418 0100      		.word	1
- 1745 041a 0100      		.word	1
- 1746 041c 0100      		.word	1
+ 1742 0414 500B      		.word	2896
+ 1743 0416 4F0B      		.word	2895
+ 1744 0418 1E09      		.word	2334
+ 1745 041a 1F09      		.word	2335
+ 1746 041c 2009      		.word	2336
  1747 041e 0100      		.word	1
- 1748 0420 0100      		.word	1
- 1749 0422 0100      		.word	1
+ 1748 0420 500C      		.word	3152
+ 1749 0422 4F0C      		.word	3151
  1750 0424 0100      		.word	1
- 1751 0426 0100      		.word	1
+ 1751 0426 2709      		.word	2343
  1752 0428 0100      		.word	1
  1753 042a 0000      		.word	0
  1754 042c 4E00      		.word	78
  1755 042e 4B00      		.word	75
- 1756 0430 4D00      		.word	77
- 1757 0432 4A00      		.word	74
+ 1756 0430 E200      		.word	226
+ 1757 0432 0651      		.word	20742
  1758 0434 0000      		.word	0
  1759 0436 0000      		.word	0
- 1760 0438 F500      		.word	245
- 1761 043a F400      		.word	244
+ 1760 0438 4C00      		.word	76
+ 1761 043a E100      		.word	225
  1762 043c 0000      		.word	0
  1763 043e 0000      		.word	0
  1764 0440 0000      		.word	0
@@ -2307,20 +2281,20 @@
  1787 046e 1F09      		.word	2335
  1788 0470 1E09      		.word	2334
  1789 0472 0100      		.word	1
- 1790 0474 0100      		.word	1
- 1791 0476 2709      		.word	2343
+ 1790 0474 4F0C      		.word	3151
+ 1791 0476 500C      		.word	3152
  1792 0478 0100      		.word	1
- 1793 047a 0100      		.word	1
+ 1793 047a 2709      		.word	2343
  1794 047c 0100      		.word	1
  1795 047e 0000      		.word	0
- 1796 0480 E300      		.word	227
- 1797 0482 E400      		.word	228
- 1798 0484 2800      		.word	40
- 1799 0486 0651      		.word	20742
+ 1796 0480 E600      		.word	230
+ 1797 0482 0651      		.word	20742
+ 1798 0484 4D00      		.word	77
+ 1799 0486 4A00      		.word	74
  1800 0488 0000      		.word	0
  1801 048a 0000      		.word	0
- 1802 048c F500      		.word	245
- 1803 048e F400      		.word	244
+ 1802 048c 2800      		.word	40
+ 1803 048e 2C00      		.word	44
  1804 0490 0000      		.word	0
  1805 0492 0000      		.word	0
  1806 0494 0000      		.word	0
@@ -2349,56 +2323,56 @@
  1829               		.file 22 "./tmk_core/common/eeconfig.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 keymap.c
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccbBvvIt.s:2      *ABS*:000000000000003e __SP_H__
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccbBvvIt.s:3      *ABS*:000000000000003d __SP_L__
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccbBvvIt.s:4      *ABS*:000000000000003f __SREG__
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccbBvvIt.s:5      *ABS*:0000000000000000 __tmp_reg__
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccbBvvIt.s:6      *ABS*:0000000000000001 __zero_reg__
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccbBvvIt.s:13     .text.cmd_commands:0000000000000000 cmd_commands
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccbBvvIt.s:1112   .progmem.data.__m.3340:0000000000000000 __m.3340
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccbBvvIt.s:1099   .progmem.data.__m.3342:0000000000000000 __m.3342
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccbBvvIt.s:1082   .progmem.data.__m.3344:0000000000000000 __m.3344
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccbBvvIt.s:73     .text.cmd:0000000000000000 cmd
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccbBvvIt.s:1049   .progmem.data.__m.3350:0000000000000000 __m.3350
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccbBvvIt.s:960    .progmem.data.__m.3352:0000000000000000 __m.3352
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccbBvvIt.s:897    .progmem.data.__m.3354:0000000000000000 __m.3354
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccbBvvIt.s:132    .text.VirtualDesktop:0000000000000000 VirtualDesktop
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccbBvvIt.s:880    .progmem.data.__m.3364:0000000000000000 __m.3364
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccbBvvIt.s:863    .progmem.data.__m.3366:0000000000000000 __m.3366
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccbBvvIt.s:185    .text.SLSH_BSLSH:0000000000000000 SLSH_BSLSH
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccbBvvIt.s:226    .text.rgblight_toggle:0000000000000000 rgblight_toggle
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccbBvvIt.s:245    .text.rgblight_step:0000000000000000 rgblight_step
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccbBvvIt.s:260    .text.rgblight_step_reverse:0000000000000000 rgblight_step_reverse
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccbBvvIt.s:275    .text.rgblight_increase_hue:0000000000000000 rgblight_increase_hue
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccbBvvIt.s:290    .text.rgblight_decrease_hue:0000000000000000 rgblight_decrease_hue
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccbBvvIt.s:305    .text.rgblight_increase_sat:0000000000000000 rgblight_increase_sat
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccbBvvIt.s:320    .text.rgblight_decrease_sat:0000000000000000 rgblight_decrease_sat
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccbBvvIt.s:335    .text.rgblight_increase_val:0000000000000000 rgblight_increase_val
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccbBvvIt.s:350    .text.rgblight_decrease_val:0000000000000000 rgblight_decrease_val
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccbBvvIt.s:365    .text.rgblight_increase_speed:0000000000000000 rgblight_increase_speed
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccbBvvIt.s:380    .text.rgblight_decrease_speed:0000000000000000 rgblight_decrease_speed
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccbBvvIt.s:395    .text.persistent_default_layer_set:0000000000000000 persistent_default_layer_set
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccbBvvIt.s:436    .text.keyboard_post_init_user:0000000000000000 keyboard_post_init_user
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccbBvvIt.s:461    .text.action_get_macro:0000000000000000 action_get_macro
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccbBvvIt.s:1373   .progmem.data.__c.3302:0000000000000000 __c.3302
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccbBvvIt.s:1368   .progmem.data.__c.3305:0000000000000000 __c.3305
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccbBvvIt.s:1300   .progmem.data.__c.3319:0000000000000000 __c.3319
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccbBvvIt.s:1295   .progmem.data.__c.3322:0000000000000000 __c.3322
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccbBvvIt.s:1125   .progmem.data.__c.3334:0000000000000000 __c.3334
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccbBvvIt.s:1431   .progmem.data.__m.3296:0000000000000000 __m.3296
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccbBvvIt.s:1378   .progmem.data.__m.3299:0000000000000000 __m.3299
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccbBvvIt.s:1345   .progmem.data.__m.3308:0000000000000000 __m.3308
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccbBvvIt.s:1336   .progmem.data.__m.3312:0000000000000000 __m.3312
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccbBvvIt.s:1305   .progmem.data.__m.3316:0000000000000000 __m.3316
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccbBvvIt.s:1240   .progmem.data.__m.3325:0000000000000000 __m.3325
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccbBvvIt.s:1185   .progmem.data.__m.3328:0000000000000000 __m.3328
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccbBvvIt.s:1130   .progmem.data.__m.3331:0000000000000000 __m.3331
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccbBvvIt.s:749    .text.matrix_init_user:0000000000000000 matrix_init_user
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccbBvvIt.s:766    .text.matrix_scan_user:0000000000000000 matrix_scan_user
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccbBvvIt.s:781    .text.process_record_user:0000000000000000 process_record_user
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccbBvvIt.s:858    .progmem.data.__c.3379:0000000000000000 __c.3379
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccbBvvIt.s:1445   .data.tap_dance_actions:0000000000000000 tap_dance_actions
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccbBvvIt.s:1470   .progmem.data.keymaps:0000000000000000 keymaps
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc9lvUI5.s:2      *ABS*:000000000000003e __SP_H__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc9lvUI5.s:3      *ABS*:000000000000003d __SP_L__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc9lvUI5.s:4      *ABS*:000000000000003f __SREG__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc9lvUI5.s:5      *ABS*:0000000000000000 __tmp_reg__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc9lvUI5.s:6      *ABS*:0000000000000001 __zero_reg__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc9lvUI5.s:13     .text.cmd_commands:0000000000000000 cmd_commands
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc9lvUI5.s:1112   .progmem.data.__m.3340:0000000000000000 __m.3340
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc9lvUI5.s:1099   .progmem.data.__m.3342:0000000000000000 __m.3342
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc9lvUI5.s:1082   .progmem.data.__m.3344:0000000000000000 __m.3344
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc9lvUI5.s:73     .text.cmd:0000000000000000 cmd
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc9lvUI5.s:1049   .progmem.data.__m.3350:0000000000000000 __m.3350
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc9lvUI5.s:960    .progmem.data.__m.3352:0000000000000000 __m.3352
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc9lvUI5.s:897    .progmem.data.__m.3354:0000000000000000 __m.3354
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc9lvUI5.s:132    .text.VirtualDesktop:0000000000000000 VirtualDesktop
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc9lvUI5.s:880    .progmem.data.__m.3364:0000000000000000 __m.3364
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc9lvUI5.s:863    .progmem.data.__m.3366:0000000000000000 __m.3366
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc9lvUI5.s:185    .text.SLSH_BSLSH:0000000000000000 SLSH_BSLSH
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc9lvUI5.s:226    .text.rgblight_toggle:0000000000000000 rgblight_toggle
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc9lvUI5.s:245    .text.rgblight_step:0000000000000000 rgblight_step
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc9lvUI5.s:260    .text.rgblight_step_reverse:0000000000000000 rgblight_step_reverse
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc9lvUI5.s:275    .text.rgblight_increase_hue:0000000000000000 rgblight_increase_hue
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc9lvUI5.s:290    .text.rgblight_decrease_hue:0000000000000000 rgblight_decrease_hue
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc9lvUI5.s:305    .text.rgblight_increase_sat:0000000000000000 rgblight_increase_sat
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc9lvUI5.s:320    .text.rgblight_decrease_sat:0000000000000000 rgblight_decrease_sat
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc9lvUI5.s:335    .text.rgblight_increase_val:0000000000000000 rgblight_increase_val
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc9lvUI5.s:350    .text.rgblight_decrease_val:0000000000000000 rgblight_decrease_val
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc9lvUI5.s:365    .text.rgblight_increase_speed:0000000000000000 rgblight_increase_speed
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc9lvUI5.s:380    .text.rgblight_decrease_speed:0000000000000000 rgblight_decrease_speed
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc9lvUI5.s:395    .text.persistent_default_layer_set:0000000000000000 persistent_default_layer_set
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc9lvUI5.s:436    .text.keyboard_post_init_user:0000000000000000 keyboard_post_init_user
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc9lvUI5.s:461    .text.action_get_macro:0000000000000000 action_get_macro
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc9lvUI5.s:1373   .progmem.data.__c.3302:0000000000000000 __c.3302
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc9lvUI5.s:1368   .progmem.data.__c.3305:0000000000000000 __c.3305
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc9lvUI5.s:1300   .progmem.data.__c.3319:0000000000000000 __c.3319
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc9lvUI5.s:1295   .progmem.data.__c.3322:0000000000000000 __c.3322
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc9lvUI5.s:1125   .progmem.data.__c.3334:0000000000000000 __c.3334
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc9lvUI5.s:1431   .progmem.data.__m.3296:0000000000000000 __m.3296
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc9lvUI5.s:1378   .progmem.data.__m.3299:0000000000000000 __m.3299
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc9lvUI5.s:1345   .progmem.data.__m.3308:0000000000000000 __m.3308
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc9lvUI5.s:1336   .progmem.data.__m.3312:0000000000000000 __m.3312
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc9lvUI5.s:1305   .progmem.data.__m.3316:0000000000000000 __m.3316
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc9lvUI5.s:1240   .progmem.data.__m.3325:0000000000000000 __m.3325
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc9lvUI5.s:1185   .progmem.data.__m.3328:0000000000000000 __m.3328
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc9lvUI5.s:1130   .progmem.data.__m.3331:0000000000000000 __m.3331
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc9lvUI5.s:749    .text.matrix_init_user:0000000000000000 matrix_init_user
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc9lvUI5.s:766    .text.matrix_scan_user:0000000000000000 matrix_scan_user
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc9lvUI5.s:781    .text.process_record_user:0000000000000000 process_record_user
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc9lvUI5.s:858    .progmem.data.__c.3379:0000000000000000 __c.3379
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc9lvUI5.s:1445   .data.tap_dance_actions:0000000000000000 tap_dance_actions
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cc9lvUI5.s:1470   .progmem.data.keymaps:0000000000000000 keymaps
 
 UNDEFINED SYMBOLS
 action_macro_play

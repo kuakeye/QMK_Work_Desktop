@@ -33,180 +33,180 @@
   19:./quantum/rgb.h **** 
   20:./quantum/rgb.h **** __attribute__((weak))
   21:./quantum/rgb.h **** void rgblight_toggle(void) {};
-  16               		.loc 1 21 0
+  16               		.loc 1 21 28 view -0
   17               		.cfi_startproc
   18               	/* prologue: function */
   19               	/* frame size = 0 */
   20               	/* stack size = 0 */
   21               	.L__stack_usage = 0
-  22 0000 0895      		ret
-  23               		.cfi_endproc
-  24               	.LFE10:
-  26               		.section	.text.rgblight_step,"ax",@progbits
-  27               		.weak	rgblight_step
-  29               	rgblight_step:
-  30               	.LFB11:
-  22:./quantum/rgb.h **** 
-  23:./quantum/rgb.h **** __attribute__((weak))
-  24:./quantum/rgb.h **** void rgblight_step(void) {};
-  31               		.loc 1 24 0
-  32               		.cfi_startproc
-  33               	/* prologue: function */
-  34               	/* frame size = 0 */
-  35               	/* stack size = 0 */
-  36               	.L__stack_usage = 0
-  37 0000 0895      		ret
-  38               		.cfi_endproc
-  39               	.LFE11:
-  41               		.section	.text.rgblight_step_reverse,"ax",@progbits
-  42               		.weak	rgblight_step_reverse
-  44               	rgblight_step_reverse:
-  45               	.LFB12:
-  25:./quantum/rgb.h **** 
-  26:./quantum/rgb.h **** __attribute__((weak))
-  27:./quantum/rgb.h **** void rgblight_step_reverse(void) {};
-  46               		.loc 1 27 0
-  47               		.cfi_startproc
-  48               	/* prologue: function */
-  49               	/* frame size = 0 */
-  50               	/* stack size = 0 */
-  51               	.L__stack_usage = 0
-  52 0000 0895      		ret
-  53               		.cfi_endproc
-  54               	.LFE12:
-  56               		.section	.text.rgblight_increase_hue,"ax",@progbits
-  57               		.weak	rgblight_increase_hue
-  59               	rgblight_increase_hue:
-  60               	.LFB13:
-  28:./quantum/rgb.h **** 
-  29:./quantum/rgb.h **** __attribute__((weak))
-  30:./quantum/rgb.h **** void rgblight_increase_hue(void) {};
-  61               		.loc 1 30 0
-  62               		.cfi_startproc
-  63               	/* prologue: function */
-  64               	/* frame size = 0 */
-  65               	/* stack size = 0 */
-  66               	.L__stack_usage = 0
-  67 0000 0895      		ret
-  68               		.cfi_endproc
-  69               	.LFE13:
-  71               		.section	.text.rgblight_decrease_hue,"ax",@progbits
-  72               		.weak	rgblight_decrease_hue
-  74               	rgblight_decrease_hue:
-  75               	.LFB14:
-  31:./quantum/rgb.h **** 
-  32:./quantum/rgb.h **** __attribute__((weak))
-  33:./quantum/rgb.h **** void rgblight_decrease_hue(void) {};
-  76               		.loc 1 33 0
-  77               		.cfi_startproc
-  78               	/* prologue: function */
-  79               	/* frame size = 0 */
-  80               	/* stack size = 0 */
-  81               	.L__stack_usage = 0
-  82 0000 0895      		ret
-  83               		.cfi_endproc
-  84               	.LFE14:
-  86               		.section	.text.rgblight_increase_sat,"ax",@progbits
-  87               		.weak	rgblight_increase_sat
-  89               	rgblight_increase_sat:
-  90               	.LFB15:
-  34:./quantum/rgb.h **** 
-  35:./quantum/rgb.h **** __attribute__((weak))
-  36:./quantum/rgb.h **** void rgblight_increase_sat(void) {};
-  91               		.loc 1 36 0
-  92               		.cfi_startproc
-  93               	/* prologue: function */
-  94               	/* frame size = 0 */
-  95               	/* stack size = 0 */
-  96               	.L__stack_usage = 0
-  97 0000 0895      		ret
-  98               		.cfi_endproc
-  99               	.LFE15:
- 101               		.section	.text.rgblight_decrease_sat,"ax",@progbits
- 102               		.weak	rgblight_decrease_sat
- 104               	rgblight_decrease_sat:
- 105               	.LFB16:
-  37:./quantum/rgb.h **** 
-  38:./quantum/rgb.h **** __attribute__((weak))
-  39:./quantum/rgb.h **** void rgblight_decrease_sat(void) {};
- 106               		.loc 1 39 0
- 107               		.cfi_startproc
- 108               	/* prologue: function */
- 109               	/* frame size = 0 */
- 110               	/* stack size = 0 */
- 111               	.L__stack_usage = 0
- 112 0000 0895      		ret
- 113               		.cfi_endproc
- 114               	.LFE16:
- 116               		.section	.text.rgblight_increase_val,"ax",@progbits
- 117               		.weak	rgblight_increase_val
- 119               	rgblight_increase_val:
- 120               	.LFB17:
-  40:./quantum/rgb.h **** 
-  41:./quantum/rgb.h **** __attribute__((weak))
-  42:./quantum/rgb.h **** void rgblight_increase_val(void) {};
- 121               		.loc 1 42 0
- 122               		.cfi_startproc
- 123               	/* prologue: function */
- 124               	/* frame size = 0 */
- 125               	/* stack size = 0 */
- 126               	.L__stack_usage = 0
- 127 0000 0895      		ret
- 128               		.cfi_endproc
- 129               	.LFE17:
- 131               		.section	.text.rgblight_decrease_val,"ax",@progbits
- 132               		.weak	rgblight_decrease_val
- 134               	rgblight_decrease_val:
- 135               	.LFB18:
-  43:./quantum/rgb.h **** 
-  44:./quantum/rgb.h **** __attribute__((weak))
-  45:./quantum/rgb.h **** void rgblight_decrease_val(void) {};
- 136               		.loc 1 45 0
- 137               		.cfi_startproc
- 138               	/* prologue: function */
- 139               	/* frame size = 0 */
- 140               	/* stack size = 0 */
- 141               	.L__stack_usage = 0
- 142 0000 0895      		ret
- 143               		.cfi_endproc
- 144               	.LFE18:
- 146               		.section	.text.rgblight_increase_speed,"ax",@progbits
- 147               		.weak	rgblight_increase_speed
- 149               	rgblight_increase_speed:
- 150               	.LFB19:
-  46:./quantum/rgb.h **** 
-  47:./quantum/rgb.h **** __attribute__((weak))
-  48:./quantum/rgb.h **** void rgblight_increase_speed(void) {};
- 151               		.loc 1 48 0
- 152               		.cfi_startproc
- 153               	/* prologue: function */
- 154               	/* frame size = 0 */
- 155               	/* stack size = 0 */
- 156               	.L__stack_usage = 0
- 157 0000 0895      		ret
- 158               		.cfi_endproc
- 159               	.LFE19:
- 161               		.section	.text.rgblight_decrease_speed,"ax",@progbits
- 162               		.weak	rgblight_decrease_speed
- 164               	rgblight_decrease_speed:
- 165               	.LFB20:
-  49:./quantum/rgb.h **** 
-  50:./quantum/rgb.h **** __attribute__((weak))
-  51:./quantum/rgb.h **** void rgblight_decrease_speed(void) {};
- 166               		.loc 1 51 0
- 167               		.cfi_startproc
- 168               	/* prologue: function */
- 169               	/* frame size = 0 */
- 170               	/* stack size = 0 */
- 171               	.L__stack_usage = 0
- 172 0000 0895      		ret
- 173               		.cfi_endproc
- 174               	.LFE20:
- 176               		.section	.text.leader_start,"ax",@progbits
- 177               		.weak	leader_start
- 179               	leader_start:
- 180               	.LFB24:
- 181               		.file 2 "quantum/process_keycode/process_leader.c"
+  22               		.loc 1 21 29 view .LVU1
+  23               	/* epilogue start */
+  24               		.loc 1 21 1 is_stmt 0 view .LVU2
+  25 0000 0895      		ret
+  26               		.cfi_endproc
+  27               	.LFE10:
+  29               		.section	.text.rgblight_step,"ax",@progbits
+  30               		.weak	rgblight_step
+  32               	rgblight_step:
+  33               	.LFB32:
+  34               		.cfi_startproc
+  35               	/* prologue: function */
+  36               	/* frame size = 0 */
+  37               	/* stack size = 0 */
+  38               	.L__stack_usage = 0
+  39               	/* epilogue start */
+  40 0000 0895      		ret
+  41               		.cfi_endproc
+  42               	.LFE32:
+  44               		.section	.text.rgblight_step_reverse,"ax",@progbits
+  45               		.weak	rgblight_step_reverse
+  47               	rgblight_step_reverse:
+  48               	.LFB34:
+  49               		.cfi_startproc
+  50               	/* prologue: function */
+  51               	/* frame size = 0 */
+  52               	/* stack size = 0 */
+  53               	.L__stack_usage = 0
+  54               	/* epilogue start */
+  55 0000 0895      		ret
+  56               		.cfi_endproc
+  57               	.LFE34:
+  59               		.section	.text.rgblight_increase_hue,"ax",@progbits
+  60               		.weak	rgblight_increase_hue
+  62               	rgblight_increase_hue:
+  63               	.LFB36:
+  64               		.cfi_startproc
+  65               	/* prologue: function */
+  66               	/* frame size = 0 */
+  67               	/* stack size = 0 */
+  68               	.L__stack_usage = 0
+  69               	/* epilogue start */
+  70 0000 0895      		ret
+  71               		.cfi_endproc
+  72               	.LFE36:
+  74               		.section	.text.rgblight_decrease_hue,"ax",@progbits
+  75               		.weak	rgblight_decrease_hue
+  77               	rgblight_decrease_hue:
+  78               	.LFB38:
+  79               		.cfi_startproc
+  80               	/* prologue: function */
+  81               	/* frame size = 0 */
+  82               	/* stack size = 0 */
+  83               	.L__stack_usage = 0
+  84               	/* epilogue start */
+  85 0000 0895      		ret
+  86               		.cfi_endproc
+  87               	.LFE38:
+  89               		.section	.text.rgblight_increase_sat,"ax",@progbits
+  90               		.weak	rgblight_increase_sat
+  92               	rgblight_increase_sat:
+  93               	.LFB40:
+  94               		.cfi_startproc
+  95               	/* prologue: function */
+  96               	/* frame size = 0 */
+  97               	/* stack size = 0 */
+  98               	.L__stack_usage = 0
+  99               	/* epilogue start */
+ 100 0000 0895      		ret
+ 101               		.cfi_endproc
+ 102               	.LFE40:
+ 104               		.section	.text.rgblight_decrease_sat,"ax",@progbits
+ 105               		.weak	rgblight_decrease_sat
+ 107               	rgblight_decrease_sat:
+ 108               	.LFB42:
+ 109               		.cfi_startproc
+ 110               	/* prologue: function */
+ 111               	/* frame size = 0 */
+ 112               	/* stack size = 0 */
+ 113               	.L__stack_usage = 0
+ 114               	/* epilogue start */
+ 115 0000 0895      		ret
+ 116               		.cfi_endproc
+ 117               	.LFE42:
+ 119               		.section	.text.rgblight_increase_val,"ax",@progbits
+ 120               		.weak	rgblight_increase_val
+ 122               	rgblight_increase_val:
+ 123               	.LFB44:
+ 124               		.cfi_startproc
+ 125               	/* prologue: function */
+ 126               	/* frame size = 0 */
+ 127               	/* stack size = 0 */
+ 128               	.L__stack_usage = 0
+ 129               	/* epilogue start */
+ 130 0000 0895      		ret
+ 131               		.cfi_endproc
+ 132               	.LFE44:
+ 134               		.section	.text.rgblight_decrease_val,"ax",@progbits
+ 135               		.weak	rgblight_decrease_val
+ 137               	rgblight_decrease_val:
+ 138               	.LFB46:
+ 139               		.cfi_startproc
+ 140               	/* prologue: function */
+ 141               	/* frame size = 0 */
+ 142               	/* stack size = 0 */
+ 143               	.L__stack_usage = 0
+ 144               	/* epilogue start */
+ 145 0000 0895      		ret
+ 146               		.cfi_endproc
+ 147               	.LFE46:
+ 149               		.section	.text.rgblight_increase_speed,"ax",@progbits
+ 150               		.weak	rgblight_increase_speed
+ 152               	rgblight_increase_speed:
+ 153               	.LFB48:
+ 154               		.cfi_startproc
+ 155               	/* prologue: function */
+ 156               	/* frame size = 0 */
+ 157               	/* stack size = 0 */
+ 158               	.L__stack_usage = 0
+ 159               	/* epilogue start */
+ 160 0000 0895      		ret
+ 161               		.cfi_endproc
+ 162               	.LFE48:
+ 164               		.section	.text.rgblight_decrease_speed,"ax",@progbits
+ 165               		.weak	rgblight_decrease_speed
+ 167               	rgblight_decrease_speed:
+ 168               	.LFB50:
+ 169               		.cfi_startproc
+ 170               	/* prologue: function */
+ 171               	/* frame size = 0 */
+ 172               	/* stack size = 0 */
+ 173               	.L__stack_usage = 0
+ 174               	/* epilogue start */
+ 175 0000 0895      		ret
+ 176               		.cfi_endproc
+ 177               	.LFE50:
+ 179               		.section	.text.leader_start,"ax",@progbits
+ 180               		.weak	leader_start
+ 182               	leader_start:
+ 183               	.LFB52:
+ 184               		.cfi_startproc
+ 185               	/* prologue: function */
+ 186               	/* frame size = 0 */
+ 187               	/* stack size = 0 */
+ 188               	.L__stack_usage = 0
+ 189               	/* epilogue start */
+ 190 0000 0895      		ret
+ 191               		.cfi_endproc
+ 192               	.LFE52:
+ 194               		.section	.text.leader_end,"ax",@progbits
+ 195               		.weak	leader_end
+ 197               	leader_end:
+ 198               	.LFB54:
+ 199               		.cfi_startproc
+ 200               	/* prologue: function */
+ 201               	/* frame size = 0 */
+ 202               	/* stack size = 0 */
+ 203               	.L__stack_usage = 0
+ 204               	/* epilogue start */
+ 205 0000 0895      		ret
+ 206               		.cfi_endproc
+ 207               	.LFE54:
+ 209               		.section	.text.process_leader,"ax",@progbits
+ 210               	.global	process_leader
+ 212               	process_leader:
+ 213               	.LVL0:
+ 214               	.LFB30:
+ 215               		.file 2 "quantum/process_keycode/process_leader.c"
    1:quantum/process_keycode/process_leader.c **** /* Copyright 2016 Jack Humbert
    2:quantum/process_keycode/process_leader.c ****  *
    3:quantum/process_keycode/process_leader.c ****  * This program is free software: you can redistribute it and/or modify
@@ -233,35 +233,9 @@
   24:quantum/process_keycode/process_leader.c **** 
   25:quantum/process_keycode/process_leader.c **** __attribute__ ((weak))
   26:quantum/process_keycode/process_leader.c **** void leader_start(void) {}
- 182               		.loc 2 26 0
- 183               		.cfi_startproc
- 184               	/* prologue: function */
- 185               	/* frame size = 0 */
- 186               	/* stack size = 0 */
- 187               	.L__stack_usage = 0
- 188 0000 0895      		ret
- 189               		.cfi_endproc
- 190               	.LFE24:
- 192               		.section	.text.leader_end,"ax",@progbits
- 193               		.weak	leader_end
- 195               	leader_end:
- 196               	.LFB25:
   27:quantum/process_keycode/process_leader.c **** 
   28:quantum/process_keycode/process_leader.c **** __attribute__ ((weak))
   29:quantum/process_keycode/process_leader.c **** void leader_end(void) {}
- 197               		.loc 2 29 0
- 198               		.cfi_startproc
- 199               	/* prologue: function */
- 200               	/* frame size = 0 */
- 201               	/* stack size = 0 */
- 202               	.L__stack_usage = 0
- 203 0000 0895      		ret
- 204               		.cfi_endproc
- 205               	.LFE25:
- 207               		.section	.text.process_leader,"ax",@progbits
- 208               	.global	process_leader
- 210               	process_leader:
- 211               	.LFB26:
   30:quantum/process_keycode/process_leader.c **** 
   31:quantum/process_keycode/process_leader.c **** // Leader key stuff
   32:quantum/process_keycode/process_leader.c **** bool leading = false;
@@ -271,33 +245,38 @@
   36:quantum/process_keycode/process_leader.c **** uint8_t leader_sequence_size = 0;
   37:quantum/process_keycode/process_leader.c **** 
   38:quantum/process_keycode/process_leader.c **** bool process_leader(uint16_t keycode, keyrecord_t *record) {
- 212               		.loc 2 38 0
- 213               		.cfi_startproc
- 214               	.LVL0:
- 215               		.loc 2 38 0
- 216 0000 CF93      		push r28
- 217               	.LCFI0:
- 218               		.cfi_def_cfa_offset 3
- 219               		.cfi_offset 28, -2
- 220 0002 DF93      		push r29
- 221               	.LCFI1:
- 222               		.cfi_def_cfa_offset 4
- 223               		.cfi_offset 29, -3
- 224               	/* prologue: function */
- 225               	/* frame size = 0 */
- 226               	/* stack size = 2 */
- 227               	.L__stack_usage = 2
- 228 0004 EC01      		movw r28,r24
+ 216               		.loc 2 38 60 is_stmt 1 view -0
+ 217               		.cfi_startproc
+ 218               		.loc 2 38 60 is_stmt 0 view .LVU4
+ 219 0000 0F93      		push r16
+ 220               	.LCFI0:
+ 221               		.cfi_def_cfa_offset 3
+ 222               		.cfi_offset 16, -2
+ 223 0002 1F93      		push r17
+ 224               	.LCFI1:
+ 225               		.cfi_def_cfa_offset 4
+ 226               		.cfi_offset 17, -3
+ 227 0004 CF93      		push r28
+ 228               	.LCFI2:
+ 229               		.cfi_def_cfa_offset 5
+ 230               		.cfi_offset 28, -4
+ 231               	/* prologue: function */
+ 232               	/* frame size = 0 */
+ 233               	/* stack size = 3 */
+ 234               	.L__stack_usage = 3
+ 235 0006 8C01      		movw r16,r24
   39:quantum/process_keycode/process_leader.c ****   // Leader key set-up
   40:quantum/process_keycode/process_leader.c ****   if (record->event.pressed) {
- 229               		.loc 2 40 0
- 230 0006 FB01      		movw r30,r22
- 231 0008 8281      		ldd r24,Z+2
- 232               	.LVL1:
- 233 000a 8111      		cpse r24,__zero_reg__
- 234 000c 00C0      		rjmp .L15
- 235               	.LVL2:
- 236               	.L18:
+ 236               		.loc 2 40 3 is_stmt 1 view .LVU5
+ 237               		.loc 2 40 6 is_stmt 0 view .LVU6
+ 238 0008 FB01      		movw r30,r22
+ 239 000a 8281      		ldd r24,Z+2
+ 240               	.LVL1:
+ 241               		.loc 2 40 6 view .LVU7
+ 242 000c 8111      		cpse r24,__zero_reg__
+ 243 000e 00C0      		rjmp .L15
+ 244               	.LVL2:
+ 245               	.L18:
   41:quantum/process_keycode/process_leader.c ****     if (!leading && keycode == KC_LEAD) {
   42:quantum/process_keycode/process_leader.c ****       leader_start();
   43:quantum/process_keycode/process_leader.c ****       leading = true;
@@ -317,151 +296,200 @@
   57:quantum/process_keycode/process_leader.c ****     }
   58:quantum/process_keycode/process_leader.c ****   }
   59:quantum/process_keycode/process_leader.c ****   return true;
- 237               		.loc 2 59 0
- 238 000e 81E0      		ldi r24,lo8(1)
- 239 0010 00C0      		rjmp .L16
- 240               	.LVL3:
- 241               	.L15:
-  41:quantum/process_keycode/process_leader.c ****     if (!leading && keycode == KC_LEAD) {
- 242               		.loc 2 41 0
- 243 0012 8091 0000 		lds r24,leading
- 244 0016 8111      		cpse r24,__zero_reg__
- 245 0018 00C0      		rjmp .L17
-  41:quantum/process_keycode/process_leader.c ****     if (!leading && keycode == KC_LEAD) {
- 246               		.loc 2 41 0 is_stmt 0 discriminator 1
- 247 001a C631      		cpi r28,22
- 248 001c DC45      		sbci r29,92
- 249 001e 01F4      		brne .L18
-  42:quantum/process_keycode/process_leader.c ****       leader_start();
- 250               		.loc 2 42 0 is_stmt 1
- 251 0020 0E94 0000 		call leader_start
- 252               	.LVL4:
-  43:quantum/process_keycode/process_leader.c ****       leading = true;
- 253               		.loc 2 43 0
- 254 0024 81E0      		ldi r24,lo8(1)
- 255 0026 8093 0000 		sts leading,r24
-  44:quantum/process_keycode/process_leader.c ****       leader_time = timer_read();
- 256               		.loc 2 44 0
- 257 002a 0E94 0000 		call timer_read
- 258               	.LVL5:
- 259 002e 9093 0000 		sts leader_time+1,r25
- 260 0032 8093 0000 		sts leader_time,r24
-  45:quantum/process_keycode/process_leader.c ****       leader_sequence_size = 0;
- 261               		.loc 2 45 0
- 262 0036 1092 0000 		sts leader_sequence_size,__zero_reg__
-  46:quantum/process_keycode/process_leader.c ****       leader_sequence[0] = 0;
- 263               		.loc 2 46 0
- 264 003a 1092 0000 		sts leader_sequence+1,__zero_reg__
- 265 003e 1092 0000 		sts leader_sequence,__zero_reg__
-  47:quantum/process_keycode/process_leader.c ****       leader_sequence[1] = 0;
- 266               		.loc 2 47 0
- 267 0042 1092 0000 		sts leader_sequence+2+1,__zero_reg__
- 268 0046 1092 0000 		sts leader_sequence+2,__zero_reg__
-  48:quantum/process_keycode/process_leader.c ****       leader_sequence[2] = 0;
- 269               		.loc 2 48 0
- 270 004a 1092 0000 		sts leader_sequence+4+1,__zero_reg__
- 271 004e 1092 0000 		sts leader_sequence+4,__zero_reg__
-  49:quantum/process_keycode/process_leader.c ****       leader_sequence[3] = 0;
- 272               		.loc 2 49 0
- 273 0052 1092 0000 		sts leader_sequence+6+1,__zero_reg__
- 274 0056 1092 0000 		sts leader_sequence+6,__zero_reg__
-  50:quantum/process_keycode/process_leader.c ****       leader_sequence[4] = 0;
- 275               		.loc 2 50 0
- 276 005a 1092 0000 		sts leader_sequence+8+1,__zero_reg__
- 277 005e 1092 0000 		sts leader_sequence+8,__zero_reg__
- 278 0062 00C0      		rjmp .L19
- 279               	.LVL6:
- 280               	.L17:
-  53:quantum/process_keycode/process_leader.c ****     if (leading && timer_elapsed(leader_time) < LEADER_TIMEOUT) {
- 281               		.loc 2 53 0 discriminator 1
- 282 0064 8091 0000 		lds r24,leader_time
- 283 0068 9091 0000 		lds r25,leader_time+1
- 284 006c 0E94 0000 		call timer_elapsed
- 285               	.LVL7:
- 286 0070 8C32      		cpi r24,44
- 287 0072 9140      		sbci r25,1
- 288 0074 00F4      		brsh .L18
-  54:quantum/process_keycode/process_leader.c ****       leader_sequence[leader_sequence_size] = keycode;
- 289               		.loc 2 54 0
- 290 0076 8091 0000 		lds r24,leader_sequence_size
- 291 007a E82F      		mov r30,r24
- 292 007c F0E0      		ldi r31,0
- 293 007e EE0F      		lsl r30
- 294 0080 FF1F      		rol r31
- 295 0082 E050      		subi r30,lo8(-(leader_sequence))
- 296 0084 F040      		sbci r31,hi8(-(leader_sequence))
- 297 0086 D183      		std Z+1,r29
- 298 0088 C083      		st Z,r28
-  55:quantum/process_keycode/process_leader.c ****       leader_sequence_size++;
- 299               		.loc 2 55 0
- 300 008a 8F5F      		subi r24,lo8(-(1))
- 301 008c 8093 0000 		sts leader_sequence_size,r24
- 302               	.L19:
-  56:quantum/process_keycode/process_leader.c ****       return false;
- 303               		.loc 2 56 0
- 304 0090 80E0      		ldi r24,0
- 305               	.L16:
- 306               	/* epilogue start */
+ 246               		.loc 2 59 10 view .LVU8
+ 247 0010 C1E0      		ldi r28,lo8(1)
+ 248               	.L14:
   60:quantum/process_keycode/process_leader.c **** }
- 307               		.loc 2 60 0
- 308 0092 DF91      		pop r29
- 309 0094 CF91      		pop r28
- 310               	.LVL8:
- 311 0096 0895      		ret
- 312               		.cfi_endproc
- 313               	.LFE26:
- 315               	.global	leader_sequence_size
- 316               		.section	.bss.leader_sequence_size,"aw",@nobits
- 319               	leader_sequence_size:
- 320 0000 00        		.zero	1
- 321               	.global	leader_sequence
- 322               		.section	.bss.leader_sequence,"aw",@nobits
- 325               	leader_sequence:
- 326 0000 0000 0000 		.zero	10
- 326      0000 0000 
- 326      0000 
- 327               	.global	leader_time
- 328               		.section	.bss.leader_time,"aw",@nobits
- 331               	leader_time:
- 332 0000 0000      		.zero	2
- 333               	.global	leading
- 334               		.section	.bss.leading,"aw",@nobits
- 337               	leading:
- 338 0000 00        		.zero	1
- 339               		.text
- 340               	.Letext0:
- 341               		.file 3 "/usr/lib/avr/include/stdint.h"
- 342               		.file 4 "./tmk_core/common/keyboard.h"
- 343               		.file 5 "./tmk_core/common/action.h"
- 344               		.file 6 "./tmk_core/common/report.h"
- 345               		.file 7 "./tmk_core/common/action_util.h"
- 346               		.file 8 "./quantum/quantum_keycodes.h"
- 347               		.file 9 "./tmk_core/common/timer.h"
+ 249               		.loc 2 60 1 view .LVU9
+ 250 0012 8C2F      		mov r24,r28
+ 251               	/* epilogue start */
+ 252 0014 CF91      		pop r28
+ 253 0016 1F91      		pop r17
+ 254 0018 0F91      		pop r16
+ 255               	.LVL3:
+ 256               		.loc 2 60 1 view .LVU10
+ 257 001a 0895      		ret
+ 258               	.LVL4:
+ 259               	.L15:
+  41:quantum/process_keycode/process_leader.c ****     if (!leading && keycode == KC_LEAD) {
+ 260               		.loc 2 41 5 is_stmt 1 view .LVU11
+  41:quantum/process_keycode/process_leader.c ****     if (!leading && keycode == KC_LEAD) {
+ 261               		.loc 2 41 9 is_stmt 0 view .LVU12
+ 262 001c C091 0000 		lds r28,leading
+  41:quantum/process_keycode/process_leader.c ****     if (!leading && keycode == KC_LEAD) {
+ 263               		.loc 2 41 8 view .LVU13
+ 264 0020 C111      		cpse r28,__zero_reg__
+ 265 0022 00C0      		rjmp .L17
+  41:quantum/process_keycode/process_leader.c ****     if (!leading && keycode == KC_LEAD) {
+ 266               		.loc 2 41 18 discriminator 1 view .LVU14
+ 267 0024 0631      		cpi r16,22
+ 268 0026 1C45      		sbci r17,92
+ 269 0028 01F4      		brne .L18
+  42:quantum/process_keycode/process_leader.c ****       leading = true;
+ 270               		.loc 2 42 7 is_stmt 1 view .LVU15
+ 271 002a 0E94 0000 		call leader_start
+ 272               	.LVL5:
+  43:quantum/process_keycode/process_leader.c ****       leader_time = timer_read();
+ 273               		.loc 2 43 7 view .LVU16
+  43:quantum/process_keycode/process_leader.c ****       leader_time = timer_read();
+ 274               		.loc 2 43 15 is_stmt 0 view .LVU17
+ 275 002e 81E0      		ldi r24,lo8(1)
+ 276 0030 8093 0000 		sts leading,r24
+  44:quantum/process_keycode/process_leader.c ****       leader_sequence_size = 0;
+ 277               		.loc 2 44 7 is_stmt 1 view .LVU18
+  44:quantum/process_keycode/process_leader.c ****       leader_sequence_size = 0;
+ 278               		.loc 2 44 21 is_stmt 0 view .LVU19
+ 279 0034 0E94 0000 		call timer_read
+ 280               	.LVL6:
+  44:quantum/process_keycode/process_leader.c ****       leader_sequence_size = 0;
+ 281               		.loc 2 44 19 view .LVU20
+ 282 0038 9093 0000 		sts leader_time+1,r25
+ 283 003c 8093 0000 		sts leader_time,r24
+  45:quantum/process_keycode/process_leader.c ****       leader_sequence[0] = 0;
+ 284               		.loc 2 45 7 is_stmt 1 view .LVU21
+  45:quantum/process_keycode/process_leader.c ****       leader_sequence[0] = 0;
+ 285               		.loc 2 45 28 is_stmt 0 view .LVU22
+ 286 0040 1092 0000 		sts leader_sequence_size,__zero_reg__
+  46:quantum/process_keycode/process_leader.c ****       leader_sequence[1] = 0;
+ 287               		.loc 2 46 7 is_stmt 1 view .LVU23
+  46:quantum/process_keycode/process_leader.c ****       leader_sequence[1] = 0;
+ 288               		.loc 2 46 26 is_stmt 0 view .LVU24
+ 289 0044 1092 0000 		sts leader_sequence+1,__zero_reg__
+ 290 0048 1092 0000 		sts leader_sequence,__zero_reg__
+  47:quantum/process_keycode/process_leader.c ****       leader_sequence[2] = 0;
+ 291               		.loc 2 47 7 is_stmt 1 view .LVU25
+  47:quantum/process_keycode/process_leader.c ****       leader_sequence[2] = 0;
+ 292               		.loc 2 47 26 is_stmt 0 view .LVU26
+ 293 004c 1092 0000 		sts leader_sequence+2+1,__zero_reg__
+ 294 0050 1092 0000 		sts leader_sequence+2,__zero_reg__
+  48:quantum/process_keycode/process_leader.c ****       leader_sequence[3] = 0;
+ 295               		.loc 2 48 7 is_stmt 1 view .LVU27
+  48:quantum/process_keycode/process_leader.c ****       leader_sequence[3] = 0;
+ 296               		.loc 2 48 26 is_stmt 0 view .LVU28
+ 297 0054 1092 0000 		sts leader_sequence+4+1,__zero_reg__
+ 298 0058 1092 0000 		sts leader_sequence+4,__zero_reg__
+  49:quantum/process_keycode/process_leader.c ****       leader_sequence[4] = 0;
+ 299               		.loc 2 49 7 is_stmt 1 view .LVU29
+  49:quantum/process_keycode/process_leader.c ****       leader_sequence[4] = 0;
+ 300               		.loc 2 49 26 is_stmt 0 view .LVU30
+ 301 005c 1092 0000 		sts leader_sequence+6+1,__zero_reg__
+ 302 0060 1092 0000 		sts leader_sequence+6,__zero_reg__
+  50:quantum/process_keycode/process_leader.c ****       return false;
+ 303               		.loc 2 50 7 is_stmt 1 view .LVU31
+  50:quantum/process_keycode/process_leader.c ****       return false;
+ 304               		.loc 2 50 26 is_stmt 0 view .LVU32
+ 305 0064 1092 0000 		sts leader_sequence+8+1,__zero_reg__
+ 306 0068 1092 0000 		sts leader_sequence+8,__zero_reg__
+  51:quantum/process_keycode/process_leader.c ****     }
+ 307               		.loc 2 51 7 is_stmt 1 view .LVU33
+  51:quantum/process_keycode/process_leader.c ****     }
+ 308               		.loc 2 51 14 is_stmt 0 view .LVU34
+ 309 006c 00C0      		rjmp .L14
+ 310               	.LVL7:
+ 311               	.L17:
+  53:quantum/process_keycode/process_leader.c ****       leader_sequence[leader_sequence_size] = keycode;
+ 312               		.loc 2 53 5 is_stmt 1 discriminator 1 view .LVU35
+  53:quantum/process_keycode/process_leader.c ****       leader_sequence[leader_sequence_size] = keycode;
+ 313               		.loc 2 53 20 is_stmt 0 discriminator 1 view .LVU36
+ 314 006e 8091 0000 		lds r24,leader_time
+ 315 0072 9091 0000 		lds r25,leader_time+1
+ 316 0076 0E94 0000 		call timer_elapsed
+ 317               	.LVL8:
+  53:quantum/process_keycode/process_leader.c ****       leader_sequence[leader_sequence_size] = keycode;
+ 318               		.loc 2 53 17 discriminator 1 view .LVU37
+ 319 007a 8C32      		cpi r24,44
+ 320 007c 9140      		sbci r25,1
+ 321 007e 00F4      		brsh .L18
+  54:quantum/process_keycode/process_leader.c ****       leader_sequence_size++;
+ 322               		.loc 2 54 7 is_stmt 1 view .LVU38
+  54:quantum/process_keycode/process_leader.c ****       leader_sequence_size++;
+ 323               		.loc 2 54 22 is_stmt 0 view .LVU39
+ 324 0080 8091 0000 		lds r24,leader_sequence_size
+ 325 0084 E82F      		mov r30,r24
+ 326 0086 F0E0      		ldi r31,0
+  54:quantum/process_keycode/process_leader.c ****       leader_sequence_size++;
+ 327               		.loc 2 54 45 view .LVU40
+ 328 0088 EE0F      		lsl r30
+ 329 008a FF1F      		rol r31
+ 330 008c E050      		subi r30,lo8(-(leader_sequence))
+ 331 008e F040      		sbci r31,hi8(-(leader_sequence))
+ 332 0090 1183      		std Z+1,r17
+ 333 0092 0083      		st Z,r16
+  55:quantum/process_keycode/process_leader.c ****       return false;
+ 334               		.loc 2 55 7 is_stmt 1 view .LVU41
+  55:quantum/process_keycode/process_leader.c ****       return false;
+ 335               		.loc 2 55 27 is_stmt 0 view .LVU42
+ 336 0094 8F5F      		subi r24,lo8(-(1))
+ 337 0096 8093 0000 		sts leader_sequence_size,r24
+  56:quantum/process_keycode/process_leader.c ****     }
+ 338               		.loc 2 56 7 is_stmt 1 view .LVU43
+  56:quantum/process_keycode/process_leader.c ****     }
+ 339               		.loc 2 56 14 is_stmt 0 view .LVU44
+ 340 009a C0E0      		ldi r28,0
+ 341 009c 00C0      		rjmp .L14
+ 342               		.cfi_endproc
+ 343               	.LFE30:
+ 345               	.global	leader_sequence_size
+ 346               		.section	.bss.leader_sequence_size,"aw",@nobits
+ 349               	leader_sequence_size:
+ 350 0000 00        		.zero	1
+ 351               	.global	leader_sequence
+ 352               		.section	.bss.leader_sequence,"aw",@nobits
+ 355               	leader_sequence:
+ 356 0000 0000 0000 		.zero	10
+ 356      0000 0000 
+ 356      0000 
+ 357               	.global	leader_time
+ 358               		.section	.bss.leader_time,"aw",@nobits
+ 361               	leader_time:
+ 362 0000 0000      		.zero	2
+ 363               	.global	leading
+ 364               		.section	.bss.leading,"aw",@nobits
+ 367               	leading:
+ 368 0000 00        		.zero	1
+ 369               		.text
+ 370               	.Letext0:
+ 371               		.file 3 "/usr/local/Cellar/avr-gcc@8/8.3.0_1/avr/include/stdint.h"
+ 372               		.file 4 "/usr/local/Cellar/avr-gcc@8/8.3.0_1/lib/avr-gcc/8/gcc/avr/8.3.0/include/stddef.h"
+ 373               		.file 5 "./tmk_core/common/keyboard.h"
+ 374               		.file 6 "./tmk_core/common/action.h"
+ 375               		.file 7 "./tmk_core/common/report.h"
+ 376               		.file 8 "./tmk_core/common/host.h"
+ 377               		.file 9 "./tmk_core/common/debug.h"
+ 378               		.file 10 "./quantum/keycode_config.h"
+ 379               		.file 11 "./quantum/keymap.h"
+ 380               		.file 12 "./tmk_core/common/action_layer.h"
+ 381               		.file 13 "./tmk_core/common/timer.h"
+ 382               		.file 14 "./tmk_core/common/action_util.h"
+ 383               		.file 15 "/usr/local/Cellar/avr-gcc@8/8.3.0_1/avr/include/stdlib.h"
+ 384               		.file 16 "./quantum/process_keycode/process_tap_dance.h"
+ 385               		.file 17 "./quantum/quantum.h"
+ 386               		.file 18 "./quantum/quantum_keycodes.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 process_leader.c
-     /tmp/ccZKf4SW.s:2      *ABS*:000000000000003e __SP_H__
-     /tmp/ccZKf4SW.s:3      *ABS*:000000000000003d __SP_L__
-     /tmp/ccZKf4SW.s:4      *ABS*:000000000000003f __SREG__
-     /tmp/ccZKf4SW.s:5      *ABS*:0000000000000000 __tmp_reg__
-     /tmp/ccZKf4SW.s:6      *ABS*:0000000000000001 __zero_reg__
-     /tmp/ccZKf4SW.s:13     .text.rgblight_toggle:0000000000000000 rgblight_toggle
-     /tmp/ccZKf4SW.s:29     .text.rgblight_step:0000000000000000 rgblight_step
-     /tmp/ccZKf4SW.s:44     .text.rgblight_step_reverse:0000000000000000 rgblight_step_reverse
-     /tmp/ccZKf4SW.s:59     .text.rgblight_increase_hue:0000000000000000 rgblight_increase_hue
-     /tmp/ccZKf4SW.s:74     .text.rgblight_decrease_hue:0000000000000000 rgblight_decrease_hue
-     /tmp/ccZKf4SW.s:89     .text.rgblight_increase_sat:0000000000000000 rgblight_increase_sat
-     /tmp/ccZKf4SW.s:104    .text.rgblight_decrease_sat:0000000000000000 rgblight_decrease_sat
-     /tmp/ccZKf4SW.s:119    .text.rgblight_increase_val:0000000000000000 rgblight_increase_val
-     /tmp/ccZKf4SW.s:134    .text.rgblight_decrease_val:0000000000000000 rgblight_decrease_val
-     /tmp/ccZKf4SW.s:149    .text.rgblight_increase_speed:0000000000000000 rgblight_increase_speed
-     /tmp/ccZKf4SW.s:164    .text.rgblight_decrease_speed:0000000000000000 rgblight_decrease_speed
-     /tmp/ccZKf4SW.s:179    .text.leader_start:0000000000000000 leader_start
-     /tmp/ccZKf4SW.s:195    .text.leader_end:0000000000000000 leader_end
-     /tmp/ccZKf4SW.s:210    .text.process_leader:0000000000000000 process_leader
-     /tmp/ccZKf4SW.s:337    .bss.leading:0000000000000000 leading
-     /tmp/ccZKf4SW.s:331    .bss.leader_time:0000000000000000 leader_time
-     /tmp/ccZKf4SW.s:319    .bss.leader_sequence_size:0000000000000000 leader_sequence_size
-     /tmp/ccZKf4SW.s:325    .bss.leader_sequence:0000000000000000 leader_sequence
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cclaaJOy.s:2      *ABS*:000000000000003e __SP_H__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cclaaJOy.s:3      *ABS*:000000000000003d __SP_L__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cclaaJOy.s:4      *ABS*:000000000000003f __SREG__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cclaaJOy.s:5      *ABS*:0000000000000000 __tmp_reg__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cclaaJOy.s:6      *ABS*:0000000000000001 __zero_reg__
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cclaaJOy.s:13     .text.rgblight_toggle:0000000000000000 rgblight_toggle
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cclaaJOy.s:32     .text.rgblight_step:0000000000000000 rgblight_step
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cclaaJOy.s:47     .text.rgblight_step_reverse:0000000000000000 rgblight_step_reverse
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cclaaJOy.s:62     .text.rgblight_increase_hue:0000000000000000 rgblight_increase_hue
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cclaaJOy.s:77     .text.rgblight_decrease_hue:0000000000000000 rgblight_decrease_hue
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cclaaJOy.s:92     .text.rgblight_increase_sat:0000000000000000 rgblight_increase_sat
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cclaaJOy.s:107    .text.rgblight_decrease_sat:0000000000000000 rgblight_decrease_sat
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cclaaJOy.s:122    .text.rgblight_increase_val:0000000000000000 rgblight_increase_val
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cclaaJOy.s:137    .text.rgblight_decrease_val:0000000000000000 rgblight_decrease_val
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cclaaJOy.s:152    .text.rgblight_increase_speed:0000000000000000 rgblight_increase_speed
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cclaaJOy.s:167    .text.rgblight_decrease_speed:0000000000000000 rgblight_decrease_speed
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cclaaJOy.s:182    .text.leader_start:0000000000000000 leader_start
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cclaaJOy.s:197    .text.leader_end:0000000000000000 leader_end
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cclaaJOy.s:212    .text.process_leader:0000000000000000 process_leader
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cclaaJOy.s:367    .bss.leading:0000000000000000 leading
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cclaaJOy.s:361    .bss.leader_time:0000000000000000 leader_time
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cclaaJOy.s:349    .bss.leader_sequence_size:0000000000000000 leader_sequence_size
+/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//cclaaJOy.s:355    .bss.leader_sequence:0000000000000000 leader_sequence
 
 UNDEFINED SYMBOLS
 timer_read
