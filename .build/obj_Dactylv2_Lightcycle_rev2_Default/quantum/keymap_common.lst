@@ -566,893 +566,960 @@
  361 001c 9307      		cpc r25,r19
  362 001e 00F0      		brlo .+2
  363 0020 00C0      		rjmp .L18
- 364 0022 883E      		cpi r24,-24
+ 364 0022 803E      		cpi r24,-32
  365 0024 9105      		cpc r25,__zero_reg__
- 366 0026 00F4      		brsh .L19
- 367 0028 803E      		cpi r24,-32
- 368 002a 9105      		cpc r25,__zero_reg__
- 369 002c 00F0      		brlo .+2
- 370 002e 00C0      		rjmp .L20
- 371 0030 883A      		cpi r24,-88
- 372 0032 9105      		cpc r25,__zero_reg__
- 373 0034 00F4      		brsh .L21
- 374 0036 853A      		cpi r24,-91
- 375 0038 9105      		cpc r25,__zero_reg__
- 376 003a 00F0      		brlo .+2
- 377 003c 00C0      		rjmp .L22
- 378 003e 8130      		cpi r24,1
- 379 0040 9105      		cpc r25,__zero_reg__
- 380 0042 01F4      		brne .+2
- 381 0044 00C0      		rjmp .L20
- 382 0046 0097      		sbiw r24,0
- 383 0048 01F4      		brne .+2
- 384 004a 00C0      		rjmp .L20
- 385 004c 0497      		sbiw r24,4
- 386 004e 00F0      		brlo .+2
- 387 0050 00C0      		rjmp .L20
- 388               	.LVL16:
- 389               	.L47:
+ 366 0026 00F0      		brlo .+2
+ 367 0028 00C0      		rjmp .L19
+ 368 002a 803C      		cpi r24,-64
+ 369 002c 9105      		cpc r25,__zero_reg__
+ 370 002e 00F0      		brlo .+2
+ 371 0030 00C0      		rjmp .L20
+ 372 0032 883A      		cpi r24,-88
+ 373 0034 9105      		cpc r25,__zero_reg__
+ 374 0036 00F4      		brsh .L21
+ 375 0038 853A      		cpi r24,-91
+ 376 003a 9105      		cpc r25,__zero_reg__
+ 377 003c 00F0      		brlo .+2
+ 378 003e 00C0      		rjmp .L22
+ 379 0040 8130      		cpi r24,1
+ 380 0042 9105      		cpc r25,__zero_reg__
+ 381 0044 01F4      		brne .+2
+ 382 0046 00C0      		rjmp .L23
+ 383 0048 0497      		sbiw r24,4
+ 384               	.LVL16:
+  52:quantum/keymap_common.c ****         case KC_FN0 ... KC_FN31:
+ 385               		.loc 2 52 5 is_stmt 0 view .LVU38
+ 386 004a 813A      		cpi r24,-95
+ 387 004c 9105      		cpc r25,__zero_reg__
+ 388 004e 00F4      		brsh .+2
+ 389 0050 00C0      		rjmp .L23
+ 390               	.LVL17:
+ 391               	.L43:
  161:quantum/keymap_common.c ****             break;
- 390               		.loc 2 161 25 is_stmt 0 view .LVU38
- 391 0052 D0E0      		ldi r29,0
- 392 0054 C0E0      		ldi r28,0
- 393 0056 00C0      		rjmp .L20
- 394               	.LVL17:
- 395               	.L21:
+ 392               		.loc 2 161 25 view .LVU39
+ 393 0052 D0E0      		ldi r29,0
+ 394 0054 C0E0      		ldi r28,0
+ 395 0056 00C0      		rjmp .L23
+ 396               	.LVL18:
+ 397               	.L21:
   52:quantum/keymap_common.c ****         case KC_FN0 ... KC_FN31:
- 396               		.loc 2 52 5 view .LVU39
- 397 0058 8D3B      		cpi r24,-67
- 398 005a 9105      		cpc r25,__zero_reg__
- 399 005c 00F4      		brsh .+2
- 400 005e 00C0      		rjmp .L23
-  54:quantum/keymap_common.c ****             break;
- 401               		.loc 2 54 27 view .LVU40
- 402 0060 805C      		subi r24,-64
- 403 0062 9109      		sbc r25,__zero_reg__
- 404               	.LVL18:
+ 398               		.loc 2 52 5 view .LVU40
+ 399 0058 885A      		subi r24,-88
+ 400 005a 9109      		sbc r25,__zero_reg__
+ 401               	.LVL19:
   52:quantum/keymap_common.c ****         case KC_FN0 ... KC_FN31:
- 405               		.loc 2 52 5 view .LVU41
- 406 0064 C03C      		cpi r28,-64
- 407 0066 D105      		cpc r29,__zero_reg__
- 408 0068 00F0      		brlo .L47
- 409               	.L86:
-  80:quantum/keymap_common.c ****             break;
- 410               		.loc 2 80 27 view .LVU42
- 411 006a 0E94 0000 		call keymap_function_id_to_action
- 412               	.LVL19:
-  80:quantum/keymap_common.c ****             break;
- 413               		.loc 2 80 27 view .LVU43
- 414 006e EC01      		movw r28,r24
- 415               	.LVL20:
-  81:quantum/keymap_common.c ****         case QK_MACRO ... QK_MACRO_MAX:
- 416               		.loc 2 81 13 is_stmt 1 view .LVU44
- 417 0070 00C0      		rjmp .L20
- 418               	.LVL21:
- 419               	.L19:
+ 402               		.loc 2 52 5 view .LVU41
+ 403 005c 4597      		sbiw r24,21
+ 404 005e 00F4      		brsh .L43
+  64:quantum/keymap_common.c ****             break;
+ 405               		.loc 2 64 13 is_stmt 1 view .LVU42
+  64:quantum/keymap_common.c ****             break;
+ 406               		.loc 2 64 27 is_stmt 0 view .LVU43
+ 407 0060 C83A      		cpi r28,-88
+ 408 0062 D105      		cpc r29,__zero_reg__
+ 409 0064 01F4      		brne .+2
+ 410 0066 00C0      		rjmp .L46
+  64:quantum/keymap_common.c ****             break;
+ 411               		.loc 2 64 27 discriminator 1 view .LVU44
+ 412 0068 C93A      		cpi r28,-87
+ 413 006a D105      		cpc r29,__zero_reg__
+ 414 006c 01F4      		brne .+2
+ 415 006e 00C0      		rjmp .L47
+  64:quantum/keymap_common.c ****             break;
+ 416               		.loc 2 64 27 discriminator 3 view .LVU45
+ 417 0070 CA3A      		cpi r28,-86
+ 418 0072 D105      		cpc r29,__zero_reg__
+ 419 0074 01F4      		brne .+2
+ 420 0076 00C0      		rjmp .L48
+  64:quantum/keymap_common.c ****             break;
+ 421               		.loc 2 64 27 discriminator 5 view .LVU46
+ 422 0078 CB3A      		cpi r28,-85
+ 423 007a D105      		cpc r29,__zero_reg__
+ 424 007c 01F4      		brne .+2
+ 425 007e 00C0      		rjmp .L49
+  64:quantum/keymap_common.c ****             break;
+ 426               		.loc 2 64 27 discriminator 7 view .LVU47
+ 427 0080 CC3A      		cpi r28,-84
+ 428 0082 D105      		cpc r29,__zero_reg__
+ 429 0084 01F4      		brne .+2
+ 430 0086 00C0      		rjmp .L50
+  64:quantum/keymap_common.c ****             break;
+ 431               		.loc 2 64 27 discriminator 9 view .LVU48
+ 432 0088 CB3B      		cpi r28,-69
+ 433 008a D105      		cpc r29,__zero_reg__
+ 434 008c 01F4      		brne .+2
+ 435 008e 00C0      		rjmp .L51
+  64:quantum/keymap_common.c ****             break;
+ 436               		.loc 2 64 27 discriminator 11 view .LVU49
+ 437 0090 CC3B      		cpi r28,-68
+ 438 0092 D105      		cpc r29,__zero_reg__
+ 439 0094 01F4      		brne .+2
+ 440 0096 00C0      		rjmp .L52
+  64:quantum/keymap_common.c ****             break;
+ 441               		.loc 2 64 27 discriminator 13 view .LVU50
+ 442 0098 CD3A      		cpi r28,-83
+ 443 009a D105      		cpc r29,__zero_reg__
+ 444 009c 01F4      		brne .+2
+ 445 009e 00C0      		rjmp .L53
+  64:quantum/keymap_common.c ****             break;
+ 446               		.loc 2 64 27 discriminator 15 view .LVU51
+ 447 00a0 C03B      		cpi r28,-80
+ 448 00a2 D105      		cpc r29,__zero_reg__
+ 449 00a4 01F4      		brne .+2
+ 450 00a6 00C0      		rjmp .L54
+  64:quantum/keymap_common.c ****             break;
+ 451               		.loc 2 64 27 discriminator 17 view .LVU52
+ 452 00a8 CE3A      		cpi r28,-82
+ 453 00aa D105      		cpc r29,__zero_reg__
+ 454 00ac 01F4      		brne .+2
+ 455 00ae 00C0      		rjmp .L55
+  64:quantum/keymap_common.c ****             break;
+ 456               		.loc 2 64 27 discriminator 19 view .LVU53
+ 457 00b0 CF3A      		cpi r28,-81
+ 458 00b2 D105      		cpc r29,__zero_reg__
+ 459 00b4 01F4      		brne .+2
+ 460 00b6 00C0      		rjmp .L56
+  64:quantum/keymap_common.c ****             break;
+ 461               		.loc 2 64 27 discriminator 21 view .LVU54
+ 462 00b8 C13B      		cpi r28,-79
+ 463 00ba D105      		cpc r29,__zero_reg__
+ 464 00bc 01F4      		brne .+2
+ 465 00be 00C0      		rjmp .L57
+  64:quantum/keymap_common.c ****             break;
+ 466               		.loc 2 64 27 discriminator 23 view .LVU55
+ 467 00c0 C23B      		cpi r28,-78
+ 468 00c2 D105      		cpc r29,__zero_reg__
+ 469 00c4 01F4      		brne .+2
+ 470 00c6 00C0      		rjmp .L58
+  64:quantum/keymap_common.c ****             break;
+ 471               		.loc 2 64 27 discriminator 25 view .LVU56
+ 472 00c8 C33B      		cpi r28,-77
+ 473 00ca D105      		cpc r29,__zero_reg__
+ 474 00cc 01F4      		brne .+2
+ 475 00ce 00C0      		rjmp .L59
+  64:quantum/keymap_common.c ****             break;
+ 476               		.loc 2 64 27 discriminator 27 view .LVU57
+ 477 00d0 C43B      		cpi r28,-76
+ 478 00d2 D105      		cpc r29,__zero_reg__
+ 479 00d4 01F4      		brne .+2
+ 480 00d6 00C0      		rjmp .L60
+  64:quantum/keymap_common.c ****             break;
+ 481               		.loc 2 64 27 discriminator 29 view .LVU58
+ 482 00d8 C53B      		cpi r28,-75
+ 483 00da D105      		cpc r29,__zero_reg__
+ 484 00dc 01F4      		brne .+2
+ 485 00de 00C0      		rjmp .L61
+  64:quantum/keymap_common.c ****             break;
+ 486               		.loc 2 64 27 discriminator 31 view .LVU59
+ 487 00e0 C63B      		cpi r28,-74
+ 488 00e2 D105      		cpc r29,__zero_reg__
+ 489 00e4 01F4      		brne .+2
+ 490 00e6 00C0      		rjmp .L62
+  64:quantum/keymap_common.c ****             break;
+ 491               		.loc 2 64 27 discriminator 33 view .LVU60
+ 492 00e8 C73B      		cpi r28,-73
+ 493 00ea D105      		cpc r29,__zero_reg__
+ 494 00ec 01F4      		brne .+2
+ 495 00ee 00C0      		rjmp .L63
+  64:quantum/keymap_common.c ****             break;
+ 496               		.loc 2 64 27 discriminator 35 view .LVU61
+ 497 00f0 C83B      		cpi r28,-72
+ 498 00f2 D105      		cpc r29,__zero_reg__
+ 499 00f4 01F4      		brne .+2
+ 500 00f6 00C0      		rjmp .L64
+  64:quantum/keymap_common.c ****             break;
+ 501               		.loc 2 64 27 discriminator 37 view .LVU62
+ 502 00f8 C93B      		cpi r28,-71
+ 503 00fa D105      		cpc r29,__zero_reg__
+ 504 00fc 01F4      		brne .+2
+ 505 00fe 00C0      		rjmp .L65
+  64:quantum/keymap_common.c ****             break;
+ 506               		.loc 2 64 27 discriminator 39 view .LVU63
+ 507 0100 CA3B      		cpi r28,-70
+ 508 0102 D105      		cpc r29,__zero_reg__
+ 509 0104 01F4      		brne .+2
+ 510 0106 00C0      		rjmp .L66
+  64:quantum/keymap_common.c ****             break;
+ 511               		.loc 2 64 27 view .LVU64
+ 512 0108 C0E0      		ldi r28,0
+ 513 010a D4E4      		ldi r29,lo8(68)
+ 514               	.LVL20:
+  64:quantum/keymap_common.c ****             break;
+ 515               		.loc 2 64 27 view .LVU65
+ 516 010c 00C0      		rjmp .L23
+ 517               	.LVL21:
+ 518               	.L19:
   52:quantum/keymap_common.c ****         case KC_FN0 ... KC_FN31:
- 420               		.loc 2 52 5 is_stmt 0 view .LVU45
- 421 0072 8115      		cp r24,__zero_reg__
- 422 0074 9042      		sbci r25,32
- 423 0076 00F4      		brsh .L25
- 424 0078 C115      		cp r28,__zero_reg__
- 425 007a 81E0      		ldi r24,1
- 426 007c D807      		cpc r29,r24
- 427               	.LVL22:
-  52:quantum/keymap_common.c ****         case KC_FN0 ... KC_FN31:
- 428               		.loc 2 52 5 view .LVU46
- 429 007e 00F0      		brlo .+2
- 430 0080 00C0      		rjmp .L20
- 431 0082 C03F      		cpi r28,-16
- 432 0084 D105      		cpc r29,__zero_reg__
- 433 0086 00F0      		brlo .L47
+ 519               		.loc 2 52 5 view .LVU66
+ 520 010e 8115      		cp r24,__zero_reg__
+ 521 0110 40E2      		ldi r20,32
+ 522 0112 9407      		cpc r25,r20
+ 523 0114 00F4      		brsh .L25
+ 524 0116 8F3F      		cpi r24,-1
+ 525 0118 9105      		cpc r25,__zero_reg__
+ 526 011a 01F0      		breq .+2
+ 527 011c 00F4      		brsh .L23
+ 528 011e 883E      		cpi r24,-24
+ 529 0120 9105      		cpc r25,__zero_reg__
+ 530 0122 00F0      		brlo .L23
+ 531 0124 805F      		subi r24,-16
+ 532 0126 9109      		sbc r25,__zero_reg__
+ 533               	.LVL22:
   67:quantum/keymap_common.c ****             break;
- 434               		.loc 2 67 13 is_stmt 1 view .LVU47
- 435               	.LVL23:
-  67:quantum/keymap_common.c ****             break;
- 436               		.loc 2 67 27 is_stmt 0 view .LVU48
- 437 0088 D065      		ori r29,80
- 438               	.LVL24:
-  68:quantum/keymap_common.c ****         case KC_TRNS:
- 439               		.loc 2 68 13 is_stmt 1 view .LVU49
- 440 008a 00C0      		rjmp .L20
- 441               	.LVL25:
- 442               	.L25:
+ 534               		.loc 2 67 27 view .LVU67
+ 535 0128 D065      		ori r29,80
+ 536               	.LVL23:
   52:quantum/keymap_common.c ****         case KC_FN0 ... KC_FN31:
- 443               		.loc 2 52 5 is_stmt 0 view .LVU50
- 444 008c C115      		cp r28,__zero_reg__
- 445 008e 90E3      		ldi r25,48
- 446 0090 D907      		cpc r29,r25
- 447 0092 00F0      		brlo .+2
- 448 0094 00C0      		rjmp .L78
-  77:quantum/keymap_common.c ****             // Is a shortcut for function action_layer, pull last 12bits
- 449               		.loc 2 77 47 is_stmt 1 view .LVU51
-  80:quantum/keymap_common.c ****             break;
- 450               		.loc 2 80 13 view .LVU52
-  80:quantum/keymap_common.c ****             break;
- 451               		.loc 2 80 27 is_stmt 0 view .LVU53
- 452 0096 CE01      		movw r24,r28
- 453               	.LVL26:
-  80:quantum/keymap_common.c ****             break;
- 454               		.loc 2 80 27 view .LVU54
- 455 0098 9F70      		andi r25,15
- 456 009a 00C0      		rjmp .L86
- 457               	.LVL27:
- 458               	.L17:
-  52:quantum/keymap_common.c ****         case KC_FN0 ... KC_FN31:
- 459               		.loc 2 52 5 view .LVU55
- 460 009c 8115      		cp r24,__zero_reg__
- 461 009e 25E5      		ldi r18,85
- 462 00a0 9207      		cpc r25,r18
- 463 00a2 00F4      		brsh .L29
- 464 00a4 8115      		cp r24,__zero_reg__
- 465 00a6 34E5      		ldi r19,84
- 466 00a8 9307      		cpc r25,r19
- 467 00aa 00F0      		brlo .+2
- 468 00ac 00C0      		rjmp .L30
- 469 00ae 8115      		cp r24,__zero_reg__
- 470 00b0 42E5      		ldi r20,82
- 471 00b2 9407      		cpc r25,r20
- 472 00b4 00F4      		brsh .L31
- 473 00b6 C115      		cp r28,__zero_reg__
- 474 00b8 81E5      		ldi r24,81
- 475 00ba D807      		cpc r29,r24
- 476               	.LVL28:
-  52:quantum/keymap_common.c ****         case KC_FN0 ... KC_FN31:
- 477               		.loc 2 52 5 view .LVU56
- 478 00bc 00F4      		brsh .+2
- 479 00be 00C0      		rjmp .L79
-  97:quantum/keymap_common.c ****             // Momentary action_layer
- 480               		.loc 2 97 49 is_stmt 1 view .LVU57
-  99:quantum/keymap_common.c ****             action.code = ACTION_LAYER_MOMENTARY(action_layer);
- 481               		.loc 2 99 13 view .LVU58
- 482               	.LVL29:
- 100:quantum/keymap_common.c ****             break;
- 483               		.loc 2 100 13 view .LVU59
- 100:quantum/keymap_common.c ****             break;
- 484               		.loc 2 100 27 is_stmt 0 view .LVU60
- 485 00c0 DC2F      		mov r29,r28
- 486 00c2 CC27      		clr r28
- 487               	.LVL30:
- 100:quantum/keymap_common.c ****             break;
- 488               		.loc 2 100 27 view .LVU61
- 489 00c4 C16F      		ori r28,241
- 490 00c6 D06A      		ori r29,160
- 491               	.LVL31:
- 101:quantum/keymap_common.c ****         case QK_DEF_LAYER ... QK_DEF_LAYER_MAX: ;
- 492               		.loc 2 101 13 is_stmt 1 view .LVU62
- 493 00c8 00C0      		rjmp .L20
- 494               	.LVL32:
- 495               	.L31:
- 101:quantum/keymap_common.c ****         case QK_DEF_LAYER ... QK_DEF_LAYER_MAX: ;
- 496               		.loc 2 101 13 is_stmt 0 view .LVU63
- 497 00ca 982F      		mov r25,r24
- 498 00cc 9695      		lsr r25
- 499 00ce 9695      		lsr r25
- 500 00d0 9E01      		movw r18,r28
- 501 00d2 2370      		andi r18,3
- 502 00d4 3327      		clr r19
-  52:quantum/keymap_common.c ****         case KC_FN0 ... KC_FN31:
- 503               		.loc 2 52 5 view .LVU64
- 504 00d6 C115      		cp r28,__zero_reg__
- 505 00d8 D345      		sbci r29,83
- 506 00da 00F0      		brlo .+2
- 507 00dc 00C0      		rjmp .L80
- 102:quantum/keymap_common.c ****             // Set default action_layer
- 508               		.loc 2 102 49 is_stmt 1 view .LVU65
- 104:quantum/keymap_common.c ****             action.code = ACTION_DEFAULT_LAYER_SET(action_layer);
- 509               		.loc 2 104 13 view .LVU66
- 510               	.LVL33:
- 105:quantum/keymap_common.c ****             break;
- 511               		.loc 2 105 13 view .LVU67
- 105:quantum/keymap_common.c ****             break;
- 512               		.loc 2 105 27 is_stmt 0 view .LVU68
- 513 00de C1E0      		ldi r28,lo8(1)
- 514 00e0 D0E0      		ldi r29,0
- 515 00e2 00C0      		rjmp 2f
- 516               		1:
- 517 00e4 CC0F      		lsl r28
- 518 00e6 DD1F      		rol r29
- 519               		2:
- 520 00e8 2A95      		dec r18
- 521 00ea 02F4      		brpl 1b
- 522 00ec 20E2      		ldi r18,lo8(32)
- 523 00ee 929F      		mul r25,r18
- 524 00f0 C001      		movw r24,r0
- 525 00f2 1124      		clr __zero_reg__
- 526               	.LVL34:
- 105:quantum/keymap_common.c ****             break;
- 527               		.loc 2 105 27 view .LVU69
- 528 00f4 C82B      		or r28,r24
- 529 00f6 D92B      		or r29,r25
- 530 00f8 00C0      		rjmp .L84
- 531               	.LVL35:
- 532               	.L29:
-  52:quantum/keymap_common.c ****         case KC_FN0 ... KC_FN31:
- 533               		.loc 2 52 5 view .LVU70
- 534 00fa C115      		cp r28,__zero_reg__
- 535 00fc 89E5      		ldi r24,89
- 536 00fe D807      		cpc r29,r24
- 537               	.LVL36:
-  52:quantum/keymap_common.c ****         case KC_FN0 ... KC_FN31:
- 538               		.loc 2 52 5 view .LVU71
- 539 0100 00F4      		brsh .L36
- 540 0102 C115      		cp r28,__zero_reg__
- 541 0104 98E5      		ldi r25,88
- 542 0106 D907      		cpc r29,r25
- 543 0108 00F0      		brlo .+2
- 544 010a 00C0      		rjmp .L37
- 545 010c C115      		cp r28,__zero_reg__
- 546 010e 26E5      		ldi r18,86
- 547 0110 D207      		cpc r29,r18
- 548 0112 00F0      		brlo .+2
- 549 0114 00C0      		rjmp .L47
- 117:quantum/keymap_common.c ****             // OSM(mod) - One-shot mod
- 550               		.loc 2 117 55 is_stmt 1 view .LVU72
- 119:quantum/keymap_common.c ****             action.code = ACTION_MODS_ONESHOT(mod);
- 551               		.loc 2 119 13 view .LVU73
- 552               	.LVL37:
- 120:quantum/keymap_common.c ****             break;
- 553               		.loc 2 120 13 view .LVU74
- 120:quantum/keymap_common.c ****             break;
- 554               		.loc 2 120 27 is_stmt 0 view .LVU75
- 555 0116 DC2F      		mov r29,r28
- 556 0118 CC27      		clr r28
- 557               	.LVL38:
- 120:quantum/keymap_common.c ****             break;
- 558               		.loc 2 120 27 view .LVU76
- 559 011a CC27      		clr r28
- 560 011c DF71      		andi r29,31
- 561               	.LVL39:
- 562               	.L85:
- 132:quantum/keymap_common.c ****             break;
- 563               		.loc 2 132 27 view .LVU77
- 564 011e D062      		ori r29,32
- 565               	.LVL40:
- 133:quantum/keymap_common.c ****     #ifdef BACKLIGHT_ENABLE
- 566               		.loc 2 133 13 is_stmt 1 view .LVU78
- 567 0120 00C0      		rjmp .L20
- 568               	.LVL41:
- 569               	.L36:
-  52:quantum/keymap_common.c ****         case KC_FN0 ... KC_FN31:
- 570               		.loc 2 52 5 is_stmt 0 view .LVU79
- 571 0122 CE01      		movw r24,r28
- 572 0124 C115      		cp r28,__zero_reg__
- 573 0126 3AE5      		ldi r19,90
- 574 0128 D307      		cpc r29,r19
- 575 012a 00F4      		brsh .+2
- 576 012c 00C0      		rjmp .L39
- 577               	.LVL42:
-  52:quantum/keymap_common.c ****         case KC_FN0 ... KC_FN31:
- 578               		.loc 2 52 5 view .LVU80
- 579 012e 9056      		subi r25,96
- 580               	.LVL43:
-  52:quantum/keymap_common.c ****         case KC_FN0 ... KC_FN31:
- 581               		.loc 2 52 5 view .LVU81
- 582 0130 8115      		cp r24,__zero_reg__
- 583 0132 9042      		sbci r25,32
- 584 0134 00F0      		brlo .+2
- 585 0136 00C0      		rjmp .L47
- 131:quantum/keymap_common.c ****             action.code = ACTION_MODS_TAP_KEY(mod, keycode & 0xFF);
- 586               		.loc 2 131 13 is_stmt 1 view .LVU82
- 131:quantum/keymap_common.c ****             action.code = ACTION_MODS_TAP_KEY(mod, keycode & 0xFF);
- 587               		.loc 2 131 19 is_stmt 0 view .LVU83
- 588 0138 8D2F      		mov r24,r29
- 589 013a 8F71      		andi r24,lo8(31)
- 590 013c 0E94 0000 		call mod_config
- 591               	.LVL44:
- 132:quantum/keymap_common.c ****             break;
- 592               		.loc 2 132 13 is_stmt 1 view .LVU84
- 132:quantum/keymap_common.c ****             break;
- 593               		.loc 2 132 27 is_stmt 0 view .LVU85
- 594 0140 90E0      		ldi r25,0
- 595 0142 982F      		mov r25,r24
- 596 0144 8827      		clr r24
- 597               	.LVL45:
- 132:quantum/keymap_common.c ****             break;
- 598               		.loc 2 132 27 view .LVU86
- 599 0146 8827      		clr r24
- 600 0148 9F71      		andi r25,31
- 601 014a 9C01      		movw r18,r24
- 602 014c 2C2B      		or r18,r28
- 603 014e E901      		movw r28,r18
- 604               	.LVL46:
- 132:quantum/keymap_common.c ****             break;
- 605               		.loc 2 132 27 view .LVU87
- 606 0150 00C0      		rjmp .L85
- 607               	.LVL47:
- 608               	.L22:
-  61:quantum/keymap_common.c ****             break;
- 609               		.loc 2 61 13 is_stmt 1 view .LVU88
-  61:quantum/keymap_common.c ****             break;
- 610               		.loc 2 61 27 is_stmt 0 view .LVU89
- 611 0152 853A      		cpi r24,-91
- 612 0154 9105      		cpc r25,__zero_reg__
- 613 0156 01F4      		brne .+2
- 614 0158 00C0      		rjmp .L48
-  61:quantum/keymap_common.c ****             break;
- 615               		.loc 2 61 27 discriminator 1 view .LVU90
- 616 015a 863A      		cpi r24,-90
- 617 015c 9105      		cpc r25,__zero_reg__
- 618 015e 01F0      		breq .+2
- 619 0160 00C0      		rjmp .L49
- 620               	.LVL48:
-  61:quantum/keymap_common.c ****             break;
- 621               		.loc 2 61 27 view .LVU91
- 622 0162 C2E8      		ldi r28,lo8(-126)
- 623 0164 D0E4      		ldi r29,lo8(64)
- 624               	.LVL49:
- 625               	.L20:
+ 537               		.loc 2 52 5 view .LVU68
+ 538 012a 4097      		sbiw r24,16
+ 539 012c 00F0      		brlo .+2
+ 540 012e 00C0      		rjmp .L43
+ 541               	.LVL24:
+ 542               	.L23:
  164:quantum/keymap_common.c **** }
- 626               		.loc 2 164 5 is_stmt 1 view .LVU92
+ 543               		.loc 2 164 5 is_stmt 1 view .LVU69
  165:quantum/keymap_common.c **** 
- 627               		.loc 2 165 1 is_stmt 0 view .LVU93
- 628 0166 CE01      		movw r24,r28
- 629               	/* epilogue start */
- 630 0168 DF91      		pop r29
- 631 016a CF91      		pop r28
- 632 016c 0895      		ret
- 633               	.LVL50:
- 634               	.L23:
-  64:quantum/keymap_common.c ****             break;
- 635               		.loc 2 64 13 is_stmt 1 view .LVU94
-  64:quantum/keymap_common.c ****             break;
- 636               		.loc 2 64 27 is_stmt 0 view .LVU95
- 637 016e 883A      		cpi r24,-88
- 638 0170 9105      		cpc r25,__zero_reg__
- 639 0172 01F4      		brne .+2
- 640 0174 00C0      		rjmp .L50
-  64:quantum/keymap_common.c ****             break;
- 641               		.loc 2 64 27 discriminator 1 view .LVU96
- 642 0176 893A      		cpi r24,-87
- 643 0178 9105      		cpc r25,__zero_reg__
- 644 017a 01F4      		brne .+2
- 645 017c 00C0      		rjmp .L51
-  64:quantum/keymap_common.c ****             break;
- 646               		.loc 2 64 27 discriminator 3 view .LVU97
- 647 017e 8A3A      		cpi r24,-86
- 648 0180 9105      		cpc r25,__zero_reg__
- 649 0182 01F4      		brne .+2
- 650 0184 00C0      		rjmp .L52
-  64:quantum/keymap_common.c ****             break;
- 651               		.loc 2 64 27 discriminator 5 view .LVU98
- 652 0186 8B3A      		cpi r24,-85
- 653 0188 9105      		cpc r25,__zero_reg__
- 654 018a 01F4      		brne .+2
- 655 018c 00C0      		rjmp .L53
-  64:quantum/keymap_common.c ****             break;
- 656               		.loc 2 64 27 discriminator 7 view .LVU99
- 657 018e 8C3A      		cpi r24,-84
- 658 0190 9105      		cpc r25,__zero_reg__
- 659 0192 01F4      		brne .+2
- 660 0194 00C0      		rjmp .L54
-  64:quantum/keymap_common.c ****             break;
- 661               		.loc 2 64 27 discriminator 9 view .LVU100
- 662 0196 8B3B      		cpi r24,-69
- 663 0198 9105      		cpc r25,__zero_reg__
- 664 019a 01F4      		brne .+2
- 665 019c 00C0      		rjmp .L55
-  64:quantum/keymap_common.c ****             break;
- 666               		.loc 2 64 27 discriminator 11 view .LVU101
- 667 019e 8C3B      		cpi r24,-68
- 668 01a0 9105      		cpc r25,__zero_reg__
- 669 01a2 01F4      		brne .+2
- 670 01a4 00C0      		rjmp .L56
-  64:quantum/keymap_common.c ****             break;
- 671               		.loc 2 64 27 discriminator 13 view .LVU102
- 672 01a6 8D3A      		cpi r24,-83
- 673 01a8 9105      		cpc r25,__zero_reg__
- 674 01aa 01F4      		brne .+2
- 675 01ac 00C0      		rjmp .L57
-  64:quantum/keymap_common.c ****             break;
- 676               		.loc 2 64 27 discriminator 15 view .LVU103
- 677 01ae 803B      		cpi r24,-80
- 678 01b0 9105      		cpc r25,__zero_reg__
- 679 01b2 01F4      		brne .+2
- 680 01b4 00C0      		rjmp .L58
-  64:quantum/keymap_common.c ****             break;
- 681               		.loc 2 64 27 discriminator 17 view .LVU104
- 682 01b6 8E3A      		cpi r24,-82
- 683 01b8 9105      		cpc r25,__zero_reg__
- 684 01ba 01F4      		brne .+2
- 685 01bc 00C0      		rjmp .L59
-  64:quantum/keymap_common.c ****             break;
- 686               		.loc 2 64 27 discriminator 19 view .LVU105
- 687 01be 8F3A      		cpi r24,-81
- 688 01c0 9105      		cpc r25,__zero_reg__
- 689 01c2 01F4      		brne .+2
- 690 01c4 00C0      		rjmp .L60
-  64:quantum/keymap_common.c ****             break;
- 691               		.loc 2 64 27 discriminator 21 view .LVU106
- 692 01c6 813B      		cpi r24,-79
- 693 01c8 9105      		cpc r25,__zero_reg__
- 694 01ca 01F4      		brne .+2
- 695 01cc 00C0      		rjmp .L61
-  64:quantum/keymap_common.c ****             break;
- 696               		.loc 2 64 27 discriminator 23 view .LVU107
- 697 01ce 823B      		cpi r24,-78
- 698 01d0 9105      		cpc r25,__zero_reg__
- 699 01d2 01F4      		brne .+2
- 700 01d4 00C0      		rjmp .L62
-  64:quantum/keymap_common.c ****             break;
- 701               		.loc 2 64 27 discriminator 25 view .LVU108
- 702 01d6 833B      		cpi r24,-77
- 703 01d8 9105      		cpc r25,__zero_reg__
- 704 01da 01F4      		brne .+2
- 705 01dc 00C0      		rjmp .L63
-  64:quantum/keymap_common.c ****             break;
- 706               		.loc 2 64 27 discriminator 27 view .LVU109
- 707 01de 843B      		cpi r24,-76
- 708 01e0 9105      		cpc r25,__zero_reg__
- 709 01e2 01F4      		brne .+2
- 710 01e4 00C0      		rjmp .L64
-  64:quantum/keymap_common.c ****             break;
- 711               		.loc 2 64 27 discriminator 29 view .LVU110
- 712 01e6 853B      		cpi r24,-75
- 713 01e8 9105      		cpc r25,__zero_reg__
- 714 01ea 01F4      		brne .+2
- 715 01ec 00C0      		rjmp .L65
-  64:quantum/keymap_common.c ****             break;
- 716               		.loc 2 64 27 discriminator 31 view .LVU111
- 717 01ee 863B      		cpi r24,-74
- 718 01f0 9105      		cpc r25,__zero_reg__
- 719 01f2 01F4      		brne .+2
- 720 01f4 00C0      		rjmp .L66
-  64:quantum/keymap_common.c ****             break;
- 721               		.loc 2 64 27 discriminator 33 view .LVU112
- 722 01f6 873B      		cpi r24,-73
- 723 01f8 9105      		cpc r25,__zero_reg__
- 724 01fa 01F4      		brne .+2
- 725 01fc 00C0      		rjmp .L67
-  64:quantum/keymap_common.c ****             break;
- 726               		.loc 2 64 27 discriminator 35 view .LVU113
- 727 01fe 883B      		cpi r24,-72
- 728 0200 9105      		cpc r25,__zero_reg__
- 729 0202 01F4      		brne .+2
- 730 0204 00C0      		rjmp .L68
-  64:quantum/keymap_common.c ****             break;
- 731               		.loc 2 64 27 discriminator 37 view .LVU114
- 732 0206 893B      		cpi r24,-71
- 733 0208 9105      		cpc r25,__zero_reg__
- 734 020a 01F4      		brne .+2
- 735 020c 00C0      		rjmp .L69
-  64:quantum/keymap_common.c ****             break;
- 736               		.loc 2 64 27 discriminator 39 view .LVU115
- 737 020e 8A3B      		cpi r24,-70
- 738 0210 9105      		cpc r25,__zero_reg__
- 739 0212 01F4      		brne .+2
- 740 0214 00C0      		rjmp .L70
- 741               	.LVL51:
-  64:quantum/keymap_common.c ****             break;
- 742               		.loc 2 64 27 view .LVU116
- 743 0216 C0E0      		ldi r28,0
- 744 0218 D4E4      		ldi r29,lo8(68)
- 745 021a 00C0      		rjmp .L20
- 746               	.LVL52:
- 747               	.L78:
+ 544               		.loc 2 165 1 is_stmt 0 view .LVU70
+ 545 0130 CE01      		movw r24,r28
+ 546               	/* epilogue start */
+ 547 0132 DF91      		pop r29
+ 548 0134 CF91      		pop r28
+ 549 0136 0895      		ret
+ 550               	.LVL25:
+ 551               	.L25:
+  52:quantum/keymap_common.c ****         case KC_FN0 ... KC_FN31:
+ 552               		.loc 2 52 5 view .LVU71
+ 553 0138 C115      		cp r28,__zero_reg__
+ 554 013a 80E3      		ldi r24,48
+ 555 013c D807      		cpc r29,r24
+ 556               	.LVL26:
+  52:quantum/keymap_common.c ****         case KC_FN0 ... KC_FN31:
+ 557               		.loc 2 52 5 view .LVU72
+ 558 013e 00F4      		brsh .+2
+ 559 0140 00C0      		rjmp .L27
   83:quantum/keymap_common.c ****                 action.code = ACTION_MACRO_TAP(keycode & 0xFF);
- 748               		.loc 2 83 13 is_stmt 1 view .LVU117
- 749 021c CE01      		movw r24,r28
- 750               	.LVL53:
+ 560               		.loc 2 83 13 is_stmt 1 view .LVU73
+ 561 0142 CE01      		movw r24,r28
+ 562 0144 9927      		clr r25
   83:quantum/keymap_common.c ****                 action.code = ACTION_MACRO_TAP(keycode & 0xFF);
- 751               		.loc 2 83 13 is_stmt 0 view .LVU118
- 752 021e 9927      		clr r25
-  83:quantum/keymap_common.c ****                 action.code = ACTION_MACRO_TAP(keycode & 0xFF);
- 753               		.loc 2 83 16 view .LVU119
- 754 0220 D3FF      		sbrs r29,3
- 755 0222 00C0      		rjmp .L41
-  84:quantum/keymap_common.c ****             else
- 756               		.loc 2 84 17 is_stmt 1 view .LVU120
- 757               	.LVL54:
-  84:quantum/keymap_common.c ****             else
- 758               		.loc 2 84 31 is_stmt 0 view .LVU121
- 759 0224 EC01      		movw r28,r24
- 760 0226 D86C      		ori r29,200
- 761               	.LVL55:
-  84:quantum/keymap_common.c ****             else
- 762               		.loc 2 84 31 view .LVU122
- 763 0228 00C0      		rjmp .L20
- 764               	.LVL56:
- 765               	.L41:
+ 563               		.loc 2 83 16 is_stmt 0 view .LVU74
+ 564 0146 D3FD      		sbrc r29,3
+ 565 0148 00C0      		rjmp .L28
   86:quantum/keymap_common.c ****             break;
- 766               		.loc 2 86 17 is_stmt 1 view .LVU123
+ 566               		.loc 2 86 17 is_stmt 1 view .LVU75
   86:quantum/keymap_common.c ****             break;
- 767               		.loc 2 86 31 is_stmt 0 view .LVU124
- 768 022a EC01      		movw r28,r24
- 769 022c D06C      		ori r29,192
- 770               	.LVL57:
+ 567               		.loc 2 86 31 is_stmt 0 view .LVU76
+ 568 014a EC01      		movw r28,r24
+ 569               	.LVL27:
   86:quantum/keymap_common.c ****             break;
- 771               		.loc 2 86 31 view .LVU125
- 772 022e 00C0      		rjmp .L20
- 773               	.LVL58:
- 774               	.L18:
-  89:quantum/keymap_common.c ****             break;
- 775               		.loc 2 89 13 is_stmt 1 view .LVU126
-  89:quantum/keymap_common.c ****             break;
- 776               		.loc 2 89 27 is_stmt 0 view .LVU127
- 777 0230 DF70      		andi r29,15
- 778               	.LVL59:
- 779               	.L83:
- 128:quantum/keymap_common.c ****             break;
- 780               		.loc 2 128 27 view .LVU128
- 781 0232 D06A      		ori r29,160
- 782               	.LVL60:
- 129:quantum/keymap_common.c ****         case QK_MOD_TAP ... QK_MOD_TAP_MAX:
- 783               		.loc 2 129 13 is_stmt 1 view .LVU129
- 784 0234 00C0      		rjmp .L20
- 785               	.LVL61:
- 786               	.L79:
-  91:quantum/keymap_common.c ****             // Layer set "GOTO"
- 787               		.loc 2 91 35 view .LVU130
-  93:quantum/keymap_common.c ****             action_layer = keycode & 0xF;
- 788               		.loc 2 93 13 view .LVU131
-  94:quantum/keymap_common.c ****             action.code = ACTION_LAYER_SET(action_layer, when);
- 789               		.loc 2 94 13 view .LVU132
-  95:quantum/keymap_common.c ****             break;
- 790               		.loc 2 95 13 view .LVU133
-  93:quantum/keymap_common.c ****             action_layer = keycode & 0xF;
- 791               		.loc 2 93 29 is_stmt 0 view .LVU134
- 792 0236 CE01      		movw r24,r28
- 793 0238 E4E0      		ldi r30,4
- 794               		1:
- 795 023a 9695      		lsr r25
- 796 023c 8795      		ror r24
- 797 023e EA95      		dec r30
- 798 0240 01F4      		brne 1b
-  93:quantum/keymap_common.c ****             action_layer = keycode & 0xF;
- 799               		.loc 2 93 18 view .LVU135
- 800 0242 8370      		andi r24,lo8(3)
-  95:quantum/keymap_common.c ****             break;
- 801               		.loc 2 95 27 view .LVU136
- 802 0244 2C2F      		mov r18,r28
- 803 0246 2695      		lsr r18
- 804 0248 2695      		lsr r18
- 805 024a 2370      		andi r18,lo8(3)
- 806 024c 90E2      		ldi r25,lo8(32)
- 807 024e 299F      		mul r18,r25
- 808 0250 9001      		movw r18,r0
- 809 0252 1124      		clr __zero_reg__
- 810 0254 382B      		or r19,r24
- 811 0256 8C2F      		mov r24,r28
- 812 0258 8370      		andi r24,lo8(3)
- 813 025a C1E0      		ldi r28,lo8(1)
- 814 025c D0E0      		ldi r29,0
- 815               	.LVL62:
-  95:quantum/keymap_common.c ****             break;
- 816               		.loc 2 95 27 view .LVU137
- 817 025e 00C0      		rjmp 2f
- 818               		1:
- 819 0260 CC0F      		lsl r28
- 820 0262 DD1F      		rol r29
- 821               		2:
- 822 0264 8A95      		dec r24
- 823 0266 02F4      		brpl 1b
- 824 0268 C22B      		or r28,r18
- 825 026a D32B      		or r29,r19
- 826               	.LVL63:
- 827               	.L84:
- 105:quantum/keymap_common.c ****             break;
- 828               		.loc 2 105 27 view .LVU138
- 829 026c DC68      		ori r29,140
- 830               	.LVL64:
- 106:quantum/keymap_common.c ****         case QK_TOGGLE_LAYER ... QK_TOGGLE_LAYER_MAX: ;
- 831               		.loc 2 106 13 is_stmt 1 view .LVU139
- 832 026e 00C0      		rjmp .L20
- 833               	.LVL65:
- 834               	.L80:
+ 570               		.loc 2 86 31 view .LVU77
+ 571 014c D06C      		ori r29,192
+ 572               	.LVL28:
+  86:quantum/keymap_common.c ****             break;
+ 573               		.loc 2 86 31 view .LVU78
+ 574 014e 00C0      		rjmp .L23
+ 575               	.LVL29:
+ 576               	.L17:
+  52:quantum/keymap_common.c ****         case KC_FN0 ... KC_FN31:
+ 577               		.loc 2 52 5 view .LVU79
+ 578 0150 C115      		cp r28,__zero_reg__
+ 579 0152 95E5      		ldi r25,85
+ 580 0154 D907      		cpc r29,r25
+ 581 0156 00F4      		brsh .L30
+ 582 0158 C115      		cp r28,__zero_reg__
+ 583 015a 24E5      		ldi r18,84
+ 584 015c D207      		cpc r29,r18
+ 585 015e 00F0      		brlo .+2
+ 586 0160 00C0      		rjmp .L31
+ 587 0162 C115      		cp r28,__zero_reg__
+ 588 0164 33E5      		ldi r19,83
+ 589 0166 D307      		cpc r29,r19
+ 590 0168 00F4      		brsh .L32
+ 591 016a C115      		cp r28,__zero_reg__
+ 592 016c 42E5      		ldi r20,82
+ 593 016e D407      		cpc r29,r20
+ 594 0170 00F0      		brlo .+2
+ 595 0172 00C0      		rjmp .L33
+ 596 0174 C115      		cp r28,__zero_reg__
+ 597 0176 81E5      		ldi r24,81
+ 598 0178 D807      		cpc r29,r24
+ 599               	.LVL30:
+  52:quantum/keymap_common.c ****         case KC_FN0 ... KC_FN31:
+ 600               		.loc 2 52 5 view .LVU80
+ 601 017a 00F4      		brsh .+2
+ 602 017c 00C0      		rjmp .L34
+  97:quantum/keymap_common.c ****             // Momentary action_layer
+ 603               		.loc 2 97 49 is_stmt 1 view .LVU81
+  99:quantum/keymap_common.c ****             action.code = ACTION_LAYER_MOMENTARY(action_layer);
+ 604               		.loc 2 99 13 view .LVU82
+ 605               	.LVL31:
+ 100:quantum/keymap_common.c ****             break;
+ 606               		.loc 2 100 13 view .LVU83
+ 100:quantum/keymap_common.c ****             break;
+ 607               		.loc 2 100 27 is_stmt 0 view .LVU84
+ 608 017e DC2F      		mov r29,r28
+ 609 0180 CC27      		clr r28
+ 610               	.LVL32:
+ 100:quantum/keymap_common.c ****             break;
+ 611               		.loc 2 100 27 view .LVU85
+ 612 0182 C16F      		ori r28,241
+ 613 0184 D06A      		ori r29,160
+ 614               	.LVL33:
+ 101:quantum/keymap_common.c ****         case QK_DEF_LAYER ... QK_DEF_LAYER_MAX: ;
+ 615               		.loc 2 101 13 is_stmt 1 view .LVU86
+ 616 0186 00C0      		rjmp .L23
+ 617               	.LVL34:
+ 618               	.L32:
  107:quantum/keymap_common.c ****             // Set toggle
- 835               		.loc 2 107 55 view .LVU140
+ 619               		.loc 2 107 55 view .LVU87
  109:quantum/keymap_common.c ****             action.code = ACTION_LAYER_TOGGLE(action_layer);
- 836               		.loc 2 109 13 view .LVU141
+ 620               		.loc 2 109 13 view .LVU88
  110:quantum/keymap_common.c ****             break;
- 837               		.loc 2 110 13 view .LVU142
+ 621               		.loc 2 110 13 view .LVU89
  110:quantum/keymap_common.c ****             break;
- 838               		.loc 2 110 27 is_stmt 0 view .LVU143
- 839 0270 C1E0      		ldi r28,lo8(1)
- 840 0272 D0E0      		ldi r29,0
- 841 0274 00C0      		rjmp 2f
- 842               		1:
- 843 0276 CC0F      		lsl r28
- 844 0278 DD1F      		rol r29
- 845               		2:
- 846 027a 2A95      		dec r18
- 847 027c 02F4      		brpl 1b
- 848 027e 30E2      		ldi r19,lo8(32)
- 849 0280 939F      		mul r25,r19
- 850 0282 C001      		movw r24,r0
- 851 0284 1124      		clr __zero_reg__
- 852               	.LVL66:
+ 622               		.loc 2 110 27 is_stmt 0 view .LVU90
+ 623 0188 CE01      		movw r24,r28
+ 624               	.LVL35:
  110:quantum/keymap_common.c ****             break;
- 853               		.loc 2 110 27 view .LVU144
- 854 0286 C82B      		or r28,r24
- 855 0288 D92B      		or r29,r25
- 856               	.LVL67:
+ 625               		.loc 2 110 27 view .LVU91
+ 626 018a 8370      		andi r24,3
+ 627 018c 9927      		clr r25
+ 628               	.LVL36:
  110:quantum/keymap_common.c ****             break;
- 857               		.loc 2 110 27 view .LVU145
- 858 028a DA68      		ori r29,138
- 859               	.LVL68:
+ 629               		.loc 2 110 27 view .LVU92
+ 630 018e 21E0      		ldi r18,lo8(1)
+ 631 0190 30E0      		ldi r19,0
+ 632 0192 00C0      		rjmp 2f
+ 633               		1:
+ 634 0194 220F      		lsl r18
+ 635 0196 331F      		rol r19
+ 636               		2:
+ 637 0198 8A95      		dec r24
+ 638 019a 02F4      		brpl 1b
+ 639 019c C695      		lsr r28
+ 640 019e C695      		lsr r28
+ 641               	.LVL37:
+ 110:quantum/keymap_common.c ****             break;
+ 642               		.loc 2 110 27 view .LVU93
+ 643 01a0 90E2      		ldi r25,lo8(32)
+ 644 01a2 C99F      		mul r28,r25
+ 645 01a4 E001      		movw r28,r0
+ 646 01a6 1124      		clr __zero_reg__
+ 647 01a8 C22B      		or r28,r18
+ 648 01aa D32B      		or r29,r19
+ 649 01ac DA68      		ori r29,138
+ 650               	.LVL38:
  111:quantum/keymap_common.c ****         case QK_ONE_SHOT_LAYER ... QK_ONE_SHOT_LAYER_MAX: ;
- 860               		.loc 2 111 13 is_stmt 1 view .LVU146
- 861 028c 00C0      		rjmp .L20
- 862               	.LVL69:
- 863               	.L30:
- 112:quantum/keymap_common.c ****             // OSL(action_layer) - One-shot action_layer
- 864               		.loc 2 112 59 view .LVU147
- 114:quantum/keymap_common.c ****             action.code = ACTION_LAYER_ONESHOT(action_layer);
- 865               		.loc 2 114 13 view .LVU148
- 115:quantum/keymap_common.c ****             break;
- 866               		.loc 2 115 13 view .LVU149
- 115:quantum/keymap_common.c ****             break;
- 867               		.loc 2 115 27 is_stmt 0 view .LVU150
- 868 028e D82F      		mov r29,r24
- 869 0290 CC27      		clr r28
- 870               	.LVL70:
- 115:quantum/keymap_common.c ****             break;
- 871               		.loc 2 115 27 view .LVU151
- 872 0292 C46F      		ori r28,244
- 873 0294 D06A      		ori r29,160
- 874               	.LVL71:
- 116:quantum/keymap_common.c ****         case QK_ONE_SHOT_MOD ... QK_ONE_SHOT_MOD_MAX: ;
- 875               		.loc 2 116 13 is_stmt 1 view .LVU152
- 876 0296 00C0      		rjmp .L20
- 877               	.LVL72:
- 878               	.L37:
+ 651               		.loc 2 111 13 is_stmt 1 view .LVU94
+ 652 01ae 00C0      		rjmp .L23
+ 653               	.LVL39:
+ 654               	.L30:
+  52:quantum/keymap_common.c ****         case KC_FN0 ... KC_FN31:
+ 655               		.loc 2 52 5 is_stmt 0 view .LVU95
+ 656 01b0 C115      		cp r28,__zero_reg__
+ 657 01b2 2AE5      		ldi r18,90
+ 658 01b4 D207      		cpc r29,r18
+ 659 01b6 00F4      		brsh .L35
+ 660 01b8 C115      		cp r28,__zero_reg__
+ 661 01ba 39E5      		ldi r19,89
+ 662 01bc D307      		cpc r29,r19
+ 663 01be 00F0      		brlo .+2
+ 664 01c0 00C0      		rjmp .L36
+ 665 01c2 C115      		cp r28,__zero_reg__
+ 666 01c4 46E5      		ldi r20,86
+ 667 01c6 D407      		cpc r29,r20
+ 668 01c8 00F4      		brsh .+2
+ 669 01ca 00C0      		rjmp .L37
+ 670 01cc CE01      		movw r24,r28
+ 671               	.LVL40:
+  52:quantum/keymap_common.c ****         case KC_FN0 ... KC_FN31:
+ 672               		.loc 2 52 5 view .LVU96
+ 673 01ce 9855      		subi r25,88
+ 674 01d0 8F3F      		cpi r24,-1
+ 675 01d2 9105      		cpc r25,__zero_reg__
+ 676 01d4 01F0      		breq .+4
+ 677 01d6 00F0      		brlo .+2
+ 678 01d8 00C0      		rjmp .L43
  123:quantum/keymap_common.c ****             break;
- 879               		.loc 2 123 13 view .LVU153
+ 679               		.loc 2 123 13 is_stmt 1 view .LVU97
  123:quantum/keymap_common.c ****             break;
- 880               		.loc 2 123 27 is_stmt 0 view .LVU154
- 881 0298 DC2F      		mov r29,r28
- 882 029a CC27      		clr r28
- 883               	.LVL73:
+ 680               		.loc 2 123 27 is_stmt 0 view .LVU98
+ 681 01da DC2F      		mov r29,r28
+ 682 01dc CC27      		clr r28
+ 683               	.LVL41:
  123:quantum/keymap_common.c ****             break;
- 884               		.loc 2 123 27 view .LVU155
- 885 029c C06F      		ori r28,240
- 886 029e D06A      		ori r29,160
- 887               	.LVL74:
+ 684               		.loc 2 123 27 view .LVU99
+ 685 01de C06F      		ori r28,240
+ 686 01e0 D06A      		ori r29,160
+ 687               	.LVL42:
  124:quantum/keymap_common.c ****         case QK_LAYER_MOD ... QK_LAYER_MOD_MAX:
- 888               		.loc 2 124 13 is_stmt 1 view .LVU156
- 889 02a0 00C0      		rjmp .L20
- 890               	.LVL75:
- 891               	.L39:
- 126:quantum/keymap_common.c ****             action_layer = (keycode >> 4) & 0xF;
- 892               		.loc 2 126 13 view .LVU157
- 127:quantum/keymap_common.c ****             action.code = ACTION_LAYER_MODS(action_layer, mod);
- 893               		.loc 2 127 13 view .LVU158
- 128:quantum/keymap_common.c ****             break;
- 894               		.loc 2 128 13 view .LVU159
- 127:quantum/keymap_common.c ****             action.code = ACTION_LAYER_MODS(action_layer, mod);
- 895               		.loc 2 127 37 is_stmt 0 view .LVU160
- 896 02a2 34E0      		ldi r19,4
- 897               		1:
- 898 02a4 9695      		lsr r25
- 899 02a6 8795      		ror r24
- 900 02a8 3A95      		dec r19
- 901 02aa 01F4      		brne 1b
- 902               	.LVL76:
- 127:quantum/keymap_common.c ****             action.code = ACTION_LAYER_MODS(action_layer, mod);
- 903               		.loc 2 127 26 view .LVU161
- 904 02ac 8F70      		andi r24,lo8(15)
- 126:quantum/keymap_common.c ****             action_layer = (keycode >> 4) & 0xF;
- 905               		.loc 2 126 17 view .LVU162
- 906 02ae CF70      		andi r28,lo8(15)
- 907               	.LVL77:
- 128:quantum/keymap_common.c ****             break;
- 908               		.loc 2 128 27 view .LVU163
- 909 02b0 C06E      		ori r28,lo8(-32)
- 910 02b2 D82F      		mov r29,r24
- 911 02b4 00C0      		rjmp .L83
- 912               	.LVL78:
- 913               	.L48:
+ 688               		.loc 2 124 13 is_stmt 1 view .LVU100
+ 689 01e2 00C0      		rjmp .L23
+ 690               	.LVL43:
+ 691               	.L35:
+  52:quantum/keymap_common.c ****         case KC_FN0 ... KC_FN31:
+ 692               		.loc 2 52 5 is_stmt 0 view .LVU101
+ 693 01e4 CE01      		movw r24,r28
+ 694               	.LVL44:
+  52:quantum/keymap_common.c ****         case KC_FN0 ... KC_FN31:
+ 695               		.loc 2 52 5 view .LVU102
+ 696 01e6 9056      		subi r25,96
+ 697 01e8 8115      		cp r24,__zero_reg__
+ 698 01ea 9042      		sbci r25,32
+ 699 01ec 00F0      		brlo .+2
+ 700 01ee 00C0      		rjmp .L43
+ 131:quantum/keymap_common.c ****             action.code = ACTION_MODS_TAP_KEY(mod, keycode & 0xFF);
+ 701               		.loc 2 131 13 is_stmt 1 view .LVU103
+ 131:quantum/keymap_common.c ****             action.code = ACTION_MODS_TAP_KEY(mod, keycode & 0xFF);
+ 702               		.loc 2 131 19 is_stmt 0 view .LVU104
+ 703 01f0 8D2F      		mov r24,r29
+ 704 01f2 8F71      		andi r24,lo8(31)
+ 705 01f4 0E94 0000 		call mod_config
+ 706               	.LVL45:
+ 132:quantum/keymap_common.c ****             break;
+ 707               		.loc 2 132 13 is_stmt 1 view .LVU105
+ 132:quantum/keymap_common.c ****             break;
+ 708               		.loc 2 132 27 is_stmt 0 view .LVU106
+ 709 01f8 90E0      		ldi r25,0
+ 710 01fa 982F      		mov r25,r24
+ 711 01fc 8827      		clr r24
+ 712               	.LVL46:
+ 132:quantum/keymap_common.c ****             break;
+ 713               		.loc 2 132 27 view .LVU107
+ 714 01fe 8827      		clr r24
+ 715 0200 9F71      		andi r25,31
+ 716 0202 9C01      		movw r18,r24
+ 717 0204 2C2B      		or r18,r28
+ 718 0206 E901      		movw r28,r18
+ 719               	.LVL47:
+ 132:quantum/keymap_common.c ****             break;
+ 720               		.loc 2 132 27 view .LVU108
+ 721 0208 00C0      		rjmp .L77
+ 722               	.LVL48:
+ 723               	.L20:
+  54:quantum/keymap_common.c ****             break;
+ 724               		.loc 2 54 13 is_stmt 1 view .LVU109
+  54:quantum/keymap_common.c ****             break;
+ 725               		.loc 2 54 27 is_stmt 0 view .LVU110
+ 726 020a 805C      		subi r24,-64
+ 727 020c 9109      		sbc r25,__zero_reg__
+ 728               	.LVL49:
+ 729               	.L78:
+  80:quantum/keymap_common.c ****             break;
+ 730               		.loc 2 80 27 view .LVU111
+ 731 020e 0E94 0000 		call keymap_function_id_to_action
+ 732               	.LVL50:
+ 733 0212 EC01      		movw r28,r24
+ 734               	.LVL51:
+  81:quantum/keymap_common.c ****         case QK_MACRO ... QK_MACRO_MAX:
+ 735               		.loc 2 81 13 is_stmt 1 view .LVU112
+ 736 0214 00C0      		rjmp .L23
+ 737               	.LVL52:
+ 738               	.L22:
   61:quantum/keymap_common.c ****             break;
- 914               		.loc 2 61 27 view .LVU164
- 915 02b6 C1E8      		ldi r28,lo8(-127)
- 916 02b8 D0E4      		ldi r29,lo8(64)
- 917 02ba 00C0      		rjmp .L20
- 918               	.LVL79:
- 919               	.L49:
+ 739               		.loc 2 61 13 view .LVU113
   61:quantum/keymap_common.c ****             break;
- 920               		.loc 2 61 27 view .LVU165
- 921 02bc C3E8      		ldi r28,lo8(-125)
- 922 02be D0E4      		ldi r29,lo8(64)
- 923 02c0 00C0      		rjmp .L20
- 924               	.LVL80:
- 925               	.L50:
+ 740               		.loc 2 61 27 is_stmt 0 view .LVU114
+ 741 0216 853A      		cpi r24,-91
+ 742 0218 9105      		cpc r25,__zero_reg__
+ 743 021a 01F4      		brne .+2
+ 744 021c 00C0      		rjmp .L44
+  61:quantum/keymap_common.c ****             break;
+ 745               		.loc 2 61 27 discriminator 1 view .LVU115
+ 746 021e 863A      		cpi r24,-90
+ 747 0220 9105      		cpc r25,__zero_reg__
+ 748 0222 01F0      		breq .+2
+ 749 0224 00C0      		rjmp .L45
+  61:quantum/keymap_common.c ****             break;
+ 750               		.loc 2 61 27 view .LVU116
+ 751 0226 C2E8      		ldi r28,lo8(-126)
+ 752 0228 D0E4      		ldi r29,lo8(64)
+ 753 022a 00C0      		rjmp .L23
+ 754               	.LVL53:
+ 755               	.L27:
+  77:quantum/keymap_common.c ****             // Is a shortcut for function action_layer, pull last 12bits
+ 756               		.loc 2 77 47 is_stmt 1 view .LVU117
+  80:quantum/keymap_common.c ****             break;
+ 757               		.loc 2 80 13 view .LVU118
+  80:quantum/keymap_common.c ****             break;
+ 758               		.loc 2 80 27 is_stmt 0 view .LVU119
+ 759 022c CE01      		movw r24,r28
+ 760 022e 9F70      		andi r25,15
+ 761 0230 00C0      		rjmp .L78
+ 762               	.L28:
+  84:quantum/keymap_common.c ****             else
+ 763               		.loc 2 84 17 is_stmt 1 view .LVU120
+  84:quantum/keymap_common.c ****             else
+ 764               		.loc 2 84 31 is_stmt 0 view .LVU121
+ 765 0232 EC01      		movw r28,r24
+ 766               	.LVL54:
+  84:quantum/keymap_common.c ****             else
+ 767               		.loc 2 84 31 view .LVU122
+ 768 0234 D86C      		ori r29,200
+ 769               	.LVL55:
+  84:quantum/keymap_common.c ****             else
+ 770               		.loc 2 84 31 view .LVU123
+ 771 0236 00C0      		rjmp .L23
+ 772               	.LVL56:
+ 773               	.L18:
+  89:quantum/keymap_common.c ****             break;
+ 774               		.loc 2 89 13 is_stmt 1 view .LVU124
+  89:quantum/keymap_common.c ****             break;
+ 775               		.loc 2 89 27 is_stmt 0 view .LVU125
+ 776 0238 DF70      		andi r29,15
+ 777               	.LVL57:
+ 778               	.L75:
+ 128:quantum/keymap_common.c ****             break;
+ 779               		.loc 2 128 27 view .LVU126
+ 780 023a D06A      		ori r29,160
+ 781               	.LVL58:
+ 129:quantum/keymap_common.c ****         case QK_MOD_TAP ... QK_MOD_TAP_MAX:
+ 782               		.loc 2 129 13 is_stmt 1 view .LVU127
+ 783 023c 00C0      		rjmp .L23
+ 784               	.LVL59:
+ 785               	.L34:
+  91:quantum/keymap_common.c ****             // Layer set "GOTO"
+ 786               		.loc 2 91 35 view .LVU128
+  93:quantum/keymap_common.c ****             action_layer = keycode & 0xF;
+ 787               		.loc 2 93 13 view .LVU129
+  94:quantum/keymap_common.c ****             action.code = ACTION_LAYER_SET(action_layer, when);
+ 788               		.loc 2 94 13 view .LVU130
+  95:quantum/keymap_common.c ****             break;
+ 789               		.loc 2 95 13 view .LVU131
+  93:quantum/keymap_common.c ****             action_layer = keycode & 0xF;
+ 790               		.loc 2 93 29 is_stmt 0 view .LVU132
+ 791 023e CE01      		movw r24,r28
+ 792 0240 74E0      		ldi r23,4
+ 793               		1:
+ 794 0242 9695      		lsr r25
+ 795 0244 8795      		ror r24
+ 796 0246 7A95      		dec r23
+ 797 0248 01F4      		brne 1b
+  93:quantum/keymap_common.c ****             action_layer = keycode & 0xF;
+ 798               		.loc 2 93 18 view .LVU133
+ 799 024a 8370      		andi r24,lo8(3)
+  95:quantum/keymap_common.c ****             break;
+ 800               		.loc 2 95 27 view .LVU134
+ 801 024c 2C2F      		mov r18,r28
+ 802 024e 2695      		lsr r18
+ 803 0250 2695      		lsr r18
+ 804 0252 2370      		andi r18,lo8(3)
+ 805 0254 40E2      		ldi r20,lo8(32)
+ 806 0256 249F      		mul r18,r20
+ 807 0258 9001      		movw r18,r0
+ 808 025a 1124      		clr __zero_reg__
+ 809 025c 382B      		or r19,r24
+ 810 025e 8C2F      		mov r24,r28
+ 811 0260 8370      		andi r24,lo8(3)
+ 812 0262 C1E0      		ldi r28,lo8(1)
+ 813 0264 D0E0      		ldi r29,0
+ 814               	.LVL60:
+  95:quantum/keymap_common.c ****             break;
+ 815               		.loc 2 95 27 view .LVU135
+ 816 0266 00C0      		rjmp 2f
+ 817               		1:
+ 818 0268 CC0F      		lsl r28
+ 819 026a DD1F      		rol r29
+ 820               		2:
+ 821 026c 8A95      		dec r24
+ 822 026e 02F4      		brpl 1b
+ 823               	.L76:
+ 105:quantum/keymap_common.c ****             break;
+ 824               		.loc 2 105 27 view .LVU136
+ 825 0270 C22B      		or r28,r18
+ 826 0272 D32B      		or r29,r19
+ 827 0274 DC68      		ori r29,140
+ 828               	.LVL61:
+ 106:quantum/keymap_common.c ****         case QK_TOGGLE_LAYER ... QK_TOGGLE_LAYER_MAX: ;
+ 829               		.loc 2 106 13 is_stmt 1 view .LVU137
+ 830 0276 00C0      		rjmp .L23
+ 831               	.LVL62:
+ 832               	.L33:
+ 102:quantum/keymap_common.c ****             // Set default action_layer
+ 833               		.loc 2 102 49 view .LVU138
+ 104:quantum/keymap_common.c ****             action.code = ACTION_DEFAULT_LAYER_SET(action_layer);
+ 834               		.loc 2 104 13 view .LVU139
+ 105:quantum/keymap_common.c ****             break;
+ 835               		.loc 2 105 13 view .LVU140
+ 105:quantum/keymap_common.c ****             break;
+ 836               		.loc 2 105 27 is_stmt 0 view .LVU141
+ 837 0278 CE01      		movw r24,r28
+ 838               	.LVL63:
+ 105:quantum/keymap_common.c ****             break;
+ 839               		.loc 2 105 27 view .LVU142
+ 840 027a 8370      		andi r24,3
+ 841 027c 9927      		clr r25
+ 842               	.LVL64:
+ 105:quantum/keymap_common.c ****             break;
+ 843               		.loc 2 105 27 view .LVU143
+ 844 027e 21E0      		ldi r18,lo8(1)
+ 845 0280 30E0      		ldi r19,0
+ 846 0282 00C0      		rjmp 2f
+ 847               		1:
+ 848 0284 220F      		lsl r18
+ 849 0286 331F      		rol r19
+ 850               		2:
+ 851 0288 8A95      		dec r24
+ 852 028a 02F4      		brpl 1b
+ 853 028c C695      		lsr r28
+ 854 028e C695      		lsr r28
+ 855               	.LVL65:
+ 105:quantum/keymap_common.c ****             break;
+ 856               		.loc 2 105 27 view .LVU144
+ 857 0290 80E2      		ldi r24,lo8(32)
+ 858 0292 C89F      		mul r28,r24
+ 859 0294 E001      		movw r28,r0
+ 860 0296 1124      		clr __zero_reg__
+ 861 0298 00C0      		rjmp .L76
+ 862               	.LVL66:
+ 863               	.L31:
+ 112:quantum/keymap_common.c ****             // OSL(action_layer) - One-shot action_layer
+ 864               		.loc 2 112 59 is_stmt 1 view .LVU145
+ 114:quantum/keymap_common.c ****             action.code = ACTION_LAYER_ONESHOT(action_layer);
+ 865               		.loc 2 114 13 view .LVU146
+ 115:quantum/keymap_common.c ****             break;
+ 866               		.loc 2 115 13 view .LVU147
+ 115:quantum/keymap_common.c ****             break;
+ 867               		.loc 2 115 27 is_stmt 0 view .LVU148
+ 868 029a DC2F      		mov r29,r28
+ 869 029c CC27      		clr r28
+ 870 029e C46F      		ori r28,244
+ 871 02a0 D06A      		ori r29,160
+ 872               	.LVL67:
+ 116:quantum/keymap_common.c ****         case QK_ONE_SHOT_MOD ... QK_ONE_SHOT_MOD_MAX: ;
+ 873               		.loc 2 116 13 is_stmt 1 view .LVU149
+ 874 02a2 00C0      		rjmp .L23
+ 875               	.LVL68:
+ 876               	.L37:
+ 117:quantum/keymap_common.c ****             // OSM(mod) - One-shot mod
+ 877               		.loc 2 117 55 view .LVU150
+ 119:quantum/keymap_common.c ****             action.code = ACTION_MODS_ONESHOT(mod);
+ 878               		.loc 2 119 13 view .LVU151
+ 120:quantum/keymap_common.c ****             break;
+ 879               		.loc 2 120 13 view .LVU152
+ 120:quantum/keymap_common.c ****             break;
+ 880               		.loc 2 120 27 is_stmt 0 view .LVU153
+ 881 02a4 DC2F      		mov r29,r28
+ 882 02a6 CC27      		clr r28
+ 883 02a8 CC27      		clr r28
+ 884 02aa DF71      		andi r29,31
+ 885               	.LVL69:
+ 886               	.L77:
+ 132:quantum/keymap_common.c ****             break;
+ 887               		.loc 2 132 27 view .LVU154
+ 888 02ac D062      		ori r29,32
+ 889               	.LVL70:
+ 133:quantum/keymap_common.c ****     #ifdef BACKLIGHT_ENABLE
+ 890               		.loc 2 133 13 is_stmt 1 view .LVU155
+ 891 02ae 00C0      		rjmp .L23
+ 892               	.LVL71:
+ 893               	.L36:
+ 126:quantum/keymap_common.c ****             action_layer = (keycode >> 4) & 0xF;
+ 894               		.loc 2 126 13 view .LVU156
+ 127:quantum/keymap_common.c ****             action.code = ACTION_LAYER_MODS(action_layer, mod);
+ 895               		.loc 2 127 13 view .LVU157
+ 128:quantum/keymap_common.c ****             break;
+ 896               		.loc 2 128 13 view .LVU158
+ 127:quantum/keymap_common.c ****             action.code = ACTION_LAYER_MODS(action_layer, mod);
+ 897               		.loc 2 127 37 is_stmt 0 view .LVU159
+ 898 02b0 CE01      		movw r24,r28
+ 899               	.LVL72:
+ 127:quantum/keymap_common.c ****             action.code = ACTION_LAYER_MODS(action_layer, mod);
+ 900               		.loc 2 127 37 view .LVU160
+ 901 02b2 34E0      		ldi r19,4
+ 902               		1:
+ 903 02b4 9695      		lsr r25
+ 904 02b6 8795      		ror r24
+ 905 02b8 3A95      		dec r19
+ 906 02ba 01F4      		brne 1b
+ 907               	.LVL73:
+ 127:quantum/keymap_common.c ****             action.code = ACTION_LAYER_MODS(action_layer, mod);
+ 908               		.loc 2 127 26 view .LVU161
+ 909 02bc 8F70      		andi r24,lo8(15)
+ 126:quantum/keymap_common.c ****             action_layer = (keycode >> 4) & 0xF;
+ 910               		.loc 2 126 17 view .LVU162
+ 911 02be CF70      		andi r28,lo8(15)
+ 912               	.LVL74:
+ 128:quantum/keymap_common.c ****             break;
+ 913               		.loc 2 128 27 view .LVU163
+ 914 02c0 C06E      		ori r28,lo8(-32)
+ 915 02c2 D82F      		mov r29,r24
+ 916 02c4 00C0      		rjmp .L75
+ 917               	.LVL75:
+ 918               	.L44:
+  61:quantum/keymap_common.c ****             break;
+ 919               		.loc 2 61 27 view .LVU164
+ 920 02c6 C1E8      		ldi r28,lo8(-127)
+ 921 02c8 D0E4      		ldi r29,lo8(64)
+ 922 02ca 00C0      		rjmp .L23
+ 923               	.L45:
+  61:quantum/keymap_common.c ****             break;
+ 924               		.loc 2 61 27 view .LVU165
+ 925 02cc C3E8      		ldi r28,lo8(-125)
+ 926 02ce D0E4      		ldi r29,lo8(64)
+ 927 02d0 00C0      		rjmp .L23
+ 928               	.LVL76:
+ 929               	.L46:
   64:quantum/keymap_common.c ****             break;
- 926               		.loc 2 64 27 view .LVU166
- 927 02c2 C2EE      		ldi r28,lo8(-30)
- 928 02c4 D4E4      		ldi r29,lo8(68)
- 929 02c6 00C0      		rjmp .L20
- 930               	.LVL81:
- 931               	.L51:
+ 930               		.loc 2 64 27 view .LVU166
+ 931 02d2 C2EE      		ldi r28,lo8(-30)
+ 932 02d4 D4E4      		ldi r29,lo8(68)
+ 933               	.LVL77:
   64:quantum/keymap_common.c ****             break;
- 932               		.loc 2 64 27 view .LVU167
- 933 02c8 C9EE      		ldi r28,lo8(-23)
- 934 02ca D4E4      		ldi r29,lo8(68)
- 935 02cc 00C0      		rjmp .L20
- 936               	.LVL82:
- 937               	.L52:
+ 934               		.loc 2 64 27 view .LVU167
+ 935 02d6 00C0      		rjmp .L23
+ 936               	.LVL78:
+ 937               	.L47:
   64:quantum/keymap_common.c ****             break;
  938               		.loc 2 64 27 view .LVU168
- 939 02ce CAEE      		ldi r28,lo8(-22)
- 940 02d0 D4E4      		ldi r29,lo8(68)
- 941 02d2 00C0      		rjmp .L20
- 942               	.LVL83:
- 943               	.L53:
+ 939 02d8 C9EE      		ldi r28,lo8(-23)
+ 940 02da D4E4      		ldi r29,lo8(68)
+ 941               	.LVL79:
   64:quantum/keymap_common.c ****             break;
- 944               		.loc 2 64 27 view .LVU169
- 945 02d4 C5EB      		ldi r28,lo8(-75)
- 946 02d6 D4E4      		ldi r29,lo8(68)
- 947 02d8 00C0      		rjmp .L20
- 948               	.LVL84:
- 949               	.L54:
+ 942               		.loc 2 64 27 view .LVU169
+ 943 02dc 00C0      		rjmp .L23
+ 944               	.LVL80:
+ 945               	.L48:
   64:quantum/keymap_common.c ****             break;
- 950               		.loc 2 64 27 view .LVU170
- 951 02da C6EB      		ldi r28,lo8(-74)
- 952 02dc D4E4      		ldi r29,lo8(68)
- 953 02de 00C0      		rjmp .L20
- 954               	.LVL85:
- 955               	.L55:
+ 946               		.loc 2 64 27 view .LVU170
+ 947 02de CAEE      		ldi r28,lo8(-22)
+ 948 02e0 D4E4      		ldi r29,lo8(68)
+ 949               	.LVL81:
   64:quantum/keymap_common.c ****             break;
- 956               		.loc 2 64 27 view .LVU171
- 957 02e0 C3EB      		ldi r28,lo8(-77)
- 958 02e2 D4E4      		ldi r29,lo8(68)
- 959 02e4 00C0      		rjmp .L20
- 960               	.LVL86:
- 961               	.L56:
+ 950               		.loc 2 64 27 view .LVU171
+ 951 02e2 00C0      		rjmp .L23
+ 952               	.LVL82:
+ 953               	.L49:
   64:quantum/keymap_common.c ****             break;
- 962               		.loc 2 64 27 view .LVU172
- 963 02e6 C4EB      		ldi r28,lo8(-76)
- 964 02e8 D4E4      		ldi r29,lo8(68)
- 965 02ea 00C0      		rjmp .L20
- 966               	.LVL87:
- 967               	.L57:
+ 954               		.loc 2 64 27 view .LVU172
+ 955 02e4 C5EB      		ldi r28,lo8(-75)
+ 956 02e6 D4E4      		ldi r29,lo8(68)
+ 957               	.LVL83:
   64:quantum/keymap_common.c ****             break;
- 968               		.loc 2 64 27 view .LVU173
- 969 02ec C7EB      		ldi r28,lo8(-73)
- 970 02ee D4E4      		ldi r29,lo8(68)
- 971 02f0 00C0      		rjmp .L20
- 972               	.LVL88:
- 973               	.L58:
+ 958               		.loc 2 64 27 view .LVU173
+ 959 02e8 00C0      		rjmp .L23
+ 960               	.LVL84:
+ 961               	.L50:
   64:quantum/keymap_common.c ****             break;
- 974               		.loc 2 64 27 view .LVU174
- 975 02f2 CCEC      		ldi r28,lo8(-52)
- 976 02f4 D4E4      		ldi r29,lo8(68)
- 977 02f6 00C0      		rjmp .L20
- 978               	.LVL89:
- 979               	.L59:
+ 962               		.loc 2 64 27 view .LVU174
+ 963 02ea C6EB      		ldi r28,lo8(-74)
+ 964 02ec D4E4      		ldi r29,lo8(68)
+ 965               	.LVL85:
   64:quantum/keymap_common.c ****             break;
- 980               		.loc 2 64 27 view .LVU175
- 981 02f8 CDEC      		ldi r28,lo8(-51)
- 982 02fa D4E4      		ldi r29,lo8(68)
- 983 02fc 00C0      		rjmp .L20
+ 966               		.loc 2 64 27 view .LVU175
+ 967 02ee 00C0      		rjmp .L23
+ 968               	.LVL86:
+ 969               	.L51:
+  64:quantum/keymap_common.c ****             break;
+ 970               		.loc 2 64 27 view .LVU176
+ 971 02f0 C3EB      		ldi r28,lo8(-77)
+ 972 02f2 D4E4      		ldi r29,lo8(68)
+ 973               	.LVL87:
+  64:quantum/keymap_common.c ****             break;
+ 974               		.loc 2 64 27 view .LVU177
+ 975 02f4 00C0      		rjmp .L23
+ 976               	.LVL88:
+ 977               	.L52:
+  64:quantum/keymap_common.c ****             break;
+ 978               		.loc 2 64 27 view .LVU178
+ 979 02f6 C4EB      		ldi r28,lo8(-76)
+ 980 02f8 D4E4      		ldi r29,lo8(68)
+ 981               	.LVL89:
+  64:quantum/keymap_common.c ****             break;
+ 982               		.loc 2 64 27 view .LVU179
+ 983 02fa 00C0      		rjmp .L23
  984               	.LVL90:
- 985               	.L60:
+ 985               	.L53:
   64:quantum/keymap_common.c ****             break;
- 986               		.loc 2 64 27 view .LVU176
- 987 02fe C3E8      		ldi r28,lo8(-125)
- 988 0300 D5E4      		ldi r29,lo8(69)
- 989 0302 00C0      		rjmp .L20
- 990               	.LVL91:
- 991               	.L61:
+ 986               		.loc 2 64 27 view .LVU180
+ 987 02fc C7EB      		ldi r28,lo8(-73)
+ 988 02fe D4E4      		ldi r29,lo8(68)
+ 989               	.LVL91:
   64:quantum/keymap_common.c ****             break;
- 992               		.loc 2 64 27 view .LVU177
- 993 0304 CAE8      		ldi r28,lo8(-118)
- 994 0306 D5E4      		ldi r29,lo8(69)
- 995 0308 00C0      		rjmp .L20
- 996               	.LVL92:
- 997               	.L62:
+ 990               		.loc 2 64 27 view .LVU181
+ 991 0300 00C0      		rjmp .L23
+ 992               	.LVL92:
+ 993               	.L54:
   64:quantum/keymap_common.c ****             break;
- 998               		.loc 2 64 27 view .LVU178
- 999 030a C2E9      		ldi r28,lo8(-110)
- 1000 030c D5E4      		ldi r29,lo8(69)
- 1001 030e 00C0      		rjmp .L20
- 1002               	.LVL93:
- 1003               	.L63:
+ 994               		.loc 2 64 27 view .LVU182
+ 995 0302 CCEC      		ldi r28,lo8(-52)
+ 996 0304 D4E4      		ldi r29,lo8(68)
+ 997               	.LVL93:
   64:quantum/keymap_common.c ****             break;
- 1004               		.loc 2 64 27 view .LVU179
- 1005 0310 C4E9      		ldi r28,lo8(-108)
- 1006 0312 D5E4      		ldi r29,lo8(69)
- 1007 0314 00C0      		rjmp .L20
- 1008               	.LVL94:
- 1009               	.L64:
+ 998               		.loc 2 64 27 view .LVU183
+ 999 0306 00C0      		rjmp .L23
+ 1000               	.LVL94:
+ 1001               	.L55:
   64:quantum/keymap_common.c ****             break;
- 1010               		.loc 2 64 27 view .LVU180
- 1011 0316 C1E2      		ldi r28,lo8(33)
- 1012 0318 D6E4      		ldi r29,lo8(70)
- 1013 031a 00C0      		rjmp .L20
- 1014               	.LVL95:
- 1015               	.L65:
+ 1002               		.loc 2 64 27 view .LVU184
+ 1003 0308 CDEC      		ldi r28,lo8(-51)
+ 1004 030a D4E4      		ldi r29,lo8(68)
+ 1005               	.LVL95:
   64:quantum/keymap_common.c ****             break;
- 1016               		.loc 2 64 27 view .LVU181
- 1017 031c C3E2      		ldi r28,lo8(35)
- 1018 031e D6E4      		ldi r29,lo8(70)
- 1019 0320 00C0      		rjmp .L20
- 1020               	.LVL96:
- 1021               	.L66:
+ 1006               		.loc 2 64 27 view .LVU185
+ 1007 030c 00C0      		rjmp .L23
+ 1008               	.LVL96:
+ 1009               	.L56:
   64:quantum/keymap_common.c ****             break;
- 1022               		.loc 2 64 27 view .LVU182
- 1023 0322 C4E2      		ldi r28,lo8(36)
- 1024 0324 D6E4      		ldi r29,lo8(70)
- 1025 0326 00C0      		rjmp .L20
- 1026               	.LVL97:
- 1027               	.L67:
+ 1010               		.loc 2 64 27 view .LVU186
+ 1011 030e C3E8      		ldi r28,lo8(-125)
+ 1012 0310 D5E4      		ldi r29,lo8(69)
+ 1013               	.LVL97:
   64:quantum/keymap_common.c ****             break;
- 1028               		.loc 2 64 27 view .LVU183
- 1029 0328 C5E2      		ldi r28,lo8(37)
- 1030 032a D6E4      		ldi r29,lo8(70)
- 1031 032c 00C0      		rjmp .L20
- 1032               	.LVL98:
- 1033               	.L68:
+ 1014               		.loc 2 64 27 view .LVU187
+ 1015 0312 00C0      		rjmp .L23
+ 1016               	.LVL98:
+ 1017               	.L57:
   64:quantum/keymap_common.c ****             break;
- 1034               		.loc 2 64 27 view .LVU184
- 1035 032e C6E2      		ldi r28,lo8(38)
- 1036 0330 D6E4      		ldi r29,lo8(70)
- 1037 0332 00C0      		rjmp .L20
- 1038               	.LVL99:
- 1039               	.L69:
+ 1018               		.loc 2 64 27 view .LVU188
+ 1019 0314 CAE8      		ldi r28,lo8(-118)
+ 1020 0316 D5E4      		ldi r29,lo8(69)
+ 1021               	.LVL99:
   64:quantum/keymap_common.c ****             break;
- 1040               		.loc 2 64 27 view .LVU185
- 1041 0334 C7E2      		ldi r28,lo8(39)
- 1042 0336 D6E4      		ldi r29,lo8(70)
- 1043 0338 00C0      		rjmp .L20
- 1044               	.LVL100:
- 1045               	.L70:
+ 1022               		.loc 2 64 27 view .LVU189
+ 1023 0318 00C0      		rjmp .L23
+ 1024               	.LVL100:
+ 1025               	.L58:
   64:quantum/keymap_common.c ****             break;
- 1046               		.loc 2 64 27 view .LVU186
- 1047 033a CAE2      		ldi r28,lo8(42)
- 1048 033c D6E4      		ldi r29,lo8(70)
- 1049 033e 00C0      		rjmp .L20
- 1050               		.cfi_endproc
- 1051               	.LFE29:
- 1053               		.weak	fn_actions
- 1054               		.section	.progmem.data.fn_actions,"a"
- 1057               	fn_actions:
- 1058               		.text
- 1059               	.Letext0:
- 1060               		.file 3 "/usr/local/Cellar/avr-gcc@8/8.3.0_1/avr/include/stdint.h"
- 1061               		.file 4 "./tmk_core/common/keyboard.h"
- 1062               		.file 5 "./tmk_core/common/keycode.h"
- 1063               		.file 6 "./tmk_core/common/action_code.h"
- 1064               		.file 7 "/usr/local/Cellar/avr-gcc@8/8.3.0_1/lib/avr-gcc/8/gcc/avr/8.3.0/include/stddef.h"
- 1065               		.file 8 "./tmk_core/common/action_macro.h"
- 1066               		.file 9 "./tmk_core/common/action.h"
- 1067               		.file 10 "./tmk_core/common/report.h"
- 1068               		.file 11 "./tmk_core/common/host.h"
- 1069               		.file 12 "./tmk_core/common/avr/xprintf.h"
- 1070               		.file 13 "./tmk_core/common/debug.h"
- 1071               		.file 14 "quantum/keycode_config.h"
- 1072               		.file 15 "quantum/quantum_keycodes.h"
- 1073               		.file 16 "quantum/keymap.h"
- 1074               		.file 17 "./tmk_core/common/action_layer.h"
- 1075               		.file 18 "/usr/local/Cellar/avr-gcc@8/8.3.0_1/avr/include/stdio.h"
- 1076               		.file 19 "./tmk_core/common/timer.h"
- 1077               		.file 20 "./tmk_core/common/action_util.h"
- 1078               		.file 21 "/usr/local/Cellar/avr-gcc@8/8.3.0_1/avr/include/stdlib.h"
- 1079               		.file 22 "./quantum/process_keycode/process_tap_dance.h"
- 1080               		.file 23 "quantum/quantum.h"
+ 1026               		.loc 2 64 27 view .LVU190
+ 1027 031a C2E9      		ldi r28,lo8(-110)
+ 1028 031c D5E4      		ldi r29,lo8(69)
+ 1029               	.LVL101:
+  64:quantum/keymap_common.c ****             break;
+ 1030               		.loc 2 64 27 view .LVU191
+ 1031 031e 00C0      		rjmp .L23
+ 1032               	.LVL102:
+ 1033               	.L59:
+  64:quantum/keymap_common.c ****             break;
+ 1034               		.loc 2 64 27 view .LVU192
+ 1035 0320 C4E9      		ldi r28,lo8(-108)
+ 1036 0322 D5E4      		ldi r29,lo8(69)
+ 1037               	.LVL103:
+  64:quantum/keymap_common.c ****             break;
+ 1038               		.loc 2 64 27 view .LVU193
+ 1039 0324 00C0      		rjmp .L23
+ 1040               	.LVL104:
+ 1041               	.L60:
+  64:quantum/keymap_common.c ****             break;
+ 1042               		.loc 2 64 27 view .LVU194
+ 1043 0326 C1E2      		ldi r28,lo8(33)
+ 1044 0328 D6E4      		ldi r29,lo8(70)
+ 1045               	.LVL105:
+  64:quantum/keymap_common.c ****             break;
+ 1046               		.loc 2 64 27 view .LVU195
+ 1047 032a 00C0      		rjmp .L23
+ 1048               	.LVL106:
+ 1049               	.L61:
+  64:quantum/keymap_common.c ****             break;
+ 1050               		.loc 2 64 27 view .LVU196
+ 1051 032c C3E2      		ldi r28,lo8(35)
+ 1052 032e D6E4      		ldi r29,lo8(70)
+ 1053               	.LVL107:
+  64:quantum/keymap_common.c ****             break;
+ 1054               		.loc 2 64 27 view .LVU197
+ 1055 0330 00C0      		rjmp .L23
+ 1056               	.LVL108:
+ 1057               	.L62:
+  64:quantum/keymap_common.c ****             break;
+ 1058               		.loc 2 64 27 view .LVU198
+ 1059 0332 C4E2      		ldi r28,lo8(36)
+ 1060 0334 D6E4      		ldi r29,lo8(70)
+ 1061               	.LVL109:
+  64:quantum/keymap_common.c ****             break;
+ 1062               		.loc 2 64 27 view .LVU199
+ 1063 0336 00C0      		rjmp .L23
+ 1064               	.LVL110:
+ 1065               	.L63:
+  64:quantum/keymap_common.c ****             break;
+ 1066               		.loc 2 64 27 view .LVU200
+ 1067 0338 C5E2      		ldi r28,lo8(37)
+ 1068 033a D6E4      		ldi r29,lo8(70)
+ 1069               	.LVL111:
+  64:quantum/keymap_common.c ****             break;
+ 1070               		.loc 2 64 27 view .LVU201
+ 1071 033c 00C0      		rjmp .L23
+ 1072               	.LVL112:
+ 1073               	.L64:
+  64:quantum/keymap_common.c ****             break;
+ 1074               		.loc 2 64 27 view .LVU202
+ 1075 033e C6E2      		ldi r28,lo8(38)
+ 1076 0340 D6E4      		ldi r29,lo8(70)
+ 1077               	.LVL113:
+  64:quantum/keymap_common.c ****             break;
+ 1078               		.loc 2 64 27 view .LVU203
+ 1079 0342 00C0      		rjmp .L23
+ 1080               	.LVL114:
+ 1081               	.L65:
+  64:quantum/keymap_common.c ****             break;
+ 1082               		.loc 2 64 27 view .LVU204
+ 1083 0344 C7E2      		ldi r28,lo8(39)
+ 1084 0346 D6E4      		ldi r29,lo8(70)
+ 1085               	.LVL115:
+  64:quantum/keymap_common.c ****             break;
+ 1086               		.loc 2 64 27 view .LVU205
+ 1087 0348 00C0      		rjmp .L23
+ 1088               	.LVL116:
+ 1089               	.L66:
+  64:quantum/keymap_common.c ****             break;
+ 1090               		.loc 2 64 27 view .LVU206
+ 1091 034a CAE2      		ldi r28,lo8(42)
+ 1092 034c D6E4      		ldi r29,lo8(70)
+ 1093               	.LVL117:
+  64:quantum/keymap_common.c ****             break;
+ 1094               		.loc 2 64 27 view .LVU207
+ 1095 034e 00C0      		rjmp .L23
+ 1096               		.cfi_endproc
+ 1097               	.LFE29:
+ 1099               		.weak	fn_actions
+ 1100               		.section	.progmem.data.fn_actions,"a"
+ 1103               	fn_actions:
+ 1104               		.text
+ 1105               	.Letext0:
+ 1106               		.file 3 "/usr/local/Cellar/avr-gcc@9/9.3.0_3/avr/include/stdint.h"
+ 1107               		.file 4 "./tmk_core/common/keyboard.h"
+ 1108               		.file 5 "./tmk_core/common/keycode.h"
+ 1109               		.file 6 "./tmk_core/common/action_code.h"
+ 1110               		.file 7 "/usr/local/Cellar/avr-gcc@9/9.3.0_3/lib/avr-gcc/9/gcc/avr/9.3.0/include/stddef.h"
+ 1111               		.file 8 "./tmk_core/common/action_macro.h"
+ 1112               		.file 9 "./tmk_core/common/action.h"
+ 1113               		.file 10 "./tmk_core/common/report.h"
+ 1114               		.file 11 "./tmk_core/common/host.h"
+ 1115               		.file 12 "./tmk_core/common/avr/xprintf.h"
+ 1116               		.file 13 "./tmk_core/common/debug.h"
+ 1117               		.file 14 "quantum/keycode_config.h"
+ 1118               		.file 15 "quantum/quantum_keycodes.h"
+ 1119               		.file 16 "quantum/keymap.h"
+ 1120               		.file 17 "./tmk_core/common/action_layer.h"
+ 1121               		.file 18 "/usr/local/Cellar/avr-gcc@9/9.3.0_3/avr/include/stdio.h"
+ 1122               		.file 19 "./tmk_core/common/timer.h"
+ 1123               		.file 20 "./tmk_core/common/action_util.h"
+ 1124               		.file 21 "/usr/local/Cellar/avr-gcc@9/9.3.0_3/avr/include/stdlib.h"
+ 1125               		.file 22 "./quantum/process_keycode/process_tap_dance.h"
+ 1126               		.file 23 "quantum/quantum.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 keymap_common.c
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccgfVHUo.s:2      *ABS*:000000000000003e __SP_H__
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccgfVHUo.s:3      *ABS*:000000000000003d __SP_L__
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccgfVHUo.s:4      *ABS*:000000000000003f __SREG__
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccgfVHUo.s:5      *ABS*:0000000000000000 __tmp_reg__
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccgfVHUo.s:6      *ABS*:0000000000000001 __zero_reg__
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccgfVHUo.s:13     .text.rgblight_toggle:0000000000000000 rgblight_toggle
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccgfVHUo.s:32     .text.rgblight_step:0000000000000000 rgblight_step
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccgfVHUo.s:47     .text.rgblight_step_reverse:0000000000000000 rgblight_step_reverse
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccgfVHUo.s:62     .text.rgblight_increase_hue:0000000000000000 rgblight_increase_hue
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccgfVHUo.s:77     .text.rgblight_decrease_hue:0000000000000000 rgblight_decrease_hue
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccgfVHUo.s:92     .text.rgblight_increase_sat:0000000000000000 rgblight_increase_sat
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccgfVHUo.s:107    .text.rgblight_decrease_sat:0000000000000000 rgblight_decrease_sat
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccgfVHUo.s:122    .text.rgblight_increase_val:0000000000000000 rgblight_increase_val
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccgfVHUo.s:137    .text.rgblight_decrease_val:0000000000000000 rgblight_decrease_val
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccgfVHUo.s:152    .text.rgblight_increase_speed:0000000000000000 rgblight_increase_speed
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccgfVHUo.s:167    .text.rgblight_decrease_speed:0000000000000000 rgblight_decrease_speed
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccgfVHUo.s:182    .text.action_get_macro:0000000000000000 action_get_macro
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccgfVHUo.s:206    .text.action_function:0000000000000000 action_function
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccgfVHUo.s:224    .text.keymap_key_to_keycode:0000000000000000 keymap_key_to_keycode
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccgfVHUo.s:281    .text.keymap_function_id_to_action:0000000000000000 keymap_function_id_to_action
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccgfVHUo.s:1057   .progmem.data.fn_actions:0000000000000000 fn_actions
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccgfVHUo.s:322    .text.action_for_key:0000000000000000 action_for_key
+/var/folders/_p/hcjbsmwn4x14x6mnhxrqw_c80000gn/T//cc91wAJl.s:2      *ABS*:000000000000003e __SP_H__
+/var/folders/_p/hcjbsmwn4x14x6mnhxrqw_c80000gn/T//cc91wAJl.s:3      *ABS*:000000000000003d __SP_L__
+/var/folders/_p/hcjbsmwn4x14x6mnhxrqw_c80000gn/T//cc91wAJl.s:4      *ABS*:000000000000003f __SREG__
+/var/folders/_p/hcjbsmwn4x14x6mnhxrqw_c80000gn/T//cc91wAJl.s:5      *ABS*:0000000000000000 __tmp_reg__
+/var/folders/_p/hcjbsmwn4x14x6mnhxrqw_c80000gn/T//cc91wAJl.s:6      *ABS*:0000000000000001 __zero_reg__
+/var/folders/_p/hcjbsmwn4x14x6mnhxrqw_c80000gn/T//cc91wAJl.s:13     .text.rgblight_toggle:0000000000000000 rgblight_toggle
+/var/folders/_p/hcjbsmwn4x14x6mnhxrqw_c80000gn/T//cc91wAJl.s:32     .text.rgblight_step:0000000000000000 rgblight_step
+/var/folders/_p/hcjbsmwn4x14x6mnhxrqw_c80000gn/T//cc91wAJl.s:47     .text.rgblight_step_reverse:0000000000000000 rgblight_step_reverse
+/var/folders/_p/hcjbsmwn4x14x6mnhxrqw_c80000gn/T//cc91wAJl.s:62     .text.rgblight_increase_hue:0000000000000000 rgblight_increase_hue
+/var/folders/_p/hcjbsmwn4x14x6mnhxrqw_c80000gn/T//cc91wAJl.s:77     .text.rgblight_decrease_hue:0000000000000000 rgblight_decrease_hue
+/var/folders/_p/hcjbsmwn4x14x6mnhxrqw_c80000gn/T//cc91wAJl.s:92     .text.rgblight_increase_sat:0000000000000000 rgblight_increase_sat
+/var/folders/_p/hcjbsmwn4x14x6mnhxrqw_c80000gn/T//cc91wAJl.s:107    .text.rgblight_decrease_sat:0000000000000000 rgblight_decrease_sat
+/var/folders/_p/hcjbsmwn4x14x6mnhxrqw_c80000gn/T//cc91wAJl.s:122    .text.rgblight_increase_val:0000000000000000 rgblight_increase_val
+/var/folders/_p/hcjbsmwn4x14x6mnhxrqw_c80000gn/T//cc91wAJl.s:137    .text.rgblight_decrease_val:0000000000000000 rgblight_decrease_val
+/var/folders/_p/hcjbsmwn4x14x6mnhxrqw_c80000gn/T//cc91wAJl.s:152    .text.rgblight_increase_speed:0000000000000000 rgblight_increase_speed
+/var/folders/_p/hcjbsmwn4x14x6mnhxrqw_c80000gn/T//cc91wAJl.s:167    .text.rgblight_decrease_speed:0000000000000000 rgblight_decrease_speed
+/var/folders/_p/hcjbsmwn4x14x6mnhxrqw_c80000gn/T//cc91wAJl.s:182    .text.action_get_macro:0000000000000000 action_get_macro
+/var/folders/_p/hcjbsmwn4x14x6mnhxrqw_c80000gn/T//cc91wAJl.s:206    .text.action_function:0000000000000000 action_function
+/var/folders/_p/hcjbsmwn4x14x6mnhxrqw_c80000gn/T//cc91wAJl.s:224    .text.keymap_key_to_keycode:0000000000000000 keymap_key_to_keycode
+/var/folders/_p/hcjbsmwn4x14x6mnhxrqw_c80000gn/T//cc91wAJl.s:281    .text.keymap_function_id_to_action:0000000000000000 keymap_function_id_to_action
+/var/folders/_p/hcjbsmwn4x14x6mnhxrqw_c80000gn/T//cc91wAJl.s:1103   .progmem.data.fn_actions:0000000000000000 fn_actions
+/var/folders/_p/hcjbsmwn4x14x6mnhxrqw_c80000gn/T//cc91wAJl.s:322    .text.action_for_key:0000000000000000 action_for_key
 
 UNDEFINED SYMBOLS
 keymaps

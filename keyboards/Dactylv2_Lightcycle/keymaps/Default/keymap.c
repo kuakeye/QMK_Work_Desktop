@@ -50,8 +50,10 @@ enum custom_keycodes {
 #define KC_X8 TD(TD_CMD)			//single tap is cmd double is ipconfig
 
 #define KC_UNDO LCTL(KC_Z) //undo
+#define KC_SFTENT MT(MOD_LSFT, KC_ENT)
 #define KC_LGOFF LGUI(KC_L) //log out of comp
 #define KC_LGON LCTL(LALT(KC_DEL)) //log into work comp
+
 
 // Windows virtual desktop switching functions. Downloaded software called SylphyHornEx
 #define KC_WS0 LCTL(LGUI(KC_0))
@@ -140,7 +142,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //	//							`----+----+----+'			`----+----+----'
 							 PGDN,PGUP,LALT,LAYER4,		   RALT , LAYER4,HOME, END,
 //	//							`----+----+----+'			`----+----+----'
-									   DEL,LSFT,			ENT,SPC
+									   DEL,SFTENT,			ENT,SPC
 //	//							`----+----+----+'			`----+----+----'
 //
 //	//							`----+----+----+'			`----+----+----'

@@ -36,85 +36,120 @@
   22:./tmk_core/common/magic.c **** {
   16               		.loc 1 22 1 view -0
   17               		.cfi_startproc
-  18               	/* prologue: function */
-  19               	/* frame size = 0 */
-  20               	/* stack size = 0 */
-  21               	.L__stack_usage = 0
+  18 0000 CF93      		push r28
+  19               	.LCFI0:
+  20               		.cfi_def_cfa_offset 3
+  21               		.cfi_offset 28, -2
+  22 0002 DF93      		push r29
+  23               	.LCFI1:
+  24               		.cfi_def_cfa_offset 4
+  25               		.cfi_offset 29, -3
+  26 0004 00D0      		rcall .
+  27 0006 00D0      		rcall .
+  28               	.LCFI2:
+  29               		.cfi_def_cfa_offset 8
+  30 0008 CDB7      		in r28,__SP_L__
+  31 000a DEB7      		in r29,__SP_H__
+  32               	.LCFI3:
+  33               		.cfi_def_cfa_register 28
+  34               	/* prologue: function */
+  35               	/* frame size = 4 */
+  36               	/* stack size = 6 */
+  37               	.L__stack_usage = 6
   23:./tmk_core/common/magic.c ****     /* check signature */
   24:./tmk_core/common/magic.c ****     if (!eeconfig_is_enabled()) {
-  22               		.loc 1 24 5 view .LVU1
-  23               		.loc 1 24 10 is_stmt 0 view .LVU2
-  24 0000 0E94 0000 		call eeconfig_is_enabled
-  25               	.LVL0:
-  26               		.loc 1 24 8 view .LVU3
-  27 0004 8111      		cpse r24,__zero_reg__
-  28 0006 00C0      		rjmp .L2
+  38               		.loc 1 24 5 view .LVU1
+  39               		.loc 1 24 10 is_stmt 0 view .LVU2
+  40 000c 0E94 0000 		call eeconfig_is_enabled
+  41               	.LVL0:
+  42               		.loc 1 24 8 view .LVU3
+  43 0010 8111      		cpse r24,__zero_reg__
+  44 0012 00C0      		rjmp .L2
   25:./tmk_core/common/magic.c ****         eeconfig_init();
-  29               		.loc 1 25 9 is_stmt 1 view .LVU4
-  30 0008 0E94 0000 		call eeconfig_init
-  31               	.LVL1:
-  32               	.L2:
+  45               		.loc 1 25 9 is_stmt 1 view .LVU4
+  46 0014 0E94 0000 		call eeconfig_init
+  47               	.LVL1:
+  48               	.L2:
   26:./tmk_core/common/magic.c ****     }
   27:./tmk_core/common/magic.c **** 
   28:./tmk_core/common/magic.c ****     /* debug enable */
   29:./tmk_core/common/magic.c ****     debug_config.raw = eeconfig_read_debug();
-  33               		.loc 1 29 5 view .LVU5
-  34               		.loc 1 29 24 is_stmt 0 view .LVU6
-  35 000c 0E94 0000 		call eeconfig_read_debug
-  36               	.LVL2:
-  37               		.loc 1 29 22 view .LVU7
-  38 0010 8093 0000 		sts debug_config,r24
+  49               		.loc 1 29 5 view .LVU5
+  50               		.loc 1 29 24 is_stmt 0 view .LVU6
+  51 0018 0E94 0000 		call eeconfig_read_debug
+  52               	.LVL2:
+  53               		.loc 1 29 22 view .LVU7
+  54 001c 8093 0000 		sts debug_config,r24
   30:./tmk_core/common/magic.c **** 
   31:./tmk_core/common/magic.c ****     /* keymap config */
   32:./tmk_core/common/magic.c ****     keymap_config.raw = eeconfig_read_keymap();
-  39               		.loc 1 32 5 is_stmt 1 view .LVU8
-  40               		.loc 1 32 25 is_stmt 0 view .LVU9
-  41 0014 0E94 0000 		call eeconfig_read_keymap
-  42               	.LVL3:
-  43 0018 90E0      		ldi r25,0
-  44 001a 9093 0000 		sts keymap_config+1,r25
-  45 001e 8093 0000 		sts keymap_config,r24
+  55               		.loc 1 32 5 is_stmt 1 view .LVU8
+  56               		.loc 1 32 25 is_stmt 0 view .LVU9
+  57 0020 0E94 0000 		call eeconfig_read_keymap
+  58               	.LVL3:
+  59 0024 90E0      		ldi r25,0
+  60 0026 9093 0000 		sts keymap_config+1,r25
+  61 002a 8093 0000 		sts keymap_config,r24
   33:./tmk_core/common/magic.c **** 
   34:./tmk_core/common/magic.c ****     uint8_t default_layer = 0;
-  46               		.loc 1 34 5 is_stmt 1 view .LVU10
-  47               	.LVL4:
+  62               		.loc 1 34 5 is_stmt 1 view .LVU10
+  63               	.LVL4:
   35:./tmk_core/common/magic.c ****     default_layer = eeconfig_read_default_layer();
-  48               		.loc 1 35 5 view .LVU11
-  49               		.loc 1 35 21 is_stmt 0 view .LVU12
-  50 0022 0E94 0000 		call eeconfig_read_default_layer
-  51               	.LVL5:
+  64               		.loc 1 35 5 view .LVU11
+  65               		.loc 1 35 21 is_stmt 0 view .LVU12
+  66 002e 0E94 0000 		call eeconfig_read_default_layer
+  67               	.LVL5:
   36:./tmk_core/common/magic.c ****     default_layer_set((uint32_t)default_layer);
-  52               		.loc 1 36 5 is_stmt 1 view .LVU13
-  53 0026 682F      		mov r22,r24
-  54 0028 70E0      		ldi r23,0
-  55 002a 90E0      		ldi r25,0
-  56 002c 80E0      		ldi r24,0
-  57               	.LVL6:
-  58               		.loc 1 36 5 is_stmt 0 view .LVU14
-  59 002e 0C94 0000 		jmp default_layer_set
-  60               	.LVL7:
-  61               		.loc 1 36 5 view .LVU15
-  62               		.cfi_endproc
-  63               	.LFE10:
-  65               		.comm	keymap_config,2,1
-  66               		.text
-  67               	.Letext0:
-  68               		.file 2 "/usr/local/Cellar/avr-gcc@8/8.3.0_1/avr/include/stdint.h"
-  69               		.file 3 "./tmk_core/common/debug.h"
-  70               		.file 4 "./tmk_core/common/avr/xprintf.h"
-  71               		.file 5 "./tmk_core/common/host.h"
-  72               		.file 6 "./quantum/keycode_config.h"
-  73               		.file 7 "./quantum/keymap.h"
-  74               		.file 8 "./tmk_core/common/action_layer.h"
-  75               		.file 9 "./tmk_core/common/eeconfig.h"
+  68               		.loc 1 36 5 is_stmt 1 view .LVU13
+  69 0032 282F      		mov r18,r24
+  70 0034 30E0      		ldi r19,0
+  71 0036 50E0      		ldi r21,0
+  72 0038 40E0      		ldi r20,0
+  73 003a 2983      		std Y+1,r18
+  74 003c 3A83      		std Y+2,r19
+  75 003e 4B83      		std Y+3,r20
+  76 0040 5C83      		std Y+4,r21
+  77 0042 CA01      		movw r24,r20
+  78               	.LVL6:
+  79               		.loc 1 36 5 is_stmt 0 view .LVU14
+  80 0044 B901      		movw r22,r18
+  81               	/* epilogue start */
+  37:./tmk_core/common/magic.c **** 
+  38:./tmk_core/common/magic.c **** }
+  82               		.loc 1 38 1 view .LVU15
+  83 0046 0F90      		pop __tmp_reg__
+  84 0048 0F90      		pop __tmp_reg__
+  85 004a 0F90      		pop __tmp_reg__
+  86 004c 0F90      		pop __tmp_reg__
+  87 004e DF91      		pop r29
+  88 0050 CF91      		pop r28
+  36:./tmk_core/common/magic.c ****     default_layer_set((uint32_t)default_layer);
+  89               		.loc 1 36 5 view .LVU16
+  90 0052 0C94 0000 		jmp default_layer_set
+  91               	.LVL7:
+  36:./tmk_core/common/magic.c ****     default_layer_set((uint32_t)default_layer);
+  92               		.loc 1 36 5 view .LVU17
+  93               		.cfi_endproc
+  94               	.LFE10:
+  96               		.comm	keymap_config,2,1
+  97               		.text
+  98               	.Letext0:
+  99               		.file 2 "/usr/local/Cellar/avr-gcc@9/9.3.0_3/avr/include/stdint.h"
+ 100               		.file 3 "./tmk_core/common/debug.h"
+ 101               		.file 4 "./tmk_core/common/avr/xprintf.h"
+ 102               		.file 5 "./tmk_core/common/host.h"
+ 103               		.file 6 "./quantum/keycode_config.h"
+ 104               		.file 7 "./quantum/keymap.h"
+ 105               		.file 8 "./tmk_core/common/action_layer.h"
+ 106               		.file 9 "./tmk_core/common/eeconfig.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 magic.c
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccxEvtuR.s:2      *ABS*:000000000000003e __SP_H__
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccxEvtuR.s:3      *ABS*:000000000000003d __SP_L__
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccxEvtuR.s:4      *ABS*:000000000000003f __SREG__
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccxEvtuR.s:5      *ABS*:0000000000000000 __tmp_reg__
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccxEvtuR.s:6      *ABS*:0000000000000001 __zero_reg__
-/var/folders/3d/n9bt7hnj55x7z_fzmyrbdqym0000gp/T//ccxEvtuR.s:13     .text.magic:0000000000000000 magic
+/var/folders/_p/hcjbsmwn4x14x6mnhxrqw_c80000gn/T//cceHsfgZ.s:2      *ABS*:000000000000003e __SP_H__
+/var/folders/_p/hcjbsmwn4x14x6mnhxrqw_c80000gn/T//cceHsfgZ.s:3      *ABS*:000000000000003d __SP_L__
+/var/folders/_p/hcjbsmwn4x14x6mnhxrqw_c80000gn/T//cceHsfgZ.s:4      *ABS*:000000000000003f __SREG__
+/var/folders/_p/hcjbsmwn4x14x6mnhxrqw_c80000gn/T//cceHsfgZ.s:5      *ABS*:0000000000000000 __tmp_reg__
+/var/folders/_p/hcjbsmwn4x14x6mnhxrqw_c80000gn/T//cceHsfgZ.s:6      *ABS*:0000000000000001 __zero_reg__
+/var/folders/_p/hcjbsmwn4x14x6mnhxrqw_c80000gn/T//cceHsfgZ.s:13     .text.magic:0000000000000000 magic
                             *COM*:0000000000000002 keymap_config
 
 UNDEFINED SYMBOLS
